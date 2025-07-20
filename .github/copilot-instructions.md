@@ -26,7 +26,7 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 ### 言語使用ルール
 
 - **PR 本文**: 日本語で記述
-- **PR タイトル**: 英語で記述
+- **PR タイトル**: 英語で記述（Conventional Commits の仕様に従う）
 - **コミットメッセージ**: 英語で記述
 - **レビューコメント**: 日本語で記述
 - **コード内コメント**: 日本語で記述
@@ -40,7 +40,7 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 ### コミット規約
 
-Conventional Commits の仕様に従ってください：
+PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください：
 
 ```
 feat: 新機能追加
