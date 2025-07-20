@@ -49,7 +49,7 @@
         </div>
       </div>
 
-      <button @click="generateUUIDs" class="primary">UUID生成</button>
+      <button class="primary" @click="generateUUIDs">UUID生成</button>
     </div>
 
     <div v-if="generatedUUIDs.length > 0" class="result">
@@ -57,13 +57,13 @@
       <div class="uuid-list">
         <div v-for="(uuid, index) in generatedUUIDs" :key="index" class="uuid-item">
           <code>{{ uuid }}</code>
-          <button @click="copyToClipboard(uuid)" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(uuid)">コピー</button>
         </div>
       </div>
       
       <div class="bulk-actions">
-        <button @click="copyAllToClipboard" class="secondary">すべてコピー</button>
-        <button @click="downloadAsFile" class="secondary">ファイルとしてダウンロード</button>
+        <button class="secondary" @click="copyAllToClipboard">すべてコピー</button>
+        <button class="secondary" @click="downloadAsFile">ファイルとしてダウンロード</button>
       </div>
     </div>
 

@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <button @click="generateQR" class="primary">QRコード生成</button>
+      <button class="primary" @click="generateQR">QRコード生成</button>
     </div>
 
     <div v-if="qrCode" class="result">
@@ -64,9 +64,9 @@
         <img :src="qrCode.dataURL" :alt="inputText" />
       </div>
       <div class="actions">
-        <button @click="downloadPNG" class="secondary">PNG画像をダウンロード</button>
-        <button @click="downloadSVG" class="secondary">SVGをダウンロード</button>
-        <button @click="copyDataURL" class="secondary">データURLをコピー</button>
+        <button class="secondary" @click="downloadPNG">PNG画像をダウンロード</button>
+        <button class="secondary" @click="downloadSVG">SVGをダウンロード</button>
+        <button class="secondary" @click="copyDataURL">データURLをコピー</button>
       </div>
       <div class="preview-text">
         <h4>エンコードされたテキスト:</h4>

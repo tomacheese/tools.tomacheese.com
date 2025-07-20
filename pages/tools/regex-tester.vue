@@ -85,8 +85,8 @@
         <button
           v-for="example in examples"
           :key="example.name"
-          @click="loadExample(example)"
           class="example-button"
+          @click="loadExample(example)"
         >
           {{ example.name }}
         </button>
@@ -185,7 +185,7 @@ const highlightedText = computed(() => {
     const before = result.substring(0, match.index)
     const matchText = result.substring(match.index, match.index + match.text.length)
     const after = result.substring(match.index + match.text.length)
-    result = before + `<mark class="regex-match">${matchText}</mark>` + after
+    result = `${before  }<mark class="regex-match">${matchText}</mark>${  after}`
   }
 
   return result.replace(/\n/g, '<br>')

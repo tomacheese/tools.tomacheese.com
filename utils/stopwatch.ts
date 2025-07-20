@@ -75,7 +75,7 @@ export function addLap(state: StopwatchState): StopwatchState {
   const newLap: Lap = {
     id: state.laps.length + 1,
     time: currentTime,
-    lapTime: lapTime,
+    lapTime,
     timestamp: new Date()
   }
 

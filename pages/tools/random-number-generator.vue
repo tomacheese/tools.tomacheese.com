@@ -119,8 +119,8 @@
               cursor: pointer;
               transition: all 0.2s;
             "
-            @click="copyNumber(number)"
             :title="'クリックでコピー: ' + number"
+            @click="copyNumber(number)"
           >
             {{ number }}
           </div>

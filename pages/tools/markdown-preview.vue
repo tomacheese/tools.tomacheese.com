@@ -8,8 +8,8 @@
         <div class="section-header">
           <h3>Markdown入力</h3>
           <div class="actions">
-            <button @click="insertExample" class="example-btn">サンプル挿入</button>
-            <button @click="clearInput" class="clear-btn">クリア</button>
+            <button class="example-btn" @click="insertExample">サンプル挿入</button>
+            <button class="clear-btn" @click="clearInput">クリア</button>
           </div>
         </div>
         <textarea
@@ -23,8 +23,8 @@
         <div class="section-header">
           <h3>プレビュー</h3>
           <div class="actions">
-            <button @click="copyHtml" class="copy-btn">HTMLコピー</button>
-            <button @click="copyMarkdown" class="copy-btn">Markdownコピー</button>
+            <button class="copy-btn" @click="copyHtml">HTMLコピー</button>
+            <button class="copy-btn" @click="copyMarkdown">Markdownコピー</button>
           </div>
         </div>
         <div class="markdown-preview-content" v-html="htmlOutput"></div>
@@ -78,7 +78,7 @@ const htmlOutput = computed(() => {
   try {
     return marked(markdownText.value)
   } catch (error) {
-    return '<p class="error">Markdown変換エラー: ' + error + '</p>'
+    return `<p class="error">Markdown変換エラー: ${  error  }</p>`
   }
 })
 

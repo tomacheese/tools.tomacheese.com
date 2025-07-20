@@ -65,8 +65,8 @@
         <div v-if="jsonOutput" class="output">
           <pre>{{ jsonOutput }}</pre>
           <div class="actions">
-            <button @click="copyToClipboard(jsonOutput)" class="secondary">コピー</button>
-            <button @click="downloadJSON" class="secondary">JSONファイルをダウンロード</button>
+            <button class="secondary" @click="copyToClipboard(jsonOutput)">コピー</button>
+            <button class="secondary" @click="downloadJSON">JSONファイルをダウンロード</button>
           </div>
         </div>
         <div v-else-if="error" class="error">
@@ -83,7 +83,7 @@
       <div class="examples">
         <div class="example">
           <h4>基本的なCSV</h4>
-          <button @click="loadExample('basic')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('basic')">この例を使用</button>
           <pre>名前,年齢,メール
 田中太郎,30,tanaka@example.com
 山田花子,25,yamada@example.com
@@ -92,7 +92,7 @@
 
         <div class="example">
           <h4>クォートを含むCSV</h4>
-          <button @click="loadExample('quoted')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('quoted')">この例を使用</button>
           <pre>商品名,価格,説明
 "ノートPC",98000,"高性能で軽量な、ビジネス向けノートPC"
 "マウス",2500,"ワイヤレス, 充電式"
@@ -101,7 +101,7 @@
 
         <div class="example">
           <h4>タブ区切り (TSV)</h4>
-          <button @click="loadExample('tsv')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('tsv')">この例を使用</button>
           <pre>ID	名前	部署
 001	鈴木一郎	営業部
 002	田中二郎	開発部
@@ -148,7 +148,7 @@ const handleConvert = () => {
     error.value = ''
   } catch (err) {
     console.error('変換エラー:', err)
-    error.value = '変換中にエラーが発生しました: ' + (err as Error).message
+    error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
     jsonOutput.value = ''
   }
 }

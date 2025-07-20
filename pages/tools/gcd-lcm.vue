@@ -180,16 +180,6 @@ const primeFactorize = (n) => {
   return factors
 }
 
-const factorsToString = (factors) => {
-  const counted = {}
-  factors.forEach(f => {
-    counted[f] = (counted[f] || 0) + 1
-  })
-  
-  return Object.entries(counted)
-    .map(([prime, count]) => count === 1 ? prime : `${prime}^${count}`)
-    .join(' × ')
-}
 
 // 計算プロパティ
 const validNumbers = computed(() => {

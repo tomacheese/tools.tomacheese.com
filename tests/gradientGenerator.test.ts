@@ -136,10 +136,10 @@ describe('gradientGenerator', () => {
     it('should generate CSS with vendor prefixes', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
       const result = generateCSSCode(gradient)
-      expect(result).toContain('background: ' + gradient)
-      expect(result).toContain('-webkit-' + gradient)
-      expect(result).toContain('-moz-' + gradient)
-      expect(result).toContain('-o-' + gradient)
+      expect(result).toContain(`background: ${  gradient}`)
+      expect(result).toContain(`-webkit-${  gradient}`)
+      expect(result).toContain(`-moz-${  gradient}`)
+      expect(result).toContain(`-o-${  gradient}`)
     })
 
     it('should use custom selector', () => {

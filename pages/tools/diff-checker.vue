@@ -7,7 +7,7 @@
       <div class="input-section">
         <div class="section-header">
           <h3>元のテキスト (A)</h3>
-          <button @click="clearTextA" class="clear-btn">クリア</button>
+          <button class="clear-btn" @click="clearTextA">クリア</button>
         </div>
         <textarea
           v-model="textA"
@@ -19,7 +19,7 @@
       <div class="input-section">
         <div class="section-header">
           <h3>比較するテキスト (B)</h3>
-          <button @click="clearTextB" class="clear-btn">クリア</button>
+          <button class="clear-btn" @click="clearTextB">クリア</button>
         </div>
         <textarea
           v-model="textB"
@@ -85,9 +85,9 @@
     <div class="examples">
       <h3>サンプルテキスト</h3>
       <div class="example-buttons">
-        <button @click="loadCodeExample" class="example-btn">コード例</button>
-        <button @click="loadTextExample" class="example-btn">テキスト例</button>
-        <button @click="loadJsonExample" class="example-btn">JSON例</button>
+        <button class="example-btn" @click="loadCodeExample">コード例</button>
+        <button class="example-btn" @click="loadTextExample">テキスト例</button>
+        <button class="example-btn" @click="loadJsonExample">JSON例</button>
       </div>
     </div>
   </div>
@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { diffLines, diffWords, diffChars } from 'diff'
+import { diffLines, diffWords } from 'diff'
 
 const textA = ref('')
 const textB = ref('')

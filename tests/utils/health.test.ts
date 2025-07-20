@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculateBMI, calculateBMR, calculateCalories, type Gender, type ActivityLevel } from '~/utils/health'
+import { calculateBMI, calculateBMR, calculateCalories, type ActivityLevel } from '~/utils/health'
 
 describe('Health Utils', () => {
   describe('calculateBMI', () => {

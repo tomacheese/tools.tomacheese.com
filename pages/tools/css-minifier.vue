@@ -7,7 +7,7 @@
       <div class="input-section">
         <div class="section-header">
           <h2>元のCSS</h2>
-          <button @click="loadExample" class="example-btn">サンプルを読み込む</button>
+          <button class="example-btn" @click="loadExample">サンプルを読み込む</button>
         </div>
         <textarea
           v-model="inputCss"
@@ -22,56 +22,56 @@
         <div class="options-grid">
           <label>
             <input
-              type="checkbox"
               v-model="options.removeComments"
+              type="checkbox"
               @change="performMinify"
             />
             コメントを削除
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.removeWhitespace"
+              type="checkbox"
               @change="performMinify"
             />
             空白を削除
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.removeSemicolons"
+              type="checkbox"
               @change="performMinify"
             />
             不要なセミコロンを削除
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.mergeSelectors"
+              type="checkbox"
               @change="performMinify"
             />
             同じセレクターを結合
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.shortenHex"
+              type="checkbox"
               @change="performMinify"
             />
             HEXカラーを短縮
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.removeUnits"
+              type="checkbox"
               @change="performMinify"
             />
             0値の単位を削除
           </label>
           <label>
             <input
-              type="checkbox"
               v-model="options.removeQuotes"
+              type="checkbox"
               @change="performMinify"
             />
             URLの引用符を削除
@@ -105,9 +105,9 @@
         <div class="section-header">
           <h2>圧縮されたCSS</h2>
           <div class="button-group">
-            <button @click="beautifyOutput" class="action-btn">整形</button>
-            <button @click="copyToClipboard" class="action-btn">コピー</button>
-            <button @click="downloadFile" class="action-btn">ダウンロード</button>
+            <button class="action-btn" @click="beautifyOutput">整形</button>
+            <button class="action-btn" @click="copyToClipboard">コピー</button>
+            <button class="action-btn" @click="downloadFile">ダウンロード</button>
           </div>
         </div>
         <textarea
@@ -129,7 +129,6 @@
 import { ref, reactive, watch } from 'vue'
 import {
   type MinifyOptions,
-  type MinifyResult,
   minifyCss,
   calculateMinifyStats,
   formatBytes,

@@ -269,41 +269,12 @@ const formatSqlMethod = () => {
     validationErrors.value = []
     calculateStats()
   } catch (error) {
-    validationErrors.value = ['整形中にエラーが発生しました: ' + (error as Error).message]
+    validationErrors.value = [`整形中にエラーが発生しました: ${  (error as Error).message}`]
     outputSql.value = ''
     stats.value = null
   }
 }
 
-const minifySqlMethod = () => {
-  if (!inputSql.value.trim()) return
-  
-  try {
-    outputSql.value = minifySql(inputSql.value)
-    validationErrors.value = []
-    calculateStats()
-  } catch (error) {
-    validationErrors.value = ['圧縮中にエラーが発生しました: ' + (error as Error).message]
-    outputSql.value = ''
-    stats.value = null
-  }
-}
-
-const validateSqlMethod = () => {
-  if (!inputSql.value.trim()) return
-  
-  const validation = validateSql(inputSql.value)
-  
-  if (validation.isValid) {
-    validationErrors.value = []
-    outputSql.value = '✓ 有効なSQLです'
-    calculateStats()
-  } else {
-    validationErrors.value = validation.errors
-    outputSql.value = ''
-    stats.value = null
-  }
-}
 
 const clearAll = () => {
   inputSql.value = ''

@@ -42,8 +42,8 @@
         <div v-if="csvOutput" class="output">
           <pre>{{ csvOutput }}</pre>
           <div class="actions">
-            <button @click="copyToClipboard(csvOutput)" class="secondary">コピー</button>
-            <button @click="downloadCSV" class="secondary">CSVファイルをダウンロード</button>
+            <button class="secondary" @click="copyToClipboard(csvOutput)">コピー</button>
+            <button class="secondary" @click="downloadCSV">CSVファイルをダウンロード</button>
           </div>
         </div>
         <div v-else-if="error" class="error">
@@ -60,7 +60,7 @@
       <div class="examples">
         <div class="example">
           <h4>オブジェクトの配列</h4>
-          <button @click="loadExample('objects')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('objects')">この例を使用</button>
           <pre>[
   {"名前": "田中太郎", "年齢": 30, "都市": "東京"},
   {"名前": "山田花子", "年齢": 25, "都市": "大阪"},
@@ -70,7 +70,7 @@
 
         <div class="example">
           <h4>配列の配列</h4>
-          <button @click="loadExample('arrays')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('arrays')">この例を使用</button>
           <pre>[
   ["名前", "年齢", "都市"],
   ["田中太郎", 30, "東京"],
@@ -81,7 +81,7 @@
 
         <div class="example">
           <h4>複雑なデータ</h4>
-          <button @click="loadExample('complex')" class="small">この例を使用</button>
+          <button class="small" @click="loadExample('complex')">この例を使用</button>
           <pre>[
   {
     "商品名": "ノートPC",
@@ -175,7 +175,7 @@ const handleConvert = () => {
     error.value = ''
   } catch (err) {
     console.error('変換エラー:', err)
-    error.value = '変換中にエラーが発生しました: ' + (err as Error).message
+    error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
     csvOutput.value = ''
   }
 }

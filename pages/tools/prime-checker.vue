@@ -135,8 +135,8 @@
               cursor: pointer;
               transition: all 0.2s;
             "
-            @click="selectPrime(prime)"
             :title="'クリックで判定: ' + prime"
+            @click="selectPrime(prime)"
           >
             {{ prime }}
           </div>

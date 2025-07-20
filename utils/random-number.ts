@@ -225,29 +225,32 @@ export function generateRandomSequence(options: SequenceOptions): number[] {
   const sequence: number[] = []
 
   switch (type) {
-    case 'arithmetic':
+    case 'arithmetic': {
       for (let i = 0; i < length; i++) {
         sequence.push(start + i * difference)
       }
       break
+    }
 
-    case 'geometric':
+    case 'geometric': {
       let current = start
       for (let i = 0; i < length; i++) {
         sequence.push(current)
         current *= ratio
       }
       break
+    }
 
-    case 'fibonacci':
+    case 'fibonacci': {
       if (length >= 1) sequence.push(start)
       if (length >= 2) sequence.push(start)
       for (let i = 2; i < length; i++) {
         sequence.push(sequence[i - 1] + sequence[i - 2])
       }
       break
+    }
 
-    case 'prime':
+    case 'prime': {
       let num = Math.max(2, start)
       while (sequence.length < length) {
         if (isPrime(num)) {
@@ -256,6 +259,7 @@ export function generateRandomSequence(options: SequenceOptions): number[] {
         num++
       }
       break
+    }
   }
 
   return sequence
@@ -280,7 +284,7 @@ function isPrime(num: number): boolean {
  * Format numbers for display
  */
 export function formatNumbers(numbers: number[], options: { sorted?: boolean; grouped?: boolean } = {}): string {
-  let result = [...numbers]
+  const result = [...numbers]
 
   if (options.sorted) {
     result.sort((a, b) => a - b)

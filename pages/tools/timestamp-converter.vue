@@ -9,17 +9,17 @@
         <div class="time-info">
           <label>Unix タイムスタンプ (秒)</label>
           <code>{{ currentTime.unix }}</code>
-          <button @click="copyToClipboard(currentTime.unix.toString())" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(currentTime.unix.toString())">コピー</button>
         </div>
         <div class="time-info">
           <label>Unix タイムスタンプ (ミリ秒)</label>
           <code>{{ currentTime.unixMillis }}</code>
-          <button @click="copyToClipboard(currentTime.unixMillis.toString())" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(currentTime.unixMillis.toString())">コピー</button>
         </div>
         <div class="time-info">
           <label>ISO 8601</label>
           <code>{{ currentTime.iso8601 }}</code>
-          <button @click="copyToClipboard(currentTime.iso8601)" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(currentTime.iso8601)">コピー</button>
         </div>
         <div class="time-info">
           <label>ローカル時刻</label>
@@ -53,22 +53,22 @@
           <div class="time-info">
             <label>Unix タイムスタンプ (秒)</label>
             <code>{{ convertedTime.unix }}</code>
-            <button @click="copyToClipboard(convertedTime.unix.toString())" class="small">コピー</button>
+            <button class="small" @click="copyToClipboard(convertedTime.unix.toString())">コピー</button>
           </div>
           <div class="time-info">
             <label>Unix タイムスタンプ (ミリ秒)</label>
             <code>{{ convertedTime.unixMillis }}</code>
-            <button @click="copyToClipboard(convertedTime.unixMillis.toString())" class="small">コピー</button>
+            <button class="small" @click="copyToClipboard(convertedTime.unixMillis.toString())">コピー</button>
           </div>
           <div class="time-info">
             <label>ISO 8601</label>
             <code>{{ convertedTime.iso8601 }}</code>
-            <button @click="copyToClipboard(convertedTime.iso8601)" class="small">コピー</button>
+            <button class="small" @click="copyToClipboard(convertedTime.iso8601)">コピー</button>
           </div>
           <div class="time-info">
             <label>RFC 2822</label>
             <code>{{ convertedTime.rfc2822 }}</code>
-            <button @click="copyToClipboard(convertedTime.rfc2822)" class="small">コピー</button>
+            <button class="small" @click="copyToClipboard(convertedTime.rfc2822)">コピー</button>
           </div>
           <div class="time-info">
             <label>ローカル時刻</label>
@@ -105,12 +105,12 @@
         <div class="time-info">
           <label>Unix タイムスタンプ (秒)</label>
           <code>{{ pickerTime.unix }}</code>
-          <button @click="copyToClipboard(pickerTime.unix.toString())" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(pickerTime.unix.toString())">コピー</button>
         </div>
         <div class="time-info">
           <label>Unix タイムスタンプ (ミリ秒)</label>
           <code>{{ pickerTime.unixMillis }}</code>
-          <button @click="copyToClipboard(pickerTime.unixMillis.toString())" class="small">コピー</button>
+          <button class="small" @click="copyToClipboard(pickerTime.unixMillis.toString())">コピー</button>
         </div>
       </div>
     </div>

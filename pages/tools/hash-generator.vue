@@ -21,14 +21,14 @@
         <option value="SHA-512">SHA-512</option>
       </select>
 
-      <button @click="generateHash" class="primary">ハッシュ生成</button>
+      <button class="primary" @click="generateHashValue">ハッシュ生成</button>
     </div>
 
     <div v-if="result" class="result">
       <h3>ハッシュ値</h3>
       <div class="hash-result">
         <code>{{ result }}</code>
-        <button @click="copyToClipboard(result)" class="secondary">コピー</button>
+        <button class="secondary" @click="copyToClipboard(result)">コピー</button>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
         </div>
         <div class="history-hash">
           <code>{{ item.hash }}</code>
-          <button @click="copyToClipboard(item.hash)" class="secondary small">コピー</button>
+          <button class="secondary small" @click="copyToClipboard(item.hash)">コピー</button>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@ const generateHashValue = async () => {
     history.value.unshift({
       text: inputText.value,
       algorithm: algorithm.value,
-      hash: hash
+      hash
     })
 
     // 履歴は最大10件まで
@@ -99,11 +99,10 @@ const copyToClipboard = async (text: string) => {
 
 const truncate = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
-  return text.substring(0, maxLength) + '...'
+  return `${text.substring(0, maxLength)  }...`
 }
 
-// エイリアスを作成
-const generateHash = generateHashValue
+// generateHashValue関数を直接使用
 
 useHead({
   title: 'ハッシュ生成 - Web Tools',

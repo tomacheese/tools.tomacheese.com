@@ -57,8 +57,8 @@
           <button
             v-if="!isDefaultCity(city.id)"
             class="remove-btn"
-            @click="removeCity(city.id)"
             title="削除"
+            @click="removeCity(city.id)"
           >
             ×
           </button>
