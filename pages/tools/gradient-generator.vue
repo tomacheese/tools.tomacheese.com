@@ -89,13 +89,13 @@
             <span>%</span>
             <button
               v-if="config.stops.length > 2"
-              @click="removeStop(index)"
               class="remove-button"
+              @click="removeStop(index)"
             >
               削除
             </button>
           </div>
-          <button @click="addStop" class="add-button">
+          <button class="add-button" @click="addStop">
             カラーストップを追加
           </button>
         </div>
@@ -106,9 +106,9 @@
             <button
               v-for="(preset, name) in presetGradients"
               :key="name"
-              @click="applyPreset(preset)"
               class="preset-button"
               :style="{ background: generateGradientCSS(preset) }"
+              @click="applyPreset(preset)"
             >
               {{ name }}
             </button>
@@ -128,21 +128,21 @@
             <button
               v-for="format in ['css', 'sass', 'inline']"
               :key="format"
-              @click="selectedFormat = format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
+              @click="selectedFormat = format"
             >
               {{ format.toUpperCase() }}
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button @click="copyCode" class="copy-button">
+          <button class="copy-button" @click="copyCode">
             コピー
           </button>
         </div>
 
         <div class="export-section">
-          <button @click="exportAsJSON" class="export-button">
+          <button class="export-button" @click="exportAsJSON">
             JSONとしてエクスポート
           </button>
         </div>
@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import {
   generateGradientCSS,
   generateCSSCode,
@@ -160,8 +160,7 @@ import {
   exportGradientAsSass,
   exportGradientAsJSON,
   presetGradients,
-  type GradientConfig,
-  type GradientStop
+  type GradientConfig
 } from '~/utils/gradientGenerator'
 
 const config = ref<GradientConfig>({

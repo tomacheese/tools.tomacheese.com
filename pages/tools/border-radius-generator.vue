@@ -134,8 +134,8 @@
             <button
               v-for="(preset, name) in presetBorderRadius"
               :key="name"
-              @click="applyPreset(preset)"
               class="preset-button"
+              @click="applyPreset(preset)"
             >
               <div
                 class="preset-preview"
@@ -166,21 +166,21 @@
             <button
               v-for="format in ['css', 'sass', 'inline']"
               :key="format"
-              @click="selectedFormat = format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
+              @click="selectedFormat = format"
             >
               {{ format.toUpperCase() }}
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button @click="copyCode" class="copy-button">
+          <button class="copy-button" @click="copyCode">
             コピー
           </button>
         </div>
 
         <div class="export-section">
-          <button @click="exportAsJSON" class="export-button">
+          <button class="export-button" @click="exportAsJSON">
             JSONとしてエクスポート
           </button>
         </div>
@@ -190,7 +190,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import {
   generateBorderRadiusCSS,
   generateCSSCode,

@@ -236,7 +236,7 @@ export const encodeHtmlEntities = (text: string): string => {
     '/': '&#x2F;'
   }
   
-  return text.replace(/[&<>"'\/]/g, (char) => entityMap[char])
+  return text.replace(/[&<>"'/]/g, (char) => entityMap[char])
 }
 
 /**

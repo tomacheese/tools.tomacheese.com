@@ -23,7 +23,6 @@ export interface YearlyBreakdown {
 export function calculateCompoundInterest(input: CompoundInterestInput): CompoundInterestResult {
   const { principal, annualRate, compoundingFrequency, years, monthlyDeposit = 0 } = input
   const rate = annualRate / 100
-  const periods = years * compoundingFrequency
   const periodRate = rate / compoundingFrequency
   
   let balance = principal
@@ -32,7 +31,7 @@ export function calculateCompoundInterest(input: CompoundInterestInput): Compoun
   
   // Calculate compound interest with monthly deposits
   for (let year = 1; year <= years; year++) {
-    let yearStartBalance = balance
+    const yearStartBalance = balance
     let yearDeposits = 0
     
     for (let period = 0; period < compoundingFrequency; period++) {

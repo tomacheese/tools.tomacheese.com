@@ -67,7 +67,7 @@ export function encodeHTML(text: string, options: EncodingOptions = {}): string 
   let result = text
 
   // First encode basic HTML entities
-  result = result.replace(/[&<>"'`=\/]/g, (match) => htmlEntities[match] || match)
+  result = result.replace(/[&<>"'`=/]/g, (match) => htmlEntities[match] || match)
 
   // Encode named entities if requested
   if (useNamedEntities) {

@@ -66,8 +66,7 @@ describe('calculateWaterIntake', () => {
       exerciseMinutes: 0
     })
 
-    const baseIntake = 60 * 35 // 2100
-    const activityAdjustment = baseIntake * 0.30 // 630
+    // const baseIntake = 60 * 35 // 2100
     expect(result.baseIntake).toBe(2100)
     expect(result.activityAdjustment).toBe(630)
     expect(result.totalIntake).toBe(2730)

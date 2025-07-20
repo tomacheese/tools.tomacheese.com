@@ -34,7 +34,7 @@
         </label>
       </div>
 
-      <button @click="generateText" class="generate-btn">
+      <button class="generate-btn" @click="generateText">
         生成
       </button>
     </div>
@@ -43,7 +43,7 @@
       <div class="result-header">
         <h3>生成結果</h3>
         <div class="result-actions">
-          <button @click="copyToClipboard" class="copy-btn">
+          <button class="copy-btn" @click="copyToClipboard">
             {{ copyStatus }}
           </button>
           <span class="character-count">{{ generatedText.length }}文字</span>
@@ -145,7 +145,7 @@ const generateSentence = (minWords = 4, maxWords = 18): string => {
   // 最初の文字を大文字に
   words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1)
   
-  return words.join(' ') + '.'
+  return `${words.join(' ')  }.`
 }
 
 // ランダムな段落を生成
@@ -219,7 +219,7 @@ const generateWords = (wordCount: number): string => {
     words.push(getRandomWord())
   }
   
-  return words.slice(0, wordCount).join(' ') + '.'
+  return `${words.slice(0, wordCount).join(' ')  }.`
 }
 
 // 文数指定で生成

@@ -44,7 +44,7 @@
         <div v-if="encodeOutput" class="output">
           <h4>エンコード結果</h4>
           <pre>{{ encodeOutput }}</pre>
-          <button @click="copyToClipboard(encodeOutput)" class="secondary">コピー</button>
+          <button class="secondary" @click="copyToClipboard(encodeOutput)">コピー</button>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
         <div v-if="decodeOutput" class="output">
           <h4>デコード結果</h4>
           <pre>{{ decodeOutput }}</pre>
-          <button @click="copyToClipboard(decodeOutput)" class="secondary">コピー</button>
+          <button class="secondary" @click="copyToClipboard(decodeOutput)">コピー</button>
         </div>
       </div>
     </div>

@@ -132,7 +132,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { validateCardNumber, getCardType, formatCardNumber as formatCard } from '~/utils/security'
 
 // レイアウト設定

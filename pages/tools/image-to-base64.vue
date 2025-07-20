@@ -34,8 +34,8 @@
         ref="fileInput"
         type="file"
         accept="image/*"
-        @change="handleFileSelect"
         style="display: none"
+        @change="handleFileSelect"
       />
     </div>
 
@@ -61,16 +61,16 @@
         <div class="format-selector">
           <label>
             <input
-              type="radio"
               v-model="outputFormat"
+              type="radio"
               value="dataUrl"
             />
             Data URL形式（埋め込み用）
           </label>
           <label>
             <input
-              type="radio"
               v-model="outputFormat"
+              type="radio"
               value="base64"
             />
             Base64文字列のみ
@@ -85,10 +85,10 @@
             :rows="Math.min(10, outputText.split('\n').length + 1)"
           ></textarea>
           <div class="action-buttons">
-            <button @click="copyResult" class="btn btn-primary">
+            <button class="btn btn-primary" @click="copyResult">
               {{ copyButtonText }}
             </button>
-            <button @click="downloadResult" class="btn btn-secondary">
+            <button class="btn btn-secondary" @click="downloadResult">
               ダウンロード
             </button>
           </div>
@@ -111,8 +111,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import {
-  convertFileToBase64,
-  extractBase64FromDataUrl,
   formatFileSize,
   copyToClipboard,
   downloadAsText,

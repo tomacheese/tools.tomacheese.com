@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-import path from 'path'
 
 test.describe('画像リサイズツール', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,13 +14,12 @@ test.describe('画像リサイズツール', () => {
   test('画像のアップロードと情報表示', async ({ page }) => {
     // テスト用の画像を作成
     const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-    const filePath = path.join(__dirname, 'test-image.png')
     
     // ファイル選択をシミュレート
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer: buffer
+      buffer
     })
 
     // 画像情報が表示されることを確認
@@ -36,7 +34,7 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer: buffer
+      buffer
     })
 
     // 幅の入力
@@ -63,7 +61,7 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer: buffer
+      buffer
     })
 
     // 形式選択
@@ -84,7 +82,7 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer: buffer
+      buffer
     })
 
     // サイズを設定
@@ -134,7 +132,7 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.jpg',
       mimeType: 'image/jpeg',
-      buffer: buffer
+      buffer
     })
 
     // JPEG形式を選択
@@ -160,7 +158,7 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer: buffer
+      buffer
     })
 
     // モバイルでは設定が縦に並ぶことを確認

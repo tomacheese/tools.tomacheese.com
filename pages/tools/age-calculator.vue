@@ -12,7 +12,7 @@
             v-model="birthDateString"
             type="date"
             :max="maxDate"
-            @change="calculateAge"
+            @change="calculateCurrentAge"
           >
         </div>
 
@@ -22,9 +22,9 @@
             id="target-date"
             v-model="targetDateString"
             type="date"
-            @change="calculateAge"
+            @change="calculateCurrentAge"
           >
-          <button @click="setToday" class="today-button">
+          <button class="today-button" @click="setToday">
             今日
           </button>
         </div>
@@ -191,7 +191,7 @@ const completedEvents = computed(() => {
   return getLifeEvents(result.value.years)
 })
 
-const calculateAge = () => {
+const calculateCurrentAge = () => {
   if (!birthDateString.value) {
     result.value = null
     error.value = ''

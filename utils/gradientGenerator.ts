@@ -26,24 +26,27 @@ export function generateGradientCSS(config: GradientConfig): string {
     .join(', ')
 
   switch (type) {
-    case 'linear':
+    case 'linear': {
       const angle = config.angle ?? 90
       return `${prefix}linear-gradient(${angle}deg, ${stopString})`
+    }
     
-    case 'radial':
+    case 'radial': {
       const shape = config.shape || 'ellipse'
       const size = config.size || 'farthest-corner'
       const position = config.position 
         ? `at ${config.position.x}% ${config.position.y}%`
         : 'at center'
       return `${prefix}radial-gradient(${shape} ${size} ${position}, ${stopString})`
+    }
     
-    case 'conic':
+    case 'conic': {
       const conicAngle = config.angle ?? 0
       const conicPosition = config.position
         ? `from ${conicAngle}deg at ${config.position.x}% ${config.position.y}%`
         : `from ${conicAngle}deg`
       return `${prefix}conic-gradient(${conicPosition}, ${stopString})`
+    }
     
     default:
       throw new Error(`Unknown gradient type: ${type}`)

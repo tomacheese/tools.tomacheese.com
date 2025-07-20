@@ -56,7 +56,7 @@
       <div v-if="conversionHistory.length > 0" class="history-section">
         <h2>変換履歴</h2>
         <div class="history-controls">
-          <button @click="clearHistory" class="clear-btn">履歴をクリア</button>
+          <button class="clear-btn" @click="clearHistory">履歴をクリア</button>
         </div>
         <ul class="history-list">
           <li v-for="(item, index) in conversionHistory" :key="index">

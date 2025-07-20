@@ -16,16 +16,16 @@
 
         <div class="controls">
           <button
-            @click="toggleStopwatch"
             :class="['control-button', 'primary', { running: stopwatch.isRunning }]"
+            @click="toggleStopwatch"
           >
             {{ stopwatch.isRunning ? '停止' : '開始' }}
           </button>
           
           <button
-            @click="lapOrReset"
             :class="['control-button', 'secondary']"
             :disabled="!stopwatch.isRunning && stopwatch.elapsedTime === 0"
+            @click="lapOrReset"
           >
             {{ stopwatch.isRunning ? 'ラップ' : 'リセット' }}
           </button>
@@ -58,7 +58,7 @@
         <div v-if="stopwatch.laps.length > 0" class="laps-container">
           <div class="laps-header">
             <h3>ラップタイム</h3>
-            <button @click="exportData" class="export-button">
+            <button class="export-button" @click="exportData">
               データをエクスポート
             </button>
           </div>

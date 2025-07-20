@@ -203,7 +203,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { convertBase } from '~/utils/math'
 
 // レイアウト設定
 definePageMeta({

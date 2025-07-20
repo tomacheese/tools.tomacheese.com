@@ -40,13 +40,13 @@
       />
 
       <div class="button-group">
-        <button @click="minify" :disabled="!input" class="primary-button">
+        <button :disabled="!input" class="primary-button" @click="minify">
           圧縮する
         </button>
-        <button @click="beautify" :disabled="!input" class="secondary-button">
+        <button :disabled="!input" class="secondary-button" @click="beautify">
           整形する
         </button>
-        <button @click="clear" :disabled="!input && !output" class="secondary-button">
+        <button :disabled="!input && !output" class="secondary-button" @click="clear">
           クリア
         </button>
       </div>
@@ -84,7 +84,7 @@
         class="code-textarea"
       />
 
-      <button @click="copyToClipboard" class="secondary-button">
+      <button class="secondary-button" @click="copyToClipboard">
         クリップボードにコピー
       </button>
     </div>
