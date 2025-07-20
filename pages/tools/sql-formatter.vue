@@ -10,21 +10,21 @@
       <button
         class="btn btn-primary"
         :disabled="!inputSql.trim()"
-        @click="formatSql"
+        @click="formatSqlMethod"
       >
         整形
       </button>
       <button
         class="btn btn-secondary"
         :disabled="!inputSql.trim()"
-        @click="minifySql"
+        @click="minifyMethod"
       >
         圧縮
       </button>
       <button
         class="btn btn-secondary"
         :disabled="!inputSql.trim()"
-        @click="validateSql"
+        @click="validateMethod"
       >
         検証
       </button>
@@ -71,7 +71,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
         <label for="inputSql" class="form-label">SQL入力</label>
         <div v-if="detectedDialect" style="font-size: 0.875rem; color: #2563eb;">
-          推定方言: {{ dialectLabels[detectedDialect] }}
+          推定方言: {{ detectedDialect ? dialectLabels[detectedDialect] : 'なし' }}
         </div>
       </div>
       <textarea
@@ -122,7 +122,7 @@
             文字数: {{ stats.charCount }}<br>
             行数: {{ stats.lineCount }}<br>
             クエリ数: {{ stats.queryCount }}<br>
-            推定方言: {{ dialectLabels[detectedDialect] }}
+            推定方言: {{ detectedDialect ? dialectLabels[detectedDialect] : 'なし' }}
           </div>
         </div>
         
@@ -213,7 +213,7 @@ const dialect = ref<'standard' | 'mysql' | 'postgresql' | 'sqlserver' | 'oracle'
 const indentSize = ref<2 | 4 | 'tab'>(2)
 const keywordCase = ref<'upper' | 'lower' | 'preserve'>('upper')
 const stats = ref<SqlStatistics | null>(null)
-const detectedDialect = ref('')
+const detectedDialect = ref<keyof typeof dialectLabels | ''>('')
 
 // 方言ラベル
 const dialectLabels = {
@@ -275,7 +275,33 @@ const formatSqlMethod = () => {
   }
 }
 
+const minifyMethod = () => {
+  if (!inputSql.value.trim()) return
+  
+  try {
+    outputSql.value = minifySql(inputSql.value)
+    validationErrors.value = []
+    calculateStats()
+  } catch (error) {
+    validationErrors.value = [`圧縮中にエラーが発生しました: ${(error as Error).message}`]
+    outputSql.value = ''
+    stats.value = null
+  }
+}
 
+const validateMethod = () => {
+  if (!inputSql.value.trim()) return
+  
+  const validation = validateSql(inputSql.value)
+  if (validation.isValid) {
+    validationErrors.value = []
+    outputSql.value = inputSql.value
+  } else {
+    validationErrors.value = validation.errors
+    outputSql.value = ''
+  }
+  calculateStats()
+}
 const clearAll = () => {
   inputSql.value = ''
   outputSql.value = ''
@@ -312,7 +338,7 @@ const copyToClipboard = async (text: string) => {
       copyMessage.value = ''
     }, 2000)
   } catch (err) {
-    console.error('コピーに失敗しました:', err)
+    // Copy failed silently
   }
 }
 

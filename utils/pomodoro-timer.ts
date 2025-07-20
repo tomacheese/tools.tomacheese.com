@@ -193,7 +193,7 @@ export function savePomodoroState(state: PomodoroState): void {
   try {
     localStorage.setItem('pomodoro-timer-state', JSON.stringify(state))
   } catch (error) {
-    console.error('Failed to save pomodoro state:', error)
+    // localStorage access failed - silently ignore
   }
 }
 
@@ -213,7 +213,7 @@ export function loadPomodoroState(): Partial<PomodoroState> | null {
       return state
     }
   } catch (error) {
-    console.error('Failed to load pomodoro state:', error)
+    // localStorage access failed - silently ignore
   }
   return null
 }
@@ -222,7 +222,7 @@ export function clearPomodoroState(): void {
   try {
     localStorage.removeItem('pomodoro-timer-state')
   } catch (error) {
-    console.error('Failed to clear pomodoro state:', error)
+    // localStorage access failed - silently ignore
   }
 }
 

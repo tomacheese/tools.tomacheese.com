@@ -137,7 +137,6 @@ const handleEncode = () => {
       decimal: useDecimal.value
     })
   } catch (error) {
-    console.error('エンコードエラー:', error)
     encodeOutput.value = 'エンコード中にエラーが発生しました'
   }
 }
@@ -151,7 +150,6 @@ const handleDecode = () => {
   try {
     decodeOutput.value = decodeHTML(decodeInput.value)
   } catch (error) {
-    console.error('デコードエラー:', error)
     decodeOutput.value = 'デコード中にエラーが発生しました'
   }
 }
@@ -161,7 +159,6 @@ const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
   } catch (error) {
-    console.error('コピーエラー:', error)
     alert('コピーに失敗しました')
   }
 }

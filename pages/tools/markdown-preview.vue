@@ -120,7 +120,6 @@ function greet(name) {
   return \`Hello, \${name}!\`;
 }
 
-console.log(greet('World'));
 \`\`\`
 
 ### 引用

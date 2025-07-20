@@ -147,7 +147,7 @@ const handleConvert = () => {
     jsonOutput.value = formatJSON(JSON.stringify(result), 2)
     error.value = ''
   } catch (err) {
-    console.error('変換エラー:', err)
+    // Conversion failed
     error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
     jsonOutput.value = ''
   }
@@ -158,7 +158,7 @@ const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
   } catch (err) {
-    console.error('コピーエラー:', err)
+    // Copy failed silently
     alert('コピーに失敗しました')
   }
 }
