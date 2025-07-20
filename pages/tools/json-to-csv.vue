@@ -174,7 +174,6 @@ const handleConvert = () => {
     csvOutput.value = result
     error.value = ''
   } catch (err) {
-    console.error('変換エラー:', err)
     error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
     csvOutput.value = ''
   }
@@ -185,7 +184,6 @@ const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
   } catch (err) {
-    console.error('コピーエラー:', err)
     alert('コピーに失敗しました')
   }
 }

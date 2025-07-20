@@ -178,7 +178,6 @@ const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
   } catch (err) {
-    console.error('コピーエラー:', err)
     alert('コピーに失敗しました')
   }
 }

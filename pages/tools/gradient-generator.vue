@@ -183,7 +183,7 @@ const updateGradient = () => {
   try {
     currentGradient.value = generateGradientCSS(config.value)
   } catch (error) {
-    console.error('Failed to generate gradient:', error)
+    // Gradient generation failed
   }
 }
 

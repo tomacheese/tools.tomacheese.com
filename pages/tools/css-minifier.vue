@@ -261,7 +261,7 @@ function performMinify() {
     stats.reduction = result.reduction
     stats.reductionPercentage = result.reductionPercentage
   } catch (error) {
-    console.error('Minification error:', error)
+    // Minification failed
     outputCss.value = 'エラー: CSSの圧縮に失敗しました'
   }
 }
@@ -299,7 +299,7 @@ async function copyToClipboard() {
       copySuccess.value = false
     }, 2000)
   } catch (error) {
-    console.error('Copy failed:', error)
+    // Copy failed
   }
 }
 

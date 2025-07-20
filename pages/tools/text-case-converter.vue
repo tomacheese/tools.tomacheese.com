@@ -222,7 +222,7 @@ const copyToClipboard = async (text: string) => {
       }, 2000)
     }
   } catch (err) {
-    console.error('クリップボードへのコピーに失敗しました:', err)
+    // Copy failed silently
   }
 }
 
@@ -238,7 +238,7 @@ const pasteFromClipboard = async () => {
     const text = await navigator.clipboard.readText()
     inputText.value = text
   } catch (err) {
-    console.error('クリップボードからの読み取りに失敗しました:', err)
+    // Clipboard read failed silently
   }
 }
 
