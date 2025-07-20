@@ -43,7 +43,10 @@
           </select>
         </div>
 
-        <div v-if="config.type !== 'linear' && config.position" class="control-group">
+        <div
+          v-if="config.type !== 'linear' && config.position"
+          class="control-group"
+        >
           <label>位置 X: {{ config.position.x }}%</label>
           <input
             v-model.number="config.position.x"

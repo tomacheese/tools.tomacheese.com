@@ -1,4 +1,8 @@
-import { type PomodoroState, type PomodoroSettings, type SessionRecord } from './pomodoroTimer'
+import {
+  type PomodoroState,
+  type PomodoroSettings,
+  type SessionRecord,
+} from './pomodoroTimer'
 
 // Audio context for notification sounds
 let audioContext: AudioContext | null = null

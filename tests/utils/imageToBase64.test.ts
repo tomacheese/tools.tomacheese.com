@@ -58,7 +58,9 @@ describe('imageToBase64 utilities', () => {
       const promise = convertFileToBase64(mockFile)
 
       // Trigger onload
-      const mockEvent = { target: { result: expectedDataUrl } } as ProgressEvent<FileReader>
+      const mockEvent = {
+        target: { result: expectedDataUrl },
+      } as ProgressEvent<FileReader>
       if (mockFileReader.onload) {
         mockFileReader.onload(mockEvent)
       }
@@ -168,7 +170,7 @@ describe('imageToBase64 utilities', () => {
       Object.defineProperty(global.navigator, 'clipboard', {
         value: { writeText: mockWriteText },
         writable: true,
-        configurable: true
+        configurable: true,
       })
 
       await copyToClipboard('test text')
@@ -180,7 +182,7 @@ describe('imageToBase64 utilities', () => {
       Object.defineProperty(global.navigator, 'clipboard', {
         value: undefined,
         writable: true,
-        configurable: true
+        configurable: true,
       })
       const mockExecCommand = vi.fn().mockReturnValue(true)
       global.document.execCommand = mockExecCommand
@@ -206,7 +208,7 @@ describe('imageToBase64 utilities', () => {
       Object.defineProperty(global.navigator, 'clipboard', {
         value: undefined,
         writable: true,
-        configurable: true
+        configurable: true,
       })
       const mockExecCommand = vi.fn().mockImplementation(() => {
         throw new Error('Copy failed')

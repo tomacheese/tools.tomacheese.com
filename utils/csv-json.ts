@@ -194,7 +194,10 @@ export function validateJSON(json: string): { valid: boolean; error?: string } {
     JSON.parse(json)
     return { valid: true }
   } catch (error) {
-    return { valid: false, error: error instanceof Error ? error.message : String(error) }
+    return {
+      valid: false,
+      error: error instanceof Error ? error.message : String(error),
+    }
   }
 }
 
