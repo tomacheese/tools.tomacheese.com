@@ -17,7 +17,7 @@ export interface BoxShadowConfig {
 export function generateBoxShadowCSS(shadow: BoxShadow): string {
   const { offsetX, offsetY, blur, spread, color, inset, alpha } = shadow
   const insetStr = inset ? 'inset ' : ''
-  const colorWithAlpha = alpha < 1 ? hexToRgba(color, alpha) : color
+  const colorWithAlpha = alpha < 1 ? hexToRgbaForShadow(color, alpha) : color
 
   return `${insetStr}${offsetX}px ${offsetY}px ${blur}px ${spread}px ${colorWithAlpha}`
 }
@@ -26,7 +26,7 @@ export function generateMultipleShadows(shadows: BoxShadow[]): string {
   return shadows.map(shadow => generateBoxShadowCSS(shadow)).join(', ')
 }
 
-export function hexToRgba(hex: string, alpha: number = 1): string {
+export function hexToRgbaForShadow(hex: string, alpha: number = 1): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   if (!result) {
     return hex
@@ -39,7 +39,7 @@ export function hexToRgba(hex: string, alpha: number = 1): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export function generateCSSCode(
+export function generateBoxShadowCSSCode(
   shadows: BoxShadow[],
   selector: string = '.box'
 ): string {
@@ -52,7 +52,7 @@ export function generateCSSCode(
 }`
 }
 
-export function generateInlineStyle(shadows: BoxShadow[]): string {
+export function generateBoxShadowInlineStyle(shadows: BoxShadow[]): string {
   const shadowCSS = generateMultipleShadows(shadows)
   return `box-shadow: ${shadowCSS};`
 }

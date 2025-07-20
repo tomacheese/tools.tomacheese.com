@@ -54,7 +54,7 @@ export function generateBorderRadiusCSS(config: BorderRadiusConfig): string {
   return `${horizontal} / ${vertical}`
 }
 
-export function generateCSSCode(
+export function generateBorderRadiusCSSCode(
   borderRadius: string,
   selector: string = '.box'
 ): string {
@@ -65,7 +65,7 @@ export function generateCSSCode(
 }`
 }
 
-export function generateInlineStyle(borderRadius: string): string {
+export function generateBorderRadiusInlineStyle(borderRadius: string): string {
   return `border-radius: ${borderRadius};`
 }
 

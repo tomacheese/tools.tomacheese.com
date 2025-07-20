@@ -3,8 +3,8 @@ import {
   generateGradientCSS,
   generateMultipleBackgrounds,
   hexToRgba,
-  generateCSSCode,
-  generateInlineStyle,
+  generateGradientCSSCode,
+  generateGradientInlineStyle,
   exportGradientAsSass,
   exportGradientAsJSON,
   type GradientConfig,
@@ -144,10 +144,10 @@ describe('gradientGenerator', () => {
     })
   })
 
-  describe('generateCSSCode', () => {
+  describe('generateGradientCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateCSSCode(gradient)
+      const result = generateGradientCSSCode(gradient)
       expect(result).toContain(`background: ${gradient}`)
       expect(result).toContain(`-webkit-${gradient}`)
       expect(result).toContain(`-moz-${gradient}`)
@@ -156,15 +156,15 @@ describe('gradientGenerator', () => {
 
     it('should use custom selector', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateCSSCode(gradient, '#myElement')
+      const result = generateGradientCSSCode(gradient, '#myElement')
       expect(result).toContain('#myElement {')
     })
   })
 
-  describe('generateInlineStyle', () => {
+  describe('generateGradientInlineStyle', () => {
     it('should generate inline style', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateInlineStyle(gradient)
+      const result = generateGradientInlineStyle(gradient)
       expect(result).toBe(
         'background: linear-gradient(45deg, #ff0000 0%, #0000ff 100%);'
       )

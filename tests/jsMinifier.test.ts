@@ -3,10 +3,10 @@ import {
   minifyJavaScript,
   beautifyJavaScript,
   validateJavaScript,
-  calculateMinifyStats,
-  formatBytes,
-  type MinifyOptions,
+  calculateJSMinifyStats,
+  type JSJSMinifyOptions,
 } from '~/utils/jsMinifier'
+import { formatBytes } from '~/utils/cssMinifier'
 
 describe('jsMinifier', () => {
   describe('minifyJavaScript', () => {
@@ -14,7 +14,7 @@ describe('jsMinifier', () => {
       const input = `// This is a comment
 const x = 5; // Another comment
 console.log(x);`
-      const options: MinifyOptions = { removeComments: true }
+      const options: JSMinifyOptions = { removeComments: true }
       const result = minifyJavaScript(input, options)
       expect(result).not.toContain('This is a comment')
       expect(result).not.toContain('Another comment')
@@ -27,7 +27,7 @@ multi-line comment */
 const x = 5;
 /* Another comment */
 console.log(x);`
-      const options: MinifyOptions = { removeComments: true }
+      const options: JSMinifyOptions = { removeComments: true }
       const result = minifyJavaScript(input, options)
       expect(result).not.toContain('multi-line comment')
       expect(result).not.toContain('Another comment')
@@ -38,7 +38,7 @@ console.log(x);`
       const input = `const x    =    5;
       const y    =    10;
       console.log(x    +    y);`
-      const options: MinifyOptions = { removeWhitespace: true }
+      const options: JSMinifyOptions = { removeWhitespace: true }
       const result = minifyJavaScript(input, options)
       expect(result).toBe('const x=5;const y=10;console.log(x+y);')
     })
@@ -46,7 +46,7 @@ console.log(x);`
     it('should preserve strings', () => {
       const input = `const message = "Hello   World";
 const url = 'https://example.com   ';`
-      const options: MinifyOptions = { removeWhitespace: true }
+      const options: JSMinifyOptions = { removeWhitespace: true }
       const result = minifyJavaScript(input, options)
       expect(result).toContain('"Hello   World"')
       expect(result).toContain("'https://example.com   '")
@@ -57,7 +57,7 @@ const url = 'https://example.com   ';`
 const x = 5;
 console.error('error message');
 console.info("info");`
-      const options: MinifyOptions = { removeConsoleLog: true }
+      const options: JSMinifyOptions = { removeConsoleLog: true }
       const result = minifyJavaScript(input, options)
       expect(result).not.toContain('console.log')
       expect(result).not.toContain('console.error')
@@ -70,7 +70,7 @@ console.info("info");`
   debugger;
   return 42;
 }`
-      const options: MinifyOptions = { removeDebugger: true }
+      const options: JSMinifyOptions = { removeDebugger: true }
       const result = minifyJavaScript(input, options)
       expect(result).not.toContain('debugger')
       expect(result).toContain('return 42')
@@ -80,7 +80,7 @@ console.info("info");`
       const input = `const longVariableName = 5;
 const anotherLongName = 10;
 console.log(longVariableName + anotherLongName);`
-      const options: MinifyOptions = { shortenVariables: true }
+      const options: JSMinifyOptions = { shortenVariables: true }
       const result = minifyJavaScript(input, options)
       expect(result.length).toBeLessThan(input.length)
       expect(result).not.toContain('longVariableName')
@@ -94,7 +94,7 @@ console.log(longVariableName + anotherLongName);`
 const longVariableName = 5;   
 console.log(longVariableName);
 debugger;`
-      const options: MinifyOptions = {
+      const options: JSMinifyOptions = {
         removeComments: true,
         removeWhitespace: true,
         shortenVariables: true,
@@ -149,11 +149,11 @@ debugger;`
     })
   })
 
-  describe('calculateMinifyStats', () => {
+  describe('calculateJSMinifyStats', () => {
     it('should calculate correct statistics', () => {
       const original = 'const x = 5;    // Comment\nconst y = 10;'
       const minified = 'const x=5;const y=10;'
-      const stats = calculateMinifyStats(original, minified)
+      const stats = calculateJSMinifyStats(original, minified)
 
       expect(stats.original).toBe(original)
       expect(stats.minified).toBe(minified)
@@ -163,7 +163,7 @@ debugger;`
     })
 
     it('should handle empty strings', () => {
-      const stats = calculateMinifyStats('', '')
+      const stats = calculateJSMinifyStats('', '')
       expect(stats.originalSize).toBe(0)
       expect(stats.minifiedSize).toBe(0)
       expect(stats.reduction).toBe(0)

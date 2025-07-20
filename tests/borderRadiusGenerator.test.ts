@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   generateBorderRadiusCSS,
-  generateCSSCode,
-  generateInlineStyle,
+  generateBorderRadiusCSSCode,
+  generateBorderRadiusInlineStyle,
   exportBorderRadiusAsSass,
   exportBorderRadiusAsJSON,
   parseBorderRadius,
@@ -78,10 +78,10 @@ describe('borderRadiusGenerator', () => {
     })
   })
 
-  describe('generateCSSCode', () => {
+  describe('generateBorderRadiusCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
       const borderRadius = '10px 20px 30px 40px'
-      const result = generateCSSCode(borderRadius)
+      const result = generateBorderRadiusCSSCode(borderRadius)
       expect(result).toContain('.box {')
       expect(result).toContain(`border-radius: ${borderRadius};`)
       expect(result).toContain(`-webkit-border-radius: ${borderRadius};`)
@@ -90,15 +90,15 @@ describe('borderRadiusGenerator', () => {
 
     it('should use custom selector', () => {
       const borderRadius = '50%'
-      const result = generateCSSCode(borderRadius, '#myElement')
+      const result = generateBorderRadiusCSSCode(borderRadius, '#myElement')
       expect(result).toContain('#myElement {')
     })
   })
 
-  describe('generateInlineStyle', () => {
+  describe('generateBorderRadiusInlineStyle', () => {
     it('should generate inline style', () => {
       const borderRadius = '10px 20px'
-      const result = generateInlineStyle(borderRadius)
+      const result = generateBorderRadiusInlineStyle(borderRadius)
       expect(result).toBe('border-radius: 10px 20px;')
     })
   })

@@ -1,10 +1,5 @@
-export type Gender = 'male' | 'female'
-export type ActivityLevel =
-  | 'sedentary'
-  | 'light'
-  | 'moderate'
-  | 'active'
-  | 'extra'
+import type { Gender, ActivityLevel } from './health'
+
 export type Goal = 'maintain' | 'lose' | 'gain'
 export type WeightUnit = 'kg' | 'lbs'
 export type HeightUnit = 'cm' | 'ft'
@@ -58,7 +53,7 @@ function convertToMetric(value: number, unit: WeightUnit | HeightUnit): number {
 }
 
 // Calculate BMR using Mifflin-St Jeor equation
-export function calculateBMR(
+function calculateBasicBMR(
   gender: Gender,
   age: number,
   weightKg: number,
@@ -103,7 +98,7 @@ export function calculateMacros(calories: number): {
   }
 }
 
-export function calculateCalories(
+export function calculateDetailedCalories(
   input: CalorieCalculatorInput
 ): CalorieCalculatorResult {
   // Convert to metric units
@@ -111,7 +106,7 @@ export function calculateCalories(
   const heightCm = convertToMetric(input.height, input.heightUnit)
 
   // Calculate BMR
-  const bmr = calculateBMR(input.gender, input.age, weightKg, heightCm)
+  const bmr = calculateBasicBMR(input.gender, input.age, weightKg, heightCm)
 
   // Calculate TDEE
   const tdee = calculateTDEE(bmr, input.activityLevel)
@@ -138,17 +133,6 @@ export function formatCalories(calories: number): string {
 
 export function formatGrams(grams: number): string {
   return `${grams}g`
-}
-
-export function getActivityLevelDescription(level: ActivityLevel): string {
-  const descriptions: Record<ActivityLevel, string> = {
-    sedentary: '座り仕事中心・運動なし',
-    light: '軽い運動を週1-3日',
-    moderate: '適度な運動を週3-5日',
-    active: '激しい運動を週6-7日',
-    extra: '肉体労働またはアスリート',
-  }
-  return descriptions[level]
 }
 
 export function getGoalDescription(goal: Goal): string {

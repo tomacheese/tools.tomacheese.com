@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest'
 import {
   generateBoxShadowCSS,
   generateMultipleShadows,
-  hexToRgba,
-  generateCSSCode,
-  generateInlineStyle,
+  hexToRgbaForShadowForShadow,
+  generateBoxShadowCSSCode,
+  generateBoxShadowInlineStyle,
   exportShadowAsSass,
   exportShadowAsJSON,
   parseBoxShadow,
@@ -127,25 +127,25 @@ describe('boxShadowGenerator', () => {
     })
   })
 
-  describe('hexToRgba', () => {
+  describe('hexToRgbaForShadow', () => {
     it('should convert hex to rgba', () => {
-      expect(hexToRgba('#ff0000', 1)).toBe('rgba(255, 0, 0, 1)')
-      expect(hexToRgba('#00ff00', 0.5)).toBe('rgba(0, 255, 0, 0.5)')
-      expect(hexToRgba('#0000ff', 0)).toBe('rgba(0, 0, 255, 0)')
-      expect(hexToRgba('#ffffff', 0.75)).toBe('rgba(255, 255, 255, 0.75)')
+      expect(hexToRgbaForShadow('#ff0000', 1)).toBe('rgba(255, 0, 0, 1)')
+      expect(hexToRgbaForShadow('#00ff00', 0.5)).toBe('rgba(0, 255, 0, 0.5)')
+      expect(hexToRgbaForShadow('#0000ff', 0)).toBe('rgba(0, 0, 255, 0)')
+      expect(hexToRgbaForShadow('#ffffff', 0.75)).toBe('rgba(255, 255, 255, 0.75)')
     })
 
     it('should handle hex without #', () => {
-      expect(hexToRgba('ff0000', 1)).toBe('rgba(255, 0, 0, 1)')
+      expect(hexToRgbaForShadow('ff0000', 1)).toBe('rgba(255, 0, 0, 1)')
     })
 
     it('should return original value for invalid hex', () => {
-      expect(hexToRgba('invalid', 1)).toBe('invalid')
-      expect(hexToRgba('rgb(255, 0, 0)', 1)).toBe('rgb(255, 0, 0)')
+      expect(hexToRgbaForShadow('invalid', 1)).toBe('invalid')
+      expect(hexToRgbaForShadow('rgb(255, 0, 0)', 1)).toBe('rgb(255, 0, 0)')
     })
   })
 
-  describe('generateCSSCode', () => {
+  describe('generateBoxShadowCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
       const shadows: BoxShadow[] = [
         {
@@ -158,7 +158,7 @@ describe('boxShadowGenerator', () => {
           alpha: 1,
         },
       ]
-      const result = generateCSSCode(shadows)
+      const result = generateBoxShadowCSSCode(shadows)
       expect(result).toContain('.box {')
       expect(result).toContain('box-shadow: 10px 10px 20px 0px #000000;')
       expect(result).toContain(
@@ -179,12 +179,12 @@ describe('boxShadowGenerator', () => {
           alpha: 1,
         },
       ]
-      const result = generateCSSCode(shadows, '#myElement')
+      const result = generateBoxShadowCSSCode(shadows, '#myElement')
       expect(result).toContain('#myElement {')
     })
   })
 
-  describe('generateInlineStyle', () => {
+  describe('generateBoxShadowInlineStyle', () => {
     it('should generate inline style', () => {
       const shadows: BoxShadow[] = [
         {
@@ -197,7 +197,7 @@ describe('boxShadowGenerator', () => {
           alpha: 0.5,
         },
       ]
-      const result = generateInlineStyle(shadows)
+      const result = generateBoxShadowInlineStyle(shadows)
       expect(result).toBe('box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);')
     })
   })

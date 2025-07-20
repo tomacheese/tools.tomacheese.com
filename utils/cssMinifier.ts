@@ -7,7 +7,7 @@ export interface MinifyResult {
   reductionPercentage: number
 }
 
-export interface MinifyOptions {
+export interface CSSMinifyOptions {
   removeComments?: boolean
   removeWhitespace?: boolean
   removeSemicolons?: boolean
@@ -17,7 +17,7 @@ export interface MinifyOptions {
   removeQuotes?: boolean
 }
 
-export function minifyCss(css: string, options: MinifyOptions = {}): string {
+export function minifyCss(css: string, options: CSSMinifyOptions = {}): string {
   const {
     removeComments = true,
     removeWhitespace = true,
@@ -119,7 +119,7 @@ export function minifyCss(css: string, options: MinifyOptions = {}): string {
   return minified
 }
 
-export function calculateMinifyStats(
+export function calculateCSSMinifyStats(
   original: string,
   minified: string
 ): MinifyResult {

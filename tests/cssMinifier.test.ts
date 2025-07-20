@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   minifyCss,
-  calculateMinifyStats,
+  calculateCSSMinifyStats,
   formatBytes,
   beautifyCss,
 } from '~/utils/cssMinifier'
@@ -117,12 +117,12 @@ describe('cssMinifier', () => {
     })
   })
 
-  describe('calculateMinifyStats', () => {
+  describe('calculateCSSMinifyStats', () => {
     it('calculates correct statistics', () => {
       const original = '.class { color: red; padding: 10px; }'
       const minified = '.class{color:red;padding:10px}'
 
-      const stats = calculateMinifyStats(original, minified)
+      const stats = calculateCSSMinifyStats(original, minified)
 
       expect(stats.original).toBe(original)
       expect(stats.minified).toBe(minified)
@@ -132,7 +132,7 @@ describe('cssMinifier', () => {
     })
 
     it('handles empty strings', () => {
-      const stats = calculateMinifyStats('', '')
+      const stats = calculateCSSMinifyStats('', '')
 
       expect(stats.originalSize).toBe(0)
       expect(stats.minifiedSize).toBe(0)

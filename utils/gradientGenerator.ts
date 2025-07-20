@@ -70,7 +70,7 @@ export function hexToRgba(hex: string, alpha: number = 1): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export function generateCSSCode(
+export function generateGradientCSSCode(
   gradient: string,
   selector: string = '.gradient'
 ): string {
@@ -83,7 +83,7 @@ export function generateCSSCode(
 }`
 }
 
-export function generateInlineStyle(gradient: string): string {
+export function generateGradientInlineStyle(gradient: string): string {
   return `background: ${gradient};`
 }
 

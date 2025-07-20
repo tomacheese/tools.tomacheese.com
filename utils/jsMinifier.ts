@@ -1,13 +1,6 @@
-export interface MinifyResult {
-  original: string
-  minified: string
-  originalSize: number
-  minifiedSize: number
-  reduction: number
-  reductionPercentage: number
-}
+import type { MinifyResult } from './cssMinifier'
 
-export interface MinifyOptions {
+export interface JSMinifyOptions {
   removeComments?: boolean
   removeWhitespace?: boolean
   shortenVariables?: boolean
@@ -18,7 +11,7 @@ export interface MinifyOptions {
 
 export function minifyJavaScript(
   js: string,
-  options: MinifyOptions = {}
+  options: JSMinifyOptions = {}
 ): string {
   const {
     removeComments = true,
@@ -148,7 +141,7 @@ function generateShortName(index: number): string {
   return name
 }
 
-export function calculateMinifyStats(
+export function calculateJSMinifyStats(
   original: string,
   minified: string
 ): MinifyResult {
@@ -168,15 +161,7 @@ export function calculateMinifyStats(
   }
 }
 
-export function formatBytes(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
 
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
-}
 
 export function beautifyJavaScript(js: string): string {
   let beautified = js
