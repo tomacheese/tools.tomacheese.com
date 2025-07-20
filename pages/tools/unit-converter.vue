@@ -190,7 +190,6 @@ function performConversion() {
       }
     }
   } catch (error) {
-    console.error('Conversion error:', error)
     result.value = 0
   }
 }

@@ -103,7 +103,7 @@ const generateQR = () => {
       }
     })
   } catch (error) {
-    console.error('QRコード生成エラー:', error)
+    // QR code generation failed
     alert('QRコードの生成中にエラーが発生しました。')
   }
 }
@@ -136,7 +136,7 @@ const copyDataURL = async () => {
     await navigator.clipboard.writeText(qrCode.value.dataURL)
     alert('データURLをクリップボードにコピーしました')
   } catch (error) {
-    console.error('コピーエラー:', error)
+    // Copy failed silently
     alert('コピーに失敗しました')
   }
 }

@@ -184,7 +184,6 @@ const processFile = async (file: File) => {
     imageData.value = result
   } catch (err) {
     error.value = '画像の変換中にエラーが発生しました。'
-    console.error(err)
   }
 }
 

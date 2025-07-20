@@ -245,7 +245,7 @@ const copyToClipboard = async (text) => {
       copyMessage.value = ''
     }, 2000)
   } catch (err) {
-    console.error('コピーに失敗しました:', err)
+    // Copy failed silently
   }
 }
 

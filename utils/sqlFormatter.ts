@@ -96,6 +96,7 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
   const lines = formatted.split('\n').map(line => line.trim()).filter(line => line)
   const indentedLines: string[] = []
   let currentIndentLevel = 0
+  let inParentheses = 0
 
   lines.forEach((line, index) => {
     // Track parentheses

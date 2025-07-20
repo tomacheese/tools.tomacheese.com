@@ -124,7 +124,7 @@ const copyToClipboard = async (text: string) => {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
   } catch (error) {
-    console.error('コピーエラー:', error)
+    // Copy failed silently
     alert('コピーに失敗しました')
   }
 }
@@ -135,7 +135,7 @@ const copyAllToClipboard = async () => {
     await navigator.clipboard.writeText(text)
     alert('すべてのUUIDをクリップボードにコピーしました')
   } catch (error) {
-    console.error('コピーエラー:', error)
+    // Copy failed silently
     alert('コピーに失敗しました')
   }
 }

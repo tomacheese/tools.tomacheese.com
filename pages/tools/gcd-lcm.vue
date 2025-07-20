@@ -179,8 +179,6 @@ const primeFactorize = (n) => {
   if (n > 1) factors.push(n)
   return factors
 }
-
-
 // 計算プロパティ
 const validNumbers = computed(() => {
   const input = numbersInput.value.trim()

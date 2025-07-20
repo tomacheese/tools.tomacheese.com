@@ -146,7 +146,6 @@ export function generateSampleMarkdown(): string {
 
 \`\`\`javascript
 function hello() {
-    console.log("Hello, World!");
 }
 \`\`\`
 
