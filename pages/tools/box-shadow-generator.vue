@@ -173,8 +173,8 @@
 import { ref } from 'vue'
 import {
   generateMultipleShadows,
-  generateCSSCode,
-  generateInlineStyle,
+  generateBoxShadowCSSCode,
+  generateBoxShadowInlineStyle,
   exportShadowAsSass,
   exportShadowAsJSON,
   presetShadows,
@@ -230,11 +230,11 @@ const applyPreset = (preset: BoxShadow[]) => {
 const getFormattedCode = () => {
   switch (selectedFormat.value) {
     case 'css':
-      return generateCSSCode(shadows.value)
+      return generateBoxShadowCSSCode(shadows.value)
     case 'sass':
       return exportShadowAsSass(shadows.value)
     case 'inline':
-      return generateInlineStyle(shadows.value)
+      return generateBoxShadowInlineStyle(shadows.value)
     default:
       return ''
   }

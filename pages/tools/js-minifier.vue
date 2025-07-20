@@ -98,11 +98,11 @@ import {
   minifyJavaScript,
   beautifyJavaScript,
   validateJavaScript,
-  calculateMinifyStats,
-  formatBytes,
-  type MinifyOptions,
+  calculateJSMinifyStats,
+  type JSMinifyOptions,
   type MinifyResult,
 } from '~/utils/jsMinifier'
+import { formatBytes } from '~/utils/cssMinifier'
 
 const input = ref('')
 const output = ref('')
@@ -116,7 +116,7 @@ const stats = ref<MinifyResult>({
   reductionPercentage: 0,
 })
 
-const options = ref<MinifyOptions>({
+const options = ref<JSMinifyOptions>({
   removeComments: true,
   removeWhitespace: true,
   shortenVariables: false,
@@ -140,7 +140,7 @@ const minify = () => {
   try {
     const minified = minifyJavaScript(input.value, options.value)
     output.value = minified
-    stats.value = calculateMinifyStats(input.value, minified)
+    stats.value = calculateJSMinifyStats(input.value, minified)
   } catch (e) {
     error.value = `圧縮エラー: ${e instanceof Error ? e.message : '不明なエラー'}`
   }
@@ -153,7 +153,7 @@ const beautify = () => {
 
   try {
     output.value = beautifyJavaScript(input.value)
-    stats.value = calculateMinifyStats(input.value, output.value)
+    stats.value = calculateJSMinifyStats(input.value, output.value)
   } catch (e) {
     error.value = `整形エラー: ${e instanceof Error ? e.message : '不明なエラー'}`
   }

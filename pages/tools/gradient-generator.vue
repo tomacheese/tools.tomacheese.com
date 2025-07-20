@@ -156,8 +156,8 @@
 import { ref, watch } from 'vue'
 import {
   generateGradientCSS,
-  generateCSSCode,
-  generateInlineStyle,
+  generateGradientCSSCode,
+  generateGradientInlineStyle,
   exportGradientAsSass,
   exportGradientAsJSON,
   presetGradients,
@@ -212,11 +212,11 @@ const applyPreset = (preset: GradientConfig) => {
 const getFormattedCode = () => {
   switch (selectedFormat.value) {
     case 'css':
-      return generateCSSCode(currentGradient.value)
+      return generateGradientCSSCode(currentGradient.value)
     case 'sass':
       return exportGradientAsSass(config.value)
     case 'inline':
-      return generateInlineStyle(currentGradient.value)
+      return generateGradientInlineStyle(currentGradient.value)
     default:
       return ''
   }

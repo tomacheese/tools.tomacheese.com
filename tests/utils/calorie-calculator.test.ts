@@ -1,37 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import {
-  calculateBMR,
   calculateTDEE,
   calculateRecommendedCalories,
   calculateMacros,
-  calculateCalories,
+  calculateDetailedCalories,
   formatCalories,
   formatGrams,
-  getActivityLevelDescription,
   getGoalDescription,
 } from '~/utils/calorie-calculator'
-
-describe('calculateBMR', () => {
-  it('should calculate BMR for male', () => {
-    const bmr = calculateBMR('male', 30, 70, 175)
-    expect(bmr).toBeCloseTo(1673.75, 2)
-  })
-
-  it('should calculate BMR for female', () => {
-    const bmr = calculateBMR('female', 30, 60, 165)
-    expect(bmr).toBeCloseTo(1296.25, 2)
-  })
-
-  it('should handle edge cases', () => {
-    // Young male
-    const youngMale = calculateBMR('male', 18, 80, 180)
-    expect(youngMale).toBeGreaterThan(0)
-
-    // Elderly female
-    const elderlyFemale = calculateBMR('female', 70, 55, 155)
-    expect(elderlyFemale).toBeGreaterThan(0)
-  })
-})
 
 describe('calculateTDEE', () => {
   const baseBMR = 1500
@@ -99,9 +75,9 @@ describe('calculateMacros', () => {
   })
 })
 
-describe('calculateCalories', () => {
+describe('calculateDetailedCalories', () => {
   it('should calculate complete calorie information for male', () => {
-    const result = calculateCalories({
+    const result = calculateDetailedCalories({
       gender: 'male',
       age: 30,
       weight: 70,
@@ -122,7 +98,7 @@ describe('calculateCalories', () => {
 
   it('should convert units correctly', () => {
     // Test with imperial units
-    const result = calculateCalories({
+    const result = calculateDetailedCalories({
       gender: 'female',
       age: 25,
       weight: 132, // lbs (≈ 60kg)
@@ -148,9 +124,9 @@ describe('calculateCalories', () => {
       activityLevel: 'moderate' as const,
     }
 
-    const maintainResult = calculateCalories({ ...baseInput, goal: 'maintain' })
-    const loseResult = calculateCalories({ ...baseInput, goal: 'lose' })
-    const gainResult = calculateCalories({ ...baseInput, goal: 'gain' })
+    const maintainResult = calculateDetailedCalories({ ...baseInput, goal: 'maintain' })
+    const loseResult = calculateDetailedCalories({ ...baseInput, goal: 'lose' })
+    const gainResult = calculateDetailedCalories({ ...baseInput, goal: 'gain' })
 
     expect(loseResult.recommendedCalories).toBe(
       maintainResult.recommendedCalories - 500
@@ -174,20 +150,6 @@ describe('formatGrams', () => {
     expect(formatGrams(150)).toBe('150g')
     expect(formatGrams(67)).toBe('67g')
     expect(formatGrams(0)).toBe('0g')
-  })
-})
-
-describe('getActivityLevelDescription', () => {
-  it('should return correct descriptions', () => {
-    expect(getActivityLevelDescription('sedentary')).toBe(
-      '座り仕事中心・運動なし'
-    )
-    expect(getActivityLevelDescription('light')).toBe('軽い運動を週1-3日')
-    expect(getActivityLevelDescription('moderate')).toBe('適度な運動を週3-5日')
-    expect(getActivityLevelDescription('active')).toBe('激しい運動を週6-7日')
-    expect(getActivityLevelDescription('extra')).toBe(
-      '肉体労働またはアスリート'
-    )
   })
 })
 

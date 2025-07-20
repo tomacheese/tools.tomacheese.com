@@ -209,8 +209,8 @@
 import { ref } from 'vue'
 import {
   generateBorderRadiusCSS,
-  generateCSSCode,
-  generateInlineStyle,
+  generateBorderRadiusCSSCode,
+  generateBorderRadiusInlineStyle,
   exportBorderRadiusAsSass,
   exportBorderRadiusAsJSON,
   presetBorderRadius,
@@ -282,11 +282,11 @@ const applyPreset = (preset: BorderRadiusConfig) => {
 const getFormattedCode = () => {
   switch (selectedFormat.value) {
     case 'css':
-      return generateCSSCode(currentBorderRadius.value)
+      return generateBorderRadiusCSSCode(currentBorderRadius.value)
     case 'sass':
       return exportBorderRadiusAsSass(config.value)
     case 'inline':
-      return generateInlineStyle(currentBorderRadius.value)
+      return generateBorderRadiusInlineStyle(currentBorderRadius.value)
     default:
       return ''
   }

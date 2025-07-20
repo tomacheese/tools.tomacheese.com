@@ -138,9 +138,9 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue'
 import {
-  type MinifyOptions,
+  type CSSMinifyOptions,
   minifyCss,
-  calculateMinifyStats,
+  calculateCSSMinifyStats,
   formatBytes,
   beautifyCss,
 } from '~/utils/cssMinifier'
@@ -150,7 +150,7 @@ const inputCss = ref('')
 const outputCss = ref('')
 const copySuccess = ref(false)
 
-const options = reactive<MinifyOptions>({
+const options = reactive<CSSMinifyOptions>({
   removeComments: true,
   removeWhitespace: true,
   removeSemicolons: true,
@@ -265,7 +265,7 @@ function performMinify() {
     const minified = minifyCss(inputCss.value, options)
     outputCss.value = minified
 
-    const result = calculateMinifyStats(inputCss.value, minified)
+    const result = calculateCSSMinifyStats(inputCss.value, minified)
     stats.originalSize = result.originalSize
     stats.minifiedSize = result.minifiedSize
     stats.reduction = result.reduction
