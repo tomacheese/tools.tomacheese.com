@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  tools-tomacheese:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tools-tomacheese.rule=Host(`tools.tomacheese.com`)"
+      - "traefik.http.routers.tools-tomacheese.entrypoints=websecure"
+      - "traefik.http.routers.tools-tomacheese.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tools-tomacheese.loadbalancer.server.port=80"
+
+  # Development service
+  tools-tomacheese-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: pnpm dev
+    profiles:
+      - dev
