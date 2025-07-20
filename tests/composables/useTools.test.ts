@@ -2,7 +2,13 @@ import { describe, it, expect } from 'vitest'
 import { useTools } from '~/composables/useTools'
 
 describe('useTools', () => {
-  const { getAllTools, getToolById, getToolsByCategory, getCategories, searchTools } = useTools()
+  const {
+    getAllTools,
+    getToolById,
+    getToolsByCategory,
+    getCategories,
+    searchTools,
+  } = useTools()
 
   describe('getAllTools', () => {
     it('should return all tools', () => {
@@ -80,7 +86,7 @@ describe('useTools', () => {
       const categories = getCategories()
       expect(Array.isArray(categories)).toBe(true)
       expect(categories.length).toBeGreaterThan(0)
-      
+
       // Check uniqueness
       const uniqueCategories = [...new Set(categories)]
       expect(categories.length).toBe(uniqueCategories.length)
@@ -107,7 +113,9 @@ describe('useTools', () => {
       const results = searchTools('文字数')
       expect(Array.isArray(results)).toBe(true)
       expect(results.length).toBeGreaterThan(0)
-      expect(results.some(tool => tool.description.includes('文字数'))).toBe(true)
+      expect(results.some(tool => tool.description.includes('文字数'))).toBe(
+        true
+      )
     })
 
     it('should search tools by keywords', () => {
@@ -166,10 +174,19 @@ describe('useTools', () => {
     it('should have valid categories', () => {
       const tools = getAllTools()
       const validCategories = [
-        'テキスト', '数学', 'デザイン', 'ユーティリティ', 'エンコーディング', 
-        'セキュリティ', 'データ変換', 'Web開発', 'ヘルス', 'ネットワーク', 'データベース'
+        'テキスト',
+        '数学',
+        'デザイン',
+        'ユーティリティ',
+        'エンコーディング',
+        'セキュリティ',
+        'データ変換',
+        'Web開発',
+        'ヘルス',
+        'ネットワーク',
+        'データベース',
       ]
-      
+
       tools.forEach(tool => {
         expect(validCategories).toContain(tool.category)
       })

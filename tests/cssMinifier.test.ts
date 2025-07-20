@@ -3,7 +3,7 @@ import {
   minifyCss,
   calculateMinifyStats,
   formatBytes,
-  beautifyCss
+  beautifyCss,
 } from '~/utils/cssMinifier'
 
 describe('cssMinifier', () => {
@@ -26,13 +26,19 @@ describe('cssMinifier', () => {
 
     it('removes last semicolon before closing brace', () => {
       const css = `.class { color: red; padding: 10px; }`
-      const result = minifyCss(css, { removeSemicolons: true, removeWhitespace: true })
+      const result = minifyCss(css, {
+        removeSemicolons: true,
+        removeWhitespace: true,
+      })
       expect(result).toBe('.class{color:red;padding:10px}')
     })
 
     it('shortens hex colors', () => {
       const css = `.class { color: #ff0000; background: #00ff00; border-color: #0000ff; }`
-      const result = minifyCss(css, { shortenHex: true, removeWhitespace: true })
+      const result = minifyCss(css, {
+        shortenHex: true,
+        removeWhitespace: true,
+      })
       expect(result).toContain('#f00')
       expect(result).toContain('#0f0')
       expect(result).toContain('#00f')
@@ -46,7 +52,10 @@ describe('cssMinifier', () => {
 
     it('removes units from zero values', () => {
       const css = `.class { margin: 0px; padding: 0em; top: 0%; }`
-      const result = minifyCss(css, { removeUnits: true, removeWhitespace: true })
+      const result = minifyCss(css, {
+        removeUnits: true,
+        removeWhitespace: true,
+      })
       expect(result).toBe('.class{margin:0;padding:0;top:0}')
     })
 
@@ -58,7 +67,10 @@ describe('cssMinifier', () => {
 
     it('merges duplicate selectors', () => {
       const css = `.class { color: red; } .class { padding: 10px; }`
-      const result = minifyCss(css, { mergeSelectors: true, removeWhitespace: true })
+      const result = minifyCss(css, {
+        mergeSelectors: true,
+        removeWhitespace: true,
+      })
       expect(result).toBe('.class{color:red;padding:10px}')
     })
 
@@ -80,7 +92,7 @@ describe('cssMinifier', () => {
         mergeSelectors: false,
         shortenHex: false,
         removeUnits: false,
-        removeQuotes: false
+        removeQuotes: false,
       })
       expect(result).toBe(css)
     })
@@ -109,9 +121,9 @@ describe('cssMinifier', () => {
     it('calculates correct statistics', () => {
       const original = '.class { color: red; padding: 10px; }'
       const minified = '.class{color:red;padding:10px}'
-      
+
       const stats = calculateMinifyStats(original, minified)
-      
+
       expect(stats.original).toBe(original)
       expect(stats.minified).toBe(minified)
       expect(stats.originalSize).toBeGreaterThan(stats.minifiedSize)
@@ -121,7 +133,7 @@ describe('cssMinifier', () => {
 
     it('handles empty strings', () => {
       const stats = calculateMinifyStats('', '')
-      
+
       expect(stats.originalSize).toBe(0)
       expect(stats.minifiedSize).toBe(0)
       expect(stats.reduction).toBe(0)
@@ -149,7 +161,7 @@ describe('cssMinifier', () => {
     it('beautifies minified CSS', () => {
       const minified = '.class{color:red;padding:10px}.other{margin:0}'
       const beautified = beautifyCss(minified)
-      
+
       expect(beautified).toContain('{\n')
       expect(beautified).toContain(';\n')
       expect(beautified).toContain('\n}')
@@ -159,7 +171,7 @@ describe('cssMinifier', () => {
     it('handles selectors with commas', () => {
       const minified = '.class1,.class2{color:red}'
       const beautified = beautifyCss(minified)
-      
+
       expect(beautified).toContain('.class1,\n.class2')
     })
 

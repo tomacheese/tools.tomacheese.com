@@ -65,8 +65,12 @@
         <div v-if="jsonOutput" class="output">
           <pre>{{ jsonOutput }}</pre>
           <div class="actions">
-            <button class="secondary" @click="copyToClipboard(jsonOutput)">コピー</button>
-            <button class="secondary" @click="downloadJSON">JSONファイルをダウンロード</button>
+            <button class="secondary" @click="copyToClipboard(jsonOutput)">
+              コピー
+            </button>
+            <button class="secondary" @click="downloadJSON">
+              JSONファイルをダウンロード
+            </button>
           </div>
         </div>
         <div v-else-if="error" class="error">
@@ -83,29 +87,41 @@
       <div class="examples">
         <div class="example">
           <h4>基本的なCSV</h4>
-          <button class="small" @click="loadExample('basic')">この例を使用</button>
-          <pre>名前,年齢,メール
+          <button class="small" @click="loadExample('basic')">
+            この例を使用
+          </button>
+          <pre>
+名前,年齢,メール
 田中太郎,30,tanaka@example.com
 山田花子,25,yamada@example.com
-佐藤次郎,35,sato@example.com</pre>
+佐藤次郎,35,sato@example.com</pre
+          >
         </div>
 
         <div class="example">
           <h4>クォートを含むCSV</h4>
-          <button class="small" @click="loadExample('quoted')">この例を使用</button>
-          <pre>商品名,価格,説明
+          <button class="small" @click="loadExample('quoted')">
+            この例を使用
+          </button>
+          <pre>
+商品名,価格,説明
 "ノートPC",98000,"高性能で軽量な、ビジネス向けノートPC"
 "マウス",2500,"ワイヤレス, 充電式"
-"キーボード",5800,"メカニカル, RGB照明付き"</pre>
+"キーボード",5800,"メカニカル, RGB照明付き"</pre
+          >
         </div>
 
         <div class="example">
           <h4>タブ区切り (TSV)</h4>
-          <button class="small" @click="loadExample('tsv')">この例を使用</button>
-          <pre>ID	名前	部署
+          <button class="small" @click="loadExample('tsv')">
+            この例を使用
+          </button>
+          <pre>
+ID	名前	部署
 001	鈴木一郎	営業部
 002	田中二郎	開発部
-003	佐藤三郎	人事部</pre>
+003	佐藤三郎	人事部</pre
+          >
         </div>
       </div>
     </div>
@@ -141,14 +157,14 @@ const handleConvert = () => {
       delimiter: actualDelimiter,
       headers: useHeaders.value,
       skipEmptyRows: skipEmptyRows.value,
-      trimValues: trimValues.value
+      trimValues: trimValues.value,
     })
 
     jsonOutput.value = formatJSON(JSON.stringify(result), 2)
     error.value = ''
   } catch (err) {
     // Conversion failed
-    error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
+    error.value = `変換中にエラーが発生しました: ${(err as Error).message}`
     jsonOutput.value = ''
   }
 }
@@ -204,9 +220,7 @@ const loadExample = (type: string) => {
 
 useHead({
   title: 'CSV to JSON変換 - Web Tools',
-  meta: [
-    { name: 'description', content: 'CSVデータをJSON形式に変換します。' }
-  ]
+  meta: [{ name: 'description', content: 'CSVデータをJSON形式に変換します。' }],
 })
 </script>
 
@@ -224,7 +238,8 @@ useHead({
   margin: 30px 0;
 }
 
-.input-section, .output-section {
+.input-section,
+.output-section {
   background-color: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
@@ -268,7 +283,7 @@ textarea {
   font-size: 14px;
 }
 
-.option-group input[type="checkbox"] {
+.option-group input[type='checkbox'] {
   margin-right: 8px;
 }
 

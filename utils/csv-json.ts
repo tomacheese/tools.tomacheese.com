@@ -15,7 +15,7 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
     delimiter = ',',
     headers = true,
     skipEmptyRows = true,
-    trimValues = true
+    trimValues = true,
   } = options
 
   if (!csv || !csv.trim()) {
@@ -36,14 +36,14 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
   // Parse data rows
   for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i]
-    
+
     // Skip empty rows if configured
     if (skipEmptyRows && !line.trim()) {
       continue
     }
 
     const values = parseCSVLine(line, delimiter, trimValues)
-    
+
     if (headers && headerRow.length > 0) {
       // Create object with headers as keys
       const obj: any = {}
@@ -60,7 +60,11 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
   return result
 }
 
-function parseCSVLine(line: string, delimiter: string, trim: boolean): string[] {
+function parseCSVLine(
+  line: string,
+  delimiter: string,
+  trim: boolean
+): string[] {
   const values: string[] = []
   let current = ''
   let inQuotes = false
@@ -104,10 +108,7 @@ function parseCSVLine(line: string, delimiter: string, trim: boolean): string[] 
 }
 
 export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
-  const {
-    headers = true,
-    delimiter = ','
-  } = options
+  const { headers = true, delimiter = ',' } = options
 
   if (!Array.isArray(data) || data.length === 0) {
     return ''
@@ -120,7 +121,9 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
     // Handle array of arrays
     data.forEach(row => {
       if (Array.isArray(row)) {
-        rows.push(row.map(cell => formatCSVValue(String(cell ?? ''), delimiter)))
+        rows.push(
+          row.map(cell => formatCSVValue(String(cell ?? ''), delimiter))
+        )
       }
     })
   } else {
@@ -152,10 +155,11 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
 
 function formatCSVValue(value: string, delimiter: string): string {
   // Check if value needs to be quoted
-  const needsQuoting = value.includes(delimiter) || 
-                      value.includes('"') || 
-                      value.includes('\n') || 
-                      value.includes('\r')
+  const needsQuoting =
+    value.includes(delimiter) ||
+    value.includes('"') ||
+    value.includes('\n') ||
+    value.includes('\r')
 
   if (needsQuoting) {
     // Escape quotes by doubling them
@@ -170,7 +174,7 @@ export function detectDelimiter(csv: string): string {
   // Count occurrences of common delimiters in first few lines
   const delimiters = [',', ';', '\t', '|']
   const sampleLines = csv.split(/\r?\n/).slice(0, 5).join('\n')
-  
+
   let maxCount = 0
   let detectedDelimiter = ','
 

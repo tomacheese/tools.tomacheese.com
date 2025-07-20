@@ -8,7 +8,7 @@ import {
   formatCalories,
   formatGrams,
   getActivityLevelDescription,
-  getGoalDescription
+  getGoalDescription,
 } from '~/utils/calorie-calculator'
 
 describe('calculateBMR', () => {
@@ -75,13 +75,13 @@ describe('calculateRecommendedCalories', () => {
 describe('calculateMacros', () => {
   it('should calculate macronutrients distribution', () => {
     const macros = calculateMacros(2000)
-    
+
     // Protein: 30% of 2000 = 600 calories / 4 = 150g
     expect(macros.protein).toBe(150)
-    
+
     // Carbs: 40% of 2000 = 800 calories / 4 = 200g
     expect(macros.carbs).toBe(200)
-    
+
     // Fat: 30% of 2000 = 600 calories / 9 = 67g
     expect(macros.fat).toBe(67)
   })
@@ -109,7 +109,7 @@ describe('calculateCalories', () => {
       height: 175,
       heightUnit: 'cm',
       activityLevel: 'moderate',
-      goal: 'maintain'
+      goal: 'maintain',
     })
 
     expect(result.bmr).toBeCloseTo(1674, 0)
@@ -130,7 +130,7 @@ describe('calculateCalories', () => {
       height: 5.5, // ft (≈ 167.6cm)
       heightUnit: 'ft',
       activityLevel: 'light',
-      goal: 'lose'
+      goal: 'lose',
     })
 
     expect(result.bmr).toBeGreaterThan(0)
@@ -145,15 +145,19 @@ describe('calculateCalories', () => {
       weightUnit: 'kg' as const,
       height: 175,
       heightUnit: 'cm' as const,
-      activityLevel: 'moderate' as const
+      activityLevel: 'moderate' as const,
     }
 
     const maintainResult = calculateCalories({ ...baseInput, goal: 'maintain' })
     const loseResult = calculateCalories({ ...baseInput, goal: 'lose' })
     const gainResult = calculateCalories({ ...baseInput, goal: 'gain' })
 
-    expect(loseResult.recommendedCalories).toBe(maintainResult.recommendedCalories - 500)
-    expect(gainResult.recommendedCalories).toBe(maintainResult.recommendedCalories + 500)
+    expect(loseResult.recommendedCalories).toBe(
+      maintainResult.recommendedCalories - 500
+    )
+    expect(gainResult.recommendedCalories).toBe(
+      maintainResult.recommendedCalories + 500
+    )
   })
 })
 
@@ -175,11 +179,15 @@ describe('formatGrams', () => {
 
 describe('getActivityLevelDescription', () => {
   it('should return correct descriptions', () => {
-    expect(getActivityLevelDescription('sedentary')).toBe('座り仕事中心・運動なし')
+    expect(getActivityLevelDescription('sedentary')).toBe(
+      '座り仕事中心・運動なし'
+    )
     expect(getActivityLevelDescription('light')).toBe('軽い運動を週1-3日')
     expect(getActivityLevelDescription('moderate')).toBe('適度な運動を週3-5日')
     expect(getActivityLevelDescription('active')).toBe('激しい運動を週6-7日')
-    expect(getActivityLevelDescription('extra')).toBe('肉体労働またはアスリート')
+    expect(getActivityLevelDescription('extra')).toBe(
+      '肉体労働またはアスリート'
+    )
   })
 })
 

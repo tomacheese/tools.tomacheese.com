@@ -7,7 +7,9 @@ test.describe('Unit Converter Tool', () => {
 
   test('has correct title and description', async ({ page }) => {
     await expect(page.locator('h1')).toContainText('単位変換')
-    await expect(page.locator('p')).toContainText('長さ、重さ、温度などの単位を簡単に変換できます。')
+    await expect(page.locator('p')).toContainText(
+      '長さ、重さ、温度などの単位を簡単に変換できます。'
+    )
   })
 
   test('converts length units correctly', async ({ page }) => {
@@ -17,10 +19,18 @@ test.describe('Unit Converter Tool', () => {
 
     // Enter value
     await page.locator('#fromValue').fill('1000')
-    
+
     // Select units
-    await page.locator('.input-group').first().locator('select').selectOption('meter')
-    await page.locator('.input-group').last().locator('select').selectOption('kilometer')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('meter')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('kilometer')
 
     // Check result
     await expect(page.locator('#toValue')).toHaveValue('1')
@@ -32,8 +42,16 @@ test.describe('Unit Converter Tool', () => {
 
     // Convert 0°C to Fahrenheit
     await page.locator('#fromValue').fill('0')
-    await page.locator('.input-group').first().locator('select').selectOption('celsius')
-    await page.locator('.input-group').last().locator('select').selectOption('fahrenheit')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('celsius')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('fahrenheit')
 
     await expect(page.locator('#toValue')).toHaveValue('32')
 
@@ -48,8 +66,16 @@ test.describe('Unit Converter Tool', () => {
 
     // Convert 1 kg to pounds
     await page.locator('#fromValue').fill('1')
-    await page.locator('.input-group').first().locator('select').selectOption('kilogram')
-    await page.locator('.input-group').last().locator('select').selectOption('pound')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('kilogram')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('pound')
 
     const result = await page.locator('#toValue').inputValue()
     expect(parseFloat(result)).toBeCloseTo(2.20462, 1)
@@ -58,25 +84,47 @@ test.describe('Unit Converter Tool', () => {
   test('category change updates available units', async ({ page }) => {
     // Start with length
     await page.locator('#category').selectOption('length')
-    const lengthOptions = await page.locator('.input-group').first().locator('select option').count()
+    const lengthOptions = await page
+      .locator('.input-group')
+      .first()
+      .locator('select option')
+      .count()
     expect(lengthOptions).toBeGreaterThan(0)
 
     // Change to temperature
     await page.locator('#category').selectOption('temperature')
-    const tempOptions = await page.locator('.input-group').first().locator('select option').count()
+    const tempOptions = await page
+      .locator('.input-group')
+      .first()
+      .locator('select option')
+      .count()
     expect(tempOptions).toBe(3) // celsius, fahrenheit, kelvin
 
     // Check that the options contain temperature units
-    await expect(page.locator('.input-group').first().locator('select')).toContainText('摂氏')
-    await expect(page.locator('.input-group').first().locator('select')).toContainText('華氏')
-    await expect(page.locator('.input-group').first().locator('select')).toContainText('ケルビン')
+    await expect(
+      page.locator('.input-group').first().locator('select')
+    ).toContainText('摂氏')
+    await expect(
+      page.locator('.input-group').first().locator('select')
+    ).toContainText('華氏')
+    await expect(
+      page.locator('.input-group').first().locator('select')
+    ).toContainText('ケルビン')
   })
 
   test('conversion history is maintained', async ({ page }) => {
     // Perform a conversion
     await page.locator('#fromValue').fill('100')
-    await page.locator('.input-group').first().locator('select').selectOption('meter')
-    await page.locator('.input-group').last().locator('select').selectOption('foot')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('meter')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('foot')
 
     // Check history section appears
     await expect(page.locator('.history-section')).toBeVisible()
@@ -90,8 +138,16 @@ test.describe('Unit Converter Tool', () => {
   test('clear history button works', async ({ page }) => {
     // Perform conversions
     await page.locator('#fromValue').fill('100')
-    await page.locator('.input-group').first().locator('select').selectOption('meter')
-    await page.locator('.input-group').last().locator('select').selectOption('foot')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('meter')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('foot')
 
     await page.locator('#fromValue').fill('200')
 
@@ -107,7 +163,7 @@ test.describe('Unit Converter Tool', () => {
 
     // Check that values are updated
     await expect(page.locator('#fromValue')).toHaveValue('1')
-    
+
     // Result should be calculated
     const result = await page.locator('#toValue').inputValue()
     expect(result).not.toBe('')
@@ -132,15 +188,31 @@ test.describe('Unit Converter Tool', () => {
 
     // Convert 1024 MB to GB
     await page.locator('#fromValue').fill('1024')
-    await page.locator('.input-group').first().locator('select').selectOption('megabyte')
-    await page.locator('.input-group').last().locator('select').selectOption('gigabyte')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('megabyte')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('gigabyte')
 
     await expect(page.locator('#toValue')).toHaveValue('1')
 
     // Convert 1 GB to MB
     await page.locator('#fromValue').fill('1')
-    await page.locator('.input-group').first().locator('select').selectOption('gigabyte')
-    await page.locator('.input-group').last().locator('select').selectOption('megabyte')
+    await page
+      .locator('.input-group')
+      .first()
+      .locator('select')
+      .selectOption('gigabyte')
+    await page
+      .locator('.input-group')
+      .last()
+      .locator('select')
+      .selectOption('megabyte')
 
     await expect(page.locator('#toValue')).toHaveValue('1,024')
   })

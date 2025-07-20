@@ -9,7 +9,7 @@
         <textarea
           v-model="jsonInput"
           rows="10"
-          placeholder="JSONデータを入力してください&#10;例:&#10;[&#10;  {&quot;名前&quot;: &quot;田中太郎&quot;, &quot;年齢&quot;: 30, &quot;都市&quot;: &quot;東京&quot;},&#10;  {&quot;名前&quot;: &quot;山田花子&quot;, &quot;年齢&quot;: 25, &quot;都市&quot;: &quot;大阪&quot;}&#10;]"
+          placeholder='JSONデータを入力してください&#10;例:&#10;[&#10;  {"名前": "田中太郎", "年齢": 30, "都市": "東京"},&#10;  {"名前": "山田花子", "年齢": 25, "都市": "大阪"}&#10;]'
           @input="handleConvert"
         />
 
@@ -42,8 +42,12 @@
         <div v-if="csvOutput" class="output">
           <pre>{{ csvOutput }}</pre>
           <div class="actions">
-            <button class="secondary" @click="copyToClipboard(csvOutput)">コピー</button>
-            <button class="secondary" @click="downloadCSV">CSVファイルをダウンロード</button>
+            <button class="secondary" @click="copyToClipboard(csvOutput)">
+              コピー
+            </button>
+            <button class="secondary" @click="downloadCSV">
+              CSVファイルをダウンロード
+            </button>
           </div>
         </div>
         <div v-else-if="error" class="error">
@@ -60,29 +64,40 @@
       <div class="examples">
         <div class="example">
           <h4>オブジェクトの配列</h4>
-          <button class="small" @click="loadExample('objects')">この例を使用</button>
-          <pre>[
+          <button class="small" @click="loadExample('objects')">
+            この例を使用
+          </button>
+          <pre>
+[
   {"名前": "田中太郎", "年齢": 30, "都市": "東京"},
   {"名前": "山田花子", "年齢": 25, "都市": "大阪"},
   {"名前": "佐藤次郎", "年齢": 35, "都市": "名古屋"}
-]</pre>
+]</pre
+          >
         </div>
 
         <div class="example">
           <h4>配列の配列</h4>
-          <button class="small" @click="loadExample('arrays')">この例を使用</button>
-          <pre>[
+          <button class="small" @click="loadExample('arrays')">
+            この例を使用
+          </button>
+          <pre>
+[
   ["名前", "年齢", "都市"],
   ["田中太郎", 30, "東京"],
   ["山田花子", 25, "大阪"],
   ["佐藤次郎", 35, "名古屋"]
-]</pre>
+]</pre
+          >
         </div>
 
         <div class="example">
           <h4>複雑なデータ</h4>
-          <button class="small" @click="loadExample('complex')">この例を使用</button>
-          <pre>[
+          <button class="small" @click="loadExample('complex')">
+            この例を使用
+          </button>
+          <pre>
+[
   {
     "商品名": "ノートPC",
     "価格": 98000,
@@ -97,7 +112,8 @@
     "在庫": false,
     "説明": "ワイヤレス, 充電式"
   }
-]</pre>
+]</pre
+          >
         </div>
       </div>
     </div>
@@ -152,7 +168,7 @@ const handleConvert = () => {
     }
 
     const data = JSON.parse(jsonInput.value)
-    
+
     // Check if data is an array
     if (!Array.isArray(data)) {
       error.value = 'JSONデータは配列である必要があります。'
@@ -168,13 +184,13 @@ const handleConvert = () => {
 
     const result = jsonToCSV(data, {
       delimiter: delimiter.value,
-      headers: includeHeaders.value
+      headers: includeHeaders.value,
     })
 
     csvOutput.value = result
     error.value = ''
   } catch (err) {
-    error.value = `変換中にエラーが発生しました: ${  (err as Error).message}`
+    error.value = `変換中にエラーが発生しました: ${(err as Error).message}`
     csvOutput.value = ''
   }
 }
@@ -242,9 +258,7 @@ const loadExample = (type: string) => {
 
 useHead({
   title: 'JSON to CSV変換 - Web Tools',
-  meta: [
-    { name: 'description', content: 'JSONデータをCSV形式に変換します。' }
-  ]
+  meta: [{ name: 'description', content: 'JSONデータをCSV形式に変換します。' }],
 })
 </script>
 
@@ -262,7 +276,8 @@ useHead({
   margin: 30px 0;
 }
 
-.input-section, .output-section {
+.input-section,
+.output-section {
   background-color: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
@@ -306,7 +321,7 @@ textarea {
   font-size: 14px;
 }
 
-.option-group input[type="checkbox"] {
+.option-group input[type='checkbox'] {
   margin-right: 8px;
 }
 
@@ -469,7 +484,7 @@ button.small:hover {
   .converter-section {
     grid-template-columns: 1fr;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }

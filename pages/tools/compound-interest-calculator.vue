@@ -1,7 +1,9 @@
 <template>
   <div class="tool-container">
     <h1>複利計算</h1>
-    <p>複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額を入力して将来の資産価値を確認できます。</p>
+    <p>
+      複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額を入力して将来の資産価値を確認できます。
+    </p>
 
     <div class="input-section">
       <div class="form-group">
@@ -13,7 +15,7 @@
           min="0"
           step="1000"
           placeholder="1000000"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -26,7 +28,7 @@
           max="100"
           step="0.1"
           placeholder="5"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -50,7 +52,7 @@
           max="50"
           step="1"
           placeholder="10"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -62,7 +64,7 @@
           min="0"
           step="1000"
           placeholder="0"
-        >
+        />
       </div>
 
       <button class="primary-button" @click="calculate">計算する</button>
@@ -70,7 +72,7 @@
 
     <div v-if="result" class="result">
       <h2>計算結果</h2>
-      
+
       <div class="result-summary">
         <div class="summary-item">
           <span class="label">将来価値</span>
@@ -86,7 +88,11 @@
         </div>
         <div class="summary-item">
           <span class="label">収益率</span>
-          <span class="value">{{ formatPercentage((result.totalInterest / result.totalDeposits) * 100) }}</span>
+          <span class="value">{{
+            formatPercentage(
+              (result.totalInterest / result.totalDeposits) * 100
+            )
+          }}</span>
         </div>
       </div>
 
@@ -117,7 +123,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { calculateCompoundInterest, formatCurrency, formatPercentage } from '~/utils/compound-interest'
+import {
+  calculateCompoundInterest,
+  formatCurrency,
+  formatPercentage,
+} from '~/utils/compound-interest'
 import type { CompoundInterestResult } from '~/utils/compound-interest'
 
 const principal = ref<number>(1000000)
@@ -138,15 +148,19 @@ const calculate = () => {
     annualRate: annualRate.value,
     compoundingFrequency: compoundingFrequency.value,
     years: years.value,
-    monthlyDeposit: monthlyDeposit.value
+    monthlyDeposit: monthlyDeposit.value,
   })
 }
 
 useHead({
   title: '複利計算 | Tools',
   meta: [
-    { name: 'description', content: '複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額から将来の資産価値を計算できます。' }
-  ]
+    {
+      name: 'description',
+      content:
+        '複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額から将来の資産価値を計算できます。',
+    },
+  ],
 })
 </script>
 
@@ -185,7 +199,7 @@ label {
   font-weight: 500;
 }
 
-input[type="number"],
+input[type='number'],
 select {
   width: 100%;
   padding: 0.75rem;
@@ -195,7 +209,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="number"]:focus,
+input[type='number']:focus,
 select:focus {
   outline: none;
   border-color: #007bff;

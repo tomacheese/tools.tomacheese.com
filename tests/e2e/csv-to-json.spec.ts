@@ -144,7 +144,7 @@ test.describe('CSV to JSON Converter', () => {
 
     const output = page.locator('.output pre')
     const jsonText = await output.textContent()
-    
+
     // Should only have 2 entries, not empty rows
     const entries = jsonText?.match(/"名前":/g)
     expect(entries).toHaveLength(2)
@@ -167,7 +167,7 @@ test.describe('CSV to JSON Converter', () => {
 
     const output = page.locator('.output pre')
     const jsonText = await output.textContent()
-    
+
     // Should have 3 entries including empty row
     const entries = jsonText?.match(/"名前":/g)
     expect(entries).toHaveLength(3)
@@ -248,7 +248,9 @@ test.describe('CSV to JSON Converter', () => {
     const download = await downloadPromise
 
     // Verify download properties
-    expect(download.suggestedFilename()).toMatch(/converted_\d{4}-\d{2}-\d{2}\.json/)
+    expect(download.suggestedFilename()).toMatch(
+      /converted_\d{4}-\d{2}-\d{2}\.json/
+    )
   })
 
   test('should load basic example', async ({ page }) => {
@@ -331,7 +333,7 @@ test.describe('CSV to JSON Converter', () => {
     // Should show either error or handle gracefully
     const hasError = await page.locator('.error').isVisible()
     const hasOutput = await page.locator('.output').isVisible()
-    
+
     // Either shows error or handles gracefully with output
     expect(hasError || hasOutput).toBe(true)
   })
@@ -339,7 +341,9 @@ test.describe('CSV to JSON Converter', () => {
   test('should display placeholder when no input', async ({ page }) => {
     const placeholder = page.locator('.placeholder')
     await expect(placeholder).toBeVisible()
-    await expect(placeholder).toContainText('CSVデータを入力すると、ここに変換結果が表示されます')
+    await expect(placeholder).toContainText(
+      'CSVデータを入力すると、ここに変換結果が表示されます'
+    )
   })
 
   test('should be responsive on mobile', async ({ page }) => {

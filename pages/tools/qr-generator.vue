@@ -38,20 +38,12 @@
 
         <div class="option-group">
           <label for="dark-color">前景色</label>
-          <input
-            id="dark-color"
-            v-model="darkColor"
-            type="color"
-          />
+          <input id="dark-color" v-model="darkColor" type="color" />
         </div>
 
         <div class="option-group">
           <label for="light-color">背景色</label>
-          <input
-            id="light-color"
-            v-model="lightColor"
-            type="color"
-          />
+          <input id="light-color" v-model="lightColor" type="color" />
         </div>
       </div>
 
@@ -64,9 +56,15 @@
         <img :src="qrCode.dataURL" :alt="inputText" />
       </div>
       <div class="actions">
-        <button class="secondary" @click="downloadPNG">PNG画像をダウンロード</button>
-        <button class="secondary" @click="downloadSVG">SVGをダウンロード</button>
-        <button class="secondary" @click="copyDataURL">データURLをコピー</button>
+        <button class="secondary" @click="downloadPNG">
+          PNG画像をダウンロード
+        </button>
+        <button class="secondary" @click="downloadSVG">
+          SVGをダウンロード
+        </button>
+        <button class="secondary" @click="copyDataURL">
+          データURLをコピー
+        </button>
       </div>
       <div class="preview-text">
         <h4>エンコードされたテキスト:</h4>
@@ -99,8 +97,8 @@ const generateQR = () => {
       margin: margin.value,
       color: {
         dark: darkColor.value,
-        light: lightColor.value
-      }
+        light: lightColor.value,
+      },
     })
   } catch (error) {
     // QR code generation failed
@@ -144,8 +142,8 @@ const copyDataURL = async () => {
 useHead({
   title: 'QRコード生成 - Web Tools',
   meta: [
-    { name: 'description', content: 'テキストやURLからQRコードを生成します。' }
-  ]
+    { name: 'description', content: 'テキストやURLからQRコードを生成します。' },
+  ],
 })
 </script>
 
@@ -199,11 +197,11 @@ select {
   font-size: 14px;
 }
 
-input[type="range"] {
+input[type='range'] {
   width: 100%;
 }
 
-input[type="color"] {
+input[type='color'] {
   width: 100%;
   height: 40px;
   border: 1px solid #ddd;
@@ -299,11 +297,11 @@ button.secondary:hover {
   .options {
     grid-template-columns: 1fr;
   }
-  
+
   .actions {
     flex-direction: column;
   }
-  
+
   .actions button {
     width: 100%;
   }

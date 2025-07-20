@@ -7,7 +7,9 @@ test.describe('CSS Minifier Tool', () => {
 
   test('has correct title and description', async ({ page }) => {
     await expect(page.locator('h1')).toContainText('CSS圧縮')
-    await expect(page.locator('p')).toContainText('CSSコードを圧縮してファイルサイズを削減します。')
+    await expect(page.locator('p')).toContainText(
+      'CSSコードを圧縮してファイルサイズを削減します。'
+    )
   })
 
   test('loads example CSS', async ({ page }) => {
@@ -54,13 +56,24 @@ test.describe('CSS Minifier Tool', () => {
     await page.locator('.css-input').fill(testCss)
 
     // Check statistics
-    await expect(page.locator('.stat-item').filter({ hasText: '元のサイズ:' })).toBeVisible()
-    await expect(page.locator('.stat-item').filter({ hasText: '圧縮後:' })).toBeVisible()
-    await expect(page.locator('.stat-item').filter({ hasText: '削減量:' })).toBeVisible()
-    await expect(page.locator('.stat-item').filter({ hasText: '削減率:' })).toBeVisible()
+    await expect(
+      page.locator('.stat-item').filter({ hasText: '元のサイズ:' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.stat-item').filter({ hasText: '圧縮後:' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.stat-item').filter({ hasText: '削減量:' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.stat-item').filter({ hasText: '削減率:' })
+    ).toBeVisible()
 
     // Check that reduction percentage is shown
-    const reductionText = await page.locator('.stat-item').filter({ hasText: '削減率:' }).textContent()
+    const reductionText = await page
+      .locator('.stat-item')
+      .filter({ hasText: '削減率:' })
+      .textContent()
     expect(reductionText).toMatch(/\d+\.\d%/)
   })
 
@@ -91,7 +104,9 @@ test.describe('CSS Minifier Tool', () => {
 
     // Check success message
     await expect(page.locator('.success-message')).toBeVisible()
-    await expect(page.locator('.success-message')).toContainText('クリップボードにコピーしました')
+    await expect(page.locator('.success-message')).toContainText(
+      'クリップボードにコピーしました'
+    )
 
     // Wait for message to disappear
     await page.waitForTimeout(2500)
@@ -176,7 +191,9 @@ test.describe('CSS Minifier Tool', () => {
     await page.locator('.css-input').fill(testCss)
 
     // Toggle all options off
-    const checkboxes = await page.locator('.options-grid input[type="checkbox"]').all()
+    const checkboxes = await page
+      .locator('.options-grid input[type="checkbox"]')
+      .all()
     for (const checkbox of checkboxes) {
       await checkbox.uncheck()
     }

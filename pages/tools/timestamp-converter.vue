@@ -9,17 +9,29 @@
         <div class="time-info">
           <label>Unix タイムスタンプ (秒)</label>
           <code>{{ currentTime.unix }}</code>
-          <button class="small" @click="copyToClipboard(currentTime.unix.toString())">コピー</button>
+          <button
+            class="small"
+            @click="copyToClipboard(currentTime.unix.toString())"
+          >
+            コピー
+          </button>
         </div>
         <div class="time-info">
           <label>Unix タイムスタンプ (ミリ秒)</label>
           <code>{{ currentTime.unixMillis }}</code>
-          <button class="small" @click="copyToClipboard(currentTime.unixMillis.toString())">コピー</button>
+          <button
+            class="small"
+            @click="copyToClipboard(currentTime.unixMillis.toString())"
+          >
+            コピー
+          </button>
         </div>
         <div class="time-info">
           <label>ISO 8601</label>
           <code>{{ currentTime.iso8601 }}</code>
-          <button class="small" @click="copyToClipboard(currentTime.iso8601)">コピー</button>
+          <button class="small" @click="copyToClipboard(currentTime.iso8601)">
+            コピー
+          </button>
         </div>
         <div class="time-info">
           <label>ローカル時刻</label>
@@ -41,8 +53,8 @@
         />
         <div class="input-hints">
           <small>
-            対応形式: Unix秒 (1704067200), Unixミリ秒 (1704067200000), 
-            ISO 8601 (2024-01-01T00:00:00Z), その他の日時形式
+            対応形式: Unix秒 (1704067200), Unixミリ秒 (1704067200000), ISO 8601
+            (2024-01-01T00:00:00Z), その他の日時形式
           </small>
         </div>
       </div>
@@ -53,22 +65,42 @@
           <div class="time-info">
             <label>Unix タイムスタンプ (秒)</label>
             <code>{{ convertedTime.unix }}</code>
-            <button class="small" @click="copyToClipboard(convertedTime.unix.toString())">コピー</button>
+            <button
+              class="small"
+              @click="copyToClipboard(convertedTime.unix.toString())"
+            >
+              コピー
+            </button>
           </div>
           <div class="time-info">
             <label>Unix タイムスタンプ (ミリ秒)</label>
             <code>{{ convertedTime.unixMillis }}</code>
-            <button class="small" @click="copyToClipboard(convertedTime.unixMillis.toString())">コピー</button>
+            <button
+              class="small"
+              @click="copyToClipboard(convertedTime.unixMillis.toString())"
+            >
+              コピー
+            </button>
           </div>
           <div class="time-info">
             <label>ISO 8601</label>
             <code>{{ convertedTime.iso8601 }}</code>
-            <button class="small" @click="copyToClipboard(convertedTime.iso8601)">コピー</button>
+            <button
+              class="small"
+              @click="copyToClipboard(convertedTime.iso8601)"
+            >
+              コピー
+            </button>
           </div>
           <div class="time-info">
             <label>RFC 2822</label>
             <code>{{ convertedTime.rfc2822 }}</code>
-            <button class="small" @click="copyToClipboard(convertedTime.rfc2822)">コピー</button>
+            <button
+              class="small"
+              @click="copyToClipboard(convertedTime.rfc2822)"
+            >
+              コピー
+            </button>
           </div>
           <div class="time-info">
             <label>ローカル時刻</label>
@@ -105,12 +137,22 @@
         <div class="time-info">
           <label>Unix タイムスタンプ (秒)</label>
           <code>{{ pickerTime.unix }}</code>
-          <button class="small" @click="copyToClipboard(pickerTime.unix.toString())">コピー</button>
+          <button
+            class="small"
+            @click="copyToClipboard(pickerTime.unix.toString())"
+          >
+            コピー
+          </button>
         </div>
         <div class="time-info">
           <label>Unix タイムスタンプ (ミリ秒)</label>
           <code>{{ pickerTime.unixMillis }}</code>
-          <button class="small" @click="copyToClipboard(pickerTime.unixMillis.toString())">コピー</button>
+          <button
+            class="small"
+            @click="copyToClipboard(pickerTime.unixMillis.toString())"
+          >
+            コピー
+          </button>
         </div>
       </div>
     </div>
@@ -119,12 +161,12 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { 
-  getCurrentTimestamp, 
-  parseTimestamp, 
-  getTimestampInfo, 
+import {
+  getCurrentTimestamp,
+  parseTimestamp,
+  getTimestampInfo,
   formatRelativeTime,
-  type TimestampInfo
+  type TimestampInfo,
 } from '~/utils/timestamp'
 
 const currentTime = ref<TimestampInfo>(getCurrentTimestamp())
@@ -155,7 +197,8 @@ const handleInput = () => {
 
   const timestamp = parseTimestamp(inputValue.value.trim())
   if (timestamp === null) {
-    error.value = '無効な形式です。Unix タイムスタンプまたは日時を入力してください。'
+    error.value =
+      '無効な形式です。Unix タイムスタンプまたは日時を入力してください。'
     convertedTime.value = null
   } else {
     error.value = ''
@@ -196,8 +239,11 @@ onUnmounted(() => {
 useHead({
   title: 'タイムスタンプ変換 - Web Tools',
   meta: [
-    { name: 'description', content: 'Unix タイムスタンプと日時を相互変換します。' }
-  ]
+    {
+      name: 'description',
+      content: 'Unix タイムスタンプと日時を相互変換します。',
+    },
+  ],
 })
 </script>
 

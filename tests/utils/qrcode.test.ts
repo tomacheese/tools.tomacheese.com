@@ -12,11 +12,11 @@ vi.stubGlobal('document', {
           fillStyle: '',
           fillRect: vi.fn(),
         })),
-        toDataURL: vi.fn(() => 'data:image/png;base64,mock')
+        toDataURL: vi.fn(() => 'data:image/png;base64,mock'),
       }
     }
     return {}
-  })
+  }),
 })
 
 describe('QRCode', () => {
@@ -47,8 +47,8 @@ describe('QRCode', () => {
       margin: 8,
       color: {
         dark: '#FF0000',
-        light: '#00FF00'
-      }
+        light: '#00FF00',
+      },
     })
     expect(dataURL).toBe('data:image/png;base64,mock')
   })
@@ -60,8 +60,8 @@ describe('QRCode', () => {
       margin: 8,
       color: {
         dark: '#FF0000',
-        light: '#00FF00'
-      }
+        light: '#00FF00',
+      },
     })
     expect(svg).toContain('width="512"')
     expect(svg).toContain('fill="#00FF00"')
@@ -85,7 +85,8 @@ describe('generateQRCode', () => {
   })
 
   it('should handle long text', () => {
-    const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
+    const longText =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
     const result = generateQRCode(longText)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
@@ -118,8 +119,8 @@ describe('generateQRCode', () => {
       margin: 6,
       color: {
         dark: '#123456',
-        light: '#FEDCBA'
-      }
+        light: '#FEDCBA',
+      },
     }
     const result = generateQRCode('Test', options)
     expect(result.svg).toContain('width="384"')

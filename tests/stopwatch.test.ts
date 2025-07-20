@@ -15,7 +15,7 @@ import {
   exportStopwatchData,
   validateStopwatchState,
   type StopwatchState,
-  type Lap
+  type Lap,
 } from '~/utils/stopwatch'
 
 describe('stopwatch', () => {
@@ -26,7 +26,7 @@ describe('stopwatch', () => {
   describe('createStopwatch', () => {
     it('should create initial stopwatch state', () => {
       const stopwatch = createStopwatch()
-      
+
       expect(stopwatch.startTime).toBe(null)
       expect(stopwatch.elapsedTime).toBe(0)
       expect(stopwatch.isRunning).toBe(false)
@@ -39,9 +39,9 @@ describe('stopwatch', () => {
       const stopwatch = createStopwatch()
       const now = 1000000
       vi.setSystemTime(now)
-      
+
       const started = startStopwatch(stopwatch)
-      
+
       expect(started.isRunning).toBe(true)
       expect(started.startTime).toBe(now)
     })
@@ -51,13 +51,13 @@ describe('stopwatch', () => {
         startTime: null,
         elapsedTime: 5000,
         isRunning: false,
-        laps: []
+        laps: [],
       }
       const now = 1000000
       vi.setSystemTime(now)
-      
+
       const started = startStopwatch(stopwatch)
-      
+
       expect(started.isRunning).toBe(true)
       expect(started.startTime).toBe(now - 5000)
     })
@@ -67,11 +67,11 @@ describe('stopwatch', () => {
         startTime: 1000000,
         elapsedTime: 0,
         isRunning: true,
-        laps: []
+        laps: [],
       }
-      
+
       const result = startStopwatch(stopwatch)
-      
+
       expect(result).toBe(stopwatch)
     })
   })
@@ -84,12 +84,12 @@ describe('stopwatch', () => {
         startTime,
         elapsedTime: 0,
         isRunning: true,
-        laps: []
+        laps: [],
       }
       vi.setSystemTime(now)
-      
+
       const stopped = stopStopwatch(stopwatch)
-      
+
       expect(stopped.isRunning).toBe(false)
       expect(stopped.startTime).toBe(null)
       expect(stopped.elapsedTime).toBe(5000)
@@ -100,11 +100,11 @@ describe('stopwatch', () => {
         startTime: null,
         elapsedTime: 5000,
         isRunning: false,
-        laps: []
+        laps: [],
       }
-      
+
       const result = stopStopwatch(stopwatch)
-      
+
       expect(result).toBe(stopwatch)
     })
   })
@@ -115,13 +115,11 @@ describe('stopwatch', () => {
         startTime: 1000000,
         elapsedTime: 5000,
         isRunning: true,
-        laps: [
-          { id: 1, time: 3000, lapTime: 3000, timestamp: new Date() }
-        ]
+        laps: [{ id: 1, time: 3000, lapTime: 3000, timestamp: new Date() }],
       }
-      
+
       const reset = resetStopwatch(stopwatch)
-      
+
       expect(reset.startTime).toBe(null)
       expect(reset.elapsedTime).toBe(0)
       expect(reset.isRunning).toBe(false)
@@ -137,12 +135,12 @@ describe('stopwatch', () => {
         startTime,
         elapsedTime: 0,
         isRunning: true,
-        laps: []
+        laps: [],
       }
       vi.setSystemTime(now)
-      
+
       const withLap = addLap(stopwatch)
-      
+
       expect(withLap.laps).toHaveLength(1)
       expect(withLap.laps[0].id).toBe(1)
       expect(withLap.laps[0].time).toBe(5000)
@@ -156,14 +154,12 @@ describe('stopwatch', () => {
         startTime,
         elapsedTime: 0,
         isRunning: true,
-        laps: [
-          { id: 1, time: 5000, lapTime: 5000, timestamp: new Date() }
-        ]
+        laps: [{ id: 1, time: 5000, lapTime: 5000, timestamp: new Date() }],
       }
       vi.setSystemTime(now)
-      
+
       const withLap = addLap(stopwatch)
-      
+
       expect(withLap.laps).toHaveLength(2)
       expect(withLap.laps[1].id).toBe(2)
       expect(withLap.laps[1].time).toBe(10000)
@@ -175,11 +171,11 @@ describe('stopwatch', () => {
         startTime: null,
         elapsedTime: 5000,
         isRunning: false,
-        laps: []
+        laps: [],
       }
-      
+
       const result = addLap(stopwatch)
-      
+
       expect(result).toBe(stopwatch)
     })
   })
@@ -190,9 +186,9 @@ describe('stopwatch', () => {
         startTime: null,
         elapsedTime: 5000,
         isRunning: false,
-        laps: []
+        laps: [],
       }
-      
+
       expect(getCurrentElapsedTime(stopwatch)).toBe(5000)
     })
 
@@ -203,10 +199,10 @@ describe('stopwatch', () => {
         startTime,
         elapsedTime: 0,
         isRunning: true,
-        laps: []
+        laps: [],
       }
       vi.setSystemTime(now)
-      
+
       expect(getCurrentElapsedTime(stopwatch)).toBe(5000)
     })
   })
@@ -217,28 +213,28 @@ describe('stopwatch', () => {
         hours: '00',
         minutes: '00',
         seconds: '00',
-        milliseconds: '00'
+        milliseconds: '00',
       })
-      
+
       expect(formatTime(1234)).toEqual({
         hours: '00',
         minutes: '00',
         seconds: '01',
-        milliseconds: '23'
+        milliseconds: '23',
       })
-      
+
       expect(formatTime(65432)).toEqual({
         hours: '00',
         minutes: '01',
         seconds: '05',
-        milliseconds: '43'
+        milliseconds: '43',
       })
-      
+
       expect(formatTime(3661234)).toEqual({
         hours: '01',
         minutes: '01',
         seconds: '01',
-        milliseconds: '23'
+        milliseconds: '23',
       })
     })
 
@@ -247,7 +243,7 @@ describe('stopwatch', () => {
         hours: '00',
         minutes: '00',
         seconds: '01',
-        milliseconds: '23'
+        milliseconds: '23',
       })
     })
   })
@@ -293,11 +289,11 @@ describe('stopwatch', () => {
       const laps: Lap[] = [
         { id: 1, time: 5000, lapTime: 5000, timestamp: new Date() },
         { id: 2, time: 8000, lapTime: 3000, timestamp: new Date() },
-        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() }
+        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() },
       ]
-      
+
       const best = getBestLap(laps)
-      
+
       expect(best?.id).toBe(2)
       expect(best?.lapTime).toBe(3000)
     })
@@ -312,11 +308,11 @@ describe('stopwatch', () => {
       const laps: Lap[] = [
         { id: 1, time: 5000, lapTime: 5000, timestamp: new Date() },
         { id: 2, time: 8000, lapTime: 3000, timestamp: new Date() },
-        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() }
+        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() },
       ]
-      
+
       const worst = getWorstLap(laps)
-      
+
       expect(worst?.id).toBe(1)
       expect(worst?.lapTime).toBe(5000)
     })
@@ -331,9 +327,9 @@ describe('stopwatch', () => {
       const laps: Lap[] = [
         { id: 1, time: 5000, lapTime: 5000, timestamp: new Date() },
         { id: 2, time: 8000, lapTime: 3000, timestamp: new Date() },
-        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() }
+        { id: 3, time: 12000, lapTime: 4000, timestamp: new Date() },
       ]
-      
+
       expect(getAverageLapTime(laps)).toBe(4000)
     })
 
@@ -351,13 +347,13 @@ describe('stopwatch', () => {
         isRunning: false,
         laps: [
           { id: 1, time: 5000, lapTime: 5000, timestamp },
-          { id: 2, time: 10000, lapTime: 5000, timestamp }
-        ]
+          { id: 2, time: 10000, lapTime: 5000, timestamp },
+        ],
       }
-      
+
       const exported = exportStopwatchData(stopwatch)
       const data = JSON.parse(exported)
-      
+
       expect(data.totalTime).toBe(10000)
       expect(data.lapCount).toBe(2)
       expect(data.laps).toHaveLength(2)
@@ -373,11 +369,9 @@ describe('stopwatch', () => {
         startTime: 1000000,
         elapsedTime: 5000,
         isRunning: true,
-        laps: [
-          { id: 1, time: 3000, lapTime: 3000, timestamp: new Date() }
-        ]
+        laps: [{ id: 1, time: 3000, lapTime: 3000, timestamp: new Date() }],
       }
-      
+
       expect(validateStopwatchState(validState)).toBe(true)
     })
 
@@ -386,34 +380,42 @@ describe('stopwatch', () => {
       expect(validateStopwatchState(undefined)).toBe(false)
       expect(validateStopwatchState('invalid')).toBe(false)
       expect(validateStopwatchState({})).toBe(false)
-      
-      expect(validateStopwatchState({
-        startTime: 'invalid',
-        elapsedTime: 0,
-        isRunning: false,
-        laps: []
-      })).toBe(false)
-      
-      expect(validateStopwatchState({
-        startTime: null,
-        elapsedTime: 'invalid',
-        isRunning: false,
-        laps: []
-      })).toBe(false)
-      
-      expect(validateStopwatchState({
-        startTime: null,
-        elapsedTime: 0,
-        isRunning: 'invalid',
-        laps: []
-      })).toBe(false)
-      
-      expect(validateStopwatchState({
-        startTime: null,
-        elapsedTime: 0,
-        isRunning: false,
-        laps: 'invalid'
-      })).toBe(false)
+
+      expect(
+        validateStopwatchState({
+          startTime: 'invalid',
+          elapsedTime: 0,
+          isRunning: false,
+          laps: [],
+        })
+      ).toBe(false)
+
+      expect(
+        validateStopwatchState({
+          startTime: null,
+          elapsedTime: 'invalid',
+          isRunning: false,
+          laps: [],
+        })
+      ).toBe(false)
+
+      expect(
+        validateStopwatchState({
+          startTime: null,
+          elapsedTime: 0,
+          isRunning: 'invalid',
+          laps: [],
+        })
+      ).toBe(false)
+
+      expect(
+        validateStopwatchState({
+          startTime: null,
+          elapsedTime: 0,
+          isRunning: false,
+          laps: 'invalid',
+        })
+      ).toBe(false)
     })
   })
 })

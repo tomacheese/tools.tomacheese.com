@@ -1,17 +1,24 @@
 <template>
   <div class="tool-container">
     <h1>画像リサイズ</h1>
-    <p>画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応しています。</p>
+    <p>
+      画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応しています。
+    </p>
 
     <div class="input-section">
-      <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragleave.prevent>
+      <div
+        class="upload-area"
+        @drop="handleDrop"
+        @dragover.prevent
+        @dragleave.prevent
+      >
         <input
           ref="fileInput"
           type="file"
           accept="image/jpeg,image/jpg,image/png,image/webp"
           style="display: none"
           @change="handleFileSelect"
-        >
+        />
         <button class="upload-button" @click="$refs.fileInput.click()">
           画像を選択
         </button>
@@ -24,22 +31,28 @@
           <div class="info-grid">
             <div class="info-item">
               <span class="info-label">サイズ:</span>
-              <span class="info-value">{{ originalInfo.width }} × {{ originalInfo.height }} px</span>
+              <span class="info-value"
+                >{{ originalInfo.width }} × {{ originalInfo.height }} px</span
+              >
             </div>
             <div class="info-item">
               <span class="info-label">ファイルサイズ:</span>
-              <span class="info-value">{{ formatFileSize(originalInfo.size) }}</span>
+              <span class="info-value">{{
+                formatFileSize(originalInfo.size)
+              }}</span>
             </div>
             <div class="info-item">
               <span class="info-label">形式:</span>
-              <span class="info-value">{{ originalInfo.type.replace('image/', '').toUpperCase() }}</span>
+              <span class="info-value">{{
+                originalInfo.type.replace('image/', '').toUpperCase()
+              }}</span>
             </div>
           </div>
         </div>
 
         <div class="resize-controls">
           <h3>リサイズ設定</h3>
-          
+
           <div class="control-group">
             <label for="width">幅 (px):</label>
             <input
@@ -49,7 +62,7 @@
               min="1"
               max="9999"
               @input="updateHeight"
-            >
+            />
           </div>
 
           <div class="control-group">
@@ -61,14 +74,14 @@
               min="1"
               max="9999"
               @input="updateWidth"
-            >
+            />
           </div>
 
           <label class="checkbox-label">
             <input
               v-model="resizeOptions.maintainAspectRatio"
               type="checkbox"
-            >
+            />
             アスペクト比を維持
           </label>
 
@@ -82,7 +95,9 @@
           </div>
 
           <div v-if="resizeOptions.format !== 'png'" class="control-group">
-            <label for="quality">品質 ({{ Math.round(resizeOptions.quality * 100) }}%):</label>
+            <label for="quality"
+              >品質 ({{ Math.round(resizeOptions.quality * 100) }}%):</label
+            >
             <input
               id="quality"
               v-model.number="resizeOptions.quality"
@@ -90,7 +105,7 @@
               min="0.1"
               max="1"
               step="0.1"
-            >
+            />
           </div>
 
           <button class="primary-button" @click="resizeImage">
@@ -102,11 +117,13 @@
 
     <div v-if="resizedImage" class="result">
       <h3>リサイズ結果</h3>
-      
+
       <div class="result-info">
         <div class="info-item">
           <span class="info-label">新しいサイズ:</span>
-          <span class="info-value">{{ resizedInfo.width }} × {{ resizedInfo.height }} px</span>
+          <span class="info-value"
+            >{{ resizedInfo.width }} × {{ resizedInfo.height }} px</span
+          >
         </div>
         <div class="info-item">
           <span class="info-label">ファイルサイズ:</span>
@@ -121,11 +138,11 @@
       <div class="preview-container">
         <div class="preview-box">
           <h4>元の画像</h4>
-          <img :src="originalPreview" alt="Original">
+          <img :src="originalPreview" alt="Original" />
         </div>
         <div class="preview-box">
           <h4>リサイズ後</h4>
-          <img :src="resizedPreview" alt="Resized">
+          <img :src="resizedPreview" alt="Resized" />
         </div>
       </div>
 
@@ -149,7 +166,7 @@ import {
   downloadImage,
   generateFilename,
   type ResizeOptions,
-  type ImageInfo
+  type ImageInfo,
 } from '~/utils/imageResizer'
 
 const fileInput = ref<HTMLInputElement>()
@@ -158,7 +175,7 @@ const originalInfo = ref<ImageInfo>({
   width: 0,
   height: 0,
   size: 0,
-  type: ''
+  type: '',
 })
 const originalPreview = ref('')
 const resizedImage = ref<Blob | null>(null)
@@ -166,7 +183,7 @@ const resizedInfo = ref<ImageInfo>({
   width: 0,
   height: 0,
   size: 0,
-  type: ''
+  type: '',
 })
 const resizedPreview = ref('')
 const error = ref('')
@@ -176,7 +193,7 @@ const resizeOptions = ref<ResizeOptions>({
   height: undefined,
   maintainAspectRatio: true,
   quality: 0.9,
-  format: 'jpeg'
+  format: 'jpeg',
 })
 
 const handleFileSelect = async (event: Event) => {
@@ -208,7 +225,7 @@ const loadImage = async (file: File) => {
     // Set initial resize dimensions
     resizeOptions.value.width = originalInfo.value.width
     resizeOptions.value.height = originalInfo.value.height
-    
+
     // Set format based on original image
     if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
       resizeOptions.value.format = 'jpeg'
@@ -223,14 +240,22 @@ const loadImage = async (file: File) => {
 }
 
 const updateHeight = () => {
-  if (resizeOptions.value.maintainAspectRatio && resizeOptions.value.width && originalInfo.value.width) {
+  if (
+    resizeOptions.value.maintainAspectRatio &&
+    resizeOptions.value.width &&
+    originalInfo.value.width
+  ) {
     const ratio = originalInfo.value.height / originalInfo.value.width
     resizeOptions.value.height = Math.round(resizeOptions.value.width * ratio)
   }
 }
 
 const updateWidth = () => {
-  if (resizeOptions.value.maintainAspectRatio && resizeOptions.value.height && originalInfo.value.height) {
+  if (
+    resizeOptions.value.maintainAspectRatio &&
+    resizeOptions.value.height &&
+    originalInfo.value.height
+  ) {
     const ratio = originalInfo.value.width / originalInfo.value.height
     resizeOptions.value.width = Math.round(resizeOptions.value.height * ratio)
   }
@@ -244,12 +269,12 @@ const resizeImage = async () => {
   try {
     const blob = await resizeUtil(originalImage.value, resizeOptions.value)
     resizedImage.value = blob
-    
+
     // Create a temporary file to get info
     const tempFile = new File([blob], 'resized.jpg', { type: blob.type })
     resizedInfo.value = await getImageInfo(tempFile)
     resizedInfo.value.size = blob.size
-    
+
     if (resizedPreview.value) {
       URL.revokeObjectURL(resizedPreview.value)
     }
@@ -261,13 +286,16 @@ const resizeImage = async () => {
 
 const calculateReduction = () => {
   if (!originalInfo.value.size || !resizedInfo.value.size) return 0
-  const reduction = ((originalInfo.value.size - resizedInfo.value.size) / originalInfo.value.size) * 100
+  const reduction =
+    ((originalInfo.value.size - resizedInfo.value.size) /
+      originalInfo.value.size) *
+    100
   return Math.round(reduction)
 }
 
 const downloadResized = () => {
   if (!resizedImage.value || !originalImage.value) return
-  
+
   const filename = generateFilename(
     originalImage.value.name,
     resizeOptions.value.format || 'jpeg'
@@ -290,9 +318,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応し、品質調整も可能です。'
-    }
-  ]
+      content:
+        '画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応し、品質調整も可能です。',
+    },
+  ],
 })
 </script>
 
@@ -381,7 +410,7 @@ useHead({
   color: #333;
 }
 
-.control-group input[type="number"],
+.control-group input[type='number'],
 .control-group select {
   width: 100%;
   padding: 0.5rem;
@@ -390,7 +419,7 @@ useHead({
   font-size: 16px;
 }
 
-.control-group input[type="range"] {
+.control-group input[type='range'] {
   width: 100%;
 }
 

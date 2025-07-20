@@ -12,7 +12,10 @@ export interface AgeResult {
   chineseZodiac: string
 }
 
-export function calculateAge(birthDate: Date, currentDate: Date = new Date()): AgeResult {
+export function calculateAge(
+  birthDate: Date,
+  currentDate: Date = new Date()
+): AgeResult {
   // Ensure birthDate is not in the future
   if (birthDate > currentDate) {
     throw new Error('Birth date cannot be in the future')
@@ -26,7 +29,11 @@ export function calculateAge(birthDate: Date, currentDate: Date = new Date()): A
   // Adjust for negative days
   if (days < 0) {
     months--
-    const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0)
+    const lastMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0
+    )
     days += lastMonth.getDate()
   }
 
@@ -44,14 +51,27 @@ export function calculateAge(birthDate: Date, currentDate: Date = new Date()): A
   const totalSeconds = Math.floor(timeDiff / 1000)
 
   // Calculate next birthday
-  let nextBirthday = new Date(currentDate.getFullYear(), birthDate.getMonth(), birthDate.getDate())
+  let nextBirthday = new Date(
+    currentDate.getFullYear(),
+    birthDate.getMonth(),
+    birthDate.getDate()
+  )
   if (nextBirthday <= currentDate) {
-    nextBirthday = new Date(currentDate.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate())
+    nextBirthday = new Date(
+      currentDate.getFullYear() + 1,
+      birthDate.getMonth(),
+      birthDate.getDate()
+    )
   }
-  const daysUntilNextBirthday = Math.ceil((nextBirthday.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24))
+  const daysUntilNextBirthday = Math.ceil(
+    (nextBirthday.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+  )
 
   // Get zodiac signs
-  const zodiacSign = getZodiacSign(birthDate.getMonth() + 1, birthDate.getDate())
+  const zodiacSign = getZodiacSign(
+    birthDate.getMonth() + 1,
+    birthDate.getDate()
+  )
   const chineseZodiac = getChineseZodiac(birthDate.getFullYear())
 
   return {
@@ -65,7 +85,7 @@ export function calculateAge(birthDate: Date, currentDate: Date = new Date()): A
     nextBirthday,
     daysUntilNextBirthday,
     zodiacSign,
-    chineseZodiac
+    chineseZodiac,
   }
 }
 
@@ -82,7 +102,7 @@ export function getZodiacSign(month: number, day: number): string {
     { name: '乙女座', start: [8, 23], end: [9, 22] },
     { name: '天秤座', start: [9, 23], end: [10, 22] },
     { name: '蠍座', start: [10, 23], end: [11, 21] },
-    { name: '射手座', start: [11, 22], end: [12, 21] }
+    { name: '射手座', start: [11, 22], end: [12, 21] },
   ]
 
   for (const sign of signs) {
@@ -111,8 +131,18 @@ export function getZodiacSign(month: number, day: number): string {
 
 export function getChineseZodiac(year: number): string {
   const animals = [
-    '猿', '鶏', '犬', '猪', '鼠', '牛',
-    '虎', '兎', '龍', '蛇', '馬', '羊'
+    '猿',
+    '鶏',
+    '犬',
+    '猪',
+    '鼠',
+    '牛',
+    '虎',
+    '兎',
+    '龍',
+    '蛇',
+    '馬',
+    '羊',
   ]
   return animals[year % 12]
 }
@@ -126,7 +156,7 @@ export function formatDate(date: Date): string {
 
 export function formatAgeString(age: AgeResult): string {
   const parts = []
-  
+
   if (age.years > 0) {
     parts.push(`${age.years}歳`)
   }
@@ -136,7 +166,7 @@ export function formatAgeString(age: AgeResult): string {
   if (age.days > 0) {
     parts.push(`${age.days}日`)
   }
-  
+
   return parts.join(' ') || '0日'
 }
 
@@ -169,15 +199,26 @@ export function getLifeEvents(age: number): string[] {
 }
 
 export function getDaysOfWeek(date: Date): string {
-  const days = ['日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日']
+  const days = [
+    '日曜日',
+    '月曜日',
+    '火曜日',
+    '水曜日',
+    '木曜日',
+    '金曜日',
+    '土曜日',
+  ]
   return days[date.getDay()]
 }
 
 export function isLeapYear(year: number): boolean {
-  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 }
 
-export function getAgeInDifferentUnits(birthDate: Date, currentDate: Date = new Date()): {
+export function getAgeInDifferentUnits(
+  birthDate: Date,
+  currentDate: Date = new Date()
+): {
   weeks: number
   months: number
   years: number
@@ -186,12 +227,12 @@ export function getAgeInDifferentUnits(birthDate: Date, currentDate: Date = new 
 } {
   const timeDiff = currentDate.getTime() - birthDate.getTime()
   const days = timeDiff / (1000 * 60 * 60 * 24)
-  
+
   return {
     weeks: Math.floor(days / 7),
     months: Math.floor(days / 30.44), // Average days in a month
     years: Math.floor(days / 365.25), // Account for leap years
     decades: Math.floor(days / 3652.5),
-    centuries: Math.floor(days / 36525)
+    centuries: Math.floor(days / 36525),
   }
 }

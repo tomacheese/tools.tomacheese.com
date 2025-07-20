@@ -11,7 +11,7 @@ import {
   convertBase,
   randomInt,
   calculatePercentage,
-  calculateValueFromPercentage
+  calculateValueFromPercentage,
 } from '~/utils/math'
 
 describe('Math utilities', () => {

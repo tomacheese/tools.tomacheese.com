@@ -18,7 +18,9 @@ test.describe('BMI Calculator', () => {
 
     await expect(page.locator('.result-section')).toBeVisible()
     await expect(page.locator('.result-value').first()).toHaveText('22.5')
-    await expect(page.locator('.result-value.healthy')).toContainText('普通体重')
+    await expect(page.locator('.result-value.healthy')).toContainText(
+      '普通体重'
+    )
   })
 
   test('should calculate BMI for underweight', async ({ page }) => {
@@ -36,7 +38,9 @@ test.describe('BMI Calculator', () => {
 
     await expect(page.locator('.result-section')).toBeVisible()
     await expect(page.locator('.result-value').first()).toHaveText('29.4')
-    await expect(page.locator('.result-value.unhealthy')).toContainText('肥満（1度）')
+    await expect(page.locator('.result-value.unhealthy')).toContainText(
+      '肥満（1度）'
+    )
   })
 
   test('should show active category in chart', async ({ page }) => {
@@ -44,8 +48,12 @@ test.describe('BMI Calculator', () => {
     await page.locator('#weight').fill('65')
 
     await expect(page.locator('.chart-item.active')).toBeVisible()
-    await expect(page.locator('.chart-item.active .range')).toContainText('18.5-24.9')
-    await expect(page.locator('.chart-item.active .category')).toContainText('普通体重')
+    await expect(page.locator('.chart-item.active .range')).toContainText(
+      '18.5-24.9'
+    )
+    await expect(page.locator('.chart-item.active .category')).toContainText(
+      '普通体重'
+    )
   })
 
   test('should show error for invalid height', async ({ page }) => {
@@ -53,7 +61,9 @@ test.describe('BMI Calculator', () => {
     await page.locator('#weight').fill('65')
 
     await expect(page.locator('.error-message')).toBeVisible()
-    await expect(page.locator('.error-message')).toContainText('身長はメートル単位で入力してください')
+    await expect(page.locator('.error-message')).toContainText(
+      '身長はメートル単位で入力してください'
+    )
   })
 
   test('should show error for zero values', async ({ page }) => {
@@ -61,15 +71,17 @@ test.describe('BMI Calculator', () => {
     await page.locator('#weight').fill('65')
 
     await expect(page.locator('.error-message')).toBeVisible()
-    await expect(page.locator('.error-message')).toContainText('身長と体重は正の数')
+    await expect(page.locator('.error-message')).toContainText(
+      '身長と体重は正の数'
+    )
   })
 
   test('should not show result with empty inputs', async ({ page }) => {
     await expect(page.locator('.result-section')).not.toBeVisible()
-    
+
     await page.locator('#height').fill('1.70')
     await expect(page.locator('.result-section')).not.toBeVisible()
-    
+
     await page.locator('#weight').fill('65')
     await expect(page.locator('.result-section')).toBeVisible()
   })
@@ -78,21 +90,21 @@ test.describe('BMI Calculator', () => {
     await page.locator('#height').fill('1.70')
     await page.locator('#weight').fill('60')
     await expect(page.locator('.result-value').first()).toHaveText('20.8')
-    
+
     await page.locator('#weight').fill('70')
     await expect(page.locator('.result-value').first()).toHaveText('24.2')
   })
 
   test('should be mobile responsive', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    
+
     await expect(page.locator('h1')).toBeVisible()
     await expect(page.locator('#height')).toBeVisible()
     await expect(page.locator('#weight')).toBeVisible()
-    
+
     await page.locator('#height').fill('1.70')
     await page.locator('#weight').fill('65')
-    
+
     await expect(page.locator('.result-section')).toBeVisible()
     await expect(page.locator('.chart-grid')).toBeVisible()
   })
@@ -103,9 +115,13 @@ test.describe('BMI Calculator', () => {
   })
 
   test('should show usage instructions', async ({ page }) => {
-    await expect(page.locator('h4').filter({ hasText: '使用方法' })).toBeVisible()
-    await expect(page.locator('h4').filter({ hasText: '注意事項' })).toBeVisible()
-    
+    await expect(
+      page.locator('h4').filter({ hasText: '使用方法' })
+    ).toBeVisible()
+    await expect(
+      page.locator('h4').filter({ hasText: '注意事項' })
+    ).toBeVisible()
+
     await expect(page.getByText('BMI = 体重(kg) ÷ 身長(m)²')).toBeVisible()
     await expect(page.getByText('日本肥満学会の基準')).toBeVisible()
   })

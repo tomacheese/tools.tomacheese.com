@@ -10,7 +10,7 @@ export default defineVitestConfig({
       provider: 'v8',
       include: ['composables/**', 'utils/**', 'pages/**'],
       exclude: ['tests/**', '**/*.test.ts', '**/*.spec.ts'],
-      reporter: ['text', 'html', 'lcov']
-    }
-  }
+      reporter: ['text', 'html', 'lcov'],
+    },
+  },
 })

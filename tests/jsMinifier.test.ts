@@ -5,7 +5,7 @@ import {
   validateJavaScript,
   calculateMinifyStats,
   formatBytes,
-  type MinifyOptions
+  type MinifyOptions,
 } from '~/utils/jsMinifier'
 
 describe('jsMinifier', () => {
@@ -99,7 +99,7 @@ debugger;`
         removeWhitespace: true,
         shortenVariables: true,
         removeConsoleLog: true,
-        removeDebugger: true
+        removeDebugger: true,
       }
       const result = minifyJavaScript(input, options)
       expect(result).not.toContain('Comment')
@@ -112,7 +112,8 @@ debugger;`
 
   describe('beautifyJavaScript', () => {
     it('should add proper indentation', () => {
-      const input = 'function test(){const x=5;if(x>0){return true;}return false;}'
+      const input =
+        'function test(){const x=5;if(x>0){return true;}return false;}'
       const result = beautifyJavaScript(input)
       expect(result).toContain('\n')
       expect(result).toContain('  ')
@@ -153,7 +154,7 @@ debugger;`
       const original = 'const x = 5;    // Comment\nconst y = 10;'
       const minified = 'const x=5;const y=10;'
       const stats = calculateMinifyStats(original, minified)
-      
+
       expect(stats.original).toBe(original)
       expect(stats.minified).toBe(minified)
       expect(stats.originalSize).toBeGreaterThan(stats.minifiedSize)

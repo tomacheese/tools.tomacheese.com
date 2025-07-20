@@ -22,7 +22,7 @@
             min="0"
             max="360"
             @input="updateGradient"
-          >
+          />
         </div>
 
         <div v-if="config.type === 'radial'" class="control-group">
@@ -51,7 +51,7 @@
             min="0"
             max="100"
             @input="updateGradient"
-          >
+          />
           <label>位置 Y: {{ config.position.y }}%</label>
           <input
             v-model.number="config.position.y"
@@ -59,7 +59,7 @@
             min="0"
             max="100"
             @input="updateGradient"
-          >
+          />
         </div>
 
         <label class="checkbox-label">
@@ -67,25 +67,25 @@
             v-model="config.repeating"
             type="checkbox"
             @change="updateGradient"
-          >
+          />
           繰り返しグラデーション
         </label>
 
         <div class="stops-section">
           <h3>カラーストップ</h3>
-          <div v-for="(stop, index) in config.stops" :key="index" class="stop-control">
-            <input
-              v-model="stop.color"
-              type="color"
-              @input="updateGradient"
-            >
+          <div
+            v-for="(stop, index) in config.stops"
+            :key="index"
+            class="stop-control"
+          >
+            <input v-model="stop.color" type="color" @input="updateGradient" />
             <input
               v-model.number="stop.position"
               type="number"
               min="0"
               max="100"
               @input="updateGradient"
-            >
+            />
             <span>%</span>
             <button
               v-if="config.stops.length > 2"
@@ -136,9 +136,7 @@
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button class="copy-button" @click="copyCode">
-            コピー
-          </button>
+          <button class="copy-button" @click="copyCode">コピー</button>
         </div>
 
         <div class="export-section">
@@ -160,7 +158,7 @@ import {
   exportGradientAsSass,
   exportGradientAsJSON,
   presetGradients,
-  type GradientConfig
+  type GradientConfig,
 } from '~/utils/gradientGenerator'
 
 const config = ref<GradientConfig>({
@@ -171,9 +169,9 @@ const config = ref<GradientConfig>({
   position: { x: 50, y: 50 },
   stops: [
     { color: '#667eea', position: 0 },
-    { color: '#764ba2', position: 100 }
+    { color: '#764ba2', position: 100 },
   ],
-  repeating: false
+  repeating: false,
 })
 
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
@@ -192,7 +190,7 @@ const addStop = () => {
   const newPosition = Math.min(lastStop.position + 10, 100)
   config.value.stops.push({
     color: '#000000',
-    position: newPosition
+    position: newPosition,
   })
   updateGradient()
 }
@@ -253,9 +251,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'CSSのgradientコードを視覚的に生成します。線形、放射状、円錐グラデーションに対応。'
-    }
-  ]
+      content:
+        'CSSのgradientコードを視覚的に生成します。線形、放射状、円錐グラデーションに対応。',
+    },
+  ],
 })
 </script>
 
@@ -290,14 +289,14 @@ useHead({
 }
 
 .control-group select,
-.control-group input[type="range"] {
+.control-group input[type='range'] {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
 
-.control-group input[type="range"] {
+.control-group input[type='range'] {
   padding: 0;
 }
 
@@ -320,7 +319,7 @@ useHead({
   margin-bottom: 0.5rem;
 }
 
-.stop-control input[type="color"] {
+.stop-control input[type='color'] {
   width: 50px;
   height: 35px;
   border: 1px solid #ddd;
@@ -328,7 +327,7 @@ useHead({
   cursor: pointer;
 }
 
-.stop-control input[type="number"] {
+.stop-control input[type='number'] {
   width: 60px;
   padding: 0.25rem;
   border: 1px solid #ddd;
@@ -383,7 +382,7 @@ useHead({
   text-transform: capitalize;
   font-weight: 500;
   color: white;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .preset-button:hover {
@@ -400,7 +399,7 @@ useHead({
   width: 100%;
   height: 300px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .code-output {

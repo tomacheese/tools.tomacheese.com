@@ -55,15 +55,23 @@
     <div v-if="generatedUUIDs.length > 0" class="result">
       <h3>生成されたUUID</h3>
       <div class="uuid-list">
-        <div v-for="(uuid, index) in generatedUUIDs" :key="index" class="uuid-item">
+        <div
+          v-for="(uuid, index) in generatedUUIDs"
+          :key="index"
+          class="uuid-item"
+        >
           <code>{{ uuid }}</code>
           <button class="small" @click="copyToClipboard(uuid)">コピー</button>
         </div>
       </div>
-      
+
       <div class="bulk-actions">
-        <button class="secondary" @click="copyAllToClipboard">すべてコピー</button>
-        <button class="secondary" @click="downloadAsFile">ファイルとしてダウンロード</button>
+        <button class="secondary" @click="copyAllToClipboard">
+          すべてコピー
+        </button>
+        <button class="secondary" @click="downloadAsFile">
+          ファイルとしてダウンロード
+        </button>
       </div>
     </div>
 
@@ -78,7 +86,11 @@
           placeholder="例: 550e8400-e29b-41d4-a716-446655440000"
           @input="validateUUID"
         />
-        <div v-if="validationResult !== null" class="validation-result" :class="{ valid: validationResult, invalid: !validationResult }">
+        <div
+          v-if="validationResult !== null"
+          class="validation-result"
+          :class="{ valid: validationResult, invalid: !validationResult }"
+        >
           {{ validationResult ? '✓ 有効なUUID v4です' : '✗ 無効なUUIDです' }}
         </div>
       </div>
@@ -87,12 +99,14 @@
     <div class="info-section">
       <h3>UUID v4について</h3>
       <p>
-        UUID (Universally Unique Identifier) v4は、ランダムに生成される128ビットの識別子です。
-        形式は <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code> で、
+        UUID (Universally Unique Identifier)
+        v4は、ランダムに生成される128ビットの識別子です。 形式は
+        <code>xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</code> で、
         4はバージョン番号、yは8、9、A、Bのいずれかになります。
       </p>
       <p>
-        UUID v4の衝突確率は非常に低く、10億個のUUIDを生成しても衝突する確率は0.00000006%未満です。
+        UUID
+        v4の衝突確率は非常に低く、10億個のUUIDを生成しても衝突する確率は0.00000006%未満です。
       </p>
     </div>
   </div>
@@ -103,7 +117,9 @@ import { ref } from 'vue'
 import { generateUUIDsWithOptions, isValidUUID } from '~/utils/uuid'
 
 const count = ref(1)
-const format = ref<'standard' | 'uppercase' | 'lowercase' | 'no-hyphens'>('standard')
+const format = ref<'standard' | 'uppercase' | 'lowercase' | 'no-hyphens'>(
+  'standard'
+)
 const prefix = ref('')
 const suffix = ref('')
 const generatedUUIDs = ref<string[]>([])
@@ -115,7 +131,7 @@ const generateUUIDs = () => {
     count: count.value,
     format: format.value,
     prefix: prefix.value,
-    suffix: suffix.value
+    suffix: suffix.value,
   })
 }
 
@@ -156,7 +172,7 @@ const validateUUID = () => {
     validationResult.value = null
     return
   }
-  
+
   // Remove any prefix/suffix for validation
   const cleanUUID = validateInput.value.trim()
   validationResult.value = isValidUUID(cleanUUID)
@@ -165,8 +181,8 @@ const validateUUID = () => {
 useHead({
   title: 'UUID生成 - Web Tools',
   meta: [
-    { name: 'description', content: 'ランダムなUUID (v4) を生成します。' }
-  ]
+    { name: 'description', content: 'ランダムなUUID (v4) を生成します。' },
+  ],
 })
 </script>
 

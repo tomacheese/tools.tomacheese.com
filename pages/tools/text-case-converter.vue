@@ -12,7 +12,7 @@
         class="form-control"
         rows="4"
       ></textarea>
-      
+
       <div class="quick-actions">
         <button class="clear-btn" @click="clearText">クリア</button>
         <button class="paste-btn" @click="pasteFromClipboard">貼り付け</button>
@@ -36,7 +36,7 @@
               {{ copiedItems[conversion.id] ? 'コピー済み' : 'コピー' }}
             </button>
           </div>
-          
+
           <div class="conversion-result">
             <div class="result-text">{{ conversion.result }}</div>
             <div class="result-info">
@@ -84,68 +84,68 @@ const conversions = computed(() => {
       id: 'lowercase',
       name: '小文字 (lowercase)',
       result: text.toLowerCase(),
-      description: '全ての文字を小文字に変換'
+      description: '全ての文字を小文字に変換',
     },
     {
       id: 'uppercase',
       name: '大文字 (UPPERCASE)',
       result: text.toUpperCase(),
-      description: '全ての文字を大文字に変換'
+      description: '全ての文字を大文字に変換',
     },
     {
       id: 'capitalize',
       name: '頭文字大文字 (Capitalize)',
-      result: text.replace(/\b\w/g, (char) => char.toUpperCase()),
-      description: '各単語の最初の文字を大文字に変換'
+      result: text.replace(/\b\w/g, char => char.toUpperCase()),
+      description: '各単語の最初の文字を大文字に変換',
     },
     {
       id: 'camelcase',
       name: 'キャメルケース (camelCase)',
       result: toCamelCase(text),
-      description: '最初の単語は小文字、後の単語の最初は大文字'
+      description: '最初の単語は小文字、後の単語の最初は大文字',
     },
     {
       id: 'pascalcase',
       name: 'パスカルケース (PascalCase)',
       result: toPascalCase(text),
-      description: '全ての単語の最初の文字を大文字に'
+      description: '全ての単語の最初の文字を大文字に',
     },
     {
       id: 'snakecase',
       name: 'スネークケース (snake_case)',
       result: toSnakeCase(text),
-      description: '単語をアンダースコアで区切り、小文字に変換'
+      description: '単語をアンダースコアで区切り、小文字に変換',
     },
     {
       id: 'kebabcase',
       name: 'ケバブケース (kebab-case)',
       result: toKebabCase(text),
-      description: '単語をハイフンで区切り、小文字に変換'
+      description: '単語をハイフンで区切り、小文字に変換',
     },
     {
       id: 'constantcase',
       name: '定数ケース (CONSTANT_CASE)',
       result: toConstantCase(text),
-      description: '単語をアンダースコアで区切り、大文字に変換'
+      description: '単語をアンダースコアで区切り、大文字に変換',
     },
     {
       id: 'sentence',
       name: '文型 (Sentence case)',
       result: toSentenceCase(text),
-      description: '最初の文字のみ大文字、残りは小文字'
+      description: '最初の文字のみ大文字、残りは小文字',
     },
     {
       id: 'alternating',
       name: '交互大小文字 (AlTeRnAtInG cAsE)',
       result: toAlternatingCase(text),
-      description: '文字を交互に大文字・小文字で表示'
+      description: '文字を交互に大文字・小文字で表示',
     },
     {
       id: 'reverse',
       name: '逆順 (reverse)',
       result: text.split('').reverse().join(''),
-      description: '文字列を逆順に並び替え'
-    }
+      description: '文字列を逆順に並び替え',
+    },
   ]
 })
 
@@ -162,7 +162,7 @@ const toCamelCase = (text: string): string => {
 // パスカルケース変換
 const toPascalCase = (text: string): string => {
   return text
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => word.toUpperCase())
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, word => word.toUpperCase())
     .replace(/\s+/g, '')
     .replace(/[^a-zA-Z0-9]/g, '')
 }
@@ -212,7 +212,7 @@ const toAlternatingCase = (text: string): string => {
 const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
-    
+
     // 対応するアイテムのコピー状態を更新
     const conversion = conversions.value.find(c => c.result === text)
     if (conversion) {
@@ -254,15 +254,19 @@ const examples = [
   { name: 'プログラミング変数', text: 'user_name firstName lastName' },
   { name: 'API エンドポイント', text: 'get-user-profile' },
   { name: '日本語混在', text: 'こんにちは World テスト Text' },
-  { name: '記号混在', text: 'test-case_example@domain.com' }
+  { name: '記号混在', text: 'test-case_example@domain.com' },
 ]
 
 // メタデータ
 useHead({
   title: 'テキスト形式変換 - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: 'テキストを大文字・小文字・キャメルケース・スネークケースなど様々な形式に変換するツールです。' }
-  ]
+    {
+      name: 'description',
+      content:
+        'テキストを大文字・小文字・キャメルケース・スネークケースなど様々な形式に変換するツールです。',
+    },
+  ],
 })
 </script>
 
@@ -299,7 +303,8 @@ useHead({
   margin-top: 10px;
 }
 
-.clear-btn, .paste-btn {
+.clear-btn,
+.paste-btn {
   background-color: #6c757d;
   color: white;
   border: none;
@@ -310,7 +315,8 @@ useHead({
   transition: background-color 0.2s;
 }
 
-.clear-btn:hover, .paste-btn:hover {
+.clear-btn:hover,
+.paste-btn:hover {
   background-color: #5a6268;
 }
 

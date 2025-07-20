@@ -3,7 +3,13 @@
  */
 
 export interface SqlFormatOptions {
-  dialect: 'standard' | 'mysql' | 'postgresql' | 'sqlserver' | 'oracle' | 'sqlite'
+  dialect:
+    | 'standard'
+    | 'mysql'
+    | 'postgresql'
+    | 'sqlserver'
+    | 'oracle'
+    | 'sqlite'
   indentSize: number | 'tab'
   keywordCase: 'upper' | 'lower' | 'preserve'
   linesBetweenQueries: number
@@ -27,30 +33,112 @@ export interface SqlStatistics {
 
 // SQL keywords that should be on new lines
 const LINE_BREAK_KEYWORDS = [
-  'SELECT', 'FROM', 'WHERE', 'GROUP BY', 'HAVING', 'ORDER BY',
-  'INNER JOIN', 'LEFT JOIN', 'RIGHT JOIN', 'FULL JOIN', 'CROSS JOIN',
-  'ON', 'AND', 'OR', 'UNION', 'UNION ALL', 'EXCEPT', 'INTERSECT',
-  'INSERT INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE FROM',
-  'CREATE', 'ALTER', 'DROP', 'TRUNCATE', 'WITH'
+  'SELECT',
+  'FROM',
+  'WHERE',
+  'GROUP BY',
+  'HAVING',
+  'ORDER BY',
+  'INNER JOIN',
+  'LEFT JOIN',
+  'RIGHT JOIN',
+  'FULL JOIN',
+  'CROSS JOIN',
+  'ON',
+  'AND',
+  'OR',
+  'UNION',
+  'UNION ALL',
+  'EXCEPT',
+  'INTERSECT',
+  'INSERT INTO',
+  'VALUES',
+  'UPDATE',
+  'SET',
+  'DELETE FROM',
+  'CREATE',
+  'ALTER',
+  'DROP',
+  'TRUNCATE',
+  'WITH',
 ]
 
 // All SQL keywords for case conversion
 const SQL_KEYWORDS = [
   ...LINE_BREAK_KEYWORDS,
-  'AS', 'DISTINCT', 'ALL', 'ASC', 'DESC', 'BETWEEN', 'IN', 'LIKE', 'ILIKE',
-  'NOT', 'NULL', 'IS', 'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END',
-  'LIMIT', 'OFFSET', 'TOP', 'ROWNUM', 'FETCH', 'FIRST', 'NEXT', 'ROWS', 'ONLY',
-  'TABLE', 'DATABASE', 'SCHEMA', 'INDEX', 'VIEW', 'PROCEDURE', 'FUNCTION',
-  'TRIGGER', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES', 'UNIQUE', 'CHECK',
-  'DEFAULT', 'CONSTRAINT', 'CASCADE', 'RESTRICT', 'INTO', 'USING'
+  'AS',
+  'DISTINCT',
+  'ALL',
+  'ASC',
+  'DESC',
+  'BETWEEN',
+  'IN',
+  'LIKE',
+  'ILIKE',
+  'NOT',
+  'NULL',
+  'IS',
+  'EXISTS',
+  'CASE',
+  'WHEN',
+  'THEN',
+  'ELSE',
+  'END',
+  'LIMIT',
+  'OFFSET',
+  'TOP',
+  'ROWNUM',
+  'FETCH',
+  'FIRST',
+  'NEXT',
+  'ROWS',
+  'ONLY',
+  'TABLE',
+  'DATABASE',
+  'SCHEMA',
+  'INDEX',
+  'VIEW',
+  'PROCEDURE',
+  'FUNCTION',
+  'TRIGGER',
+  'PRIMARY',
+  'KEY',
+  'FOREIGN',
+  'REFERENCES',
+  'UNIQUE',
+  'CHECK',
+  'DEFAULT',
+  'CONSTRAINT',
+  'CASCADE',
+  'RESTRICT',
+  'INTO',
+  'USING',
 ]
 
 // SQL functions
 const SQL_FUNCTIONS = [
-  'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'ROUND', 'FLOOR', 'CEIL',
-  'CONCAT', 'SUBSTRING', 'LENGTH', 'TRIM', 'UPPER', 'LOWER',
-  'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'NOW',
-  'COALESCE', 'NULLIF', 'CAST', 'CONVERT'
+  'COUNT',
+  'SUM',
+  'AVG',
+  'MIN',
+  'MAX',
+  'ROUND',
+  'FLOOR',
+  'CEIL',
+  'CONCAT',
+  'SUBSTRING',
+  'LENGTH',
+  'TRIM',
+  'UPPER',
+  'LOWER',
+  'CURRENT_DATE',
+  'CURRENT_TIME',
+  'CURRENT_TIMESTAMP',
+  'NOW',
+  'COALESCE',
+  'NULLIF',
+  'CAST',
+  'CONVERT',
 ]
 
 /**
@@ -59,9 +147,10 @@ const SQL_FUNCTIONS = [
 export function formatSql(sql: string, options: SqlFormatOptions): string {
   if (!sql.trim()) return ''
 
-  const indent = options.indentSize === 'tab' 
-    ? '\t' 
-    : ' '.repeat(options.indentSize as number)
+  const indent =
+    options.indentSize === 'tab'
+      ? '\t'
+      : ' '.repeat(options.indentSize as number)
 
   let formatted = sql
     .replace(/\s+/g, ' ') // Normalize whitespace
@@ -70,7 +159,7 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
   // Handle string literals and comments
   const stringPattern = /'([^'\\]|\\.)*'/g
   const strings: string[] = []
-  formatted = formatted.replace(stringPattern, (match) => {
+  formatted = formatted.replace(stringPattern, match => {
     strings.push(match)
     return `__STRING_${strings.length - 1}__`
   })
@@ -87,23 +176,22 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
     allKeywords.forEach(keyword => {
       const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
       formatted = formatted.replace(regex, match => {
-        return options.keywordCase === 'upper' ? match.toUpperCase() : match.toLowerCase()
+        return options.keywordCase === 'upper'
+          ? match.toUpperCase()
+          : match.toLowerCase()
       })
     })
   }
 
   // Split into lines and apply indentation
-  const lines = formatted.split('\n').map(line => line.trim()).filter(line => line)
+  const lines = formatted
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line)
   const indentedLines: string[] = []
   let currentIndentLevel = 0
-  let inParentheses = 0
 
   lines.forEach((line, index) => {
-    // Track parentheses
-    const openCount = (line.match(/\(/g) || []).length
-    const closeCount = (line.match(/\)/g) || []).length
-    inParentheses += openCount - closeCount
-
     // Decrease indent for certain keywords
     if (/^(WHERE|GROUP BY|ORDER BY|HAVING|ON|AND|OR)/.test(line)) {
       currentIndentLevel = Math.max(0, currentIndentLevel - 1)
@@ -148,7 +236,7 @@ export function minifySql(sql: string): string {
   // Preserve strings
   const stringPattern = /'([^'\\]|\\.)*'/g
   const strings: string[] = []
-  let minified = sql.replace(stringPattern, (match) => {
+  let minified = sql.replace(stringPattern, match => {
     strings.push(match)
     return `__STRING_${strings.length - 1}__`
   })
@@ -175,7 +263,10 @@ export function minifySql(sql: string): string {
 /**
  * Basic SQL syntax validation
  */
-export function validateSql(sql: string): { isValid: boolean; errors: string[] } {
+export function validateSql(sql: string): {
+  isValid: boolean
+  errors: string[]
+} {
   const errors: string[] = []
 
   if (!sql.trim()) {
@@ -186,7 +277,9 @@ export function validateSql(sql: string): { isValid: boolean; errors: string[] }
   const openParens = (sql.match(/\(/g) || []).length
   const closeParens = (sql.match(/\)/g) || []).length
   if (openParens !== closeParens) {
-    errors.push(`括弧の数が一致しません（開き: ${openParens}, 閉じ: ${closeParens}）`)
+    errors.push(
+      `括弧の数が一致しません（開き: ${openParens}, 閉じ: ${closeParens}）`
+    )
   }
 
   // Check quotes balance
@@ -202,12 +295,19 @@ export function validateSql(sql: string): { isValid: boolean; errors: string[] }
 
   // Check for common syntax errors
   const upperSql = sql.toUpperCase()
-  
+
   // SELECT without FROM (but allow subqueries)
-  if (upperSql.includes('SELECT') && !upperSql.includes('FROM') && !upperSql.includes('DUAL')) {
+  if (
+    upperSql.includes('SELECT') &&
+    !upperSql.includes('FROM') &&
+    !upperSql.includes('DUAL')
+  ) {
     const selectIndex = upperSql.indexOf('SELECT')
     const nextSelect = upperSql.indexOf('SELECT', selectIndex + 1)
-    if (nextSelect === -1 || upperSql.substring(selectIndex, nextSelect).includes(';')) {
+    if (
+      nextSelect === -1 ||
+      upperSql.substring(selectIndex, nextSelect).includes(';')
+    ) {
       errors.push('SELECT文にFROM句がありません')
     }
   }
@@ -220,7 +320,7 @@ export function validateSql(sql: string): { isValid: boolean; errors: string[] }
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   }
 }
 
@@ -229,7 +329,7 @@ export function validateSql(sql: string): { isValid: boolean; errors: string[] }
  */
 export function extractSqlStatistics(sql: string): SqlStatistics {
   const upperSql = sql.toUpperCase()
-  
+
   const stats: SqlStatistics = {
     charCount: sql.length,
     lineCount: sql.split('\n').length,
@@ -242,8 +342,8 @@ export function extractSqlStatistics(sql: string): SqlStatistics {
       insert: 0,
       update: 0,
       delete: 0,
-      ddl: 0
-    }
+      ddl: 0,
+    },
   }
 
   // Count query types
@@ -251,10 +351,14 @@ export function extractSqlStatistics(sql: string): SqlStatistics {
   stats.queryTypes.insert = (upperSql.match(/\bINSERT\b/g) || []).length
   stats.queryTypes.update = (upperSql.match(/\bUPDATE\b/g) || []).length
   stats.queryTypes.delete = (upperSql.match(/\bDELETE\b/g) || []).length
-  stats.queryTypes.ddl = (upperSql.match(/\b(CREATE|ALTER|DROP|TRUNCATE)\b/g) || []).length
+  stats.queryTypes.ddl = (
+    upperSql.match(/\b(CREATE|ALTER|DROP|TRUNCATE)\b/g) || []
+  ).length
 
   // Count JOINs
-  stats.joinCount = (upperSql.match(/\b(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN\b/g) || []).length
+  stats.joinCount = (
+    upperSql.match(/\b(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN\b/g) || []
+  ).length
 
   // Count WHERE conditions
   stats.whereConditions = (upperSql.match(/\bWHERE\b/g) || []).length
@@ -273,22 +377,36 @@ export function detectSqlDialect(sql: string): string {
   const upperSql = sql.toUpperCase()
 
   // MySQL specific
-  if (upperSql.includes('`') || upperSql.includes('LIMIT') && !upperSql.includes('OFFSET')) {
+  if (
+    upperSql.includes('`') ||
+    (upperSql.includes('LIMIT') && !upperSql.includes('OFFSET'))
+  ) {
     return 'mysql'
   }
 
   // PostgreSQL specific
-  if (upperSql.includes('::') || upperSql.includes('ILIKE') || upperSql.includes('RETURNING')) {
+  if (
+    upperSql.includes('::') ||
+    upperSql.includes('ILIKE') ||
+    upperSql.includes('RETURNING')
+  ) {
     return 'postgresql'
   }
 
   // SQL Server specific
-  if (upperSql.includes('TOP') || upperSql.includes('[') && upperSql.includes(']')) {
+  if (
+    upperSql.includes('TOP') ||
+    (upperSql.includes('[') && upperSql.includes(']'))
+  ) {
     return 'sqlserver'
   }
 
   // Oracle specific
-  if (upperSql.includes('ROWNUM') || upperSql.includes('CONNECT BY') || upperSql.includes('DUAL')) {
+  if (
+    upperSql.includes('ROWNUM') ||
+    upperSql.includes('CONNECT BY') ||
+    upperSql.includes('DUAL')
+  ) {
     return 'oracle'
   }
 

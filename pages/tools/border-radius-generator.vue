@@ -20,7 +20,7 @@
             v-model="config.linked"
             type="checkbox"
             @change="handleLinkedChange"
-          >
+          />
           すべての角を連動
         </label>
 
@@ -28,31 +28,37 @@
           <div class="corner-control">
             <h4>左上</h4>
             <div class="control-group">
-              <label>水平: {{ config.topLeft.horizontal }}{{ config.unit }}</label>
+              <label
+                >水平: {{ config.topLeft.horizontal }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.topLeft.horizontal"
                 type="range"
                 :min="0"
                 :max="getMaxValue()"
                 @input="handleCornerChange('topLeft')"
-              >
+              />
             </div>
             <div class="control-group">
-              <label>垂直: {{ config.topLeft.vertical }}{{ config.unit }}</label>
+              <label
+                >垂直: {{ config.topLeft.vertical }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.topLeft.vertical"
                 type="range"
                 :min="0"
                 :max="getMaxValue()"
                 @input="handleCornerChange('topLeft')"
-              >
+              />
             </div>
           </div>
 
           <div class="corner-control">
             <h4>右上</h4>
             <div class="control-group">
-              <label>水平: {{ config.topRight.horizontal }}{{ config.unit }}</label>
+              <label
+                >水平: {{ config.topRight.horizontal }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.topRight.horizontal"
                 type="range"
@@ -60,10 +66,12 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('topRight')"
-              >
+              />
             </div>
             <div class="control-group">
-              <label>垂直: {{ config.topRight.vertical }}{{ config.unit }}</label>
+              <label
+                >垂直: {{ config.topRight.vertical }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.topRight.vertical"
                 type="range"
@@ -71,14 +79,17 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('topRight')"
-              >
+              />
             </div>
           </div>
 
           <div class="corner-control">
             <h4>右下</h4>
             <div class="control-group">
-              <label>水平: {{ config.bottomRight.horizontal }}{{ config.unit }}</label>
+              <label
+                >水平: {{ config.bottomRight.horizontal
+                }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.bottomRight.horizontal"
                 type="range"
@@ -86,10 +97,12 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('bottomRight')"
-              >
+              />
             </div>
             <div class="control-group">
-              <label>垂直: {{ config.bottomRight.vertical }}{{ config.unit }}</label>
+              <label
+                >垂直: {{ config.bottomRight.vertical }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.bottomRight.vertical"
                 type="range"
@@ -97,14 +110,17 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('bottomRight')"
-              >
+              />
             </div>
           </div>
 
           <div class="corner-control">
             <h4>左下</h4>
             <div class="control-group">
-              <label>水平: {{ config.bottomLeft.horizontal }}{{ config.unit }}</label>
+              <label
+                >水平: {{ config.bottomLeft.horizontal
+                }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.bottomLeft.horizontal"
                 type="range"
@@ -112,10 +128,12 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('bottomLeft')"
-              >
+              />
             </div>
             <div class="control-group">
-              <label>垂直: {{ config.bottomLeft.vertical }}{{ config.unit }}</label>
+              <label
+                >垂直: {{ config.bottomLeft.vertical }}{{ config.unit }}</label
+              >
               <input
                 v-model.number="config.bottomLeft.vertical"
                 type="range"
@@ -123,7 +141,7 @@
                 :max="getMaxValue()"
                 :disabled="config.linked"
                 @input="handleCornerChange('bottomLeft')"
-              >
+              />
             </div>
           </div>
         </div>
@@ -174,9 +192,7 @@
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button class="copy-button" @click="copyCode">
-            コピー
-          </button>
+          <button class="copy-button" @click="copyCode">コピー</button>
         </div>
 
         <div class="export-section">
@@ -198,7 +214,7 @@ import {
   exportBorderRadiusAsSass,
   exportBorderRadiusAsJSON,
   presetBorderRadius,
-  type BorderRadiusConfig
+  type BorderRadiusConfig,
 } from '~/utils/borderRadiusGenerator'
 
 const config = ref<BorderRadiusConfig>({
@@ -207,7 +223,7 @@ const config = ref<BorderRadiusConfig>({
   bottomRight: { horizontal: 20, vertical: 20 },
   bottomLeft: { horizontal: 20, vertical: 20 },
   unit: 'px',
-  linked: true
+  linked: true,
 })
 
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
@@ -257,7 +273,7 @@ const applyPreset = (preset: BorderRadiusConfig) => {
     topLeft: { ...preset.topLeft },
     topRight: { ...preset.topRight },
     bottomRight: { ...preset.bottomRight },
-    bottomLeft: { ...preset.bottomLeft }
+    bottomLeft: { ...preset.bottomLeft },
   }
   updatePreview()
 }
@@ -305,9 +321,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'CSSのborder-radiusプロパティを視覚的に生成します。各角の水平・垂直方向を個別に調整可能。'
-    }
-  ]
+      content:
+        'CSSのborder-radiusプロパティを視覚的に生成します。各角の水平・垂直方向を個別に調整可能。',
+    },
+  ],
 })
 </script>
 
@@ -380,11 +397,11 @@ useHead({
   color: #666;
 }
 
-.control-group input[type="range"] {
+.control-group input[type='range'] {
   width: 100%;
 }
 
-.control-group input[type="range"]:disabled {
+.control-group input[type='range']:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

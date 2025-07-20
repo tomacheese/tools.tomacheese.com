@@ -1,18 +1,20 @@
 <template>
   <div class="tool-container">
     <h1>カロリー計算</h1>
-    <p>基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素の配分を提案します。</p>
+    <p>
+      基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素の配分を提案します。
+    </p>
 
     <div class="input-section">
       <div class="form-group">
         <label>性別</label>
         <div class="radio-group">
           <label class="radio-label">
-            <input v-model="gender" type="radio" value="male">
+            <input v-model="gender" type="radio" value="male" />
             男性
           </label>
           <label class="radio-label">
-            <input v-model="gender" type="radio" value="female">
+            <input v-model="gender" type="radio" value="female" />
             女性
           </label>
         </div>
@@ -28,7 +30,7 @@
           max="100"
           step="1"
           placeholder="30"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -42,7 +44,7 @@
             max="300"
             step="0.1"
             placeholder="60"
-          >
+          />
           <select v-model="weightUnit">
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>
@@ -61,7 +63,7 @@
             max="250"
             step="1"
             placeholder="170"
-          >
+          />
           <select v-model="heightUnit">
             <option value="cm">cm</option>
             <option value="ft">ft</option>
@@ -94,7 +96,7 @@
 
     <div v-if="result" class="result">
       <h2>計算結果</h2>
-      
+
       <div class="result-summary">
         <div class="summary-item">
           <span class="label">基礎代謝量（BMR）</span>
@@ -108,8 +110,12 @@
         </div>
         <div class="summary-item highlight">
           <span class="label">推奨摂取カロリー</span>
-          <span class="value">{{ formatCalories(result.recommendedCalories) }}</span>
-          <span class="description">{{ getGoalDescription(goal) }}のための目標カロリー</span>
+          <span class="value">{{
+            formatCalories(result.recommendedCalories)
+          }}</span>
+          <span class="description"
+            >{{ getGoalDescription(goal) }}のための目標カロリー</span
+          >
         </div>
       </div>
 
@@ -118,25 +124,33 @@
         <div class="macro-item">
           <div class="macro-header">
             <span class="macro-name">タンパク質</span>
-            <span class="macro-value">{{ formatGrams(result.proteinGrams) }}</span>
+            <span class="macro-value">{{
+              formatGrams(result.proteinGrams)
+            }}</span>
           </div>
           <div class="macro-bar">
             <div class="macro-fill protein" :style="{ width: '30%' }"></div>
           </div>
-          <span class="macro-calories">{{ result.proteinGrams * 4 }} kcal (30%)</span>
+          <span class="macro-calories"
+            >{{ result.proteinGrams * 4 }} kcal (30%)</span
+          >
         </div>
-        
+
         <div class="macro-item">
           <div class="macro-header">
             <span class="macro-name">炭水化物</span>
-            <span class="macro-value">{{ formatGrams(result.carbsGrams) }}</span>
+            <span class="macro-value">{{
+              formatGrams(result.carbsGrams)
+            }}</span>
           </div>
           <div class="macro-bar">
             <div class="macro-fill carbs" :style="{ width: '40%' }"></div>
           </div>
-          <span class="macro-calories">{{ result.carbsGrams * 4 }} kcal (40%)</span>
+          <span class="macro-calories"
+            >{{ result.carbsGrams * 4 }} kcal (40%)</span
+          >
         </div>
-        
+
         <div class="macro-item">
           <div class="macro-header">
             <span class="macro-name">脂質</span>
@@ -145,17 +159,27 @@
           <div class="macro-bar">
             <div class="macro-fill fat" :style="{ width: '30%' }"></div>
           </div>
-          <span class="macro-calories">{{ result.fatGrams * 9 }} kcal (30%)</span>
+          <span class="macro-calories"
+            >{{ result.fatGrams * 9 }} kcal (30%)</span
+          >
         </div>
       </div>
 
       <div class="info-box">
         <h4>計算方法について</h4>
         <ul>
-          <li>基礎代謝量（BMR）は、Mifflin-St Jeor式を使用して計算しています</li>
-          <li>総消費カロリー（TDEE）は、BMRに活動レベル係数を掛けて算出しています</li>
-          <li>減量・増量の場合は、週0.5kgの変化を目標に±500kcalで調整しています</li>
-          <li>栄養素配分は、タンパク質30%、炭水化物40%、脂質30%の標準的な配分です</li>
+          <li>
+            基礎代謝量（BMR）は、Mifflin-St Jeor式を使用して計算しています
+          </li>
+          <li>
+            総消費カロリー（TDEE）は、BMRに活動レベル係数を掛けて算出しています
+          </li>
+          <li>
+            減量・増量の場合は、週0.5kgの変化を目標に±500kcalで調整しています
+          </li>
+          <li>
+            栄養素配分は、タンパク質30%、炭水化物40%、脂質30%の標準的な配分です
+          </li>
         </ul>
       </div>
     </div>
@@ -164,9 +188,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { 
-  calculateCalories, 
-  formatCalories, 
+import {
+  calculateCalories,
+  formatCalories,
   formatGrams,
   getGoalDescription,
   type Gender,
@@ -174,7 +198,7 @@ import {
   type Goal,
   type WeightUnit,
   type HeightUnit,
-  type CalorieCalculatorResult
+  type CalorieCalculatorResult,
 } from '~/utils/calorie-calculator'
 
 const gender = ref<Gender>('male')
@@ -188,7 +212,12 @@ const goal = ref<Goal>('maintain')
 const result = ref<CalorieCalculatorResult | null>(null)
 
 const calculate = () => {
-  if (!gender.value || age.value < 15 || weight.value <= 0 || height.value <= 0) {
+  if (
+    !gender.value ||
+    age.value < 15 ||
+    weight.value <= 0 ||
+    height.value <= 0
+  ) {
     alert('すべての項目を正しく入力してください')
     return
   }
@@ -201,15 +230,19 @@ const calculate = () => {
     height: height.value,
     heightUnit: heightUnit.value,
     activityLevel: activityLevel.value,
-    goal: goal.value
+    goal: goal.value,
   })
 }
 
 useHead({
   title: 'カロリー計算 | Tools',
   meta: [
-    { name: 'description', content: '基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素配分を提案します。' }
-  ]
+    {
+      name: 'description',
+      content:
+        '基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素配分を提案します。',
+    },
+  ],
 })
 </script>
 
@@ -248,7 +281,7 @@ label {
   font-weight: 500;
 }
 
-input[type="number"],
+input[type='number'],
 select {
   width: 100%;
   padding: 0.75rem;
@@ -258,7 +291,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="number"]:focus,
+input[type='number']:focus,
 select:focus {
   outline: none;
   border-color: #007bff;
@@ -276,7 +309,7 @@ select:focus {
   cursor: pointer;
 }
 
-.radio-label input[type="radio"] {
+.radio-label input[type='radio'] {
   width: auto;
   margin-right: 0.5rem;
 }
@@ -315,7 +348,9 @@ select:focus {
   border-radius: 8px;
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
   color: #333;
   margin-bottom: 1.5rem;
 }

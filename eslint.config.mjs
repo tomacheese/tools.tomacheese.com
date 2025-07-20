@@ -18,7 +18,7 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         project: './tsconfig.json',
-        extraFileExtensions: ['.vue']
+        extraFileExtensions: ['.vue'],
       },
     },
     plugins: {
@@ -26,7 +26,10 @@ export default [
     },
     rules: {
       ...tseslint.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -44,7 +47,7 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         project: './tsconfig.json',
-        extraFileExtensions: ['.vue']
+        extraFileExtensions: ['.vue'],
       },
     },
     plugins: {
@@ -57,19 +60,25 @@ export default [
       'vue/multi-word-component-names': 'off',
       'vue/no-v-html': 'off',
       'vue/require-default-prop': 'off',
-      'vue/html-self-closing': ['error', {
-        html: {
-          void: 'always',
-          normal: 'always',
-          component: 'always'
+      'vue/html-self-closing': [
+        'error',
+        {
+          html: {
+            void: 'always',
+            normal: 'always',
+            component: 'always',
+          },
+          svg: 'always',
+          math: 'always',
         },
-        svg: 'always',
-        math: 'always'
-      }],
-      'vue/max-attributes-per-line': ['error', {
-        singleline: { max: 3 },
-        multiline: { max: 1 }
-      }],
+      ],
+      'vue/max-attributes-per-line': [
+        'error',
+        {
+          singleline: { max: 3 },
+          multiline: { max: 1 },
+        },
+      ],
     },
   },
 
@@ -96,8 +105,8 @@ export default [
         console: 'readonly',
         // Node.js globals
         process: 'readonly',
-        global: 'readonly'
-      }
+        global: 'readonly',
+      },
     },
     rules: {
       'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
@@ -109,7 +118,7 @@ export default [
       'template-curly-spacing': 'error',
       'arrow-spacing': 'error',
       'generator-star-spacing': 'error',
-      'no-undef': 'off' // Disabled for Nuxt auto-imports
+      'no-undef': 'off', // Disabled for Nuxt auto-imports
     },
   },
 
@@ -124,9 +133,9 @@ export default [
         describe: 'readonly',
         it: 'readonly',
         beforeEach: 'readonly',
-        afterEach: 'readonly'
-      }
-    }
+        afterEach: 'readonly',
+      },
+    },
   },
 
   // Prettier config (should be last)
@@ -145,7 +154,7 @@ export default [
       '*.min.js',
       '*.config.js',
       '*.config.mjs',
-      'public/**'
+      'public/**',
     ],
   },
 ]

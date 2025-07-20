@@ -31,21 +31,21 @@ const BASE_WATER_PER_KG = 35
 const activityAdjustments: Record<ActivityLevel, number> = {
   sedentary: 0,
   moderate: 0.15, // +15%
-  active: 0.30     // +30%
+  active: 0.3, // +30%
 }
 
 // Climate adjustments (ml)
 const climateAdjustments: Record<Climate, number> = {
   temperate: 0,
-  hot: 500,     // +500ml for hot climate
-  cold: -200    // -200ml for cold climate
+  hot: 500, // +500ml for hot climate
+  cold: -200, // -200ml for cold climate
 }
 
 // Special condition adjustments (ml)
 const specialConditionAdjustments: Record<SpecialCondition, number> = {
   none: 0,
-  pregnancy: 300,      // +300ml during pregnancy
-  breastfeeding: 700   // +700ml during breastfeeding
+  pregnancy: 300, // +300ml during pregnancy
+  breastfeeding: 700, // +700ml during breastfeeding
 }
 
 // Exercise adjustment: 12ml per minute of exercise
@@ -71,22 +71,29 @@ export function calculateGlasses(ml: number): number {
   return Math.ceil(ml / 250)
 }
 
-export function calculateWaterIntake(input: WaterIntakeInput): WaterIntakeResult {
+export function calculateWaterIntake(
+  input: WaterIntakeInput
+): WaterIntakeResult {
   const weightKg = convertToKg(input.weight, input.weightUnit)
-  
+
   // Calculate base intake
   const baseIntake = weightKg * BASE_WATER_PER_KG
-  
+
   // Calculate adjustments
-  const activityAdjustment = baseIntake * activityAdjustments[input.activityLevel]
+  const activityAdjustment =
+    baseIntake * activityAdjustments[input.activityLevel]
   const climateAdjustment = climateAdjustments[input.climate]
   const specialAdjustment = specialConditionAdjustments[input.specialCondition]
   const exerciseAdjustment = input.exerciseMinutes * WATER_PER_EXERCISE_MINUTE
-  
+
   // Calculate total intake
-  const totalIntake = baseIntake + activityAdjustment + climateAdjustment + 
-                     specialAdjustment + exerciseAdjustment
-  
+  const totalIntake =
+    baseIntake +
+    activityAdjustment +
+    climateAdjustment +
+    specialAdjustment +
+    exerciseAdjustment
+
   return {
     baseIntake: Math.round(baseIntake),
     activityAdjustment: Math.round(activityAdjustment),
@@ -96,7 +103,7 @@ export function calculateWaterIntake(input: WaterIntakeInput): WaterIntakeResult
     totalIntake: Math.round(totalIntake),
     totalIntakeLiters: Math.round(mlToLiters(totalIntake) * 10) / 10,
     totalIntakeOunces: Math.round(mlToOunces(totalIntake)),
-    glasses: calculateGlasses(totalIntake)
+    glasses: calculateGlasses(totalIntake),
   }
 }
 
@@ -115,7 +122,7 @@ export function getActivityLevelDescription(level: ActivityLevel): string {
   const descriptions: Record<ActivityLevel, string> = {
     sedentary: '座り仕事中心・軽い活動',
     moderate: '適度な活動・軽い運動',
-    active: 'アクティブな生活・定期的な運動'
+    active: 'アクティブな生活・定期的な運動',
   }
   return descriptions[level]
 }
@@ -124,16 +131,18 @@ export function getClimateDescription(climate: Climate): string {
   const descriptions: Record<Climate, string> = {
     temperate: '温暖な気候',
     hot: '暑い気候・高温環境',
-    cold: '寒い気候・低温環境'
+    cold: '寒い気候・低温環境',
   }
   return descriptions[climate]
 }
 
-export function getSpecialConditionDescription(condition: SpecialCondition): string {
+export function getSpecialConditionDescription(
+  condition: SpecialCondition
+): string {
   const descriptions: Record<SpecialCondition, string> = {
     none: 'なし',
     pregnancy: '妊娠中',
-    breastfeeding: '授乳中'
+    breastfeeding: '授乳中',
   }
   return descriptions[condition]
 }
@@ -144,16 +153,16 @@ export function getHydrationTips(totalIntakeMl: number): string[] {
   const tips = [
     `1日を通して均等に水分を摂取しましょう（約${glasses}杯）`,
     '起床時にコップ1杯の水を飲むと良いでしょう',
-    '食事の30分前に水を飲むと消化を助けます'
+    '食事の30分前に水を飲むと消化を助けます',
   ]
-  
+
   if (totalIntakeMl > 3000) {
     tips.push('運動や暑い環境では追加の水分補給を心がけましょう')
   }
-  
+
   if (totalIntakeMl > 2500) {
     tips.push('水筒を持ち歩いて、こまめな水分補給を習慣にしましょう')
   }
-  
+
   return tips
 }

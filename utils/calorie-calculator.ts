@@ -1,5 +1,10 @@
 export type Gender = 'male' | 'female'
-export type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'extra'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
 export type Goal = 'maintain' | 'lose' | 'gain'
 export type WeightUnit = 'kg' | 'lbs'
 export type HeightUnit = 'cm' | 'ft'
@@ -26,18 +31,18 @@ export interface CalorieCalculatorResult {
 
 // Activity level multipliers
 const activityMultipliers: Record<ActivityLevel, number> = {
-  sedentary: 1.2,    // Little or no exercise
-  light: 1.375,      // Light exercise 1-3 days/week
-  moderate: 1.55,    // Moderate exercise 3-5 days/week
-  active: 1.725,     // Heavy exercise 6-7 days/week
-  extra: 1.9         // Very heavy physical job or training
+  sedentary: 1.2, // Little or no exercise
+  light: 1.375, // Light exercise 1-3 days/week
+  moderate: 1.55, // Moderate exercise 3-5 days/week
+  active: 1.725, // Heavy exercise 6-7 days/week
+  extra: 1.9, // Very heavy physical job or training
 }
 
 // Goal adjustments (calories)
 const goalAdjustments: Record<Goal, number> = {
   maintain: 0,
-  lose: -500,    // 0.5kg per week
-  gain: 500      // 0.5kg per week
+  lose: -500, // 0.5kg per week
+  gain: 500, // 0.5kg per week
 }
 
 // Convert units to metric
@@ -67,7 +72,10 @@ export function calculateBMR(
 }
 
 // Calculate TDEE (Total Daily Energy Expenditure)
-export function calculateTDEE(bmr: number, activityLevel: ActivityLevel): number {
+export function calculateTDEE(
+  bmr: number,
+  activityLevel: ActivityLevel
+): number {
   return bmr * activityMultipliers[activityLevel]
 }
 
@@ -83,19 +91,21 @@ export function calculateMacros(calories: number): {
   fat: number
 } {
   // Standard distribution: 30% protein, 40% carbs, 30% fat
-  const proteinCalories = calories * 0.30
-  const carbsCalories = calories * 0.40
-  const fatCalories = calories * 0.30
+  const proteinCalories = calories * 0.3
+  const carbsCalories = calories * 0.4
+  const fatCalories = calories * 0.3
 
   // Convert to grams (protein: 4 cal/g, carbs: 4 cal/g, fat: 9 cal/g)
   return {
     protein: Math.round(proteinCalories / 4),
     carbs: Math.round(carbsCalories / 4),
-    fat: Math.round(fatCalories / 9)
+    fat: Math.round(fatCalories / 9),
   }
 }
 
-export function calculateCalories(input: CalorieCalculatorInput): CalorieCalculatorResult {
+export function calculateCalories(
+  input: CalorieCalculatorInput
+): CalorieCalculatorResult {
   // Convert to metric units
   const weightKg = convertToMetric(input.weight, input.weightUnit)
   const heightCm = convertToMetric(input.height, input.heightUnit)
@@ -118,7 +128,7 @@ export function calculateCalories(input: CalorieCalculatorInput): CalorieCalcula
     recommendedCalories: Math.round(recommendedCalories),
     proteinGrams: macros.protein,
     carbsGrams: macros.carbs,
-    fatGrams: macros.fat
+    fatGrams: macros.fat,
   }
 }
 
@@ -136,7 +146,7 @@ export function getActivityLevelDescription(level: ActivityLevel): string {
     light: '軽い運動を週1-3日',
     moderate: '適度な運動を週3-5日',
     active: '激しい運動を週6-7日',
-    extra: '肉体労働またはアスリート'
+    extra: '肉体労働またはアスリート',
   }
   return descriptions[level]
 }
@@ -145,7 +155,7 @@ export function getGoalDescription(goal: Goal): string {
   const descriptions: Record<Goal, string> = {
     maintain: '体重維持',
     lose: '減量（週0.5kg）',
-    gain: '増量（週0.5kg）'
+    gain: '増量（週0.5kg）',
   }
   return descriptions[goal]
 }

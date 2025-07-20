@@ -7,7 +7,9 @@
       <div class="input-section">
         <div class="section-header">
           <h2>元のCSS</h2>
-          <button class="example-btn" @click="loadExample">サンプルを読み込む</button>
+          <button class="example-btn" @click="loadExample">
+            サンプルを読み込む
+          </button>
         </div>
         <textarea
           v-model="inputCss"
@@ -84,11 +86,15 @@
         <div class="stats-grid">
           <div class="stat-item">
             <span class="stat-label">元のサイズ:</span>
-            <span class="stat-value">{{ formatBytes(stats.originalSize) }}</span>
+            <span class="stat-value">{{
+              formatBytes(stats.originalSize)
+            }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">圧縮後:</span>
-            <span class="stat-value">{{ formatBytes(stats.minifiedSize) }}</span>
+            <span class="stat-value">{{
+              formatBytes(stats.minifiedSize)
+            }}</span>
           </div>
           <div class="stat-item">
             <span class="stat-label">削減量:</span>
@@ -96,7 +102,9 @@
           </div>
           <div class="stat-item">
             <span class="stat-label">削減率:</span>
-            <span class="stat-value">{{ stats.reductionPercentage.toFixed(1) }}%</span>
+            <span class="stat-value"
+              >{{ stats.reductionPercentage.toFixed(1) }}%</span
+            >
           </div>
         </div>
       </div>
@@ -107,7 +115,9 @@
           <div class="button-group">
             <button class="action-btn" @click="beautifyOutput">整形</button>
             <button class="action-btn" @click="copyToClipboard">コピー</button>
-            <button class="action-btn" @click="downloadFile">ダウンロード</button>
+            <button class="action-btn" @click="downloadFile">
+              ダウンロード
+            </button>
           </div>
         </div>
         <textarea
@@ -132,7 +142,7 @@ import {
   minifyCss,
   calculateMinifyStats,
   formatBytes,
-  beautifyCss
+  beautifyCss,
 } from '~/utils/cssMinifier'
 
 // State
@@ -147,14 +157,14 @@ const options = reactive<MinifyOptions>({
   mergeSelectors: true,
   shortenHex: true,
   removeUnits: true,
-  removeQuotes: true
+  removeQuotes: true,
 })
 
 const stats = reactive({
   originalSize: 0,
   minifiedSize: 0,
   reduction: 0,
-  reductionPercentage: 0
+  reductionPercentage: 0,
 })
 
 // Example CSS
@@ -254,7 +264,7 @@ function performMinify() {
   try {
     const minified = minifyCss(inputCss.value, options)
     outputCss.value = minified
-    
+
     const result = calculateMinifyStats(inputCss.value, minified)
     stats.originalSize = result.originalSize
     stats.minifiedSize = result.minifiedSize
@@ -284,13 +294,17 @@ function loadExample() {
 }
 
 function beautifyOutput() {
-  if (outputCss.value && outputCss.value !== 'エラー: CSSの圧縮に失敗しました') {
+  if (
+    outputCss.value &&
+    outputCss.value !== 'エラー: CSSの圧縮に失敗しました'
+  ) {
     outputCss.value = beautifyCss(outputCss.value)
   }
 }
 
 async function copyToClipboard() {
-  if (!outputCss.value || outputCss.value === 'エラー: CSSの圧縮に失敗しました') return
+  if (!outputCss.value || outputCss.value === 'エラー: CSSの圧縮に失敗しました')
+    return
 
   try {
     await navigator.clipboard.writeText(outputCss.value)
@@ -304,7 +318,8 @@ async function copyToClipboard() {
 }
 
 function downloadFile() {
-  if (!outputCss.value || outputCss.value === 'エラー: CSSの圧縮に失敗しました') return
+  if (!outputCss.value || outputCss.value === 'エラー: CSSの圧縮に失敗しました')
+    return
 
   const blob = new Blob([outputCss.value], { type: 'text/css' })
   const url = URL.createObjectURL(blob)
@@ -328,13 +343,14 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'CSSコードを圧縮してファイルサイズを削減。コメント削除、空白削除、HEXカラー短縮など様々なオプションで最適化。'
+      content:
+        'CSSコードを圧縮してファイルサイズを削減。コメント削除、空白削除、HEXカラー短縮など様々なオプションで最適化。',
     },
     {
       name: 'keywords',
-      content: 'CSS,圧縮,minify,最適化,ファイルサイズ削減,Web開発'
-    }
-  ]
+      content: 'CSS,圧縮,minify,最適化,ファイルサイズ削減,Web開発',
+    },
+  ],
 })
 </script>
 
@@ -413,7 +429,7 @@ useHead({
   font-size: 14px;
 }
 
-.options-grid input[type="checkbox"] {
+.options-grid input[type='checkbox'] {
   margin-right: 8px;
 }
 

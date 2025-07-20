@@ -13,13 +13,16 @@ test.describe('画像リサイズツール', () => {
 
   test('画像のアップロードと情報表示', async ({ page }) => {
     // テスト用の画像を作成
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
-    
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
+
     // ファイル選択をシミュレート
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer
+      buffer,
     })
 
     // 画像情報が表示されることを確認
@@ -30,11 +33,14 @@ test.describe('画像リサイズツール', () => {
 
   test('リサイズ設定の動作', async ({ page }) => {
     // テスト画像をアップロード
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer
+      buffer,
     })
 
     // 幅の入力
@@ -48,7 +54,7 @@ test.describe('画像リサイズツール', () => {
 
     // アスペクト比維持をオフにする
     await page.uncheck('input[type="checkbox"]')
-    
+
     // 高さを独立して変更できることを確認
     await heightInput.clear()
     await heightInput.fill('200')
@@ -57,11 +63,14 @@ test.describe('画像リサイズツール', () => {
 
   test('出力形式の選択', async ({ page }) => {
     // テスト画像をアップロード
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer
+      buffer,
     })
 
     // 形式選択
@@ -78,11 +87,14 @@ test.describe('画像リサイズツール', () => {
 
   test('リサイズ実行', async ({ page }) => {
     // テスト画像をアップロード
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer
+      buffer,
     })
 
     // サイズを設定
@@ -94,14 +106,14 @@ test.describe('画像リサイズツール', () => {
     // 結果が表示されることを確認
     await expect(page.locator('.result')).toBeVisible()
     await expect(page.locator('h3:has-text("リサイズ結果")')).toBeVisible()
-    
+
     // 結果情報が表示される
     await expect(page.locator('.result-info .info-item')).toHaveCount(3)
-    
+
     // プレビューが表示される
     await expect(page.locator('.preview-container')).toBeVisible()
     await expect(page.locator('.preview-box')).toHaveCount(2)
-    
+
     // ダウンロードボタンが表示される
     await expect(page.locator('button:has-text("ダウンロード")')).toBeVisible()
   })
@@ -109,9 +121,9 @@ test.describe('画像リサイズツール', () => {
   test('ドラッグ＆ドロップでのアップロード', async ({ page }) => {
     // ドラッグ＆ドロップをシミュレート
     const dataTransfer = await page.evaluateHandle(() => new DataTransfer())
-    
+
     // テストファイルを作成
-    await page.evaluate(async (dt) => {
+    await page.evaluate(async dt => {
       const file = new File(['test'], 'test.png', { type: 'image/png' })
       dt.items.add(file)
     }, dataTransfer)
@@ -121,18 +133,27 @@ test.describe('画像リサイズツール', () => {
 
     // 画像設定が表示されることを確認（実際のファイルではないのでエラーになる可能性あり）
     // エラーメッセージまたは設定画面が表示されることを確認
-    const hasSettings = await page.locator('.image-settings').isVisible().catch(() => false)
-    const hasError = await page.locator('.error-message').isVisible().catch(() => false)
+    const hasSettings = await page
+      .locator('.image-settings')
+      .isVisible()
+      .catch(() => false)
+    const hasError = await page
+      .locator('.error-message')
+      .isVisible()
+      .catch(() => false)
     expect(hasSettings || hasError).toBeTruthy()
   })
 
   test('品質スライダーの動作', async ({ page }) => {
     // テスト画像をアップロード
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.jpg',
       mimeType: 'image/jpeg',
-      buffer
+      buffer,
     })
 
     // JPEG形式を選択
@@ -154,11 +175,14 @@ test.describe('画像リサイズツール', () => {
     await expect(page.locator('.upload-area')).toBeVisible()
 
     // テスト画像をアップロード
-    const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64')
+    const buffer = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'base64'
+    )
     await page.setInputFiles('input[type="file"]', {
       name: 'test-image.png',
       mimeType: 'image/png',
-      buffer
+      buffer,
     })
 
     // モバイルでは設定が縦に並ぶことを確認
@@ -171,11 +195,14 @@ test.describe('画像リサイズツール', () => {
     await page.setInputFiles('input[type="file"]', {
       name: 'test.txt',
       mimeType: 'text/plain',
-      buffer: Buffer.from('This is not an image')
+      buffer: Buffer.from('This is not an image'),
     })
 
     // ファイル選択ダイアログで画像ファイルのみが選択可能なことを確認
     const fileInput = page.locator('input[type="file"]')
-    await expect(fileInput).toHaveAttribute('accept', 'image/jpeg,image/jpg,image/png,image/webp')
+    await expect(fileInput).toHaveAttribute(
+      'accept',
+      'image/jpeg,image/jpg,image/png,image/webp'
+    )
   })
 })

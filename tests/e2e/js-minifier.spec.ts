@@ -22,15 +22,15 @@ console.log(x + y);`
 
     // 結果が表示されることを確認
     await expect(page.locator('.result')).toBeVisible()
-    
+
     // 統計情報が表示されることを確認
     await expect(page.locator('.stat-card')).toHaveCount(4)
-    
+
     // 圧縮されたコードが表示されることを確認
     const minifiedTextarea = page.locator('textarea').nth(1)
     await expect(minifiedTextarea).toBeVisible()
     const minified = await minifiedTextarea.inputValue()
-    
+
     // コメントが削除されていることを確認
     expect(minified).not.toContain('This is a comment')
     // 余分な空白が削除されていることを確認
@@ -54,7 +54,7 @@ const longVariableName = 42;`
     await page.click('button:has-text("圧縮する")')
 
     const minified = await page.locator('textarea').nth(1).inputValue()
-    
+
     // 各オプションが適用されていることを確認
     expect(minified).not.toContain('Comment')
     expect(minified).not.toContain('console.log')
@@ -63,13 +63,14 @@ const longVariableName = 42;`
   })
 
   test('整形機能が動作する', async ({ page }) => {
-    const input = 'function test(){const x=5;if(x>0){return true;}return false;}'
+    const input =
+      'function test(){const x=5;if(x>0){return true;}return false;}'
 
     await page.locator('textarea').first().fill(input)
     await page.click('button:has-text("整形する")')
 
     const beautified = await page.locator('textarea').nth(1).inputValue()
-    
+
     // 改行とインデントが追加されていることを確認
     expect(beautified).toContain('\n')
     expect(beautified.split('\n').length).toBeGreaterThan(1)
@@ -140,7 +141,10 @@ console.log(x + y);`
     await expect(statCards.nth(3)).toContainText('圧縮率')
 
     // 圧縮率が0より大きいことを確認
-    const compressionRate = await statCards.nth(3).locator('.stat-value').textContent()
+    const compressionRate = await statCards
+      .nth(3)
+      .locator('.stat-value')
+      .textContent()
     expect(parseFloat(compressionRate || '0')).toBeGreaterThan(0)
   })
 

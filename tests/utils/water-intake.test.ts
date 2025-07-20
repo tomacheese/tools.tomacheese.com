@@ -9,7 +9,7 @@ import {
   getActivityLevelDescription,
   getClimateDescription,
   getSpecialConditionDescription,
-  getHydrationTips
+  getHydrationTips,
 } from '~/utils/water-intake'
 
 describe('mlToLiters', () => {
@@ -43,7 +43,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'sedentary',
       climate: 'temperate',
       specialCondition: 'none',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(result.baseIntake).toBe(2450) // 70 * 35
@@ -63,7 +63,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'active',
       climate: 'temperate',
       specialCondition: 'none',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     // const baseIntake = 60 * 35 // 2100
@@ -79,7 +79,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'sedentary',
       climate: 'hot',
       specialCondition: 'none',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(hotClimate.climateAdjustment).toBe(500)
@@ -91,7 +91,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'sedentary',
       climate: 'cold',
       specialCondition: 'none',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(coldClimate.climateAdjustment).toBe(-200)
@@ -105,7 +105,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'moderate',
       climate: 'temperate',
       specialCondition: 'pregnancy',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(pregnancy.specialAdjustment).toBe(300)
@@ -116,7 +116,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'moderate',
       climate: 'temperate',
       specialCondition: 'breastfeeding',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(breastfeeding.specialAdjustment).toBe(700)
@@ -129,7 +129,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'sedentary',
       climate: 'temperate',
       specialCondition: 'none',
-      exerciseMinutes: 60
+      exerciseMinutes: 60,
     })
 
     expect(result.exerciseAdjustment).toBe(720) // 60 * 12
@@ -142,7 +142,7 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'sedentary',
       climate: 'temperate',
       specialCondition: 'none',
-      exerciseMinutes: 0
+      exerciseMinutes: 0,
     })
 
     expect(result.baseIntake).toBeCloseTo(2450, -1) // Approximate due to conversion
@@ -155,18 +155,23 @@ describe('calculateWaterIntake', () => {
       activityLevel: 'active',
       climate: 'hot',
       specialCondition: 'breastfeeding',
-      exerciseMinutes: 30
+      exerciseMinutes: 30,
     })
 
     const baseIntake = 70 * 35 // 2450
-    const activityAdjustment = baseIntake * 0.30 // 735
+    const activityAdjustment = baseIntake * 0.3 // 735
     const climateAdjustment = 500
     const specialAdjustment = 700
     const exerciseAdjustment = 30 * 12 // 360
 
     expect(result.totalIntake).toBe(
-      Math.round(baseIntake + activityAdjustment + climateAdjustment + 
-                 specialAdjustment + exerciseAdjustment)
+      Math.round(
+        baseIntake +
+          activityAdjustment +
+          climateAdjustment +
+          specialAdjustment +
+          exerciseAdjustment
+      )
     )
   })
 })
@@ -189,9 +194,13 @@ describe('formatOunces', () => {
 
 describe('getActivityLevelDescription', () => {
   it('should return correct descriptions', () => {
-    expect(getActivityLevelDescription('sedentary')).toBe('座り仕事中心・軽い活動')
+    expect(getActivityLevelDescription('sedentary')).toBe(
+      '座り仕事中心・軽い活動'
+    )
     expect(getActivityLevelDescription('moderate')).toBe('適度な活動・軽い運動')
-    expect(getActivityLevelDescription('active')).toBe('アクティブな生活・定期的な運動')
+    expect(getActivityLevelDescription('active')).toBe(
+      'アクティブな生活・定期的な運動'
+    )
   })
 })
 

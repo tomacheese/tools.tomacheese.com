@@ -29,7 +29,9 @@ export interface PomodoroState {
   pausedTime: number
 }
 
-export function createPomodoro(settings?: Partial<PomodoroSettings>): PomodoroState {
+export function createPomodoro(
+  settings?: Partial<PomodoroSettings>
+): PomodoroState {
   const defaultSettings: PomodoroSettings = {
     workDuration: 25,
     shortBreakDuration: 5,
@@ -38,7 +40,7 @@ export function createPomodoro(settings?: Partial<PomodoroSettings>): PomodoroSt
     autoStartBreaks: false,
     autoStartPomodoros: false,
     soundEnabled: true,
-    ...settings
+    ...settings,
   }
 
   return {
@@ -50,7 +52,7 @@ export function createPomodoro(settings?: Partial<PomodoroSettings>): PomodoroSt
     isPaused: false,
     timeRemaining: defaultSettings.workDuration * 60 * 1000,
     startTime: null,
-    pausedTime: 0
+    pausedTime: 0,
   }
 }
 
@@ -60,7 +62,7 @@ export function startTimer(state: PomodoroState): PomodoroState {
   }
 
   const now = Date.now()
-  
+
   if (!state.currentSession) {
     // Start a new session
     const type = getNextSessionType(state)
@@ -71,7 +73,7 @@ export function startTimer(state: PomodoroState): PomodoroState {
       duration,
       startTime: new Date(now),
       endTime: null,
-      completed: false
+      completed: false,
     }
 
     return {
@@ -81,7 +83,7 @@ export function startTimer(state: PomodoroState): PomodoroState {
       isPaused: false,
       startTime: now,
       timeRemaining: duration,
-      pausedTime: 0
+      pausedTime: 0,
     }
   }
 
@@ -92,7 +94,7 @@ export function startTimer(state: PomodoroState): PomodoroState {
       isRunning: true,
       isPaused: false,
       startTime: now - (state.currentSession.duration - state.timeRemaining),
-      pausedTime: 0
+      pausedTime: 0,
     }
   }
 
@@ -107,7 +109,7 @@ export function pauseTimer(state: PomodoroState): PomodoroState {
   return {
     ...state,
     isPaused: true,
-    pausedTime: Date.now()
+    pausedTime: Date.now(),
   }
 }
 
@@ -122,7 +124,7 @@ export function resetTimer(state: PomodoroState): PomodoroState {
     isPaused: false,
     timeRemaining: duration,
     startTime: null,
-    pausedTime: 0
+    pausedTime: 0,
   }
 }
 
@@ -135,13 +137,14 @@ export function skipSession(state: PomodoroState): PomodoroState {
   const updatedSession: PomodoroSession = {
     ...state.currentSession,
     endTime: new Date(),
-    completed: false
+    completed: false,
   }
 
   const newHistory = [...state.sessionHistory, updatedSession]
-  const completedPomodoros = state.currentSession.type === 'work' && state.completedPomodoros > 0
-    ? state.completedPomodoros - 1
-    : state.completedPomodoros
+  const completedPomodoros =
+    state.currentSession.type === 'work' && state.completedPomodoros > 0
+      ? state.completedPomodoros - 1
+      : state.completedPomodoros
 
   // Start next session
   const nextType = getNextSessionType({ ...state, sessionHistory: newHistory })
@@ -156,7 +159,7 @@ export function skipSession(state: PomodoroState): PomodoroState {
     isPaused: false,
     timeRemaining: nextDuration,
     startTime: null,
-    pausedTime: 0
+    pausedTime: 0,
   }
 }
 
@@ -169,23 +172,27 @@ export function completeSession(state: PomodoroState): PomodoroState {
   const completedSession: PomodoroSession = {
     ...state.currentSession,
     endTime: now,
-    completed: true
+    completed: true,
   }
 
   const newHistory = [...state.sessionHistory, completedSession]
-  const newCompletedPomodoros = state.currentSession.type === 'work'
-    ? state.completedPomodoros + 1
-    : state.completedPomodoros
+  const newCompletedPomodoros =
+    state.currentSession.type === 'work'
+      ? state.completedPomodoros + 1
+      : state.completedPomodoros
 
   // Determine next session type
-  const nextType = getNextSessionType({ ...state, sessionHistory: newHistory, completedPomodoros: newCompletedPomodoros })
+  const nextType = getNextSessionType({
+    ...state,
+    sessionHistory: newHistory,
+    completedPomodoros: newCompletedPomodoros,
+  })
   const nextDuration = getSessionDuration(state, nextType)
 
   // Check if should auto-start next session
-  const shouldAutoStart = (
+  const shouldAutoStart =
     (nextType === 'work' && state.settings.autoStartPomodoros) ||
     (nextType !== 'work' && state.settings.autoStartBreaks)
-  )
 
   if (shouldAutoStart) {
     const newSession: PomodoroSession = {
@@ -194,7 +201,7 @@ export function completeSession(state: PomodoroState): PomodoroState {
       duration: nextDuration,
       startTime: now,
       endTime: null,
-      completed: false
+      completed: false,
     }
 
     return {
@@ -206,7 +213,7 @@ export function completeSession(state: PomodoroState): PomodoroState {
       isPaused: false,
       timeRemaining: nextDuration,
       startTime: Date.now(),
-      pausedTime: 0
+      pausedTime: 0,
     }
   }
 
@@ -219,7 +226,7 @@ export function completeSession(state: PomodoroState): PomodoroState {
     isPaused: false,
     timeRemaining: nextDuration,
     startTime: null,
-    pausedTime: 0
+    pausedTime: 0,
   }
 }
 
@@ -238,24 +245,32 @@ export function updateTimeRemaining(state: PomodoroState): PomodoroState {
 
   return {
     ...state,
-    timeRemaining: remaining
+    timeRemaining: remaining,
   }
 }
 
-export function getNextSessionType(state: PomodoroState): 'work' | 'shortBreak' | 'longBreak' {
+export function getNextSessionType(
+  state: PomodoroState
+): 'work' | 'shortBreak' | 'longBreak' {
   if (!state.currentSession) {
     return 'work'
   }
 
   if (state.currentSession.type === 'work') {
-    const pomodorosInCycle = state.completedPomodoros % state.settings.sessionsBeforeLongBreak
-    return pomodorosInCycle === 0 && state.completedPomodoros > 0 ? 'longBreak' : 'shortBreak'
+    const pomodorosInCycle =
+      state.completedPomodoros % state.settings.sessionsBeforeLongBreak
+    return pomodorosInCycle === 0 && state.completedPomodoros > 0
+      ? 'longBreak'
+      : 'shortBreak'
   }
 
   return 'work'
 }
 
-export function getSessionDuration(state: PomodoroState, type: 'work' | 'shortBreak' | 'longBreak'): number {
+export function getSessionDuration(
+  state: PomodoroState,
+  type: 'work' | 'shortBreak' | 'longBreak'
+): number {
   switch (type) {
     case 'work':
       return state.settings.workDuration * 60 * 1000
@@ -277,7 +292,7 @@ export function formatTimeString(milliseconds: number): string {
 export function getTodaysSessions(state: PomodoroState): PomodoroSession[] {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  
+
   return state.sessionHistory.filter(session => {
     const sessionDate = new Date(session.startTime)
     return sessionDate >= today
@@ -290,26 +305,33 @@ export function getTodaysCompletedPomodoros(state: PomodoroState): number {
   ).length
 }
 
-export function updateSettings(state: PomodoroState, settings: Partial<PomodoroSettings>): PomodoroState {
+export function updateSettings(
+  state: PomodoroState,
+  settings: Partial<PomodoroSettings>
+): PomodoroState {
   const newSettings = { ...state.settings, ...settings }
-  
+
   // Update current time remaining if session type duration changed
   let newTimeRemaining = state.timeRemaining
   if (!state.isRunning && !state.currentSession) {
     const currentType = getNextSessionType(state)
     if (
       (currentType === 'work' && settings.workDuration !== undefined) ||
-      (currentType === 'shortBreak' && settings.shortBreakDuration !== undefined) ||
+      (currentType === 'shortBreak' &&
+        settings.shortBreakDuration !== undefined) ||
       (currentType === 'longBreak' && settings.longBreakDuration !== undefined)
     ) {
-      newTimeRemaining = getSessionDuration({ ...state, settings: newSettings }, currentType)
+      newTimeRemaining = getSessionDuration(
+        { ...state, settings: newSettings },
+        currentType
+      )
     }
   }
 
   return {
     ...state,
     settings: newSettings,
-    timeRemaining: newTimeRemaining
+    timeRemaining: newTimeRemaining,
   }
 }
 
@@ -317,7 +339,8 @@ let audioContext: AudioContext | null = null
 
 export function playNotificationSound(): void {
   if (!audioContext) {
-    audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)()
   }
 
   const oscillator = audioContext.createOscillator()
@@ -330,7 +353,10 @@ export function playNotificationSound(): void {
   oscillator.type = 'sine'
 
   gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5)
+  gainNode.gain.exponentialRampToValueAtTime(
+    0.01,
+    audioContext.currentTime + 0.5
+  )
 
   oscillator.start(audioContext.currentTime)
   oscillator.stop(audioContext.currentTime + 0.5)
@@ -348,7 +374,7 @@ export function exportSessionData(state: PomodoroState): string {
       duration: formatTimeString(session.duration),
       startTime: session.startTime.toISOString(),
       endTime: session.endTime?.toISOString() || null,
-      completed: session.completed
+      completed: session.completed,
     })),
     statistics: {
       totalWorkTime: state.sessionHistory
@@ -357,10 +383,13 @@ export function exportSessionData(state: PomodoroState): string {
       totalBreakTime: state.sessionHistory
         .filter(s => s.type !== 'work' && s.completed)
         .reduce((sum, s) => sum + s.duration, 0),
-      averageSessionCompletion: state.sessionHistory.length > 0
-        ? (state.sessionHistory.filter(s => s.completed).length / state.sessionHistory.length) * 100
-        : 0
-    }
+      averageSessionCompletion:
+        state.sessionHistory.length > 0
+          ? (state.sessionHistory.filter(s => s.completed).length /
+              state.sessionHistory.length) *
+            100
+          : 0,
+    },
   }
 
   return JSON.stringify(data, null, 2)

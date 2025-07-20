@@ -1,7 +1,9 @@
 <template>
   <div class="tool-container">
     <h1>住宅ローン計算</h1>
-    <p>住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。</p>
+    <p>
+      住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。
+    </p>
 
     <div class="input-section">
       <div class="form-group">
@@ -14,7 +16,7 @@
           max="100000000"
           step="100000"
           placeholder="30000000"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -27,7 +29,7 @@
           max="100000000"
           step="100000"
           placeholder="3000000"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -40,7 +42,7 @@
           max="10"
           step="0.01"
           placeholder="1.5"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -68,7 +70,7 @@
 
     <div v-if="result" class="result">
       <h2>計算結果</h2>
-      
+
       <div class="result-summary">
         <div class="summary-item">
           <span class="label">借入金額</span>
@@ -91,7 +93,11 @@
       <div class="additional-info">
         <div class="info-item">
           <span class="label">返済負担率</span>
-          <span class="value">{{ formatPercentage((result.totalInterest / result.loanPrincipal) * 100) }}</span>
+          <span class="value">{{
+            formatPercentage(
+              (result.totalInterest / result.loanPrincipal) * 100
+            )
+          }}</span>
         </div>
       </div>
 
@@ -112,7 +118,9 @@
               <td>{{ year.year }}年目</td>
               <td>{{ formatCurrency(year.principalPaid) }}</td>
               <td>{{ formatCurrency(year.interestPaid) }}</td>
-              <td>{{ formatCurrency(year.principalPaid + year.interestPaid) }}</td>
+              <td>
+                {{ formatCurrency(year.principalPaid + year.interestPaid) }}
+              </td>
               <td>{{ formatCurrency(year.remainingBalance) }}</td>
             </tr>
           </tbody>
@@ -122,7 +130,9 @@
       <div class="info-box">
         <h4>住宅ローンの注意点</h4>
         <ul>
-          <li>実際の返済額は、諸費用（事務手数料、保証料など）が追加されます</li>
+          <li>
+            実際の返済額は、諸費用（事務手数料、保証料など）が追加されます
+          </li>
           <li>変動金利の場合、金利は定期的に見直されます</li>
           <li>繰り上げ返済により、総返済額を減らすことができます</li>
           <li>団体信用生命保険料が別途必要な場合があります</li>
@@ -134,12 +144,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { 
-  calculateMortgage, 
-  formatCurrency, 
+import {
+  calculateMortgage,
+  formatCurrency,
   formatPercentage,
   type LoanType,
-  type MortgageResult
+  type MortgageResult,
 } from '~/utils/mortgage-calculator'
 
 const loanAmount = ref<number>(30000000)
@@ -150,7 +160,11 @@ const loanType = ref<LoanType>('fixed')
 const result = ref<MortgageResult | null>(null)
 
 const calculate = () => {
-  if (loanAmount.value <= 0 || interestRate.value < 0 || loanTermYears.value <= 0) {
+  if (
+    loanAmount.value <= 0 ||
+    interestRate.value < 0 ||
+    loanTermYears.value <= 0
+  ) {
     alert('正しい値を入力してください')
     return
   }
@@ -165,15 +179,19 @@ const calculate = () => {
     downPayment: downPayment.value,
     interestRate: interestRate.value,
     loanTermYears: loanTermYears.value,
-    loanType: loanType.value
+    loanType: loanType.value,
   })
 }
 
 useHead({
   title: '住宅ローン計算 | Tools',
   meta: [
-    { name: 'description', content: '住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。' }
-  ]
+    {
+      name: 'description',
+      content:
+        '住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。',
+    },
+  ],
 })
 </script>
 
@@ -212,7 +230,7 @@ label {
   font-weight: 500;
 }
 
-input[type="number"],
+input[type='number'],
 select {
   width: 100%;
   padding: 0.75rem;
@@ -222,7 +240,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="number"]:focus,
+input[type='number']:focus,
 select:focus {
   outline: none;
   border-color: #007bff;
@@ -249,7 +267,9 @@ select:focus {
   border-radius: 8px;
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
   color: #333;
   margin-bottom: 1.5rem;
 }
@@ -395,7 +415,8 @@ tr:last-child td {
     font-size: 0.875rem;
   }
 
-  th, td {
+  th,
+  td {
     padding: 0.75rem 0.5rem;
   }
 }

@@ -16,7 +16,7 @@ test.describe('QR Code Generator', () => {
       expect(dialog.message()).toContain('テキストを入力してください')
       await dialog.accept()
     })
-    
+
     await page.click('button:has-text("QRコード生成")')
   })
 
@@ -26,7 +26,7 @@ test.describe('QR Code Generator', () => {
 
     await expect(page.locator('.result')).toBeVisible()
     await expect(page.locator('.qr-display img')).toBeVisible()
-    
+
     const imgSrc = await page.locator('.qr-display img').getAttribute('src')
     expect(imgSrc).toMatch(/^data:image\/png;base64,/)
   })
@@ -37,7 +37,9 @@ test.describe('QR Code Generator', () => {
 
     await expect(page.locator('.result')).toBeVisible()
     await expect(page.locator('.qr-display img')).toBeVisible()
-    await expect(page.locator('.preview-text code')).toHaveText('https://example.com')
+    await expect(page.locator('.preview-text code')).toHaveText(
+      'https://example.com'
+    )
   })
 
   test('should update QR code when changing options', async ({ page }) => {
@@ -49,14 +51,14 @@ test.describe('QR Code Generator', () => {
     // Change size
     await page.selectOption('#size', '512')
     await page.click('button:has-text("QRコード生成")')
-    
+
     const newSrc = await page.locator('.qr-display img').getAttribute('src')
     expect(newSrc).not.toBe(initialSrc)
   })
 
   test('should change margin with slider', async ({ page }) => {
     await page.fill('textarea', 'Test')
-    
+
     // Set margin to 10
     await page.locator('#margin').fill('10')
     await page.click('button:has-text("QRコード生成")')
@@ -67,12 +69,12 @@ test.describe('QR Code Generator', () => {
 
   test('should change colors', async ({ page }) => {
     await page.fill('textarea', 'Test')
-    
+
     // Change dark color
     await page.locator('#dark-color').fill('#ff0000')
     // Change light color
     await page.locator('#light-color').fill('#0000ff')
-    
+
     await page.click('button:has-text("QRコード生成")')
 
     await expect(page.locator('.result')).toBeVisible()
@@ -110,7 +112,9 @@ test.describe('QR Code Generator', () => {
     await page.click('button:has-text("QRコード生成")')
 
     page.on('dialog', async dialog => {
-      expect(dialog.message()).toContain('データURLをクリップボードにコピーしました')
+      expect(dialog.message()).toContain(
+        'データURLをクリップボードにコピーしました'
+      )
       await dialog.accept()
     })
 
@@ -122,7 +126,9 @@ test.describe('QR Code Generator', () => {
     await page.click('button:has-text("QRコード生成")')
 
     await expect(page.locator('.result')).toBeVisible()
-    await expect(page.locator('.preview-text code')).toHaveText('!@#$%^&*()_+-=[]{}|;:,.<>?')
+    await expect(page.locator('.preview-text code')).toHaveText(
+      '!@#$%^&*()_+-=[]{}|;:,.<>?'
+    )
   })
 
   test('should handle unicode characters', async ({ page }) => {
@@ -130,11 +136,14 @@ test.describe('QR Code Generator', () => {
     await page.click('button:has-text("QRコード生成")')
 
     await expect(page.locator('.result')).toBeVisible()
-    await expect(page.locator('.preview-text code')).toHaveText('日本語のテキスト🌸')
+    await expect(page.locator('.preview-text code')).toHaveText(
+      '日本語のテキスト🌸'
+    )
   })
 
   test('should handle long text', async ({ page }) => {
-    const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(5)
+    const longText =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(5)
     await page.fill('textarea', longText)
     await page.click('button:has-text("QRコード生成")')
 
@@ -144,13 +153,13 @@ test.describe('QR Code Generator', () => {
 
   test('should be responsive on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    
+
     await page.fill('textarea', 'Mobile Test')
     await page.click('button:has-text("QRコード生成")')
 
     await expect(page.locator('.result')).toBeVisible()
     await expect(page.locator('.qr-display img')).toBeVisible()
-    
+
     // Check if buttons are stacked vertically on mobile
     const buttons = page.locator('.actions button')
     await expect(buttons).toHaveCount(3)

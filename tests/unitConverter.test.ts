@@ -3,7 +3,7 @@ import {
   convertUnit,
   formatNumber,
   getUnitsByCategory,
-  getUnitDefinition
+  getUnitDefinition,
 } from '~/utils/unitConverter'
 
 describe('unitConverter', () => {
@@ -18,12 +18,18 @@ describe('unitConverter', () => {
     })
 
     it('converts miles to kilometers', () => {
-      expect(convertUnit(1, 'mile', 'kilometer', 'length')).toBeCloseTo(1.609344, 4)
+      expect(convertUnit(1, 'mile', 'kilometer', 'length')).toBeCloseTo(
+        1.609344,
+        4
+      )
     })
 
     // Weight conversions
     it('converts kilograms to pounds', () => {
-      expect(convertUnit(1, 'kilogram', 'pound', 'weight')).toBeCloseTo(2.20462, 4)
+      expect(convertUnit(1, 'kilogram', 'pound', 'weight')).toBeCloseTo(
+        2.20462,
+        4
+      )
     })
 
     it('converts grams to ounces', () => {
@@ -54,16 +60,24 @@ describe('unitConverter', () => {
 
     // Volume conversions
     it('converts liters to gallons', () => {
-      expect(convertUnit(1, 'liter', 'gallon', 'volume')).toBeCloseTo(0.264172, 4)
+      expect(convertUnit(1, 'liter', 'gallon', 'volume')).toBeCloseTo(
+        0.264172,
+        4
+      )
     })
 
     it('converts milliliters to fluid ounces', () => {
-      expect(convertUnit(29.5735, 'milliliter', 'fluidOunce', 'volume')).toBeCloseTo(1, 2)
+      expect(
+        convertUnit(29.5735, 'milliliter', 'fluidOunce', 'volume')
+      ).toBeCloseTo(1, 2)
     })
 
     // Area conversions
     it('converts square meters to square feet', () => {
-      expect(convertUnit(1, 'squareMeter', 'squareFoot', 'area')).toBeCloseTo(10.7639, 3)
+      expect(convertUnit(1, 'squareMeter', 'squareFoot', 'area')).toBeCloseTo(
+        10.7639,
+        3
+      )
     })
 
     it('converts hectares to acres', () => {
@@ -72,11 +86,15 @@ describe('unitConverter', () => {
 
     // Speed conversions
     it('converts km/h to mph', () => {
-      expect(convertUnit(100, 'kilometerPerHour', 'milePerHour', 'speed')).toBeCloseTo(62.1371, 3)
+      expect(
+        convertUnit(100, 'kilometerPerHour', 'milePerHour', 'speed')
+      ).toBeCloseTo(62.1371, 3)
     })
 
     it('converts m/s to km/h', () => {
-      expect(convertUnit(1, 'meterPerSecond', 'kilometerPerHour', 'speed')).toBeCloseTo(3.6, 1)
+      expect(
+        convertUnit(1, 'meterPerSecond', 'kilometerPerHour', 'speed')
+      ).toBeCloseTo(3.6, 1)
     })
 
     // Time conversions
@@ -103,7 +121,9 @@ describe('unitConverter', () => {
 
     // Error handling
     it('throws error for invalid units', () => {
-      expect(() => convertUnit(1, 'invalid', 'meter', 'length')).toThrow('Invalid unit specified')
+      expect(() => convertUnit(1, 'invalid', 'meter', 'length')).toThrow(
+        'Invalid unit specified'
+      )
     })
 
     it('returns same value when converting to same unit', () => {
@@ -118,8 +138,8 @@ describe('unitConverter', () => {
     })
 
     it('removes trailing zeros', () => {
-      expect(formatNumber(1.000000)).toBe('1')
-      expect(formatNumber(1.500000)).toBe('1.5')
+      expect(formatNumber(1.0)).toBe('1')
+      expect(formatNumber(1.5)).toBe('1.5')
     })
 
     it('respects decimal places', () => {
@@ -166,7 +186,7 @@ describe('unitConverter', () => {
       expect(meter).toEqual({
         name: 'メートル',
         symbol: 'm',
-        toBase: 1
+        toBase: 1,
       })
     })
 

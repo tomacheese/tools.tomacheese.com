@@ -6,7 +6,11 @@
     <div class="converter-section">
       <div class="category-selector">
         <label for="category">カテゴリー:</label>
-        <select id="category" v-model="selectedCategory" @change="onCategoryChange">
+        <select
+          id="category"
+          v-model="selectedCategory"
+          @change="onCategoryChange"
+        >
           <option value="length">長さ</option>
           <option value="weight">重さ</option>
           <option value="temperature">温度</option>
@@ -39,12 +43,7 @@
 
         <div class="input-group">
           <label for="toValue">変換先:</label>
-          <input
-            id="toValue"
-            :value="formattedResult"
-            type="text"
-            readonly
-          />
+          <input id="toValue" :value="formattedResult" type="text" readonly />
           <select v-model="toUnit" @change="performConversion">
             <option v-for="unit in availableUnits" :key="unit" :value="unit">
               {{ getUnitDisplay(unit) }}
@@ -60,8 +59,8 @@
         </div>
         <ul class="history-list">
           <li v-for="(item, index) in conversionHistory" :key="index">
-            {{ formatNumber(item.value) }} {{ getUnitDisplay(item.from) }}
-            = {{ formatNumber(item.result) }} {{ getUnitDisplay(item.to) }}
+            {{ formatNumber(item.value) }} {{ getUnitDisplay(item.from) }} =
+            {{ formatNumber(item.result) }} {{ getUnitDisplay(item.to) }}
           </li>
         </ul>
       </div>
@@ -76,11 +75,22 @@
             @click="applyCommonConversion(conversion)"
           >
             <span class="conversion-label">
-              {{ getUnitDisplay(conversion.from) }} → {{ getUnitDisplay(conversion.to) }}
+              {{ getUnitDisplay(conversion.from) }} →
+              {{ getUnitDisplay(conversion.to) }}
             </span>
             <span class="conversion-example">
-              1 {{ unitDefinitions[selectedCategory][conversion.from].symbol }}
-              = {{ formatNumber(convertUnit(1, conversion.from, conversion.to, selectedCategory)) }}
+              1
+              {{ unitDefinitions[selectedCategory][conversion.from].symbol }} =
+              {{
+                formatNumber(
+                  convertUnit(
+                    1,
+                    conversion.from,
+                    conversion.to,
+                    selectedCategory
+                  )
+                )
+              }}
               {{ unitDefinitions[selectedCategory][conversion.to].symbol }}
             </span>
           </div>
@@ -99,7 +109,7 @@ import {
   convertUnit,
   formatNumber,
   getUnitsByCategory,
-  getUnitDefinition
+  getUnitDefinition,
 } from '~/utils/unitConverter'
 
 // State
@@ -111,54 +121,59 @@ const result = ref<number>(0)
 const conversionHistory = ref<UnitConversion[]>([])
 
 // Common conversions for each category
-const commonConversions: Record<UnitCategory, Array<{ from: string; to: string }>> = {
+const commonConversions: Record<
+  UnitCategory,
+  Array<{ from: string; to: string }>
+> = {
   length: [
     { from: 'meter', to: 'foot' },
     { from: 'kilometer', to: 'mile' },
     { from: 'inch', to: 'centimeter' },
-    { from: 'foot', to: 'meter' }
+    { from: 'foot', to: 'meter' },
   ],
   weight: [
     { from: 'kilogram', to: 'pound' },
     { from: 'gram', to: 'ounce' },
     { from: 'pound', to: 'kilogram' },
-    { from: 'ton', to: 'kilogram' }
+    { from: 'ton', to: 'kilogram' },
   ],
   temperature: [
     { from: 'celsius', to: 'fahrenheit' },
     { from: 'fahrenheit', to: 'celsius' },
-    { from: 'celsius', to: 'kelvin' }
+    { from: 'celsius', to: 'kelvin' },
   ],
   volume: [
     { from: 'liter', to: 'gallon' },
     { from: 'milliliter', to: 'fluidOunce' },
-    { from: 'cup', to: 'milliliter' }
+    { from: 'cup', to: 'milliliter' },
   ],
   area: [
     { from: 'squareMeter', to: 'squareFoot' },
     { from: 'hectare', to: 'acre' },
-    { from: 'squareKilometer', to: 'squareMeter' }
+    { from: 'squareKilometer', to: 'squareMeter' },
   ],
   speed: [
     { from: 'kilometerPerHour', to: 'milePerHour' },
     { from: 'meterPerSecond', to: 'kilometerPerHour' },
-    { from: 'knot', to: 'kilometerPerHour' }
+    { from: 'knot', to: 'kilometerPerHour' },
   ],
   time: [
     { from: 'hour', to: 'minute' },
     { from: 'day', to: 'hour' },
     { from: 'week', to: 'day' },
-    { from: 'year', to: 'day' }
+    { from: 'year', to: 'day' },
   ],
   data: [
     { from: 'megabyte', to: 'gigabyte' },
     { from: 'gigabyte', to: 'terabyte' },
-    { from: 'byte', to: 'kilobyte' }
-  ]
+    { from: 'byte', to: 'kilobyte' },
+  ],
 }
 
 // Computed
-const availableUnits = computed(() => getUnitsByCategory(selectedCategory.value))
+const availableUnits = computed(() =>
+  getUnitsByCategory(selectedCategory.value)
+)
 
 const formattedResult = computed(() => {
   if (!fromValue.value && fromValue.value !== 0) return ''
@@ -173,17 +188,22 @@ function performConversion() {
   }
 
   try {
-    result.value = convertUnit(fromValue.value, fromUnit.value, toUnit.value, selectedCategory.value)
-    
+    result.value = convertUnit(
+      fromValue.value,
+      fromUnit.value,
+      toUnit.value,
+      selectedCategory.value
+    )
+
     // Add to history
     if (fromValue.value) {
       conversionHistory.value.unshift({
         value: fromValue.value,
         from: fromUnit.value,
         to: toUnit.value,
-        result: result.value
+        result: result.value,
       })
-      
+
       // Keep only last 10 conversions
       if (conversionHistory.value.length > 10) {
         conversionHistory.value = conversionHistory.value.slice(0, 10)
@@ -234,13 +254,15 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '長さ、重さ、温度、体積、面積、速度、時間、データ容量など様々な単位を簡単に変換できる無料オンラインツール。'
+      content:
+        '長さ、重さ、温度、体積、面積、速度、時間、データ容量など様々な単位を簡単に変換できる無料オンラインツール。',
     },
     {
       name: 'keywords',
-      content: '単位変換,単位換算,メートル,フィート,キログラム,ポンド,摂氏,華氏,リットル,ガロン'
-    }
-  ]
+      content:
+        '単位変換,単位換算,メートル,フィート,キログラム,ポンド,摂氏,華氏,リットル,ガロン',
+    },
+  ],
 })
 </script>
 
@@ -409,11 +431,11 @@ useHead({
   .conversion-inputs {
     flex-direction: column;
   }
-  
+
   .arrow {
     transform: rotate(90deg);
   }
-  
+
   .input-group {
     width: 100%;
   }

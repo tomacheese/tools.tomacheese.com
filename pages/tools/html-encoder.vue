@@ -12,7 +12,7 @@
           placeholder="エンコードしたいテキストを入力してください"
           @input="handleEncode"
         />
-        
+
         <div class="options">
           <label>
             <input
@@ -44,7 +44,9 @@
         <div v-if="encodeOutput" class="output">
           <h4>エンコード結果</h4>
           <pre>{{ encodeOutput }}</pre>
-          <button class="secondary" @click="copyToClipboard(encodeOutput)">コピー</button>
+          <button class="secondary" @click="copyToClipboard(encodeOutput)">
+            コピー
+          </button>
         </div>
       </div>
 
@@ -60,7 +62,9 @@
         <div v-if="decodeOutput" class="output">
           <h4>デコード結果</h4>
           <pre>{{ decodeOutput }}</pre>
-          <button class="secondary" @click="copyToClipboard(decodeOutput)">コピー</button>
+          <button class="secondary" @click="copyToClipboard(decodeOutput)">
+            コピー
+          </button>
         </div>
       </div>
     </div>
@@ -81,9 +85,15 @@
           <tbody>
             <tr v-for="entity in commonEntities" :key="entity.character">
               <td class="char">{{ entity.character }}</td>
-              <td class="entity"><code>{{ entity.entity }}</code></td>
-              <td class="entity"><code>{{ entity.decimal }}</code></td>
-              <td class="entity"><code>{{ entity.hexadecimal }}</code></td>
+              <td class="entity">
+                <code>{{ entity.entity }}</code>
+              </td>
+              <td class="entity">
+                <code>{{ entity.decimal }}</code>
+              </td>
+              <td class="entity">
+                <code>{{ entity.hexadecimal }}</code>
+              </td>
               <td>{{ entity.description }}</td>
             </tr>
           </tbody>
@@ -102,7 +112,9 @@
           </div>
           <div class="example-output">
             <strong>出力:</strong>
-            <pre>&amp;lt;p&amp;gt;Hello &amp;amp; &amp;quot;World&amp;quot;&amp;lt;/p&amp;gt;</pre>
+            <pre>
+&amp;lt;p&amp;gt;Hello &amp;amp; &amp;quot;World&amp;quot;&amp;lt;/p&amp;gt;</pre
+            >
           </div>
         </div>
       </div>
@@ -112,7 +124,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { encodeHTML, decodeHTML, getCommonEntities } from '~/utils/html-entities'
+import {
+  encodeHTML,
+  decodeHTML,
+  getCommonEntities,
+} from '~/utils/html-entities'
 
 const encodeInput = ref('')
 const encodeOutput = ref('')
@@ -134,7 +150,7 @@ const handleEncode = () => {
     encodeOutput.value = encodeHTML(encodeInput.value, {
       useNamedEntities: useNamedEntities.value,
       encodeNonAscii: encodeNonAscii.value,
-      decimal: useDecimal.value
+      decimal: useDecimal.value,
     })
   } catch (error) {
     encodeOutput.value = 'エンコード中にエラーが発生しました'
@@ -166,8 +182,11 @@ const copyToClipboard = async (text: string) => {
 useHead({
   title: 'HTMLエンティティエンコーダー - Web Tools',
   meta: [
-    { name: 'description', content: 'HTMLの特殊文字をエンティティ形式に変換します。' }
-  ]
+    {
+      name: 'description',
+      content: 'HTMLの特殊文字をエンティティ形式に変換します。',
+    },
+  ],
 })
 </script>
 
@@ -215,7 +234,7 @@ textarea {
   cursor: pointer;
 }
 
-.options input[type="checkbox"] {
+.options input[type='checkbox'] {
   margin-right: 8px;
 }
 
@@ -279,7 +298,8 @@ table {
   background-color: white;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
   border: 1px solid #ddd;
@@ -339,19 +359,22 @@ tr:hover {
   gap: 20px;
 }
 
-.example-input, .example-output {
+.example-input,
+.example-output {
   padding: 15px;
   background-color: #f8f9fa;
   border-radius: 4px;
 }
 
-.example-input strong, .example-output strong {
+.example-input strong,
+.example-output strong {
   display: block;
   margin-bottom: 10px;
   color: #666;
 }
 
-.example-input pre, .example-output pre {
+.example-input pre,
+.example-output pre {
   margin: 0;
   background-color: white;
   padding: 10px;
@@ -373,7 +396,8 @@ tr:hover {
     font-size: 14px;
   }
 
-  th, td {
+  th,
+  td {
     padding: 8px 5px;
   }
 }

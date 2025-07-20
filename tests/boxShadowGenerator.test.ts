@@ -9,7 +9,7 @@ import {
   exportShadowAsJSON,
   parseBoxShadow,
   type BoxShadow,
-  type BoxShadowConfig
+  type BoxShadowConfig,
 } from '~/utils/boxShadowGenerator'
 
 describe('boxShadowGenerator', () => {
@@ -22,7 +22,7 @@ describe('boxShadowGenerator', () => {
         spread: 0,
         color: '#000000',
         inset: false,
-        alpha: 1
+        alpha: 1,
       }
       const result = generateBoxShadowCSS(shadow)
       expect(result).toBe('10px 10px 20px 0px #000000')
@@ -36,7 +36,7 @@ describe('boxShadowGenerator', () => {
         spread: 2,
         color: '#ff0000',
         inset: true,
-        alpha: 1
+        alpha: 1,
       }
       const result = generateBoxShadowCSS(shadow)
       expect(result).toBe('inset 5px 5px 10px 2px #ff0000')
@@ -50,7 +50,7 @@ describe('boxShadowGenerator', () => {
         spread: 0,
         color: '#000000',
         inset: false,
-        alpha: 0.5
+        alpha: 0.5,
       }
       const result = generateBoxShadowCSS(shadow)
       expect(result).toBe('0px 0px 10px 0px rgba(0, 0, 0, 0.5)')
@@ -64,7 +64,7 @@ describe('boxShadowGenerator', () => {
         spread: -2,
         color: '#0000ff',
         inset: false,
-        alpha: 1
+        alpha: 1,
       }
       const result = generateBoxShadowCSS(shadow)
       expect(result).toBe('-10px -10px 5px -2px #0000ff')
@@ -81,7 +81,7 @@ describe('boxShadowGenerator', () => {
           spread: 0,
           color: '#000000',
           inset: false,
-          alpha: 0.2
+          alpha: 0.2,
         },
         {
           offsetX: 0,
@@ -90,11 +90,13 @@ describe('boxShadowGenerator', () => {
           spread: 0,
           color: '#000000',
           inset: false,
-          alpha: 0.1
-        }
+          alpha: 0.1,
+        },
       ]
       const result = generateMultipleShadows(shadows)
-      expect(result).toBe('0px 2px 4px 0px rgba(0, 0, 0, 0.2), 0px 4px 8px 0px rgba(0, 0, 0, 0.1)')
+      expect(result).toBe(
+        '0px 2px 4px 0px rgba(0, 0, 0, 0.2), 0px 4px 8px 0px rgba(0, 0, 0, 0.1)'
+      )
     })
 
     it('should handle mixed inset and outset shadows', () => {
@@ -106,7 +108,7 @@ describe('boxShadowGenerator', () => {
           spread: 0,
           color: '#ff0000',
           inset: false,
-          alpha: 1
+          alpha: 1,
         },
         {
           offsetX: 0,
@@ -115,11 +117,13 @@ describe('boxShadowGenerator', () => {
           spread: 0,
           color: '#0000ff',
           inset: true,
-          alpha: 1
-        }
+          alpha: 1,
+        },
       ]
       const result = generateMultipleShadows(shadows)
-      expect(result).toBe('10px 10px 0px 0px #ff0000, inset 0px 0px 5px 0px #0000ff')
+      expect(result).toBe(
+        '10px 10px 0px 0px #ff0000, inset 0px 0px 5px 0px #0000ff'
+      )
     })
   })
 
@@ -143,32 +147,38 @@ describe('boxShadowGenerator', () => {
 
   describe('generateCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
-      const shadows: BoxShadow[] = [{
-        offsetX: 10,
-        offsetY: 10,
-        blur: 20,
-        spread: 0,
-        color: '#000000',
-        inset: false,
-        alpha: 1
-      }]
+      const shadows: BoxShadow[] = [
+        {
+          offsetX: 10,
+          offsetY: 10,
+          blur: 20,
+          spread: 0,
+          color: '#000000',
+          inset: false,
+          alpha: 1,
+        },
+      ]
       const result = generateCSSCode(shadows)
       expect(result).toContain('.box {')
       expect(result).toContain('box-shadow: 10px 10px 20px 0px #000000;')
-      expect(result).toContain('-webkit-box-shadow: 10px 10px 20px 0px #000000;')
+      expect(result).toContain(
+        '-webkit-box-shadow: 10px 10px 20px 0px #000000;'
+      )
       expect(result).toContain('-moz-box-shadow: 10px 10px 20px 0px #000000;')
     })
 
     it('should use custom selector', () => {
-      const shadows: BoxShadow[] = [{
-        offsetX: 0,
-        offsetY: 0,
-        blur: 10,
-        spread: 0,
-        color: '#000000',
-        inset: false,
-        alpha: 1
-      }]
+      const shadows: BoxShadow[] = [
+        {
+          offsetX: 0,
+          offsetY: 0,
+          blur: 10,
+          spread: 0,
+          color: '#000000',
+          inset: false,
+          alpha: 1,
+        },
+      ]
       const result = generateCSSCode(shadows, '#myElement')
       expect(result).toContain('#myElement {')
     })
@@ -176,15 +186,17 @@ describe('boxShadowGenerator', () => {
 
   describe('generateInlineStyle', () => {
     it('should generate inline style', () => {
-      const shadows: BoxShadow[] = [{
-        offsetX: 5,
-        offsetY: 5,
-        blur: 10,
-        spread: 0,
-        color: '#000000',
-        inset: false,
-        alpha: 0.5
-      }]
+      const shadows: BoxShadow[] = [
+        {
+          offsetX: 5,
+          offsetY: 5,
+          blur: 10,
+          spread: 0,
+          color: '#000000',
+          inset: false,
+          alpha: 0.5,
+        },
+      ]
       const result = generateInlineStyle(shadows)
       expect(result).toBe('box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);')
     })
@@ -192,15 +204,17 @@ describe('boxShadowGenerator', () => {
 
   describe('exportShadowAsSass', () => {
     it('should export as Sass variable', () => {
-      const shadows: BoxShadow[] = [{
-        offsetX: 10,
-        offsetY: 10,
-        blur: 20,
-        spread: 0,
-        color: '#000000',
-        inset: false,
-        alpha: 1
-      }]
+      const shadows: BoxShadow[] = [
+        {
+          offsetX: 10,
+          offsetY: 10,
+          blur: 20,
+          spread: 0,
+          color: '#000000',
+          inset: false,
+          alpha: 1,
+        },
+      ]
       const result = exportShadowAsSass(shadows)
       expect(result).toContain('$shadow:')
       expect(result).toContain('10px 10px 20px 0px #000000')
@@ -212,17 +226,19 @@ describe('boxShadowGenerator', () => {
   describe('exportShadowAsJSON', () => {
     it('should export config as JSON', () => {
       const config: BoxShadowConfig = {
-        shadows: [{
-          offsetX: 10,
-          offsetY: 10,
-          blur: 20,
-          spread: 0,
-          color: '#000000',
-          inset: false,
-          alpha: 1
-        }],
+        shadows: [
+          {
+            offsetX: 10,
+            offsetY: 10,
+            blur: 20,
+            spread: 0,
+            color: '#000000',
+            inset: false,
+            alpha: 1,
+          },
+        ],
         backgroundColor: '#f0f0f0',
-        boxColor: '#ffffff'
+        boxColor: '#ffffff',
       }
       const result = exportShadowAsJSON(config)
       const parsed = JSON.parse(result)
@@ -241,7 +257,7 @@ describe('boxShadowGenerator', () => {
         blur: 20,
         spread: 0,
         color: '#000000',
-        inset: false
+        inset: false,
       })
     })
 
@@ -255,7 +271,7 @@ describe('boxShadowGenerator', () => {
         blur: 10,
         spread: 2,
         color: '#ff0000',
-        inset: true
+        inset: true,
       })
     })
 
