@@ -130,7 +130,8 @@ test.describe('Hash Generator', () => {
 
     await expect(page.locator('.history')).toBeVisible()
     const historyText = await page.locator('.history-text').textContent()
+    expect(historyText).toBeTruthy()
     expect(historyText).toContain('...')
-    expect(historyText.length).toBeLessThan(longText.length)
+    expect(historyText!.length).toBeLessThan(longText.length)
   })
 })

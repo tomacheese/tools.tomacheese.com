@@ -96,7 +96,7 @@
 
           <div v-if="resizeOptions.format !== 'png'" class="control-group">
             <label for="quality"
-              >品質 ({{ Math.round(resizeOptions.quality * 100) }}%):</label
+              >品質 ({{ Math.round((resizeOptions.quality ?? 0.9) * 100) }}%):</label
             >
             <input
               id="quality"

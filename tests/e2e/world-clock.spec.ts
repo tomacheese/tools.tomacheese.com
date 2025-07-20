@@ -47,7 +47,8 @@ test.describe('World Clock Tool', () => {
     // Check time display
     const timeDisplay = tokyoCard.locator('.time-display')
     await expect(timeDisplay).toBeVisible()
-    await expect(timeDisplay).toMatch(/\d{2}:\d{2}:\d{2}/) // 24-hour format by default
+    const timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/\d{2}:\d{2}:\d{2}/) // 24-hour format by default
 
     // Check date display
     await expect(tokyoCard.locator('.city-info')).toContainText(/\d{4}/)
@@ -79,13 +80,15 @@ test.describe('World Clock Tool', () => {
     )
 
     // Initially should be 24-hour format
-    await expect(timeDisplay).toMatch(/\d{2}:\d{2}:\d{2}/)
+    let timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/\d{2}:\d{2}:\d{2}/)
 
     // Toggle to 12-hour format
     await toggle.click()
 
     // Should now show AM/PM (午前/午後 in Japanese)
-    await expect(timeDisplay).toMatch(/(午前|午後)/)
+    timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/(午前|午後)/)
   })
 
   test('should search for cities', async ({ page }) => {
@@ -266,13 +269,16 @@ test.describe('World Clock Tool', () => {
 
     // Toggle multiple times
     await toggle.click() // 12-hour
-    await expect(timeDisplay).toMatch(/(午前|午後)/)
+    let timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/(午前|午後)/)
 
     await toggle.click() // 24-hour
-    await expect(timeDisplay).toMatch(/\d{2}:\d{2}:\d{2}/)
+    timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/\d{2}:\d{2}:\d{2}/)
 
     await toggle.click() // 12-hour again
-    await expect(timeDisplay).toMatch(/(午前|午後)/)
+    timeText = await timeDisplay.textContent()
+    expect(timeText).toMatch(/(午前|午後)/)
   })
 
   test('should show usage instructions', async ({ page }) => {

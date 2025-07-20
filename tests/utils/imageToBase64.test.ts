@@ -46,7 +46,7 @@ describe('imageToBase64 utilities', () => {
       const expectedDataUrl = 'data:text/plain;base64,dGVzdCBjb250ZW50'
 
       // Mock FileReader
-      const mockFileReader = {
+      const mockFileReader: any = {
         readAsDataURL: vi.fn(),
         onload: null,
         onerror: null,
@@ -58,7 +58,10 @@ describe('imageToBase64 utilities', () => {
       const promise = convertFileToBase64(mockFile)
 
       // Trigger onload
-      mockFileReader.onload({ target: { result: expectedDataUrl } } as any)
+      const mockEvent = { target: { result: expectedDataUrl } } as ProgressEvent<FileReader>
+      if (mockFileReader.onload) {
+        mockFileReader.onload(mockEvent)
+      }
 
       const result = await promise
       expect(result).toBe(expectedDataUrl)
@@ -69,7 +72,7 @@ describe('imageToBase64 utilities', () => {
       const mockFile = new File(['test'], 'test.txt')
       const mockError = new Error('Read error')
 
-      const mockFileReader = {
+      const mockFileReader: any = {
         readAsDataURL: vi.fn(),
         onload: null,
         onerror: null,
@@ -80,7 +83,9 @@ describe('imageToBase64 utilities', () => {
       const promise = convertFileToBase64(mockFile)
 
       // Trigger onerror
-      mockFileReader.onerror(mockError)
+      if (mockFileReader.onerror) {
+        mockFileReader.onerror(mockError as any)
+      }
 
       await expect(promise).rejects.toThrow()
     })
@@ -160,7 +165,11 @@ describe('imageToBase64 utilities', () => {
   describe('copyToClipboard', () => {
     it('should use navigator.clipboard when available', async () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined)
-      global.navigator.clipboard = { writeText: mockWriteText } as any
+      Object.defineProperty(global.navigator, 'clipboard', {
+        value: { writeText: mockWriteText },
+        writable: true,
+        configurable: true
+      })
 
       await copyToClipboard('test text')
 
@@ -168,7 +177,11 @@ describe('imageToBase64 utilities', () => {
     })
 
     it('should use fallback when navigator.clipboard is not available', async () => {
-      global.navigator.clipboard = undefined as any
+      Object.defineProperty(global.navigator, 'clipboard', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      })
       const mockExecCommand = vi.fn().mockReturnValue(true)
       global.document.execCommand = mockExecCommand
 
@@ -190,7 +203,11 @@ describe('imageToBase64 utilities', () => {
     })
 
     it('should handle fallback errors', async () => {
-      global.navigator.clipboard = undefined as any
+      Object.defineProperty(global.navigator, 'clipboard', {
+        value: undefined,
+        writable: true,
+        configurable: true
+      })
       const mockExecCommand = vi.fn().mockImplementation(() => {
         throw new Error('Copy failed')
       })
@@ -234,7 +251,7 @@ describe('imageToBase64 utilities', () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
       Object.defineProperty(mockFile, 'size', { value: 1024 })
 
-      const mockImage = {
+      const mockImage: any = {
         onload: null,
         onerror: null,
         src: '',
@@ -247,7 +264,9 @@ describe('imageToBase64 utilities', () => {
       const promise = getImageInfo(mockFile)
 
       // Trigger image load
-      mockImage.onload()
+      if (mockImage.onload) {
+        mockImage.onload(new Event('load'))
+      }
 
       const result = await promise
       expect(result).toEqual({
@@ -263,7 +282,7 @@ describe('imageToBase64 utilities', () => {
     it('should handle image load error', async () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
 
-      const mockImage = {
+      const mockImage: any = {
         onload: null,
         onerror: null,
         src: '',
@@ -274,7 +293,9 @@ describe('imageToBase64 utilities', () => {
       const promise = getImageInfo(mockFile)
 
       // Trigger image error
-      mockImage.onerror()
+      if (mockImage.onerror) {
+        mockImage.onerror(new Event('error'))
+      }
 
       await expect(promise).rejects.toThrow('Failed to load image')
       expect(mockRevokeObjectURL).toHaveBeenCalledWith('blob:mock-url')
@@ -285,14 +306,14 @@ describe('imageToBase64 utilities', () => {
     it('should convert image file to base64', async () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
 
-      const mockFileReader = {
+      const mockFileReader: any = {
         readAsDataURL: vi.fn(),
         onload: null,
         onerror: null,
         result: 'data:image/png;base64,iVBORw0KGgo=',
       }
 
-      const mockImage = {
+      const mockImage: any = {
         onload: null,
         onerror: null,
         src: '',
@@ -320,12 +341,17 @@ describe('imageToBase64 utilities', () => {
       const promise = imageToBase64(mockFile)
 
       // Trigger FileReader onload
-      mockFileReader.onload({
+      const mockEvent = {
         target: { result: mockFileReader.result },
-      } as any)
+      } as ProgressEvent<FileReader>
+      if (mockFileReader.onload) {
+        mockFileReader.onload(mockEvent)
+      }
 
       // Trigger Image onload
-      mockImage.onload()
+      if (mockImage.onload) {
+        mockImage.onload(new Event('load'))
+      }
 
       const result = await promise
       expect(result).toEqual({

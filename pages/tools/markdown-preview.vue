@@ -80,7 +80,9 @@ const htmlOutput = computed(() => {
   }
 
   try {
-    return marked(markdownText.value)
+    const result = marked(markdownText.value)
+    // Handle both sync and async cases
+    return typeof result === 'string' ? result : String(result)
   } catch (error) {
     return `<p class="error">Markdown変換エラー: ${error}</p>`
   }

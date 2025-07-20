@@ -244,7 +244,7 @@ const calculateCurrentAge = () => {
 const setToday = () => {
   targetDateString.value = new Date().toISOString().split('T')[0]
   if (birthDateString.value) {
-    calculateAge()
+    calculateCurrentAge()
   }
 }
 

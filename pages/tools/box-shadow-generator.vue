@@ -146,7 +146,7 @@
           <h3>CSSコード</h3>
           <div class="code-tabs">
             <button
-              v-for="format in ['css', 'sass', 'inline']"
+              v-for="format in formatOptions"
               :key="format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
@@ -198,6 +198,7 @@ const backgroundColor = ref('#f0f0f0')
 const boxColor = ref('#ffffff')
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
 const currentShadow = ref('')
+const formatOptions = ['css', 'sass', 'inline'] as const
 
 const updatePreview = () => {
   currentShadow.value = generateMultipleShadows(shadows.value)

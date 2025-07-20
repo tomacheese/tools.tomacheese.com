@@ -182,7 +182,7 @@
           <h3>CSSコード</h3>
           <div class="code-tabs">
             <button
-              v-for="format in ['css', 'sass', 'inline']"
+              v-for="format in formatOptions"
               :key="format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
@@ -228,6 +228,7 @@ const config = ref<BorderRadiusConfig>({
 
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
 const currentBorderRadius = ref('')
+const formatOptions = ['css', 'sass', 'inline'] as const
 
 const getMaxValue = () => {
   switch (config.value.unit) {

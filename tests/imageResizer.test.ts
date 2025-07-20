@@ -15,9 +15,11 @@ const mockCanvas = {
     imageSmoothingQuality: 'high',
     drawImage: vi.fn(),
   })),
-  toBlob: vi.fn(callback => {
+  toBlob: vi.fn((callback, _mimeType, _quality) => {
     const blob = new Blob(['mock'], { type: 'image/jpeg' })
-    callback(blob)
+    if (callback) {
+      callback(blob)
+    }
   }),
 }
 
@@ -114,12 +116,14 @@ describe('imageResizer', () => {
       const formats = ['jpeg', 'png', 'webp'] as const
 
       for (const format of formats) {
-        mockCanvas.toBlob = vi.fn((callback, mimeType) => {
+        mockCanvas.toBlob = vi.fn((callback, mimeType, _quality) => {
           const expectedMimeType =
             format === 'jpeg' ? 'image/jpeg' : `image/${format}`
           expect(mimeType).toBe(expectedMimeType)
           const blob = new Blob(['mock'], { type: expectedMimeType })
-          callback(blob)
+          if (callback) {
+            callback(blob)
+          }
         })
 
         const promise = resizeImage(mockFile, { format })

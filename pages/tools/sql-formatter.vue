@@ -107,7 +107,7 @@
         <label for="inputSql" class="form-label">SQL入力</label>
         <div v-if="detectedDialect" style="font-size: 0.875rem; color: #2563eb">
           推定方言:
-          {{ detectedDialect ? dialectLabels[detectedDialect] : 'なし' }}
+          {{ getDialectLabel(detectedDialect) }}
         </div>
       </div>
       <textarea
@@ -175,7 +175,7 @@
             行数: {{ stats.lineCount }}<br />
             クエリ数: {{ stats.queryCount }}<br />
             推定方言:
-            {{ detectedDialect ? dialectLabels[detectedDialect] : 'なし' }}
+            {{ getDialectLabel(detectedDialect) }}
           </div>
         </div>
 
@@ -312,6 +312,14 @@ const dialectLabels = {
   sqlite: 'SQLite',
 }
 
+// 方言ラベルを取得するヘルパー
+const getDialectLabel = (dialect: string): string => {
+  if (dialect && dialect in dialectLabels) {
+    return dialectLabels[dialect as keyof typeof dialectLabels]
+  }
+  return 'なし'
+}
+
 // サンプルSQL
 const sampleSqls = [
   {
@@ -441,7 +449,12 @@ const copyToClipboard = async (text: string) => {
 watch(inputSql, () => {
   if (inputSql.value.trim()) {
     // 方言の自動検出
-    detectedDialect.value = detectSqlDialect(inputSql.value)
+    const detected = detectSqlDialect(inputSql.value)
+    if (detected in dialectLabels) {
+      detectedDialect.value = detected as keyof typeof dialectLabels
+    } else {
+      detectedDialect.value = ''
+    }
 
     // リアルタイム検証
     if (validationErrors.value.length > 0) {

@@ -43,7 +43,7 @@
           </select>
         </div>
 
-        <div v-if="config.type !== 'linear'" class="control-group">
+        <div v-if="config.type !== 'linear' && config.position" class="control-group">
           <label>位置 X: {{ config.position.x }}%</label>
           <input
             v-model.number="config.position.x"
@@ -126,7 +126,7 @@
           <h3>CSSコード</h3>
           <div class="code-tabs">
             <button
-              v-for="format in ['css', 'sass', 'inline']"
+              v-for="format in formatOptions"
               :key="format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
@@ -176,6 +176,7 @@ const config = ref<GradientConfig>({
 
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
 const currentGradient = ref('')
+const formatOptions = ['css', 'sass', 'inline'] as const
 
 const updateGradient = () => {
   try {
