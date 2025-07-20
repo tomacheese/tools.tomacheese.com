@@ -10,7 +10,7 @@ export interface MarkdownParseOptions {
 /**
  * HTMLをサニタイズする関数
  */
-function sanitizeHtml(html: string): string {
+export function sanitizeHtml(html: string): string {
   const div = document.createElement('div')
   div.textContent = html
   return div.innerHTML
@@ -94,7 +94,7 @@ export function markdownToHtml(markdown: string, options: MarkdownParseOptions =
   html = html.replace(/(<li>.*<\/li>)/s, '<ol>$1</ol>')
   
   // 箇条書きリスト
-  html = html.replace(/^[\*\-\+]\s+(.+)$/gm, '<li>$1</li>')
+  html = html.replace(/^[*\-+]\s+(.+)$/gm, '<li>$1</li>')
   html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
   
   // 段落（空行で区切られたテキスト）

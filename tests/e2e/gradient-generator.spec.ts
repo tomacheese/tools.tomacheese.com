@@ -48,7 +48,6 @@ test.describe('CSS Gradient生成ツール', () => {
 
   test('カラーストップの追加と削除', async ({ page }) => {
     const addButton = page.locator('button:has-text("カラーストップを追加")')
-    const codeBlock = page.locator('.code-block')
     
     // 初期状態（2つのストップ）
     await expect(page.locator('.stop-control')).toHaveCount(2)

@@ -14,8 +14,8 @@
       ></textarea>
       
       <div class="quick-actions">
-        <button @click="clearText" class="clear-btn">クリア</button>
-        <button @click="pasteFromClipboard" class="paste-btn">貼り付け</button>
+        <button class="clear-btn" @click="clearText">クリア</button>
+        <button class="paste-btn" @click="pasteFromClipboard">貼り付け</button>
       </div>
     </div>
 
@@ -29,9 +29,9 @@
           <div class="conversion-header">
             <h3>{{ conversion.name }}</h3>
             <button
-              @click="copyToClipboard(conversion.result)"
               class="copy-btn"
               :class="{ copied: copiedItems[conversion.id] }"
+              @click="copyToClipboard(conversion.result)"
             >
               {{ copiedItems[conversion.id] ? 'コピー済み' : 'コピー' }}
             </button>
@@ -56,8 +56,8 @@
         <button
           v-for="example in examples"
           :key="example.name"
-          @click="loadExample(example.text)"
           class="example-button"
+          @click="loadExample(example.text)"
         >
           {{ example.name }}
         </button>

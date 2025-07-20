@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import {
   generatePassword,
   generatePasswords,
@@ -65,7 +65,7 @@ describe('Password utilities', () => {
         includeLowercase: false,
         includeNumbers: false
       })
-      expect(password).toMatch(/^[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]+$/)
+      expect(password).toMatch(/^[!@#$%^&*()_+\-=[\]{}|;:,.<>?]+$/)
     })
 
     it('should exclude similar characters when specified', () => {

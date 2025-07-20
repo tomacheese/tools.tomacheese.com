@@ -12,8 +12,8 @@
               <span>レイヤー {{ index + 1 }}</span>
               <button
                 v-if="shadows.length > 1"
-                @click="removeLayer(index)"
                 class="remove-button"
+                @click="removeLayer(index)"
               >
                 削除
               </button>
@@ -93,7 +93,7 @@
             </label>
           </div>
 
-          <button @click="addLayer" class="add-button">
+          <button class="add-button" @click="addLayer">
             レイヤーを追加
           </button>
         </div>
@@ -104,8 +104,8 @@
             <button
               v-for="(preset, name) in presetShadows"
               :key="name"
-              @click="applyPreset(preset)"
               class="preset-button"
+              @click="applyPreset(preset)"
             >
               {{ name }}
             </button>
@@ -153,21 +153,21 @@
             <button
               v-for="format in ['css', 'sass', 'inline']"
               :key="format"
-              @click="selectedFormat = format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
+              @click="selectedFormat = format"
             >
               {{ format.toUpperCase() }}
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button @click="copyCode" class="copy-button">
+          <button class="copy-button" @click="copyCode">
             コピー
           </button>
         </div>
 
         <div class="export-section">
-          <button @click="exportAsJSON" class="export-button">
+          <button class="export-button" @click="exportAsJSON">
             JSONとしてエクスポート
           </button>
         </div>
@@ -177,7 +177,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import {
   generateMultipleShadows,
   generateCSSCode,

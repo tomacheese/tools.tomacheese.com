@@ -102,8 +102,8 @@
               cursor: pointer;
               transition: all 0.2s;
             "
-            @click="copyNumber(number, index)"
             :title="'F(' + index + ') = ' + number"
+            @click="copyNumber(number, index)"
           >
             <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem;">
               F({{ index }})

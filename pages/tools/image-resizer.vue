@@ -6,13 +6,13 @@
     <div class="input-section">
       <div class="upload-area" @drop="handleDrop" @dragover.prevent @dragleave.prevent>
         <input
-          type="file"
           ref="fileInput"
-          @change="handleFileSelect"
+          type="file"
           accept="image/jpeg,image/jpg,image/png,image/webp"
           style="display: none"
+          @change="handleFileSelect"
         >
-        <button @click="$refs.fileInput.click()" class="upload-button">
+        <button class="upload-button" @click="$refs.fileInput.click()">
           画像を選択
         </button>
         <p class="upload-hint">またはここにドラッグ＆ドロップ</p>
@@ -81,7 +81,7 @@
             </select>
           </div>
 
-          <div class="control-group" v-if="resizeOptions.format !== 'png'">
+          <div v-if="resizeOptions.format !== 'png'" class="control-group">
             <label for="quality">品質 ({{ Math.round(resizeOptions.quality * 100) }}%):</label>
             <input
               id="quality"
@@ -93,7 +93,7 @@
             >
           </div>
 
-          <button @click="resizeImage" class="primary-button">
+          <button class="primary-button" @click="resizeImage">
             リサイズ実行
           </button>
         </div>
@@ -129,7 +129,7 @@
         </div>
       </div>
 
-      <button @click="downloadResized" class="primary-button">
+      <button class="primary-button" @click="downloadResized">
         ダウンロード
       </button>
     </div>

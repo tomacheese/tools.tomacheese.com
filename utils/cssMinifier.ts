@@ -134,7 +134,7 @@ export function formatBytes(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))  } ${  sizes[i]}`
 }
 
 export function beautifyCss(css: string): string {
@@ -151,8 +151,8 @@ export function beautifyCss(css: string): string {
   
   // Clean up extra spaces and newlines
   beautified = beautified.replace(/\n\s*\n/g, '\n')
-  beautified = beautified.replace(/  \n}/g, '\n}')
-  beautified = beautified.replace(/{\n  \n/g, '{\n  ')
+  beautified = beautified.replace(/ {2}\n}/g, '\n}')
+  beautified = beautified.replace(/{\n {2}\n/g, '{\n  ')
   
   // Fix spacing around selectors
   beautified = beautified.replace(/,\s*/g, ',\n')
