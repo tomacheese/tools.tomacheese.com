@@ -1,0 +1,2 @@
+This is a test text file for E2E testing.
+It should not be accepted by the image upload tool.

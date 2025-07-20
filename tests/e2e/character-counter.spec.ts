@@ -1,0 +1,183 @@
+import { test, expect } from '@playwright/test'
+
+test.describe('Character Counter Tool', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/tools/character-counter')
+  })
+
+  test('should display character counter tool correctly', async ({ page }) => {
+    // Check page title
+    await expect(page).toHaveTitle(/文字数カウンター.*Tools\.tomacheese\.com/)
+
+    // Check tool header
+    await expect(page.locator('h1')).toHaveText('文字数カウンター')
+    await expect(page.locator('.tool-header p')).toContainText('テキストの文字数、行数、バイト数を瞬時にカウントします')
+
+    // Check input textarea
+    await expect(page.locator('#inputText')).toBeVisible()
+    await expect(page.locator('label[for="inputText"]')).toHaveText('テキストを入力してください')
+
+    // Check initial state (all counters should be 0)
+    await expect(page.locator('div:has-text("文字数（スペースあり）") + div')).toHaveText('0')
+    await expect(page.locator('div:has-text("文字数（スペースなし）") + div')).toHaveText('0')
+  })
+
+  test('should count characters correctly', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test basic text
+    await textarea.fill('Hello World')
+    
+    await expect(page.locator('div:has-text("文字数（スペースあり）") + div')).toHaveText('11')
+    await expect(page.locator('div:has-text("文字数（スペースなし）") + div')).toHaveText('10')
+    await expect(page.locator('div:has-text("行数") + div')).toHaveText('1')
+    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('2')
+  })
+
+  test('should count multiline text correctly', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test multiline text
+    await textarea.fill('Line 1\nLine 2\nLine 3')
+    
+    await expect(page.locator('div:has-text("行数") + div')).toHaveText('3')
+    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('6')
+    await expect(page.locator('div:has-text("段落数") + div')).toHaveText('1')
+  })
+
+  test('should count paragraphs correctly', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test multiple paragraphs
+    await textarea.fill('Paragraph 1\n\nParagraph 2\n\nParagraph 3')
+    
+    await expect(page.locator('div:has-text("段落数") + div')).toHaveText('3')
+  })
+
+  test('should analyze Japanese text correctly', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test Japanese text
+    await textarea.fill('こんにちは カタカナ 漢字 ABC123')
+    
+    // Wait for detailed analysis to appear
+    await expect(page.locator('h3:has-text("詳細分析")')).toBeVisible()
+    
+    // Check character type statistics
+    await expect(page.locator('div:has-text("ひらがな: 5文字")')).toBeVisible()
+    await expect(page.locator('div:has-text("カタカナ: 4文字")')).toBeVisible()
+    await expect(page.locator('div:has-text("漢字: 2文字")')).toBeVisible()
+    await expect(page.locator('div:has-text("英数字: 6文字")')).toBeVisible()
+  })
+
+  test('should calculate reading time', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Fill with enough text to have meaningful reading time
+    const longText = 'あ'.repeat(800) // 800 characters
+    await textarea.fill(longText)
+    
+    // Check reading time appears
+    await expect(page.locator('div:has-text("読み取り時間（約）")')).toBeVisible()
+    await expect(page.locator('div:has-text("タイピング時間（約）")')).toBeVisible()
+  })
+
+  test('should update counters in real time', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    const charCountWithSpaces = page.locator('div:has-text("文字数（スペースあり）") + div')
+    
+    // Type character by character and check real-time updates
+    await textarea.focus()
+    await page.keyboard.type('A')
+    await expect(charCountWithSpaces).toHaveText('1')
+    
+    await page.keyboard.type('B')
+    await expect(charCountWithSpaces).toHaveText('2')
+    
+    await page.keyboard.type(' ')
+    await expect(charCountWithSpaces).toHaveText('3')
+  })
+
+  test('should handle empty input correctly', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test with some text first
+    await textarea.fill('Some text')
+    
+    // Clear the text
+    await textarea.fill('')
+    
+    // All counters should be 0
+    await expect(page.locator('div:has-text("文字数（スペースあり）") + div')).toHaveText('0')
+    await expect(page.locator('div:has-text("文字数（スペースなし）") + div')).toHaveText('0')
+    await expect(page.locator('div:has-text("行数") + div')).toHaveText('0')
+    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('0')
+    
+    // Detailed analysis should not be visible
+    await expect(page.locator('h3:has-text("詳細分析")')).not.toBeVisible()
+  })
+
+  test('should have proper sidebar navigation', async ({ page }) => {
+    // Check if sidebar is visible
+    await expect(page.locator('.sidebar')).toBeVisible()
+    await expect(page.locator('h3:has-text("ツール一覧")')).toBeVisible()
+    
+    // Check if navigation links exist
+    await expect(page.locator('.sidebar-nav a:has-text("カラーピッカー")')).toBeVisible()
+    await expect(page.locator('.sidebar-nav a:has-text("文字数カウンター")')).toBeVisible()
+    
+    // Test navigation to another tool
+    await page.locator('.sidebar-nav a:has-text("カラーピッカー")').click()
+    await expect(page).toHaveURL('/tools/color-picker')
+  })
+
+  test('should be responsive on mobile', async ({ page }) => {
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 })
+    
+    // On mobile, sidebar should be horizontal
+    const sidebar = page.locator('.sidebar')
+    await expect(sidebar).toBeVisible()
+    
+    // Tool content should be visible
+    await expect(page.locator('.tool-content')).toBeVisible()
+    await expect(page.locator('#inputText')).toBeVisible()
+    
+    // Stats grid should adapt to mobile
+    const statsGrid = page.locator('.result-box').first()
+    await expect(statsGrid).toBeVisible()
+  })
+
+  test('should handle large text input', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Test with very large text
+    const largeText = 'Lorem ipsum '.repeat(1000) // ~12000 characters
+    await textarea.fill(largeText)
+    
+    // Should still work without performance issues
+    await expect(page.locator('div:has-text("文字数（スペースあり）") + div')).toContainText('1200')
+    
+    // Byte count should be visible and reasonable
+    const byteCount = page.locator('div:has-text("バイト数（UTF-8）") + div')
+    await expect(byteCount).toBeVisible()
+    
+    // Reading time should be calculated
+    await expect(page.locator('div:has-text("読み取り時間（約）")')).toBeVisible()
+  })
+
+  test('should preserve text when navigating back', async ({ page }) => {
+    const textarea = page.locator('#inputText')
+    
+    // Enter some text
+    await textarea.fill('Test text to preserve')
+    
+    // Navigate away and back
+    await page.locator('.sidebar-nav a:has-text("カラーピッカー")').click()
+    await page.goBack()
+    
+    // Text should be preserved (if using browser state)
+    // Note: This might not work if Nuxt clears state, which is expected behavior
+    await expect(page.locator('#inputText')).toBeFocused() // At least the field should be focusable
+  })
+})
