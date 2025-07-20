@@ -1,89 +1,61 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [deploy]
   push:
     branches:
-      - main
       - master
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - main
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  # Build and deploy job
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-    
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Setup node
+    steps:
+      - name: 🛎 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: 🏗 Setup node env
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        id: pnpm-install
-        with:
-          run_install: false
-          package_json_file: package.json
+      - name: 👨🏻‍💻 Install dependencies
+        run: pnpm install
 
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: 🏗️ Nuxt build
+        run: pnpm build
 
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: |
-          pnpm install --frozen-lockfile --prefer-frozen-lockfile
-
-      - name: Run lint
-        run: pnpm lint
-
-      - name: Run type check
-        run: pnpm typecheck
-
-      - name: Run tests
-        run: pnpm test
-
-      - name: Generate static site
+      - name: 🏭 Nuxt generate
         run: pnpm generate
-        env:
-          DEPLOY_ENV: GH_PAGES
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
+      - name: 🆙 Upload Pages-artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: .output/public/
 
-      - name: Deploy to GitHub Pages
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
