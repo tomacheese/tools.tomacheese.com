@@ -87,13 +87,13 @@ describe('calculateCompoundInterest', () => {
 
 describe('formatCurrency', () => {
   it('should format currency in Japanese Yen', () => {
-    expect(formatCurrency(1000000)).toBe('¥1,000,000')
-    expect(formatCurrency(1234567)).toBe('¥1,234,567')
-    expect(formatCurrency(0)).toBe('¥0')
+    expect(formatCurrency(1000000)).toBe('￥1,000,000')
+    expect(formatCurrency(1234567)).toBe('￥1,234,567')
+    expect(formatCurrency(0)).toBe('￥0')
   })
 
   it('should handle negative values', () => {
-    expect(formatCurrency(-1000)).toBe('-¥1,000')
+    expect(formatCurrency(-1000)).toBe('-￥1,000')
   })
 })
 

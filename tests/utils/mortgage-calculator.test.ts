@@ -95,13 +95,13 @@ describe('calculateMortgage', () => {
 
 describe('formatCurrency', () => {
   it('should format currency in Japanese Yen', () => {
-    expect(formatCurrency(1000000)).toBe('¥1,000,000')
-    expect(formatCurrency(82688)).toBe('¥82,688')
-    expect(formatCurrency(0)).toBe('¥0')
+    expect(formatCurrency(1000000)).toBe('￥1,000,000')
+    expect(formatCurrency(82688)).toBe('￥82,688')
+    expect(formatCurrency(0)).toBe('￥0')
   })
 
   it('should handle negative values', () => {
-    expect(formatCurrency(-1000)).toBe('-¥1,000')
+    expect(formatCurrency(-1000)).toBe('-￥1,000')
   })
 })
 

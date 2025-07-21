@@ -440,6 +440,7 @@ export const useTools = () => {
   const getCategories = () => [...new Set(tools.map(tool => tool.category))]
 
   const searchTools = (query: string) => {
+    if (!query.trim()) return []
     const lowerQuery = query.toLowerCase()
     return tools.filter(
       tool =>
