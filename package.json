@@ -42,7 +42,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "nuxi typecheck",
-    "depcheck": "depcheck --ignores=highlight.js,vue-router,@nuxt/test-utils,@vue/test-utils,tsx,vue-tsc",
+    "depcheck": "depcheck",
     "deploy:vercel": "vercel --prod",
     "deploy:netlify": "ntl deploy --prod",
     "docker:build": "docker build -t tools-tomacheese .",

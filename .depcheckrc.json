@@ -1,23 +1,14 @@
 {
-  "ignoreMatches": [
-    "@nuxt/*",
-    "@vue/*",
-    "@vitest/*",
-    "@playwright/*",
-    "@eslint/*",
-    "eslint-*",
-    "prettier",
-    "typescript",
-    "vitest",
-    "playwright",
-    "happy-dom",
-    "vue-eslint-parser",
+  "ignores": [
     "highlight.js",
     "vue-router",
     "@nuxt/test-utils",
     "@vue/test-utils",
     "tsx",
-    "vue-tsc"
+    "vue-tsc",
+    "@eslint/js",
+    "vue-eslint-parser",
+    "~"
   ],
   "ignorePatterns": [
     "node_modules",
@@ -26,8 +17,7 @@
     "dist",
     "coverage",
     "playwright-report",
-    "test-results",
-    "tests/**/*"
+    "test-results"
   ],
   "skipMissing": true
 }
