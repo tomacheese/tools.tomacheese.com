@@ -24,7 +24,7 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
 
   // Parse the entire CSV properly handling quotes and newlines
   const result = parseCSVText(csv, delimiter, trimValues)
-  
+
   if (!result.length) return []
 
   let headerRow: string[] = []
@@ -63,7 +63,11 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
   return finalResult
 }
 
-function parseCSVText(csv: string, delimiter: string, trim: boolean): string[][] {
+function parseCSVText(
+  csv: string,
+  delimiter: string,
+  trim: boolean
+): string[][] {
   const rows: string[][] = []
   let currentRow: string[] = []
   let currentField = ''
@@ -104,7 +108,7 @@ function parseCSVText(csv: string, delimiter: string, trim: boolean): string[][]
       }
       currentRow = []
       currentField = ''
-      
+
       // Skip \r\n combination
       if (char === '\r' && nextChar === '\n') {
         i += 2
@@ -127,7 +131,6 @@ function parseCSVText(csv: string, delimiter: string, trim: boolean): string[][]
 
   return rows
 }
-
 
 export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
   const { headers = true, delimiter = ',' } = options
@@ -196,7 +199,7 @@ export function detectDelimiter(csv: string): string {
   if (!csv || !csv.trim()) {
     return ','
   }
-  
+
   // Count occurrences of common delimiters in first few lines
   const delimiters = [',', ';', '\t', '|']
   const sampleLines = csv.split(/\r?\n/).slice(0, 5).join('\n')
@@ -207,7 +210,8 @@ export function detectDelimiter(csv: string): string {
   for (const delimiter of delimiters) {
     // Escape special regex characters
     const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const count = (sampleLines.match(new RegExp(escapedDelimiter, 'g')) || []).length
+    const count = (sampleLines.match(new RegExp(escapedDelimiter, 'g')) || [])
+      .length
     if (count > maxCount) {
       maxCount = count
       detectedDelimiter = delimiter
