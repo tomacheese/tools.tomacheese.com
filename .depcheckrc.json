@@ -19,5 +19,5 @@
     "playwright-report",
     "test-results"
   ],
-  "skipMissing": true
+  "skipMissing": false
 }
