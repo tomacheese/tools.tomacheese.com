@@ -25,10 +25,22 @@ export default defineConfig({
 
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
+
+    /* Timeout for each action */
+    actionTimeout: 10000,
+
+    /* Timeout for navigation */
+    navigationTimeout: 30000,
   },
 
   /* Configure projects for major browsers */
-  projects: [
+  projects: process.env.CI ? [
+    // CI環境ではChromiumのみでテスト実行して高速化
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ] : [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -53,6 +65,7 @@ export default defineConfig({
       name: 'Mobile Safari',
       use: { ...devices['iPhone 12'] },
     },
+  ],
 
     /* Test against branded browsers. */
     // {
@@ -67,9 +80,12 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    command: 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    /* Wait for server to be ready before running tests */
+    stdout: 'ignore',
+    stderr: 'pipe',
   },
 })
