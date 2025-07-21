@@ -124,7 +124,10 @@ describe('calculateDetailedCalories', () => {
       activityLevel: 'moderate' as const,
     }
 
-    const maintainResult = calculateDetailedCalories({ ...baseInput, goal: 'maintain' })
+    const maintainResult = calculateDetailedCalories({
+      ...baseInput,
+      goal: 'maintain',
+    })
     const loseResult = calculateDetailedCalories({ ...baseInput, goal: 'lose' })
     const gainResult = calculateDetailedCalories({ ...baseInput, goal: 'gain' })
 

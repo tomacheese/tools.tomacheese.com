@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   generateBoxShadowCSS,
   generateMultipleShadows,
-  hexToRgbaForShadowForShadow,
+  hexToRgbaForShadow,
   generateBoxShadowCSSCode,
   generateBoxShadowInlineStyle,
   exportShadowAsSass,
@@ -132,7 +132,9 @@ describe('boxShadowGenerator', () => {
       expect(hexToRgbaForShadow('#ff0000', 1)).toBe('rgba(255, 0, 0, 1)')
       expect(hexToRgbaForShadow('#00ff00', 0.5)).toBe('rgba(0, 255, 0, 0.5)')
       expect(hexToRgbaForShadow('#0000ff', 0)).toBe('rgba(0, 0, 255, 0)')
-      expect(hexToRgbaForShadow('#ffffff', 0.75)).toBe('rgba(255, 255, 255, 0.75)')
+      expect(hexToRgbaForShadow('#ffffff', 0.75)).toBe(
+        'rgba(255, 255, 255, 0.75)'
+      )
     })
 
     it('should handle hex without #', () => {

@@ -161,8 +161,6 @@ export function calculateJSMinifyStats(
   }
 }
 
-
-
 export function beautifyJavaScript(js: string): string {
   let beautified = js
   let indentLevel = 0

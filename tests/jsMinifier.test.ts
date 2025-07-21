@@ -4,7 +4,7 @@ import {
   beautifyJavaScript,
   validateJavaScript,
   calculateJSMinifyStats,
-  type JSJSMinifyOptions,
+  type JSMinifyOptions,
 } from '~/utils/jsMinifier'
 import { formatBytes } from '~/utils/cssMinifier'
 
