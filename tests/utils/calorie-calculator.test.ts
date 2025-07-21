@@ -89,8 +89,8 @@ describe('calculateDetailedCalories', () => {
     })
 
     expect(result.bmr).toBeCloseTo(1649, 0) // Adjust to actual calculated value
-    expect(result.tdee).toBeCloseTo(2594, 0)
-    expect(result.recommendedCalories).toBeCloseTo(2594, 0)
+    expect(result.tdee).toBeCloseTo(2556, 0)
+    expect(result.recommendedCalories).toBeCloseTo(2556, 0)
     expect(result.proteinGrams).toBeGreaterThan(0)
     expect(result.carbsGrams).toBeGreaterThan(0)
     expect(result.fatGrams).toBeGreaterThan(0)

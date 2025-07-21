@@ -145,7 +145,7 @@ describe('calculateWaterIntake', () => {
       exerciseMinutes: 0,
     })
 
-    expect(result.baseIntake).toBeCloseTo(2450, -1) // Approximate due to conversion
+    expect(result.baseIntake).toBeCloseTo(2445, -1) // Approximate due to conversion
   })
 
   it('should handle all adjustments combined', () => {

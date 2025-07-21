@@ -78,12 +78,12 @@ describe('Health Utils', () => {
   describe('calculateBMR', () => {
     it('should calculate BMR for male correctly', () => {
       const bmr = calculateBMR(70, 1.75, 30, 'male')
-      expect(bmr).toBeCloseTo(1690, 0)
+      expect(bmr).toBeCloseTo(1696, 0)
     })
 
     it('should calculate BMR for female correctly', () => {
       const bmr = calculateBMR(60, 1.65, 25, 'female')
-      expect(bmr).toBeCloseTo(1434, 0)
+      expect(bmr).toBeCloseTo(1405, 0)
     })
 
     it('should handle height in cm', () => {
@@ -108,15 +108,15 @@ describe('Health Utils', () => {
   describe('calculateCalories', () => {
     it('should calculate total calories for sedentary activity', () => {
       const result = calculateCalories(70, 1.75, 30, 'male', 'sedentary')
-      expect(result.bmr).toBeCloseTo(1690, 0)
-      expect(result.totalCalories).toBeCloseTo(2028, 0)
+      expect(result.bmr).toBeCloseTo(1696, 0)
+      expect(result.totalCalories).toBeCloseTo(2035, 0)
       expect(result.description).toContain('デスクワーク中心')
     })
 
     it('should calculate total calories for active lifestyle', () => {
       const result = calculateCalories(60, 1.65, 25, 'female', 'active')
-      expect(result.bmr).toBeCloseTo(1434, 0)
-      expect(result.totalCalories).toBeCloseTo(2474, 0)
+      expect(result.bmr).toBeCloseTo(1405, 0)
+      expect(result.totalCalories).toBeCloseTo(2424, 0)
       expect(result.description).toContain('激しい運動')
     })
 

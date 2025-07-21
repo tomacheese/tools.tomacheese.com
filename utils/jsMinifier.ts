@@ -29,11 +29,34 @@ export function minifyJavaScript(
 
   // Remove comments
   if (removeComments) {
+    // First preserve strings to avoid removing comment-like patterns inside strings
+    const stringLiterals: string[] = []
+    let stringIndex = 0
+
+    // Preserve all string literals temporarily
+    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, (match) => {
+      stringLiterals.push(match)
+      return `__TEMP_STRING_${stringIndex++}__`
+    })
+    minified = minified.replace(/'((?:\\.|[^'\\])*)'/g, (match) => {
+      stringLiterals.push(match)
+      return `__TEMP_STRING_${stringIndex++}__`
+    })
+    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, (match) => {
+      stringLiterals.push(match)
+      return `__TEMP_STRING_${stringIndex++}__`
+    })
+
     // Remove single-line comments
     minified = minified.replace(/\/\/.*$/gm, '')
 
     // Remove multi-line comments
     minified = minified.replace(/\/\*[\s\S]*?\*\//g, '')
+
+    // Restore string literals
+    stringLiterals.forEach((str, index) => {
+      minified = minified.replace(`__TEMP_STRING_${index}__`, str)
+    })
   }
 
   // Remove console.log statements
@@ -51,23 +74,26 @@ export function minifyJavaScript(
 
   // Remove whitespace
   if (removeWhitespace) {
-    // Preserve strings and regex patterns
-    const stringRegex = /(['"`])(?:(?=(\\?))\2.)*?\1/g
-    const regexPattern = /\/(?![*/])(?:\\.|[^/\\])+\/[gimuy]*/g
-
+    // Simple but effective string preservation
     const strings: string[] = []
-    const regexes: string[] = []
+    let stringIndex = 0
 
-    // Extract strings
-    minified = minified.replace(stringRegex, match => {
+    // Extract double quoted strings
+    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, (match) => {
       strings.push(match)
-      return `__STRING_${strings.length - 1}__`
+      return `__STRING_${stringIndex++}__`
     })
 
-    // Extract regex patterns
-    minified = minified.replace(regexPattern, match => {
-      regexes.push(match)
-      return `__REGEX_${regexes.length - 1}__`
+    // Extract single quoted strings  
+    minified = minified.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (match) => {
+      strings.push(match)
+      return `__STRING_${stringIndex++}__`
+    })
+
+    // Extract template literals
+    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, (match) => {
+      strings.push(match)
+      return `__STRING_${stringIndex++}__`
     })
 
     // Remove unnecessary whitespace
@@ -75,25 +101,13 @@ export function minifyJavaScript(
     minified = minified.replace(/\s*([{}[\]();,:])\s*/g, '$1')
     minified = minified.replace(/\s*([+\-*/=<>!&|])\s*/g, '$1')
 
-    // Fix some edge cases
-    minified = minified.replace(/}function/g, '}function ')
-    minified = minified.replace(/}var/g, '}var ')
-    minified = minified.replace(/}let/g, '}let ')
-    minified = minified.replace(/}const/g, '}const ')
-    minified = minified.replace(/}if/g, '}if ')
-    minified = minified.replace(/}for/g, '}for ')
-    minified = minified.replace(/}while/g, '}while ')
-    minified = minified.replace(/}switch/g, '}switch ')
-    minified = minified.replace(/}return/g, '}return ')
+    // Fix keyword spacing
+    minified = minified.replace(/}(function|var|let|const|if|for|while|switch|return)/g, '}$1 ')
 
-    // Restore strings
+    // Restore strings (use replaceAll to handle all occurrences)
     strings.forEach((str, index) => {
-      minified = minified.replace(`__STRING_${index}__`, str)
-    })
-
-    // Restore regex patterns
-    regexes.forEach((regex, index) => {
-      minified = minified.replace(`__REGEX_${index}__`, regex)
+      const placeholder = `__STRING_${index}__`
+      minified = minified.split(placeholder).join(str)
     })
 
     // Remove line breaks unless preserving them

@@ -97,7 +97,7 @@ describe('decodeHTML', () => {
     expect(decodeHTML('&copy;')).toBe('©')
     expect(decodeHTML('&euro;')).toBe('€')
     expect(decodeHTML('&frac12;')).toBe('½')
-    expect(decodeHTML('&nbsp;')).toBe(' ')
+    expect(decodeHTML('&nbsp;')).toBe('\u00A0')
   })
 
   it('should decode multiple entities in text', () => {

@@ -310,7 +310,7 @@ describe('JSON to CSV conversion workflows', () => {
     it('should handle arrays with empty objects', () => {
       const data = [{}, {}, {}]
       const csv = jsonToCSV(data)
-      expect(csv).toBe('\n\n')
+      expect(csv).toBe('\n\n\n')
     })
 
     it('should handle arrays with null values', () => {

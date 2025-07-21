@@ -327,7 +327,7 @@ describe('validateJSON', () => {
   it('should provide error message for invalid JSON', () => {
     const result = validateJSON('{name: John}')
     expect(result.valid).toBe(false)
-    expect(result.error).toContain('Unexpected token')
+    expect(result.error).toContain('Expected property name')
   })
 
   it('should handle empty string', () => {

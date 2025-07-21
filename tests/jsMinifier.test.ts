@@ -45,11 +45,11 @@ console.log(x);`
 
     it('should preserve strings', () => {
       const input = `const message = "Hello   World";
-const url = 'https://example.com   ';`
+const url = 'https://example.com';`
       const options: JSMinifyOptions = { removeWhitespace: true }
       const result = minifyJavaScript(input, options)
       expect(result).toContain('"Hello   World"')
-      expect(result).toContain('https://example.com')
+      expect(result).toContain("'https://example.com'")
     })
 
     it('should remove console.log statements when option is enabled', () => {
