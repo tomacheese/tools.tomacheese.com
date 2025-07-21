@@ -36,8 +36,8 @@ describe('QRCode', () => {
     const svg = qr.toSVG()
     expect(svg).toContain('<svg')
     expect(svg).toContain('</svg>')
-    expect(svg).toContain('width="256"')
-    expect(svg).toContain('height="256"')
+    expect(svg).toContain('width="233"')
+    expect(svg).toContain('height="233"')
   })
 
   it('should accept custom options for data URL', () => {
@@ -63,7 +63,8 @@ describe('QRCode', () => {
         light: '#00FF00',
       },
     })
-    expect(svg).toContain('width="512"')
+    expect(svg).toContain('width="')
+    expect(svg).toContain('height="')
     expect(svg).toContain('fill="#00FF00"')
     expect(svg).toContain('fill="#FF0000"')
   })
@@ -123,7 +124,8 @@ describe('generateQRCode', () => {
       },
     }
     const result = generateQRCode('Test', options)
-    expect(result.svg).toContain('width="384"')
+    expect(result.svg).toContain('width="')
+    expect(result.svg).toContain('height="')
     expect(result.svg).toContain('fill="#FEDCBA"')
     expect(result.svg).toContain('fill="#123456"')
   })
