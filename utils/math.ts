@@ -118,7 +118,7 @@ export const convertBase = (
   // 数値文字列の検証 - 各桁が指定された基数で有効かチェック
   const validChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(0, fromBase)
   const upperNumber = number.toUpperCase()
-  
+
   for (const char of upperNumber) {
     if (!validChars.includes(char)) {
       throw new Error(`'${char}'は基数${fromBase}では無効な文字です`)
