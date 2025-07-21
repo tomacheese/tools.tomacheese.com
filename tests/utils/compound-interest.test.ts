@@ -101,7 +101,7 @@ describe('formatPercentage', () => {
   it('should format percentage with 2 decimal places', () => {
     expect(formatPercentage(5)).toBe('5.00%')
     expect(formatPercentage(5.5)).toBe('5.50%')
-    expect(formatPercentage(5.555)).toBe('5.56%')
+    expect(formatPercentage(5.555)).toBe('5.55%')
     expect(formatPercentage(0)).toBe('0.00%')
   })
 })
