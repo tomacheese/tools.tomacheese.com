@@ -132,6 +132,8 @@ export function getTimeZoneOffset(timezone: string): string {
 }
 
 export function isDaylightSavingTime(timezone: string): boolean {
+  // TODO: DST detection may not work correctly for all timezones
+  // Consider using a more robust timezone library like date-fns-tz or luxon
   try {
     const now = new Date()
     const january = new Date(now.getFullYear(), 0, 1)

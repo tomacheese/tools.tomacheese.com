@@ -49,18 +49,18 @@ describe('parseTimestamp', () => {
 
   it('should parse ISO 8601 date string', () => {
     const result = parseTimestamp('2024-01-01T00:00:00Z')
-    expect(result).toBe(2024000) // Currently parsing as number 2024 * 1000
+    expect(result).toBe(1704067200000)
   })
 
   it('should parse ISO 8601 with milliseconds', () => {
     const result = parseTimestamp('2024-01-01T00:00:00.000Z')
-    expect(result).toBe(2024000) // Currently parsing as number 2024 * 1000
+    expect(result).toBe(1704067200000)
   })
 
   it('should parse common date formats', () => {
     const date = new Date('2024/01/01 00:00:00')
     const result = parseTimestamp('2024/01/01 00:00:00')
-    expect(Math.abs(result! - date.getTime())).toBeGreaterThan(1000) // Current implementation issue
+    expect(Math.abs(result! - date.getTime())).toBeLessThan(1000)
   })
 
   it('should return null for invalid input', () => {

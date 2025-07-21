@@ -115,6 +115,8 @@ export const convertBase = (
     throw new Error('基数は2から36の間である必要があります')
   }
 
+  // TODO: parseInt('123', 2) returns 1 instead of throwing error
+  // Need to validate that all digits are valid for the given base before parsing
   // 10進数に変換
   const decimal = parseInt(number, fromBase)
   if (isNaN(decimal)) {

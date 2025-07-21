@@ -34,15 +34,15 @@ export function minifyJavaScript(
     let stringIndex = 0
 
     // Preserve all string literals temporarily
-    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, (match) => {
+    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, match => {
       stringLiterals.push(match)
       return `__TEMP_STRING_${stringIndex++}__`
     })
-    minified = minified.replace(/'((?:\\.|[^'\\])*)'/g, (match) => {
+    minified = minified.replace(/'((?:\\.|[^'\\])*)'/g, match => {
       stringLiterals.push(match)
       return `__TEMP_STRING_${stringIndex++}__`
     })
-    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, (match) => {
+    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, match => {
       stringLiterals.push(match)
       return `__TEMP_STRING_${stringIndex++}__`
     })
@@ -79,19 +79,19 @@ export function minifyJavaScript(
     let stringIndex = 0
 
     // Extract double quoted strings
-    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, (match) => {
+    minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, match => {
       strings.push(match)
       return `__STRING_${stringIndex++}__`
     })
 
-    // Extract single quoted strings  
-    minified = minified.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, (match) => {
+    // Extract single quoted strings
+    minified = minified.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, match => {
       strings.push(match)
       return `__STRING_${stringIndex++}__`
     })
 
     // Extract template literals
-    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, (match) => {
+    minified = minified.replace(/`((?:\\.|[^`\\])*)`/g, match => {
       strings.push(match)
       return `__STRING_${stringIndex++}__`
     })
@@ -102,7 +102,10 @@ export function minifyJavaScript(
     minified = minified.replace(/\s*([+\-*/=<>!&|])\s*/g, '$1')
 
     // Fix keyword spacing
-    minified = minified.replace(/}(function|var|let|const|if|for|while|switch|return)/g, '}$1 ')
+    minified = minified.replace(
+      /}(function|var|let|const|if|for|while|switch|return)/g,
+      '}$1 '
+    )
 
     // Restore strings (use replaceAll to handle all occurrences)
     strings.forEach((str, index) => {

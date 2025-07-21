@@ -24,14 +24,16 @@ export function dateToTimestamp(
 }
 
 export function parseTimestamp(input: string): number | null {
-  // Try to parse as number (Unix timestamp)
-  const num = parseFloat(input)
-  if (!isNaN(num) && isFinite(num)) {
-    // Check if it's likely milliseconds (13+ digits) or seconds (10 digits)
-    if (Math.abs(num) >= 1e12) {
-      return num // Milliseconds
-    } else {
-      return num * 1000 // Convert seconds to milliseconds
+  // First, check if input contains only digits (Unix timestamp)
+  if (/^-?\d+(\.\d+)?$/.test(input)) {
+    const num = parseFloat(input)
+    if (!isNaN(num) && isFinite(num)) {
+      // Check if it's likely milliseconds (13+ digits) or seconds (10 digits)
+      if (Math.abs(num) >= 1e12) {
+        return num // Milliseconds
+      } else {
+        return num * 1000 // Convert seconds to milliseconds
+      }
     }
   }
 

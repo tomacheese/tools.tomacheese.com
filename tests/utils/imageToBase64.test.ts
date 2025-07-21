@@ -165,24 +165,23 @@ describe('imageToBase64 utilities', () => {
   })
 
   describe('copyToClipboard', () => {
-    it.skip('should use navigator.clipboard when available', async () => {
+    it('should use navigator.clipboard when available', async () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined)
-      Object.defineProperty(global.navigator, 'clipboard', {
-        value: { writeText: mockWriteText },
-        writable: true,
-        configurable: true,
+      vi.stubGlobal('navigator', {
+        ...global.navigator,
+        clipboard: { writeText: mockWriteText }
       })
 
       await copyToClipboard('test text')
 
       expect(mockWriteText).toHaveBeenCalledWith('test text')
+      vi.unstubAllGlobals()
     })
 
-    it.skip('should use fallback when navigator.clipboard is not available', async () => {
-      Object.defineProperty(global.navigator, 'clipboard', {
-        value: undefined,
-        writable: true,
-        configurable: true,
+    it('should use fallback when navigator.clipboard is not available', async () => {
+      vi.stubGlobal('navigator', {
+        ...global.navigator,
+        clipboard: undefined
       })
       const mockExecCommand = vi.fn().mockReturnValue(true)
       global.document.execCommand = mockExecCommand
@@ -202,13 +201,13 @@ describe('imageToBase64 utilities', () => {
       expect(mockExecCommand).toHaveBeenCalledWith('copy')
       expect(mockAppendChild).toHaveBeenCalledWith(textarea)
       expect(mockRemoveChild).toHaveBeenCalledWith(textarea)
+      vi.unstubAllGlobals()
     })
 
-    it.skip('should handle fallback errors', async () => {
-      Object.defineProperty(global.navigator, 'clipboard', {
-        value: undefined,
-        writable: true,
-        configurable: true,
+    it('should handle fallback errors', async () => {
+      vi.stubGlobal('navigator', {
+        ...global.navigator,
+        clipboard: undefined
       })
       const mockExecCommand = vi.fn().mockImplementation(() => {
         throw new Error('Copy failed')
@@ -224,6 +223,7 @@ describe('imageToBase64 utilities', () => {
 
       await expect(copyToClipboard('test text')).rejects.toThrow()
       expect(mockRemoveChild).toHaveBeenCalledWith(textarea)
+      vi.unstubAllGlobals()
     })
   })
 
