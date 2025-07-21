@@ -63,7 +63,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Run unit tests
-        run: pnpm test:ci
+        run: pnpm test
 
       - name: Run dependency check
         run: pnpm depcheck
