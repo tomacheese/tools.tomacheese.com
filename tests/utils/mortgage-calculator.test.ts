@@ -20,8 +20,8 @@ describe('calculateMortgage', () => {
 
     expect(result.loanPrincipal).toBe(27000000)
     expect(result.monthlyPayment).toBeCloseTo(82670, -1)
-    expect(result.totalPayment).toBeCloseTo(34729000, -3)
-    expect(result.totalInterest).toBeCloseTo(7729000, -3)
+    expect(result.totalPayment).toBeCloseTo(34721315, -3)
+    expect(result.totalInterest).toBeCloseTo(7721315, -3)
     expect(result.yearlyBreakdown).toHaveLength(35)
   })
 
