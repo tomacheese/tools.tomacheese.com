@@ -128,52 +128,6 @@ function parseCSVText(csv: string, delimiter: string, trim: boolean): string[][]
   return rows
 }
 
-function parseCSVLine(
-  line: string,
-  delimiter: string,
-  trim: boolean
-): string[] {
-  const values: string[] = []
-  let current = ''
-  let inQuotes = false
-  let i = 0
-
-  while (i < line.length) {
-    const char = line[i]
-    const nextChar = line[i + 1]
-
-    if (char === '"') {
-      if (inQuotes && nextChar === '"') {
-        // Escaped quote
-        current += '"'
-        i += 2
-        continue
-      } else {
-        // Toggle quote state
-        inQuotes = !inQuotes
-        i++
-        continue
-      }
-    }
-
-    if (char === delimiter && !inQuotes) {
-      // End of field
-      values.push(trim ? current.trim() : current)
-      current = ''
-      i++
-      continue
-    }
-
-    // Regular character
-    current += char
-    i++
-  }
-
-  // Add the last field
-  values.push(trim ? current.trim() : current)
-
-  return values
-}
 
 export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
   const { headers = true, delimiter = ',' } = options

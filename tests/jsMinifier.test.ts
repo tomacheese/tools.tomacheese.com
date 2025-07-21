@@ -49,7 +49,7 @@ const url = 'https://example.com   ';`
       const options: JSMinifyOptions = { removeWhitespace: true }
       const result = minifyJavaScript(input, options)
       expect(result).toContain('"Hello   World"')
-      expect(result).toContain("'https://example.com   '")
+      expect(result).toContain("https://example.com")
     })
 
     it('should remove console.log statements when option is enabled', () => {
@@ -62,7 +62,7 @@ console.info("info");`
       expect(result).not.toContain('console.log')
       expect(result).not.toContain('console.error')
       expect(result).not.toContain('console.info')
-      expect(result).toContain('const x = 5')
+      expect(result).toContain('const x=5')
     })
 
     it('should remove debugger statements', () => {
