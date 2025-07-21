@@ -7,7 +7,7 @@ export function generateCSSCode(cssValue: string, property?: string): string {
   ${property}: ${cssValue};
 }`
   }
-  
+
   // If no property is provided, assume it's a complete CSS property declaration
   return `.element {
   ${cssValue};
@@ -31,7 +31,7 @@ export function generateCSSClass(
   const props = Object.entries(properties)
     .map(([prop, value]) => `  ${prop}: ${value};`)
     .join('\n')
-  
+
   return `.${className} {
 ${props}
 }`
