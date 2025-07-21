@@ -122,14 +122,14 @@ test.describe('年齢計算ツール', () => {
     await page.fill('#target-date', '2025-01-01')
 
     await expect(page.locator('.detail-card').nth(3)).toContainText(
-      'うるう年: はい'
+      'うるう年:はい'
     )
 
     // 平年生まれ
     await page.fill('#birth-date', '2001-01-01')
 
     await expect(page.locator('.detail-card').nth(3)).toContainText(
-      'うるう年: いいえ'
+      'うるう年:いいえ'
     )
   })
 
@@ -141,23 +141,17 @@ test.describe('年齢計算ツール', () => {
     await expect(lifeEvents.locator('h3')).toHaveText('人生の主なイベント')
 
     // 35歳なので、これらのイベントが完了済みとして表示される
-    await expect(lifeEvents.locator('.event-item.completed')).toContainText(
+    await expect(lifeEvents.locator('.event-item.completed').first()).toContainText(
       '誕生'
     )
-    await expect(lifeEvents.locator('.event-item.completed')).toContainText(
-      '小学校入学'
-    )
-    await expect(lifeEvents.locator('.event-item.completed')).toContainText(
-      '成人（18歳）'
-    )
-    await expect(lifeEvents.locator('.event-item.completed')).toContainText(
-      '三十路'
-    )
+    await expect(lifeEvents.locator('.event-item').filter({ hasText: '小学校入学' })).toHaveClass(/completed/)
+    await expect(lifeEvents.locator('.event-item').filter({ hasText: '成人（18歳）' })).toHaveClass(/completed/)
+    await expect(lifeEvents.locator('.event-item').filter({ hasText: '三十路' })).toHaveClass(/completed/)
 
     // まだ到達していないイベントは未完了として表示
     await expect(
-      lifeEvents.locator('.event-item:not(.completed)')
-    ).toContainText('四十路')
+      lifeEvents.locator('.event-item').filter({ hasText: '四十路' })
+    ).not.toHaveClass(/completed/)
   })
 
   test('豆知識の表示', async ({ page }) => {
