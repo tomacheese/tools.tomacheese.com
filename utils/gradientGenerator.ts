@@ -1,3 +1,5 @@
+import { generateCSSCode } from './cssUtils'
+
 export interface GradientStop {
   color: string
   position: number
@@ -152,7 +154,7 @@ export const presetGradients: Record<string, GradientConfig> = {
 
 export function exportGradientAsCSS(config: GradientConfig): string {
   const gradient = generateGradientCSS(config)
-  return generateCSSCode(gradient)
+  return generateCSSCode(gradient, 'background')
 }
 
 export function exportGradientAsSass(config: GradientConfig): string {

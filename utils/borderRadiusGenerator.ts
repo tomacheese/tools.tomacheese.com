@@ -1,3 +1,5 @@
+import { generateCSSCode } from './cssUtils'
+
 export interface BorderRadiusConfig {
   topLeft: {
     horizontal: number
@@ -122,7 +124,7 @@ export const presetBorderRadius: Record<string, BorderRadiusConfig> = {
 
 export function exportBorderRadiusAsCSS(config: BorderRadiusConfig): string {
   const borderRadius = generateBorderRadiusCSS(config)
-  return generateCSSCode(borderRadius)
+  return generateCSSCode(borderRadius, 'border-radius')
 }
 
 export function exportBorderRadiusAsSass(config: BorderRadiusConfig): string {

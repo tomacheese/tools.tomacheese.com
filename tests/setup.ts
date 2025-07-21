@@ -1,11 +1,12 @@
 import { vi } from 'vitest'
 
 // Mock navigator.clipboard for clipboard functionality tests
-Object.assign(navigator, {
-  clipboard: {
+Object.defineProperty(navigator, 'clipboard', {
+  value: {
     writeText: vi.fn(() => Promise.resolve()),
     readText: vi.fn(() => Promise.resolve('')),
   },
+  writable: true,
 })
 
 // Mock console methods to reduce noise in tests

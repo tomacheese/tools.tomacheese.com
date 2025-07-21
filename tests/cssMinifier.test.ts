@@ -47,7 +47,7 @@ describe('cssMinifier', () => {
     it('converts hex to lowercase', () => {
       const css = `.class { color: #FF00AA; }`
       const result = minifyCss(css, { shortenHex: true })
-      expect(result).toContain('#ff00aa')
+      expect(result).toContain('#f0a')
     })
 
     it('removes units from zero values', () => {

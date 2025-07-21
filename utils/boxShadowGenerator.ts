@@ -1,3 +1,5 @@
+import { generateCSSCode } from './cssUtils'
+
 export interface BoxShadow {
   offsetX: number
   offsetY: number
@@ -172,7 +174,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
 }
 
 export function exportShadowAsCSS(shadows: BoxShadow[]): string {
-  return generateCSSCode(shadows)
+  const shadowCSS = generateMultipleShadows(shadows)
+  return generateCSSCode(shadowCSS, 'box-shadow')
 }
 
 export function exportShadowAsSass(shadows: BoxShadow[]): string {

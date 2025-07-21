@@ -189,7 +189,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  calculateCalories,
+  calculateDetailedCalories,
   formatCalories,
   formatGrams,
   getGoalDescription,
@@ -222,7 +222,7 @@ const calculate = () => {
     return
   }
 
-  result.value = calculateCalories({
+  result.value = calculateDetailedCalories({
     gender: gender.value,
     age: age.value,
     weight: weight.value,
