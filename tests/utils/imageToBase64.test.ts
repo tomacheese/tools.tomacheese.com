@@ -169,7 +169,7 @@ describe('imageToBase64 utilities', () => {
       const mockWriteText = vi.fn().mockResolvedValue(undefined)
       vi.stubGlobal('navigator', {
         ...global.navigator,
-        clipboard: { writeText: mockWriteText }
+        clipboard: { writeText: mockWriteText },
       })
 
       await copyToClipboard('test text')
@@ -181,7 +181,7 @@ describe('imageToBase64 utilities', () => {
     it('should use fallback when navigator.clipboard is not available', async () => {
       vi.stubGlobal('navigator', {
         ...global.navigator,
-        clipboard: undefined
+        clipboard: undefined,
       })
       const mockExecCommand = vi.fn().mockReturnValue(true)
       global.document.execCommand = mockExecCommand
@@ -207,7 +207,7 @@ describe('imageToBase64 utilities', () => {
     it('should handle fallback errors', async () => {
       vi.stubGlobal('navigator', {
         ...global.navigator,
-        clipboard: undefined
+        clipboard: undefined,
       })
       const mockExecCommand = vi.fn().mockImplementation(() => {
         throw new Error('Copy failed')
