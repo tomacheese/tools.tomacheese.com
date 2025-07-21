@@ -115,8 +115,16 @@ export const convertBase = (
     throw new Error('基数は2から36の間である必要があります')
   }
 
-  // TODO: parseInt('123', 2) returns 1 instead of throwing error
-  // Need to validate that all digits are valid for the given base before parsing
+  // 数値文字列の検証 - 各桁が指定された基数で有効かチェック
+  const validChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(0, fromBase)
+  const upperNumber = number.toUpperCase()
+  
+  for (const char of upperNumber) {
+    if (!validChars.includes(char)) {
+      throw new Error(`'${char}'は基数${fromBase}では無効な文字です`)
+    }
+  }
+
   // 10進数に変換
   const decimal = parseInt(number, fromBase)
   if (isNaN(decimal)) {

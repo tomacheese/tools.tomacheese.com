@@ -132,29 +132,32 @@ export function getTimeZoneOffset(timezone: string): string {
 }
 
 export function isDaylightSavingTime(timezone: string): boolean {
-  // TODO: DST detection may not work correctly for all timezones
-  // Consider using a more robust timezone library like date-fns-tz or luxon
   try {
     const now = new Date()
-    const january = new Date(now.getFullYear(), 0, 1)
-    const july = new Date(now.getFullYear(), 6, 1)
-
-    const getOffset = (date: Date) => {
-      const utcDate = new Date(
-        date.toLocaleString('en-US', { timeZone: 'UTC' })
-      )
-      const tzDate = new Date(
-        date.toLocaleString('en-US', { timeZone: timezone })
-      )
-      return (tzDate.getTime() - utcDate.getTime()) / (1000 * 60)
+    
+    // より正確なタイムゾーンオフセット取得方法
+    const getTimezoneOffset = (date: Date): number => {
+      const utc = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }))
+      const tz = new Date(date.toLocaleString('en-US', { timeZone: timezone }))
+      return tz.getTime() - utc.getTime()
     }
-
-    const januaryOffset = getOffset(january)
-    const julyOffset = getOffset(july)
-    const currentOffset = getOffset(now)
-
-    const maxOffset = Math.max(januaryOffset, julyOffset)
-    return currentOffset === maxOffset
+    
+    // 年の最初と中間でオフセットを比較
+    const january = new Date(now.getFullYear(), 0, 15) // 1月15日
+    const july = new Date(now.getFullYear(), 6, 15)   // 7月15日
+    
+    const januaryOffset = getTimezoneOffset(january)
+    const julyOffset = getTimezoneOffset(july)
+    const currentOffset = getTimezoneOffset(now)
+    
+    // DSTを観測しないタイムゾーンの場合
+    if (januaryOffset === julyOffset) {
+      return false
+    }
+    
+    // 現在のオフセットがより大きい方（DST期間）と一致するかチェック
+    const dstOffset = Math.max(januaryOffset, julyOffset)
+    return currentOffset === dstOffset
   } catch {
     return false
   }
