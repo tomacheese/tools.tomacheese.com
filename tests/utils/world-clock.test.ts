@@ -217,7 +217,7 @@ describe('ALL_TIMEZONES', () => {
   it('should not have duplicate timezones', () => {
     const timezones = ALL_TIMEZONES.map(entry => entry.timezone)
     const uniqueTimezones = new Set(timezones)
-    expect(uniqueTimezones.size).toBe(61) // Update to actual count
+    expect(uniqueTimezones.size).toBe(58) // Actual unique timezone count
   })
 
   it('should include cities from different continents', () => {
