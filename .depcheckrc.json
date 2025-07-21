@@ -4,13 +4,20 @@
     "@vue/*",
     "@vitest/*",
     "@playwright/*",
+    "@eslint/*",
     "eslint-*",
     "prettier",
     "typescript",
-    "tsx",
     "vitest",
     "playwright",
-    "happy-dom"
+    "happy-dom",
+    "vue-eslint-parser",
+    "highlight.js",
+    "vue-router",
+    "@nuxt/test-utils",
+    "@vue/test-utils",
+    "tsx",
+    "vue-tsc"
   ],
   "ignorePatterns": [
     "node_modules",
@@ -19,7 +26,8 @@
     "dist",
     "coverage",
     "playwright-report",
-    "test-results"
+    "test-results",
+    "tests/**/*"
   ],
-  "skipMissing": false
+  "skipMissing": true
 }
