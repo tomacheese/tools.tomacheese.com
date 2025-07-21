@@ -141,12 +141,18 @@ test.describe('年齢計算ツール', () => {
     await expect(lifeEvents.locator('h3')).toHaveText('人生の主なイベント')
 
     // 35歳なので、これらのイベントが完了済みとして表示される
-    await expect(lifeEvents.locator('.event-item.completed').first()).toContainText(
-      '誕生'
-    )
-    await expect(lifeEvents.locator('.event-item').filter({ hasText: '小学校入学' })).toHaveClass(/completed/)
-    await expect(lifeEvents.locator('.event-item').filter({ hasText: '成人（18歳）' })).toHaveClass(/completed/)
-    await expect(lifeEvents.locator('.event-item').filter({ hasText: '三十路' })).toHaveClass(/completed/)
+    await expect(
+      lifeEvents.locator('.event-item.completed').first()
+    ).toContainText('誕生')
+    await expect(
+      lifeEvents.locator('.event-item').filter({ hasText: '小学校入学' })
+    ).toHaveClass(/completed/)
+    await expect(
+      lifeEvents.locator('.event-item').filter({ hasText: '成人（18歳）' })
+    ).toHaveClass(/completed/)
+    await expect(
+      lifeEvents.locator('.event-item').filter({ hasText: '三十路' })
+    ).toHaveClass(/completed/)
 
     // まだ到達していないイベントは未完了として表示
     await expect(
