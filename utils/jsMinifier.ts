@@ -1,5 +1,8 @@
 import type { MinifyResult } from './cssMinifier'
 
+// Re-export MinifyResult for external use
+export type { MinifyResult }
+
 export interface JSMinifyOptions {
   removeComments?: boolean
   removeWhitespace?: boolean
