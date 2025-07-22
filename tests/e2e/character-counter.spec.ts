@@ -243,16 +243,22 @@ test.describe('Character Counter Tool', () => {
 
     // Test with moderately large text to avoid timeout
     const largeText = 'Lorem ipsum '.repeat(100) // ~1200 characters
+    
+    // Wait for textarea to be ready and fill with timeout
+    await textarea.waitFor({ state: 'visible' })
     await textarea.fill(largeText)
+
+    // Wait for processing to complete
+    await page.waitForTimeout(1000)
 
     // Should display character count
     await expect(
       page.locator('.result-box div:has-text("文字数（スペースあり）") + div')
     ).toContainText('1,200')
 
-    // Reading time should be calculated
+    // Reading time should be calculated - use more specific selector
     await expect(
-      page.locator('.result-box div:has-text("読み取り時間（約）")')
+      page.locator('.result-box').filter({ hasText: '読み取り時間（約）' }).first()
     ).toBeVisible()
   })
 

@@ -28,19 +28,24 @@ test.describe('Color Picker Tool', () => {
   })
 
   test('should display color codes correctly', async ({ page }) => {
+    // Wait for page to load completely
+    await page.waitForLoadState('networkidle')
+    
     // Check initial color codes are displayed
     await expect(page.locator('.result-box h3:has-text("HEX")')).toBeVisible()
     await expect(page.locator('.result-box h3:has-text("RGB")')).toBeVisible()
     await expect(page.locator('.result-box h3:has-text("HSL")')).toBeVisible()
     await expect(page.locator('.result-box h3:has-text("RGBA")')).toBeVisible()
 
-    // Check initial HEX value (should be default blue)
-    await expect(
-      page
-        .locator('.result-box:has(h3:has-text("HEX"))')
-        .locator('.color-code')
-        .first()
-    ).toContainText('#3B82F6')
+    // Check initial HEX value (should be default blue) - wait for element to be visible
+    const hexColorCode = page
+      .locator('.result-box')
+      .filter({ hasText: 'HEX' })
+      .locator('.color-code')
+      .first()
+    
+    await expect(hexColorCode).toBeVisible()
+    await expect(hexColorCode).toContainText('#3B82F6')
   })
 
   test('should update color codes when color picker changes', async ({
