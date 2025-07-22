@@ -12,13 +12,16 @@ const path = require('path')
 function getChangedFiles() {
   try {
     // PRの場合は origin/master との差分、通常はHEADとの差分
-    const baseRef = process.env.GITHUB_BASE_REF 
-      ? `origin/${process.env.GITHUB_BASE_REF}` 
+    const baseRef = process.env.GITHUB_BASE_REF
+      ? `origin/${process.env.GITHUB_BASE_REF}`
       : 'HEAD~1'
-    
+
     const command = `git diff --name-only ${baseRef}...HEAD`
     const output = execSync(command, { encoding: 'utf-8' })
-    return output.trim().split('\n').filter(file => file)
+    return output
+      .trim()
+      .split('\n')
+      .filter(file => file)
   } catch (error) {
     console.error('Error getting changed files:', error.message)
     // エラーの場合は全テスト実行
@@ -29,10 +32,10 @@ function getChangedFiles() {
 // ファイルパスからテスト対象を決定
 function determineTestTargets(changedFiles) {
   const testTargets = new Set()
-  
+
   for (const file of changedFiles) {
     console.log(`Changed file: ${file}`)
-    
+
     // 全般的な変更の場合は全テスト実行
     if (
       file.includes('package.json') ||
@@ -42,12 +45,12 @@ function determineTestTargets(changedFiles) {
       file.includes('layouts/') ||
       file.includes('assets/css/') ||
       file.includes('composables/') ||
-      file.includes('utils/') && file.endsWith('.ts') // utilsの変更は関連するすべてのツールに影響
+      (file.includes('utils/') && file.endsWith('.ts')) // utilsの変更は関連するすべてのツールに影響
     ) {
       console.log(`Global change detected in ${file}, running all tests`)
       return ['**/*.spec.ts']
     }
-    
+
     // pages/tools/ の特定ツールファイルの変更
     const toolMatch = file.match(/pages\/tools\/([^/]+)\.vue$/)
     if (toolMatch) {
@@ -56,20 +59,20 @@ function determineTestTargets(changedFiles) {
       console.log(`Tool change detected: ${toolName} -> ${testFile}`)
       testTargets.add(testFile)
     }
-    
+
     // E2Eテストファイル自体の変更
     if (file.includes('tests/e2e/') && file.endsWith('.spec.ts')) {
       console.log(`Test file change detected: ${file}`)
       testTargets.add(file)
     }
-    
+
     // CIワークフローの変更
     if (file.includes('.github/workflows/')) {
       console.log(`CI workflow change detected, running all tests`)
       return ['**/*.spec.ts']
     }
   }
-  
+
   // 変更がなかった場合やマッチしなかった場合は重要なテストのみ
   if (testTargets.size === 0) {
     console.log('No specific changes detected, running core tests')
@@ -80,14 +83,14 @@ function determineTestTargets(changedFiles) {
       '**/age-calculator.spec.ts',
     ]
   }
-  
+
   return Array.from(testTargets)
 }
 
 // Playwright設定を動的に生成
 function generatePlaywrightConfig(testPatterns) {
   const isFullTest = testPatterns.includes('**/*.spec.ts')
-  
+
   const config = {
     testDir: './tests/e2e',
     fullyParallel: true,
@@ -123,7 +126,7 @@ function generatePlaywrightConfig(testPatterns) {
       ignoreHTTPSErrors: true,
     },
   }
-  
+
   return config
 }
 
@@ -131,26 +134,32 @@ function generatePlaywrightConfig(testPatterns) {
 function main() {
   const changedFiles = getChangedFiles()
   console.log(`Total changed files: ${changedFiles.length}`)
-  
+
   const testTargets = determineTestTargets(changedFiles)
   console.log(`Test targets: ${testTargets.join(', ')}`)
-  
+
   const config = generatePlaywrightConfig(testTargets)
-  
+
   // 設定ファイルを出力
   const configPath = path.join(__dirname, '../playwright.dynamic.config.cjs')
   const configContent = `// Auto-generated Playwright config based on Git diff
 const { defineConfig, devices } = require('@playwright/test')
 
 module.exports = defineConfig(${JSON.stringify(config, null, 2).replace(/"devices\['Desktop Chrome'\]"/g, "devices['Desktop Chrome']")})`
-  
+
   fs.writeFileSync(configPath, configContent)
   console.log(`Generated config: ${configPath}`)
-  console.log(`Running ${testTargets.length === 1 && testTargets[0] === '**/*.spec.ts' ? 'ALL' : testTargets.length} test(s)`)
+  console.log(
+    `Running ${testTargets.length === 1 && testTargets[0] === '**/*.spec.ts' ? 'ALL' : testTargets.length} test(s)`
+  )
 }
 
 if (require.main === module) {
   main()
 }
 
-module.exports = { getChangedFiles, determineTestTargets, generatePlaywrightConfig }
+module.exports = {
+  getChangedFiles,
+  determineTestTargets,
+  generatePlaywrightConfig,
+}
