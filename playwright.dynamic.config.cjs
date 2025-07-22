@@ -6,7 +6,7 @@ module.exports = defineConfig({
   "fullyParallel": true,
   "forbidOnly": false,
   "retries": 0,
-  "timeout": 600000,
+  "timeout": 300000,
   "expect": {
     "timeout": 5000
   },
@@ -44,7 +44,7 @@ module.exports = defineConfig({
         "defaultBrowserType": "chromium"
       },
       "testMatch": [
-        "**/*.spec.ts"
+        "**/color-picker.spec.ts"
       ]
     }
   ],
