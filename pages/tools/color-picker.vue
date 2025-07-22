@@ -26,6 +26,7 @@
             border-radius: 6px;
             cursor: pointer;
           "
+          @input="onColorChange"
         />
       </div>
 
@@ -375,6 +376,11 @@ const updateFromHex = () => {
 const selectColor = color => {
   selectedColor.value = color
   hexInput.value = color
+}
+
+const onColorChange = (event) => {
+  selectedColor.value = event.target.value
+  hexInput.value = event.target.value
 }
 
 const copyToClipboard = async text => {

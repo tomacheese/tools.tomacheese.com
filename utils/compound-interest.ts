@@ -78,15 +78,3 @@ export function calculateCompoundInterest(
   }
 }
 
-export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('ja-JP', {
-    style: 'currency',
-    currency: 'JPY',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
-export function formatPercentage(value: number): string {
-  return `${value.toFixed(2)}%`
-}

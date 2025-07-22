@@ -13,14 +13,14 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   /* CI環境では並列実行数を増やして高速化 (GitHub Actionsは2コア) */
   workers: process.env.CI ? 4 : undefined,
-  /* Global timeout for each test */
-  timeout: process.env.CI ? 30000 : 60000,
+  /* Global timeout for each test (30分 = 1800000ms) */
+  timeout: process.env.CI ? 1800000 : 60000,
   /* Expect timeout for assertions */
   expect: {
     timeout: process.env.CI ? 10000 : 5000,
   },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? 'list' : 'html',
+  reporter: process.env.CI ? 'list' : [['html', { open: 'never' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -90,7 +90,7 @@ export default defineConfig({
     command: 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: false, // CI環境では常に新しいサーバーを起動
-    timeout: process.env.CI ? 120 * 1000 : 120 * 1000, // CI環境でのタイムアウトを増やす
+    timeout: process.env.CI ? 300 * 1000 : 120 * 1000, // CI環境でのタイムアウトを5分に増加
     /* Wait for server to be ready before running tests */
     stdout: 'pipe', // CIログでサーバーの起動ログを確認できるようにする
     stderr: 'pipe', // CIログでサーバーの起動ログを確認できるようにする

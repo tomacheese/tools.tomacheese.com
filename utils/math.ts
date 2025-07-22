@@ -234,9 +234,6 @@ export const calculateExpenseSplit = (
   }
 }
 
-// Import compound interest calculation from dedicated module
-import { calculateCompoundInterest } from './compound-interest'
-export { calculateCompoundInterest }
 
 /**
  * 住宅ローン計算
@@ -294,45 +291,6 @@ export const calculateMortgage = (
   }
 }
 
-/**
- * BMI計算
- */
-export const calculateBMI = (
-  weight: number,
-  height: number
-): {
-  bmi: number
-  category: string
-  idealWeightRange: { min: number; max: number }
-} => {
-  const heightInMeters = height / 100
-  const bmi = weight / (heightInMeters * heightInMeters)
-
-  let category = ''
-  if (bmi < 18.5) {
-    category = '低体重'
-  } else if (bmi < 25) {
-    category = '標準体重'
-  } else if (bmi < 30) {
-    category = '肥満度1'
-  } else if (bmi < 35) {
-    category = '肥満度2'
-  } else {
-    category = '肥満度3'
-  }
-
-  // 理想体重範囲（BMI 18.5-24.9）
-  const idealWeightRange = {
-    min: 18.5 * heightInMeters * heightInMeters,
-    max: 24.9 * heightInMeters * heightInMeters,
-  }
-
-  return {
-    bmi,
-    category,
-    idealWeightRange,
-  }
-}
 
 /**
  * 基礎代謝計算（Harris-Benedict式）

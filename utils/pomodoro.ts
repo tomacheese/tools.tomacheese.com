@@ -1,33 +1,9 @@
-export interface PomodoroSettings {
-  workDuration: number // minutes
-  shortBreakDuration: number // minutes
-  longBreakDuration: number // minutes
-  sessionsBeforeLongBreak: number
-  autoStartBreaks: boolean
-  autoStartPomodoros: boolean
-  soundEnabled: boolean
-}
 
-export interface PomodoroSession {
-  id: string
-  type: 'work' | 'shortBreak' | 'longBreak'
-  duration: number // milliseconds
-  startTime: Date
-  endTime: Date | null
-  completed: boolean
-}
-
-export interface PomodoroState {
-  currentSession: PomodoroSession | null
-  sessionHistory: PomodoroSession[]
-  completedPomodoros: number
-  settings: PomodoroSettings
-  isRunning: boolean
-  isPaused: boolean
-  timeRemaining: number // milliseconds
-  startTime: number | null
-  pausedTime: number
-}
+import {
+  type PomodoroState,
+  type PomodoroSettings,
+  type PomodoroSession,
+} from './pomodoroTimer'
 
 export function createPomodoro(
   settings?: Partial<PomodoroSettings>
@@ -56,62 +32,6 @@ export function createPomodoro(
   }
 }
 
-export function startTimer(state: PomodoroState): PomodoroState {
-  if (state.isRunning && !state.isPaused) {
-    return state
-  }
-
-  const now = Date.now()
-
-  if (!state.currentSession) {
-    // Start a new session
-    const type = getNextSessionType(state)
-    const duration = getSessionDuration(state, type)
-    const newSession: PomodoroSession = {
-      id: generateSessionId(),
-      type,
-      duration,
-      startTime: new Date(now),
-      endTime: null,
-      completed: false,
-    }
-
-    return {
-      ...state,
-      currentSession: newSession,
-      isRunning: true,
-      isPaused: false,
-      startTime: now,
-      timeRemaining: duration,
-      pausedTime: 0,
-    }
-  }
-
-  // Resume from pause
-  if (state.isPaused) {
-    return {
-      ...state,
-      isRunning: true,
-      isPaused: false,
-      startTime: now - (state.currentSession.duration - state.timeRemaining),
-      pausedTime: 0,
-    }
-  }
-
-  return state
-}
-
-export function pauseTimer(state: PomodoroState): PomodoroState {
-  if (!state.isRunning || state.isPaused) {
-    return state
-  }
-
-  return {
-    ...state,
-    isPaused: true,
-    pausedTime: Date.now(),
-  }
-}
 
 export function resetTimer(state: PomodoroState): PomodoroState {
   const type = state.currentSession?.type || 'work'
@@ -335,32 +255,6 @@ export function updateSettings(
   }
 }
 
-let audioContext: AudioContext | null = null
-
-export function playNotificationSound(): void {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext ||
-      (window as any).webkitAudioContext)()
-  }
-
-  const oscillator = audioContext.createOscillator()
-  const gainNode = audioContext.createGain()
-
-  oscillator.connect(gainNode)
-  gainNode.connect(audioContext.destination)
-
-  oscillator.frequency.value = 800
-  oscillator.type = 'sine'
-
-  gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-  gainNode.gain.exponentialRampToValueAtTime(
-    0.01,
-    audioContext.currentTime + 0.5
-  )
-
-  oscillator.start(audioContext.currentTime)
-  oscillator.stop(audioContext.currentTime + 0.5)
-}
 
 export function exportSessionData(state: PomodoroState): string {
   const data = {
