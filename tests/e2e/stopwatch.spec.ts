@@ -7,7 +7,11 @@ test.describe('ストップウォッチツール', () => {
 
   test('ページが正しく表示される', async ({ page }) => {
     await expect(page.locator('h1')).toHaveText('ストップウォッチ')
-    await expect(page.locator('p:has-text("高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。")')).toBeVisible()
+    await expect(
+      page.locator(
+        'p:has-text("高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。")'
+      )
+    ).toBeVisible()
 
     // 初期状態の確認
     await expect(page.locator('.main-time')).toHaveText('00:00.00')
@@ -22,7 +26,7 @@ test.describe('ストップウォッチツール', () => {
     // ページが完全にロードされるまで待つ
     await page.waitForLoadState('networkidle')
     await expect(page.locator('.control-button.primary')).toBeVisible()
-    
+
     // ストップウォッチを開始
     await page.click('.control-button.primary')
 
@@ -53,7 +57,7 @@ test.describe('ストップウォッチツール', () => {
   test('ラップタイムの記録', async ({ page }) => {
     // ページが完全にロードされるまで待つ
     await page.waitForLoadState('networkidle')
-    
+
     // ストップウォッチを開始
     await page.click('.control-button.primary')
 
@@ -83,7 +87,7 @@ test.describe('ストップウォッチツール', () => {
   test('統計情報の表示', async ({ page }) => {
     // ページが完全にロードされるまで待つ
     await page.waitForLoadState('networkidle')
-    
+
     // ストップウォッチを開始してラップを複数追加
     await page.click('.control-button.primary')
 
@@ -159,13 +163,13 @@ test.describe('ストップウォッチツール', () => {
   test('キーボードショートカット', async ({ page }) => {
     // ページが完全にロードされるまで待つ
     await page.waitForLoadState('networkidle')
-    
+
     // ページにフォーカスを当てる
     await page.focus('body')
-    
+
     // 少し待ってからキーボードイベントを発生させる（Vue.jsのイベントリスナー登録完了を待つ）
     await page.waitForTimeout(100)
-    
+
     // Spaceキーで開始
     await page.keyboard.press('Space')
     await expect(page.locator('.control-button.primary')).toHaveText('停止')
