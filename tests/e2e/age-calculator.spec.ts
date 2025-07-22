@@ -246,7 +246,8 @@ test.describe('年齢計算ツール', () => {
     ).toBeVisible()
   })
 
-  test('レスポンシブデザイン', { timeout: 15000 }, async ({ page }) => {
+  test('レスポンシブデザイン', async ({ page }) => {
+    test.setTimeout(15000)
     await page.fill('#birth-date', '1990-01-01')
     await page.fill('#target-date', '2025-01-01')
 

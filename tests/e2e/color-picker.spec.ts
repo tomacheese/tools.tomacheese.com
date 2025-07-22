@@ -244,73 +244,67 @@ test.describe('Color Picker Tool', () => {
     await expect(page.locator('li:has-text("コピーボタン")')).toBeVisible()
   })
 
-  test(
-    'should maintain color consistency across formats',
-    { timeout: 15000 },
-    async ({ page }) => {
-      const colorPicker = page.locator('input[type="color"]')
+  test('should maintain color consistency across formats', async ({ page }) => {
+    test.setTimeout(15000)
+    const colorPicker = page.locator('input[type="color"]')
 
-      // Set to a known color
-      await colorPicker.evaluate((el: HTMLInputElement) => {
-        el.value = '#FF6B35'
+    // Set to a known color
+    await colorPicker.evaluate((el: HTMLInputElement) => {
+      el.value = '#FF6B35'
+      el.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
+    // Get all color format values
+    const hexValue = await page
+      .locator('.result-box:has(h3:has-text("HEX"))')
+      .locator('.color-code')
+      .first()
+      .textContent()
+    const rgbValue = await page
+      .locator('.result-box:has(h3:has-text("RGB"))')
+      .locator('.color-code')
+      .first()
+      .textContent()
+    const hslValue = await page
+      .locator('.result-box:has(h3:has-text("HSL"))')
+      .locator('.color-code')
+      .first()
+      .textContent()
+
+    // All should represent the same color
+    expect(hexValue).toContain('#FF6B35')
+    expect(rgbValue).toContain('rgb(255, 107, 53)')
+    expect(hslValue).toMatch(/hsl\(\d+, \d+%, \d+%\)/)
+  })
+
+  test('should handle rapid color changes', async ({ page }) => {
+    test.setTimeout(20000)
+    const colorPicker = page.locator('input[type="color"]')
+
+    // Rapidly change colors
+    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF']
+
+    for (const color of colors) {
+      await colorPicker.evaluate((el: HTMLInputElement, colorValue) => {
+        el.value = colorValue
         el.dispatchEvent(new Event('input', { bubbles: true }))
-      })
+      }, color)
+      // Small delay to allow updates
+      await page.waitForTimeout(100)
+    }
 
-      // Get all color format values
-      const hexValue = await page
+    // Final color should be displayed correctly
+    await expect(
+      page
         .locator('.result-box:has(h3:has-text("HEX"))')
         .locator('.color-code')
         .first()
-        .textContent()
-      const rgbValue = await page
+    ).toContainText('#FF00FF')
+    await expect(
+      page
         .locator('.result-box:has(h3:has-text("RGB"))')
         .locator('.color-code')
         .first()
-        .textContent()
-      const hslValue = await page
-        .locator('.result-box:has(h3:has-text("HSL"))')
-        .locator('.color-code')
-        .first()
-        .textContent()
-
-      // All should represent the same color
-      expect(hexValue).toContain('#FF6B35')
-      expect(rgbValue).toContain('rgb(255, 107, 53)')
-      expect(hslValue).toMatch(/hsl\(\d+, \d+%, \d+%\)/)
-    }
-  )
-
-  test(
-    'should handle rapid color changes',
-    { timeout: 20000 },
-    async ({ page }) => {
-      const colorPicker = page.locator('input[type="color"]')
-
-      // Rapidly change colors
-      const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF']
-
-      for (const color of colors) {
-        await colorPicker.evaluate((el: HTMLInputElement, colorValue) => {
-          el.value = colorValue
-          el.dispatchEvent(new Event('input', { bubbles: true }))
-        }, color)
-        // Small delay to allow updates
-        await page.waitForTimeout(100)
-      }
-
-      // Final color should be displayed correctly
-      await expect(
-        page
-          .locator('.result-box:has(h3:has-text("HEX"))')
-          .locator('.color-code')
-          .first()
-      ).toContainText('#FF00FF')
-      await expect(
-        page
-          .locator('.result-box:has(h3:has-text("RGB"))')
-          .locator('.color-code')
-          .first()
-      ).toContainText('rgb(255, 0, 255)')
-    }
-  )
+    ).toContainText('rgb(255, 0, 255)')
+  })
 })
