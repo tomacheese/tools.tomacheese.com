@@ -155,6 +155,8 @@ export default [
       '*.config.js',
       '*.config.mjs',
       'public/**',
+      'scripts/**',
+      'playwright.dynamic.config.*',
     ],
   },
 ]
