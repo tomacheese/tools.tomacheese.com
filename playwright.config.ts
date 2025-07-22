@@ -92,8 +92,8 @@ export default defineConfig({
     reuseExistingServer: false, // CI環境では常に新しいサーバーを起動
     timeout: process.env.CI ? 120 * 1000 : 120 * 1000, // CI環境でのタイムアウトを増やす
     /* Wait for server to be ready before running tests */
-    stdout: 'inherit', // CIログでサーバーの起動ログを確認できるようにする
-    stderr: 'inherit', // CIログでサーバーの起動ログを確認できるようにする
+    stdout: 'pipe', // CIログでサーバーの起動ログを確認できるようにする
+    stderr: 'pipe', // CIログでサーバーの起動ログを確認できるようにする
     /* Retry server start */
     ignoreHTTPSErrors: true,
   },
