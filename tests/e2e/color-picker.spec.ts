@@ -244,7 +244,7 @@ test.describe('Color Picker Tool', () => {
     await expect(page.locator('li:has-text("コピーボタン")')).toBeVisible()
   })
 
-  test('should maintain color consistency across formats', async ({ page }) => {
+  test('should maintain color consistency across formats', { timeout: 15000 }, async ({ page }) => {
     const colorPicker = page.locator('input[type="color"]')
 
     // Set to a known color
@@ -276,7 +276,7 @@ test.describe('Color Picker Tool', () => {
     expect(hslValue).toMatch(/hsl\(\d+, \d+%, \d+%\)/)
   })
 
-  test('should handle rapid color changes', async ({ page }) => {
+  test('should handle rapid color changes', { timeout: 20000 }, async ({ page }) => {
     const colorPicker = page.locator('input[type="color"]')
 
     // Rapidly change colors

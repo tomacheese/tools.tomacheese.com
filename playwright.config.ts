@@ -11,13 +11,13 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only (少なくして高速化) */
   retries: process.env.CI ? 1 : 0,
-  /* CI環境では並列実行数を増やして高速化 (GitHub Actionsは2コア) */
-  workers: process.env.CI ? 4 : undefined,
-  /* Global timeout for each test (30分 = 1800000ms) */
-  timeout: process.env.CI ? 1800000 : 60000,
+  /* CI環境では並列実行数を適切に設定 (GitHub Actionsは2コア) */
+  workers: process.env.CI ? 2 : undefined,
+  /* Global timeout for each test (10分 = 600000ms) */
+  timeout: process.env.CI ? 600000 : 60000,
   /* Expect timeout for assertions */
   expect: {
-    timeout: process.env.CI ? 10000 : 5000,
+    timeout: process.env.CI ? 15000 : 5000,
   },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? 'list' : [['html', { open: 'never' }]],
@@ -33,10 +33,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
 
     /* Timeout for each action */
-    actionTimeout: 10000,
+    actionTimeout: process.env.CI ? 15000 : 10000,
 
     /* Timeout for navigation */
-    navigationTimeout: 30000,
+    navigationTimeout: process.env.CI ? 45000 : 30000,
   },
 
   /* Configure projects for major browsers */
