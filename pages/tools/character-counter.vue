@@ -27,7 +27,7 @@
       "
     >
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
           文字数（スペースあり）
         </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
@@ -36,7 +36,7 @@
       </div>
 
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
           文字数（スペースなし）
         </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
@@ -45,28 +45,36 @@
       </div>
 
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">行数</div>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
+          行数
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
           {{ stats.lines.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">単語数</div>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
+          単語数
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
           {{ stats.words.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">段落数</div>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
+          段落数
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
           {{ stats.paragraphs.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">バイト数（UTF-8）</div>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600">
+          バイト数（UTF-8）
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
           {{ stats.bytes.toLocaleString() }}
         </div>

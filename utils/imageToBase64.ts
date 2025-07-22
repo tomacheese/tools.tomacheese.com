@@ -15,7 +15,6 @@ export interface Base64Result {
   height: number
 }
 
-
 export function imageToBase64(
   file: File,
   options: ImageToBase64Options = {}
@@ -93,7 +92,6 @@ export function imageToBase64(
   })
 }
 
-
 function calculateDimensions(
   originalWidth: number,
   originalHeight: number,
@@ -143,7 +141,6 @@ function getMimeTypeFromFormat(format: 'jpeg' | 'png' | 'webp'): string {
       return 'image/png'
   }
 }
-
 
 export function copyToClipboard(text: string): Promise<void> {
   if (navigator.clipboard) {

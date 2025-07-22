@@ -113,9 +113,7 @@
           </div>
           <div class="detail-item">
             <span class="label">年齢:</span>
-            <span class="value"
-              >{{ result.years + 1 }}歳</span
-            >
+            <span class="value">{{ result.years + 1 }}歳</span>
           </div>
         </div>
 
