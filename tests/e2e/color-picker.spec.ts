@@ -45,12 +45,9 @@ test.describe('Color Picker Tool', () => {
       page.locator('.result-box h3').filter({ hasText: /^RGBA.*透明度.*$/ })
     ).toBeVisible()
 
-    // Check initial HEX value (should be default blue) - wait for element to be visible
-    const hexColorCode = page
-      .locator('.result-box')
-      .filter({ hasText: /^HEX$/ })
-      .locator('.color-code')
-      .first()
+    // Check initial HEX value (should be default blue) - use more specific selector
+    const hexResultBox = page.locator('.result-box').filter({ hasText: 'HEX' }).first()
+    const hexColorCode = hexResultBox.locator('.color-code').first()
 
     await expect(hexColorCode).toBeVisible()
     await expect(hexColorCode).toContainText('#3B82F6')
