@@ -259,7 +259,7 @@ test.describe('Character Counter Tool', () => {
   test('should handle navigation and page reload', async ({ page }) => {
     // Simple test to verify page can be reloaded
     await page.reload()
-    
+
     // Verify page loads correctly after reload
     await expect(page.locator('h1')).toHaveText('文字数カウンター')
     await expect(page.locator('#inputText')).toBeVisible()
