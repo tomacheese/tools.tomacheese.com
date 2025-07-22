@@ -1,13 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { formatFileSize, getImageInfo } from '~/utils/imageResizer'
 import {
   convertFileToBase64,
   extractBase64FromDataUrl,
   calculateBase64Size,
-  formatFileSize,
   copyToClipboard,
   downloadAsText,
   imageToBase64,
-  getImageInfo,
 } from '~/utils/imageToBase64'
 
 // Mock DOM APIs

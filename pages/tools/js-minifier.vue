@@ -94,13 +94,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { type MinifyResult } from '~/utils/cssMinifier'
 import {
   minifyJavaScript,
   beautifyJavaScript,
   validateJavaScript,
   calculateJSMinifyStats,
   type JSMinifyOptions,
-  type MinifyResult,
 } from '~/utils/jsMinifier'
 import { formatBytes } from '~/utils/cssMinifier'
 
