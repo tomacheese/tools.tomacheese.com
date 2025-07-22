@@ -46,7 +46,10 @@ test.describe('Color Picker Tool', () => {
     ).toBeVisible()
 
     // Check initial HEX value (should be default blue) - use more specific selector
-    const hexResultBox = page.locator('.result-box').filter({ hasText: 'HEX' }).first()
+    const hexResultBox = page
+      .locator('.result-box')
+      .filter({ hasText: 'HEX' })
+      .first()
     const hexColorCode = hexResultBox.locator('.color-code').first()
 
     await expect(hexColorCode).toBeVisible()
