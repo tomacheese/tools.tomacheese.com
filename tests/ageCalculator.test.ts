@@ -183,7 +183,7 @@ describe('ageCalculator', () => {
         zodiacSign: '',
         chineseZodiac: '',
       }
-      expect(formatAgeString(age)).toBe('25歳 15日')
+      expect(formatAgeString(age)).toBe('25歳 0ヶ月 15日')
     })
 
     it('should return 0日 for newborn', () => {
@@ -200,7 +200,7 @@ describe('ageCalculator', () => {
         zodiacSign: '',
         chineseZodiac: '',
       }
-      expect(formatAgeString(age)).toBe('0日')
+      expect(formatAgeString(age)).toBe('0歳 0ヶ月 0日')
     })
   })
 
