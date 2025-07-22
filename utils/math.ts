@@ -234,7 +234,6 @@ export const calculateExpenseSplit = (
   }
 }
 
-
 /**
  * 住宅ローン計算
  */
@@ -290,7 +289,6 @@ export const calculateMortgage = (
     monthlyBreakdown,
   }
 }
-
 
 /**
  * 基礎代謝計算（Harris-Benedict式）

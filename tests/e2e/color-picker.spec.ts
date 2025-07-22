@@ -36,7 +36,10 @@ test.describe('Color Picker Tool', () => {
 
     // Check initial HEX value (should be default blue)
     await expect(
-      page.locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('#3B82F6')
   })
 
@@ -53,13 +56,22 @@ test.describe('Color Picker Tool', () => {
 
     // Check updated color codes
     await expect(
-      page.locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('#FF0000')
     await expect(
-      page.locator('.result-box:has(h3:has-text("RGB"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("RGB"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('rgb(255, 0, 0)')
     await expect(
-      page.locator('.result-box:has(h3:has-text("HSL"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HSL"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('hsl(0, 100%, 50%)')
   })
 
@@ -79,7 +91,10 @@ test.describe('Color Picker Tool', () => {
 
     // Color codes should update
     await expect(
-      page.locator('.result-box:has(h3:has-text("RGB"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("RGB"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('rgb(0, 255, 0)')
   })
 
@@ -93,10 +108,16 @@ test.describe('Color Picker Tool', () => {
 
     // Color codes should update
     await expect(
-      page.locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('#000000')
     await expect(
-      page.locator('.result-box:has(h3:has-text("RGB"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("RGB"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('rgb(0, 0, 0)')
   })
 
@@ -111,8 +132,10 @@ test.describe('Color Picker Tool', () => {
     await hexCopyButton.click()
 
     // Check if copy message appears (use more specific selector)
-    await expect(page.locator('div').filter({ hasText: 'コピーしました！' }).last()).toBeVisible({
-      timeout: 3000
+    await expect(
+      page.locator('div').filter({ hasText: 'コピーしました！' }).last()
+    ).toBeVisible({
+      timeout: 3000,
     })
 
     // Verify clipboard content (if possible)
@@ -155,7 +178,10 @@ test.describe('Color Picker Tool', () => {
 
     // Should not crash and should maintain previous valid color
     await expect(
-      page.locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
     ).not.toContainText('#INVALID')
   })
 
@@ -170,7 +196,10 @@ test.describe('Color Picker Tool', () => {
 
     // Check RGBA value with 50% transparency
     await expect(
-      page.locator('.result-box:has(h3:has-text("RGBA"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("RGBA"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('rgba(0, 0, 255, 0.5)')
   })
 
@@ -213,13 +242,19 @@ test.describe('Color Picker Tool', () => {
 
     // Get all color format values
     const hexValue = await page
-      .locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      .locator('.result-box:has(h3:has-text("HEX"))')
+      .locator('.color-code')
+      .first()
       .textContent()
     const rgbValue = await page
-      .locator('.result-box:has(h3:has-text("RGB"))').locator('.color-code').first()
+      .locator('.result-box:has(h3:has-text("RGB"))')
+      .locator('.color-code')
+      .first()
       .textContent()
     const hslValue = await page
-      .locator('.result-box:has(h3:has-text("HSL"))').locator('.color-code').first()
+      .locator('.result-box:has(h3:has-text("HSL"))')
+      .locator('.color-code')
+      .first()
       .textContent()
 
     // All should represent the same color
@@ -245,10 +280,16 @@ test.describe('Color Picker Tool', () => {
 
     // Final color should be displayed correctly
     await expect(
-      page.locator('.result-box:has(h3:has-text("HEX"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('#FF00FF')
     await expect(
-      page.locator('.result-box:has(h3:has-text("RGB"))').locator('.color-code').first()
+      page
+        .locator('.result-box:has(h3:has-text("RGB"))')
+        .locator('.color-code')
+        .first()
     ).toContainText('rgb(255, 0, 255)')
   })
 })

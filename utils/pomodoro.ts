@@ -1,4 +1,3 @@
-
 import {
   type PomodoroState,
   type PomodoroSettings,
@@ -31,7 +30,6 @@ export function createPomodoro(
     pausedTime: 0,
   }
 }
-
 
 export function resetTimer(state: PomodoroState): PomodoroState {
   const type = state.currentSession?.type || 'work'
@@ -254,7 +252,6 @@ export function updateSettings(
     timeRemaining: newTimeRemaining,
   }
 }
-
 
 export function exportSessionData(state: PomodoroState): string {
   const data = {

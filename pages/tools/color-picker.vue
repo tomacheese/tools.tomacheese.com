@@ -378,7 +378,7 @@ const selectColor = color => {
   hexInput.value = color
 }
 
-const onColorChange = (event) => {
+const onColorChange = event => {
   selectedColor.value = event.target.value
   hexInput.value = event.target.value
 }
