@@ -7,9 +7,7 @@ test.describe('ストップウォッチツール', () => {
 
   test('ページが正しく表示される', async ({ page }) => {
     await expect(page.locator('h1')).toHaveText('ストップウォッチ')
-    await expect(page.locator('p')).toHaveText(
-      '高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。'
-    )
+    await expect(page.locator('p:has-text("高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。")')).toBeVisible()
 
     // 初期状態の確認
     await expect(page.locator('.main-time')).toHaveText('00:00.00')
@@ -21,6 +19,10 @@ test.describe('ストップウォッチツール', () => {
   })
 
   test('基本的なストップウォッチ操作', async ({ page }) => {
+    // ページが完全にロードされるまで待つ
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator('.control-button.primary')).toBeVisible()
+    
     // ストップウォッチを開始
     await page.click('.control-button.primary')
 
@@ -49,6 +51,9 @@ test.describe('ストップウォッチツール', () => {
   })
 
   test('ラップタイムの記録', async ({ page }) => {
+    // ページが完全にロードされるまで待つ
+    await page.waitForLoadState('networkidle')
+    
     // ストップウォッチを開始
     await page.click('.control-button.primary')
 
@@ -76,6 +81,9 @@ test.describe('ストップウォッチツール', () => {
   })
 
   test('統計情報の表示', async ({ page }) => {
+    // ページが完全にロードされるまで待つ
+    await page.waitForLoadState('networkidle')
+    
     // ストップウォッチを開始してラップを複数追加
     await page.click('.control-button.primary')
 
@@ -149,6 +157,15 @@ test.describe('ストップウォッチツール', () => {
   })
 
   test('キーボードショートカット', async ({ page }) => {
+    // ページが完全にロードされるまで待つ
+    await page.waitForLoadState('networkidle')
+    
+    // ページにフォーカスを当てる
+    await page.focus('body')
+    
+    // 少し待ってからキーボードイベントを発生させる（Vue.jsのイベントリスナー登録完了を待つ）
+    await page.waitForTimeout(100)
+    
     // Spaceキーで開始
     await page.keyboard.press('Space')
     await expect(page.locator('.control-button.primary')).toHaveText('停止')
@@ -231,17 +248,28 @@ test.describe('ストップウォッチツール', () => {
   })
 
   test('レスポンシブデザイン', async ({ page }) => {
-    // モバイルサイズ
-    await page.setViewportSize({ width: 375, height: 667 })
+    // まずデスクトップサイズで2列であることを確認
+    await page.setViewportSize({ width: 1200, height: 800 })
+    const layoutDesktop = page.locator('.stopwatch-layout')
+    let gridColumns = await layoutDesktop.evaluate(
+      el => window.getComputedStyle(el).gridTemplateColumns
+    )
+    // 2列レイアウトであることを確認（具体的なピクセル値は環境により異なる）
+    expect(gridColumns.split(' ')).toHaveLength(2)
+
+    // タブレットサイズでレイアウト変更を確認 (1024px以下で1列になる)
+    await page.setViewportSize({ width: 1000, height: 600 })
 
     // レイアウトが1列になる
     const layout = page.locator('.stopwatch-layout')
-    const gridColumns = await layout.evaluate(
+    gridColumns = await layout.evaluate(
       el => window.getComputedStyle(el).gridTemplateColumns
     )
-    expect(gridColumns).toBe('1fr')
+    // 1列レイアウトであることを確認（計算された値または1frのどちらでも良い）
+    expect(gridColumns.split(' ')).toHaveLength(1)
 
-    // コントロールボタンが縦並びになる
+    // モバイルサイズでコントロールボタンが縦並びになる (768px以下)
+    await page.setViewportSize({ width: 700, height: 600 })
     const controls = page.locator('.controls')
     const flexDirection = await controls.evaluate(
       el => window.getComputedStyle(el).flexDirection

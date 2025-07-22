@@ -35,7 +35,6 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "test:e2e:ci": "playwright test --config=playwright.ci.config.ts",
     "test:e2e:diff": "node scripts/determine-e2e-tests.cjs && playwright test --config=playwright.dynamic.config.cjs",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
