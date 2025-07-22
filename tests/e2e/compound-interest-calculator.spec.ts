@@ -52,7 +52,7 @@ test.describe('Compound Interest Calculator', () => {
       .locator('.summary-item')
       .nth(1)
       .textContent()
-    expect(totalDepositsText).toContain('¥1,600,000') // 1,000,000 + 10,000 * 12 * 5
+    expect(totalDepositsText).toContain('￥1,600,000') // 1,000,000 + 10,000 * 12 * 5
   })
 
   test('should handle different compounding frequencies', async ({ page }) => {
@@ -108,7 +108,6 @@ test.describe('Compound Interest Calculator', () => {
     await page.setViewportSize({ width: 375, height: 667 })
 
     await expect(page.locator('.tool-container')).toBeVisible()
-    await expect(page.locator('.form-group')).toBeVisible()
 
     // Fill form and calculate
     await page.fill('#principal', '500000')

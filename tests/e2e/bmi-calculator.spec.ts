@@ -70,6 +70,7 @@ test.describe('BMI Calculator', () => {
     await page.locator('#height').fill('0')
     await page.locator('#weight').fill('65')
 
+    await page.waitForSelector('.error-message')
     await expect(page.locator('.error-message')).toBeVisible()
     await expect(page.locator('.error-message')).toContainText(
       '身長と体重は正の数'

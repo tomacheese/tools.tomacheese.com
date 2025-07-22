@@ -20,9 +20,9 @@ test.describe('Calorie Calculator', () => {
     // Fill form
     await page.fill('#age', '30')
     await page.fill('#weight', '70')
-    await page.selectOption('select[v-model="weightUnit"]', 'kg')
+    await page.selectOption('#weightUnit', 'kg')
     await page.fill('#height', '175')
-    await page.selectOption('select[v-model="heightUnit"]', 'cm')
+    await page.selectOption('#heightUnit', 'cm')
     await page.selectOption('#activityLevel', 'moderate')
     await page.selectOption('#goal', 'maintain')
 
@@ -56,9 +56,9 @@ test.describe('Calorie Calculator', () => {
     // Fill form
     await page.fill('#age', '25')
     await page.fill('#weight', '60')
-    await page.selectOption('select[v-model="weightUnit"]', 'kg')
+    await page.selectOption('#weightUnit', 'kg')
     await page.fill('#height', '165')
-    await page.selectOption('select[v-model="heightUnit"]', 'cm')
+    await page.selectOption('#heightUnit', 'cm')
     await page.selectOption('#activityLevel', 'light')
     await page.selectOption('#goal', 'lose')
 
@@ -79,9 +79,9 @@ test.describe('Calorie Calculator', () => {
     // Fill with imperial units
     await page.fill('#age', '35')
     await page.fill('#weight', '154') // lbs
-    await page.selectOption('select[v-model="weightUnit"]', 'lbs')
+    await page.selectOption('#weightUnit', 'lbs')
     await page.fill('#height', '5.9') // ft
-    await page.selectOption('select[v-model="heightUnit"]', 'ft')
+    await page.selectOption('#heightUnit', 'ft')
 
     await page.click('button:has-text("計算する")')
 

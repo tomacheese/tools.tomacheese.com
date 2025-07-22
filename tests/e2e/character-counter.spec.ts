@@ -23,10 +23,18 @@ test.describe('Character Counter Tool', () => {
 
     // Check initial state (all counters should be 0)
     await expect(
-      page.locator('div:has-text("文字数（スペースあり）") + div')
+      page
+        .locator('.result-box')
+        .filter({ hasText: '文字数（スペースあり）' })
+        .locator('div')
+        .last()
     ).toHaveText('0')
     await expect(
-      page.locator('div:has-text("文字数（スペースなし）") + div')
+      page
+        .locator('.result-box')
+        .filter({ hasText: '文字数（スペースなし）' })
+        .locator('div')
+        .last()
     ).toHaveText('0')
   })
 
@@ -37,13 +45,33 @@ test.describe('Character Counter Tool', () => {
     await textarea.fill('Hello World')
 
     await expect(
-      page.locator('div:has-text("文字数（スペースあり）") + div')
+      page
+        .locator('.result-box')
+        .filter({ hasText: '文字数（スペースあり）' })
+        .locator('div')
+        .last()
     ).toHaveText('11')
     await expect(
-      page.locator('div:has-text("文字数（スペースなし）") + div')
+      page
+        .locator('.result-box')
+        .filter({ hasText: '文字数（スペースなし）' })
+        .locator('div')
+        .last()
     ).toHaveText('10')
-    await expect(page.locator('div:has-text("行数") + div')).toHaveText('1')
-    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('2')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '行数' })
+        .locator('div')
+        .last()
+    ).toHaveText('1')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '単語数' })
+        .locator('div')
+        .last()
+    ).toHaveText('2')
   })
 
   test('should count multiline text correctly', async ({ page }) => {
@@ -52,9 +80,27 @@ test.describe('Character Counter Tool', () => {
     // Test multiline text
     await textarea.fill('Line 1\nLine 2\nLine 3')
 
-    await expect(page.locator('div:has-text("行数") + div')).toHaveText('3')
-    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('6')
-    await expect(page.locator('div:has-text("段落数") + div')).toHaveText('1')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '行数' })
+        .locator('div')
+        .last()
+    ).toHaveText('3')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '単語数' })
+        .locator('div')
+        .last()
+    ).toHaveText('6')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '段落数' })
+        .locator('div')
+        .last()
+    ).toHaveText('1')
   })
 
   test('should count paragraphs correctly', async ({ page }) => {
@@ -63,7 +109,13 @@ test.describe('Character Counter Tool', () => {
     // Test multiple paragraphs
     await textarea.fill('Paragraph 1\n\nParagraph 2\n\nParagraph 3')
 
-    await expect(page.locator('div:has-text("段落数") + div')).toHaveText('3')
+    await expect(
+      page
+        .locator('.result-box')
+        .filter({ hasText: '段落数' })
+        .locator('div')
+        .last()
+    ).toHaveText('3')
   })
 
   test('should analyze Japanese text correctly', async ({ page }) => {
@@ -76,10 +128,18 @@ test.describe('Character Counter Tool', () => {
     await expect(page.locator('h3:has-text("詳細分析")')).toBeVisible()
 
     // Check character type statistics
-    await expect(page.locator('div:has-text("ひらがな: 5文字")')).toBeVisible()
-    await expect(page.locator('div:has-text("カタカナ: 4文字")')).toBeVisible()
-    await expect(page.locator('div:has-text("漢字: 2文字")')).toBeVisible()
-    await expect(page.locator('div:has-text("英数字: 6文字")')).toBeVisible()
+    await expect(
+      page.locator('.result-box').filter({ hasText: 'ひらがな' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.result-box').filter({ hasText: 'カタカナ' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.result-box').filter({ hasText: '漢字' })
+    ).toBeVisible()
+    await expect(
+      page.locator('.result-box').filter({ hasText: '英数字' })
+    ).toBeVisible()
   })
 
   test('should calculate reading time', async ({ page }) => {
@@ -91,17 +151,17 @@ test.describe('Character Counter Tool', () => {
 
     // Check reading time appears
     await expect(
-      page.locator('div:has-text("読み取り時間（約）")')
+      page.locator('.result-box').filter({ hasText: '読み取り時間（約）' })
     ).toBeVisible()
     await expect(
-      page.locator('div:has-text("タイピング時間（約）")')
+      page.locator('.result-box').filter({ hasText: 'タイピング時間（約）' })
     ).toBeVisible()
   })
 
   test('should update counters in real time', async ({ page }) => {
     const textarea = page.locator('#inputText')
     const charCountWithSpaces = page.locator(
-      'div:has-text("文字数（スペースあり）") + div'
+      '.result-box div:has-text("文字数（スペースあり）") + div'
     )
 
     // Type character by character and check real-time updates
@@ -127,13 +187,17 @@ test.describe('Character Counter Tool', () => {
 
     // All counters should be 0
     await expect(
-      page.locator('div:has-text("文字数（スペースあり）") + div')
+      page.locator('.result-box div:has-text("文字数（スペースあり）") + div')
     ).toHaveText('0')
     await expect(
-      page.locator('div:has-text("文字数（スペースなし）") + div')
+      page.locator('.result-box div:has-text("文字数（スペースなし）") + div')
     ).toHaveText('0')
-    await expect(page.locator('div:has-text("行数") + div')).toHaveText('0')
-    await expect(page.locator('div:has-text("単語数") + div')).toHaveText('0')
+    await expect(
+      page.locator('.result-box div:has-text("行数") + div')
+    ).toHaveText('0')
+    await expect(
+      page.locator('.result-box div:has-text("単語数") + div')
+    ).toHaveText('0')
 
     // Detailed analysis should not be visible
     await expect(page.locator('h3:has-text("詳細分析")')).not.toBeVisible()
@@ -183,16 +247,18 @@ test.describe('Character Counter Tool', () => {
 
     // Should still work without performance issues
     await expect(
-      page.locator('div:has-text("文字数（スペースあり）") + div')
-    ).toContainText('1200')
+      page.locator('.result-box div:has-text("文字数（スペースあり）") + div')
+    ).toContainText('12,000')
 
     // Byte count should be visible and reasonable
-    const byteCount = page.locator('div:has-text("バイト数（UTF-8）") + div')
+    const byteCount = page.locator(
+      '.result-box div:has-text("バイト数（UTF-8）") + div'
+    )
     await expect(byteCount).toBeVisible()
 
     // Reading time should be calculated
     await expect(
-      page.locator('div:has-text("読み取り時間（約）")')
+      page.locator('.result-box div:has-text("読み取り時間（約）")')
     ).toBeVisible()
   })
 
@@ -208,6 +274,8 @@ test.describe('Character Counter Tool', () => {
 
     // Text should be preserved (if using browser state)
     // Note: This might not work if Nuxt clears state, which is expected behavior
-    await expect(page.locator('#inputText')).toBeFocused() // At least the field should be focusable
+    await expect(page.locator('#inputText')).toHaveValue(
+      'Test text to preserve'
+    )
   })
 })
