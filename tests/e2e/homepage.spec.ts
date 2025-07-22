@@ -11,7 +11,11 @@ test.describe('Homepage', () => {
     await expect(page.locator('h1')).toHaveText('便利なWebツール集')
 
     // Check hero description
-    await expect(page.locator('p:has-text("日常的に使える実用的なツールを無料で提供しています")')).toBeVisible()
+    await expect(
+      page.locator(
+        'p:has-text("日常的に使える実用的なツールを無料で提供しています")'
+      )
+    ).toBeVisible()
 
     // Check tools section
     await expect(page.locator('h2:has-text("利用可能なツール")')).toBeVisible()

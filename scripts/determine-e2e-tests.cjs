@@ -17,7 +17,7 @@ function getChangedFiles() {
     if (process.env.GITHUB_BASE_REF) {
       // PR環境の場合 - 複数の方法を試行
       const baseBranch = process.env.GITHUB_BASE_REF
-      
+
       // まず origin/branch を試行
       try {
         baseRef = `origin/${baseBranch}`
@@ -46,15 +46,14 @@ function getChangedFiles() {
 
     console.log(`Executing git command: ${command}`)
     const output = execSync(command, { encoding: 'utf-8' })
-    
+
     const files = output
       .trim()
       .split('\n')
       .filter(file => file)
-    
+
     console.log(`Found ${files.length} changed files`)
     return files.length > 0 ? files : ['**/*']
-    
   } catch (error) {
     console.error('Error getting changed files:', error.message)
     console.log('Falling back to full test execution')
