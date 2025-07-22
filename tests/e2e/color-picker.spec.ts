@@ -30,7 +30,7 @@ test.describe('Color Picker Tool', () => {
   test('should display color codes correctly', async ({ page }) => {
     // Wait for page to load completely
     await page.waitForLoadState('networkidle')
-    
+
     // Check initial color codes are displayed
     await expect(page.locator('.result-box h3:has-text("HEX")')).toBeVisible()
     await expect(page.locator('.result-box h3:has-text("RGB")')).toBeVisible()
@@ -43,7 +43,7 @@ test.describe('Color Picker Tool', () => {
       .filter({ hasText: 'HEX' })
       .locator('.color-code')
       .first()
-    
+
     await expect(hexColorCode).toBeVisible()
     await expect(hexColorCode).toContainText('#3B82F6')
   })
