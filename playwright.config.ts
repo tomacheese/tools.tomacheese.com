@@ -9,10 +9,10 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* CI環境では並列実行数を増やして高速化 */
-  workers: process.env.CI ? 2 : undefined,
+  /* Retry on CI only (少なくして高速化) */
+  retries: process.env.CI ? 1 : 0,
+  /* CI環境では並列実行数を増やして高速化 (GitHub Actionsは2コア) */
+  workers: process.env.CI ? 4 : undefined,
   /* Global timeout for each test */
   timeout: process.env.CI ? 30000 : 60000,
   /* Expect timeout for assertions */
