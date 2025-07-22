@@ -31,16 +31,16 @@ test.describe('Color Picker Tool', () => {
     // Wait for page to load completely
     await page.waitForLoadState('networkidle')
 
-    // Check initial color codes are displayed
-    await expect(page.locator('.result-box h3:has-text("HEX")')).toBeVisible()
-    await expect(page.locator('.result-box h3:has-text("RGB")')).toBeVisible()
-    await expect(page.locator('.result-box h3:has-text("HSL")')).toBeVisible()
-    await expect(page.locator('.result-box h3:has-text("RGBA")')).toBeVisible()
+    // Check initial color codes are displayed - use exact text matching to avoid conflicts
+    await expect(page.locator('.result-box h3').filter({ hasText: /^HEX$/ })).toBeVisible()
+    await expect(page.locator('.result-box h3').filter({ hasText: /^RGB$/ })).toBeVisible()
+    await expect(page.locator('.result-box h3').filter({ hasText: /^HSL$/ })).toBeVisible()
+    await expect(page.locator('.result-box h3').filter({ hasText: /^RGBA.*透明度.*$/ })).toBeVisible()
 
     // Check initial HEX value (should be default blue) - wait for element to be visible
     const hexColorCode = page
       .locator('.result-box')
-      .filter({ hasText: 'HEX' })
+      .filter({ hasText: /^HEX$/ })
       .locator('.color-code')
       .first()
 
