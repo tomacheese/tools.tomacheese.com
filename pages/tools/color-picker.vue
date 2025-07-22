@@ -33,6 +33,7 @@
       <div>
         <label class="form-label">選択した色</label>
         <div
+          class="color-preview"
           :style="{ backgroundColor: selectedColor }"
           style="
             width: 100%;
@@ -93,6 +94,7 @@
       <div class="result-box">
         <h3 style="margin-bottom: 0.5rem; color: #2563eb">HEX</h3>
         <div
+          class="color-code"
           style="
             font-family: 'Courier New', monospace;
             font-size: 1.25rem;
@@ -114,6 +116,7 @@
       <div class="result-box">
         <h3 style="margin-bottom: 0.5rem; color: #2563eb">RGB</h3>
         <div
+          class="color-code"
           style="
             font-family: 'Courier New', monospace;
             font-size: 1.25rem;
@@ -135,6 +138,7 @@
       <div class="result-box">
         <h3 style="margin-bottom: 0.5rem; color: #2563eb">HSL</h3>
         <div
+          class="color-code"
           style="
             font-family: 'Courier New', monospace;
             font-size: 1.25rem;
@@ -156,6 +160,7 @@
       <div class="result-box">
         <h3 style="margin-bottom: 0.5rem; color: #2563eb">RGBA (透明度50%)</h3>
         <div
+          class="color-code"
           style="
             font-family: 'Courier New', monospace;
             font-size: 1.25rem;
@@ -188,6 +193,7 @@
         <div
           v-for="color in commonColors"
           :key="color"
+          class="palette-color"
           :style="{ backgroundColor: color }"
           style="
             height: 60px;

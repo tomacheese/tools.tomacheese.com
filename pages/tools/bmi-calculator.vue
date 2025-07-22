@@ -145,6 +145,14 @@ const error = ref('')
 const result = computed((): BMIResult | null => {
   error.value = ''
 
+  // ゼロ値チェック（入力があるがゼロの場合）
+  if (height.value === 0 || weight.value === 0) {
+    if (height.value === 0 || weight.value === 0) {
+      error.value = '身長と体重は正の数である必要があります'
+      return null
+    }
+  }
+
   if (!height.value || !weight.value) {
     return null
   }

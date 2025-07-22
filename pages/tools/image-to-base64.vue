@@ -113,12 +113,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import {
-  formatFileSize,
   copyToClipboard,
   downloadAsText,
   type Base64Result,
   imageToBase64,
 } from '~/utils/imageToBase64'
+import { formatFileSize } from '~/utils/imageResizer'
 
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement>()

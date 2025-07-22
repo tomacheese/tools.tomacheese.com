@@ -15,12 +15,6 @@ export interface Base64Result {
   height: number
 }
 
-export interface ImageInfo {
-  width: number
-  height: number
-  size: number
-  type: string
-}
 
 export function imageToBase64(
   file: File,
@@ -99,29 +93,6 @@ export function imageToBase64(
   })
 }
 
-export function getImageInfo(file: File): Promise<ImageInfo> {
-  return new Promise((resolve, reject) => {
-    const img = new Image()
-    const url = URL.createObjectURL(file)
-
-    img.onload = () => {
-      URL.revokeObjectURL(url)
-      resolve({
-        width: img.width,
-        height: img.height,
-        size: file.size,
-        type: file.type,
-      })
-    }
-
-    img.onerror = () => {
-      URL.revokeObjectURL(url)
-      reject(new Error('Failed to load image'))
-    }
-
-    img.src = url
-  })
-}
 
 function calculateDimensions(
   originalWidth: number,
@@ -173,15 +144,6 @@ function getMimeTypeFromFormat(format: 'jpeg' | 'png' | 'webp'): string {
   }
 }
 
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
-
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
-}
 
 export function copyToClipboard(text: string): Promise<void> {
   if (navigator.clipboard) {

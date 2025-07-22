@@ -45,7 +45,7 @@
             step="0.1"
             placeholder="60"
           />
-          <select v-model="weightUnit">
+          <select id="weightUnit" v-model="weightUnit">
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>
           </select>
@@ -64,7 +64,7 @@
             step="1"
             placeholder="170"
           />
-          <select v-model="heightUnit">
+          <select id="heightUnit" v-model="heightUnit">
             <option value="cm">cm</option>
             <option value="ft">ft</option>
           </select>

@@ -234,29 +234,9 @@ export const calculateExpenseSplit = (
   }
 }
 
-/**
- * 複利計算
- */
-export const calculateCompoundInterest = (
-  principal: number,
-  rate: number,
-  time: number,
-  compounding: number = 1
-): {
-  finalAmount: number
-  interest: number
-  totalContributions: number
-} => {
-  const finalAmount =
-    principal * Math.pow(1 + rate / (100 * compounding), compounding * time)
-  const interest = finalAmount - principal
-
-  return {
-    finalAmount,
-    interest,
-    totalContributions: principal,
-  }
-}
+// Import compound interest calculation from dedicated module
+import { calculateCompoundInterest } from './compound-interest'
+export { calculateCompoundInterest }
 
 /**
  * 住宅ローン計算

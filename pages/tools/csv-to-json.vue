@@ -19,7 +19,7 @@
             <select id="delimiter" v-model="delimiter" @change="handleConvert">
               <option value=",">カンマ (,)</option>
               <option value=";">セミコロン (;)</option>
-              <option value="\t">タブ</option>
+              <option value="tab">タブ</option>
               <option value="|">パイプ (|)</option>
               <option value="auto">自動検出</option>
             </select>
@@ -151,6 +151,8 @@ const handleConvert = () => {
     let actualDelimiter = delimiter.value
     if (delimiter.value === 'auto') {
       actualDelimiter = detectDelimiter(csvInput.value)
+    } else if (delimiter.value === 'tab') {
+      actualDelimiter = '\t'
     }
 
     const result = parseCSV(csvInput.value, {
@@ -212,7 +214,7 @@ const loadExample = (type: string) => {
 001	鈴木一郎	営業部
 002	田中二郎	開発部
 003	佐藤三郎	人事部`
-      delimiter.value = '\t'
+      delimiter.value = 'tab'
       break
   }
   handleConvert()

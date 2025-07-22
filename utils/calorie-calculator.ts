@@ -1,8 +1,5 @@
 import type { Gender, ActivityLevel } from './health'
 
-// Re-export types for external use
-export type { Gender, ActivityLevel }
-
 export type Goal = 'maintain' | 'lose' | 'gain'
 export type WeightUnit = 'kg' | 'lbs'
 export type HeightUnit = 'cm' | 'ft'

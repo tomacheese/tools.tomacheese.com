@@ -114,9 +114,7 @@
           <div class="detail-item">
             <span class="label">年齢:</span>
             <span class="value"
-              >{{
-                result.years + (result.nextBirthday > targetDate ? 0 : 1)
-              }}歳</span
+              >{{ result.years + 1 }}歳</span
             >
           </div>
         </div>

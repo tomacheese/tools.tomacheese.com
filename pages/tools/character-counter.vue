@@ -27,48 +27,48 @@
       "
     >
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">
           文字数（スペースあり）
-        </h3>
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.charactersWithSpaces }}
+          {{ stats.charactersWithSpaces.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">
           文字数（スペースなし）
-        </h3>
+        </div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.charactersWithoutSpaces }}
+          {{ stats.charactersWithoutSpaces.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">行数</h3>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">行数</div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.lines }}
+          {{ stats.lines.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">単語数</h3>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">単語数</div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.words }}
+          {{ stats.words.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">段落数</h3>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">段落数</div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.paragraphs }}
+          {{ stats.paragraphs.toLocaleString() }}
         </div>
       </div>
 
       <div class="result-box">
-        <h3 style="margin-bottom: 0.5rem; color: #2563eb">バイト数（UTF-8）</h3>
+        <div style="margin-bottom: 0.5rem; color: #2563eb; font-weight: 600;">バイト数（UTF-8）</div>
         <div style="font-size: 1.5rem; font-weight: bold; color: #1e293b">
-          {{ stats.bytes }}
+          {{ stats.bytes.toLocaleString() }}
         </div>
       </div>
     </div>

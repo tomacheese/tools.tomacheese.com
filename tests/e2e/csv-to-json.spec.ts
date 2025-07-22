@@ -59,7 +59,7 @@ test.describe('CSV to JSON Converter', () => {
 
     // Change delimiter to tab
     const delimiterSelect = page.locator('#delimiter')
-    await delimiterSelect.selectOption('\t')
+    await delimiterSelect.selectOption('tab')
 
     await page.waitForTimeout(500)
 
@@ -296,7 +296,7 @@ test.describe('CSV to JSON Converter', () => {
     // Verify delimiter was changed to tab
     const delimiterSelect = page.locator('#delimiter')
     const selectedValue = await delimiterSelect.inputValue()
-    expect(selectedValue).toBe('\t')
+    expect(selectedValue).toBe('tab')
 
     const output = page.locator('.output pre')
     const jsonText = await output.textContent()
