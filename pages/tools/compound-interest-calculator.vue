@@ -123,11 +123,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  calculateCompoundInterest,
-  formatCurrency,
-  formatPercentage,
-} from '~/utils/compound-interest'
+import { calculateCompoundInterest } from '~/utils/compound-interest'
+import { formatCurrency, formatPercentage } from '~/utils/mortgage-calculator'
 import type { CompoundInterestResult } from '~/utils/compound-interest'
 
 const principal = ref<number>(1000000)

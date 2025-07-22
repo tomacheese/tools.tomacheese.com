@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import {
-  calculateCompoundInterest,
-  formatCurrency,
-  formatPercentage,
-} from '~/utils/compound-interest'
+import { calculateCompoundInterest } from '~/utils/compound-interest'
+import { formatCurrency, formatPercentage } from '~/utils/mortgage-calculator'
 
 describe('calculateCompoundInterest', () => {
   it('should calculate compound interest without monthly deposits', () => {
