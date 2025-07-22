@@ -211,10 +211,10 @@ test.describe('Box Shadow生成ツール', () => {
     // デスクトップサイズ
     await page.setViewportSize({ width: 1440, height: 900 })
     const layout = page.locator('.generator-layout')
-    
+
     // レイアウトが2列のグリッドになっていることを確認
     await expect(layout).toHaveCSS('display', 'grid')
-    
+
     // プレビューセクションが存在することを確認
     await expect(page.locator('.preview-section')).toBeVisible()
   })
