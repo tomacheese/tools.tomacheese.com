@@ -11,19 +11,53 @@ const path = require('path')
 // Git差分を取得（PRの場合はベースブランチとの差分）
 function getChangedFiles() {
   try {
-    // PRの場合は origin/master との差分、通常はHEADとの差分
-    const baseRef = process.env.GITHUB_BASE_REF
-      ? `origin/${process.env.GITHUB_BASE_REF}`
-      : 'HEAD~1'
+    let baseRef
+    let command
 
-    const command = `git diff --name-only ${baseRef}...HEAD`
+    if (process.env.GITHUB_BASE_REF) {
+      // PR環境の場合 - 複数の方法を試行
+      const baseBranch = process.env.GITHUB_BASE_REF
+      
+      // まず origin/branch を試行
+      try {
+        baseRef = `origin/${baseBranch}`
+        command = `git diff --name-only ${baseRef}...HEAD`
+        execSync(command, { encoding: 'utf-8', stdio: 'pipe' })
+      } catch {
+        // origin/branch が存在しない場合はHEADから取得
+        try {
+          // GitHub Actions では GITHUB_SHA が利用可能
+          const targetSha = process.env.GITHUB_SHA
+          if (targetSha) {
+            command = `git diff --name-only ${targetSha}~1...${targetSha}`
+          } else {
+            // フォールバック: 単純にHEAD~1
+            command = `git diff --name-only HEAD~1...HEAD`
+          }
+        } catch {
+          // 最終フォールバック
+          command = `git diff --name-only HEAD~1`
+        }
+      }
+    } else {
+      // ローカル環境
+      command = `git diff --name-only HEAD~1`
+    }
+
+    console.log(`Executing git command: ${command}`)
     const output = execSync(command, { encoding: 'utf-8' })
-    return output
+    
+    const files = output
       .trim()
       .split('\n')
       .filter(file => file)
+    
+    console.log(`Found ${files.length} changed files`)
+    return files.length > 0 ? files : ['**/*']
+    
   } catch (error) {
     console.error('Error getting changed files:', error.message)
+    console.log('Falling back to full test execution')
     // エラーの場合は全テスト実行
     return ['**/*']
   }
