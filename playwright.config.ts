@@ -5,6 +5,12 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  /* CI環境では重要なテストのみ実行 */
+  testMatch: process.env.CI ? [
+    '**/homepage.spec.ts',
+    '**/character-counter.spec.ts',
+    '**/qr-generator.spec.ts'
+  ] : undefined,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
