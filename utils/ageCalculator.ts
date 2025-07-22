@@ -155,19 +155,8 @@ export function formatDate(date: Date): string {
 }
 
 export function formatAgeString(age: AgeResult): string {
-  const parts = []
-
-  if (age.years > 0) {
-    parts.push(`${age.years}歳`)
-  }
-  if (age.months > 0) {
-    parts.push(`${age.months}ヶ月`)
-  }
-  if (age.days > 0) {
-    parts.push(`${age.days}日`)
-  }
-
-  return parts.join(' ') || '0日'
+  // 常に年・月・日の全てを表示
+  return `${age.years}歳 ${age.months}ヶ月 ${age.days}日`
 }
 
 export function getLifeEvents(age: number): string[] {
