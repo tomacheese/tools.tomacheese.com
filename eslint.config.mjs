@@ -55,7 +55,7 @@ export default [
       '@typescript-eslint': tseslint,
     },
     rules: {
-      ...vuePlugin.configs['vue3-recommended'].rules,
+      ...vuePlugin.configs['flat/recommended'].rules,
       ...tseslint.configs.recommended.rules,
       'vue/multi-word-component-names': 'off',
       'vue/no-v-html': 'off',

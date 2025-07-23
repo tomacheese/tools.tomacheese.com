@@ -362,7 +362,7 @@ const copyToClipboard = async text => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     copyMessage.value = 'コピーに失敗しました'
     setTimeout(() => {
       copyMessage.value = ''

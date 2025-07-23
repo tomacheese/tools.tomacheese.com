@@ -139,7 +139,7 @@ const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
-  } catch (error) {
+  } catch {
     // Copy failed silently
     alert('コピーに失敗しました')
   }
@@ -150,7 +150,7 @@ const copyAllToClipboard = async () => {
     const text = generatedUUIDs.value.join('\n')
     await navigator.clipboard.writeText(text)
     alert('すべてのUUIDをクリップボードにコピーしました')
-  } catch (error) {
+  } catch {
     // Copy failed silently
     alert('コピーに失敗しました')
   }

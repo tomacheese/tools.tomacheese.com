@@ -19,7 +19,7 @@
           style="display: none"
           @change="handleFileSelect"
         />
-        <button class="upload-button" @click="$refs.fileInput.click()">
+        <button class="upload-button" @click="fileInput?.click()">
           画像を選択
         </button>
         <p class="upload-hint">またはここにドラッグ＆ドロップ</p>
@@ -236,7 +236,7 @@ const loadImage = async (file: File) => {
     } else {
       resizeOptions.value.format = 'png'
     }
-  } catch (e) {
+  } catch {
     error.value = '画像の読み込みに失敗しました'
   }
 }
@@ -281,7 +281,7 @@ const resizeImage = async () => {
       URL.revokeObjectURL(resizedPreview.value)
     }
     resizedPreview.value = URL.createObjectURL(blob)
-  } catch (e) {
+  } catch {
     error.value = 'リサイズに失敗しました'
   }
 }

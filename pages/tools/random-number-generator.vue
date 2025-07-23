@@ -373,7 +373,7 @@ const copyNumber = async number => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     copyMessage.value = 'コピーに失敗しました'
     setTimeout(() => {
       copyMessage.value = ''
@@ -389,7 +389,7 @@ const copyAllNumbers = async () => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     copyMessage.value = 'コピーに失敗しました'
     setTimeout(() => {
       copyMessage.value = ''

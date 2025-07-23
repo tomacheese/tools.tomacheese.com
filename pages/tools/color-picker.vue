@@ -390,7 +390,7 @@ const copyToClipboard = async text => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }

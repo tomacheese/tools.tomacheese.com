@@ -430,7 +430,7 @@ const copyConversion = async conversion => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }

@@ -184,7 +184,7 @@ const formatOptions = ['css', 'sass', 'inline'] as const
 const updateGradient = () => {
   try {
     currentGradient.value = generateGradientCSS(config.value)
-  } catch (error) {
+  } catch {
     // Gradient generation failed
   }
 }
@@ -226,7 +226,7 @@ const copyCode = async () => {
   try {
     await navigator.clipboard.writeText(getFormattedCode())
     alert('コードをクリップボードにコピーしました')
-  } catch (error) {
+  } catch {
     alert('コピーに失敗しました')
   }
 }

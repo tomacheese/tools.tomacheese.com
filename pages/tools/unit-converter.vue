@@ -209,7 +209,7 @@ function performConversion() {
         conversionHistory.value = conversionHistory.value.slice(0, 10)
       }
     }
-  } catch (error) {
+  } catch {
     result.value = 0
   }
 }

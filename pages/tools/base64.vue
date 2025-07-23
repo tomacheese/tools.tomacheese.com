@@ -222,7 +222,7 @@ const encodedText = computed(() => {
   if (!plainText.value) return ''
   try {
     return btoa(unescape(encodeURIComponent(plainText.value)))
-  } catch (error) {
+  } catch {
     return 'エンコードエラー'
   }
 })
@@ -243,7 +243,7 @@ const decodedText = computed(() => {
     const decoded = decodeURIComponent(escape(atob(base64Text.value)))
     decodeError.value = ''
     return decoded
-  } catch (error) {
+  } catch {
     decodeError.value = 'デコードエラー: 無効なBase64形式です'
     return ''
   }
@@ -264,7 +264,7 @@ const setSampleText = text => {
     // エンコードしてからセット
     try {
       base64Text.value = btoa(unescape(encodeURIComponent(text)))
-    } catch (error) {
+    } catch {
       base64Text.value = 'エンコードエラー'
     }
   }
@@ -277,7 +277,7 @@ const copyToClipboard = async text => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }

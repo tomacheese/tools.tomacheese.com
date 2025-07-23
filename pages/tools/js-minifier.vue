@@ -179,7 +179,7 @@ const copyToClipboard = async () => {
   try {
     await navigator.clipboard.writeText(output.value)
     alert('クリップボードにコピーしました')
-  } catch (e) {
+  } catch {
     alert('コピーに失敗しました')
   }
 }

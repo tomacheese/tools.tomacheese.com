@@ -221,7 +221,7 @@ const copyToClipboard = async (text: string) => {
         copiedItems.value[conversion.id] = false
       }, 2000)
     }
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }
@@ -237,7 +237,7 @@ const pasteFromClipboard = async () => {
   try {
     const text = await navigator.clipboard.readText()
     inputText.value = text
-  } catch (err) {
+  } catch {
     // Clipboard read failed silently
   }
 }

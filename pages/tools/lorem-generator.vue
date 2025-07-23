@@ -390,7 +390,7 @@ const copyToClipboard = async () => {
     setTimeout(() => {
       copyStatus.value = 'コピー'
     }, 2000)
-  } catch (err) {
+  } catch {
     copyStatus.value = 'コピー失敗'
     setTimeout(() => {
       copyStatus.value = 'コピー'
