@@ -86,7 +86,7 @@ const longVariableName = 42;`
     // 構文エラーの場合、ツールが適切に処理することを確認
     // 結果セクションが表示されないか、エラーメッセージが表示されることを確認
     const resultVisible = await page.locator('.result').isVisible()
-    
+
     if (resultVisible) {
       // 結果が表示される場合、出力テキストエリアを確認
       const outputTextarea = page.locator('textarea').nth(1)

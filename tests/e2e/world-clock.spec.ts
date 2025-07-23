@@ -30,7 +30,7 @@ test.describe('World Clock Tool', () => {
     // Wait for cities to load
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
-    
+
     // Check that default cities are displayed
     const cityCards = page.locator('.city-card')
     await expect(cityCards).toHaveCount(12) // 12 default cities
@@ -153,7 +153,7 @@ test.describe('World Clock Tool', () => {
     // Remove the city - first ensure it exists
     const bangkokCard = page.locator('.city-card:has-text("バンコク")')
     await expect(bangkokCard).toBeVisible()
-    
+
     const removeBtn = bangkokCard.locator('.remove-btn')
     await expect(removeBtn).toBeVisible()
     await removeBtn.click()
@@ -161,12 +161,12 @@ test.describe('World Clock Tool', () => {
 
     // Bangkok should be gone - wait for DOM update
     await page.waitForLoadState('networkidle')
-    
+
     // Check if removal worked (implementation dependent)
     const cardCount = await page.locator('.city-card').count()
     expect(cardCount).toBeGreaterThanOrEqual(11)
     expect(cardCount).toBeLessThanOrEqual(13)
-    
+
     // If Bangkok is still visible, the removal feature may not be implemented
     const bangkokStillVisible = await bangkokCard.isVisible()
     if (!bangkokStillVisible) {

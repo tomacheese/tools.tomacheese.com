@@ -45,7 +45,7 @@ test.describe('Hash Generator', () => {
     await page.waitForTimeout(500)
     const sha1Hash = await page.locator('.hash-result code').textContent()
 
-    // SHA-256  
+    // SHA-256
     await page.selectOption('select', 'SHA-256')
     await page.waitForTimeout(300)
     await page.click('button:has-text("ハッシュ生成")')
@@ -53,10 +53,12 @@ test.describe('Hash Generator', () => {
     const sha256Hash = await page.locator('.hash-result code').textContent()
 
     expect(sha1Hash).not.toBe(sha256Hash)
-    
+
     // Verify correct hashes for 'test'
     expect(sha1Hash).toBe('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3')
-    expect(sha256Hash).toBe('9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08')
+    expect(sha256Hash).toBe(
+      '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+    )
   })
 
   test('should copy hash to clipboard', async ({ page, context }) => {

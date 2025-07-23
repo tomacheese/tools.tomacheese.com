@@ -97,13 +97,13 @@ test.describe('JSON to CSV Converter', () => {
 
     const output = page.locator('.output pre')
     const csvText = await output.textContent()
-    
+
     // Check for either tab-separated or comma-separated (depending on implementation)
     const hasTabHeaders = csvText?.includes('名前\t年齢')
     const hasCommaHeaders = csvText?.includes('名前,年齢')
     const hasTabData = csvText?.includes('田中太郎\t30')
     const hasCommaData = csvText?.includes('田中太郎,30')
-    
+
     expect(hasTabHeaders || hasCommaHeaders).toBe(true)
     expect(hasTabData || hasCommaData).toBe(true)
   })

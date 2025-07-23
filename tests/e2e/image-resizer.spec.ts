@@ -187,7 +187,9 @@ test.describe('画像リサイズツール', () => {
 
     // モバイルでは設定が縦に並ぶことを確認
     const imageSettings = page.locator('.image-settings')
-    const gridColumns = await imageSettings.evaluate(el => getComputedStyle(el).gridTemplateColumns)
+    const gridColumns = await imageSettings.evaluate(
+      el => getComputedStyle(el).gridTemplateColumns
+    )
     // モバイルでは1列レイアウトになることを確認（343pxなどの固定幅もあり得る）
     expect(gridColumns).toMatch(/^(1fr|[0-9]+px)$/)
   })
