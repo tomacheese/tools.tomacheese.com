@@ -12,9 +12,9 @@ export default defineConfig({
   /* Retry on CI only (少なくして高速化) */
   retries: process.env.CI ? 1 : 0,
   /* CI環境では並列実行数を適切に設定 (GitHub Actionsは2コア) */
-  workers: process.env.CI ? 2 : undefined,
-  /* Global timeout for each test (10分 = 600000ms) */
-  timeout: process.env.CI ? 600000 : 60000,
+  workers: process.env.CI ? 1 : undefined,
+  /* Global timeout for each test (3分 = 180000ms) */
+  timeout: process.env.CI ? 180000 : 60000,
   /* Expect timeout for assertions */
   expect: {
     timeout: process.env.CI ? 15000 : 5000,
@@ -40,32 +40,41 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
-  ],
+  projects: process.env.CI
+    ? [
+        // CI環境では主要ブラウザのみテスト
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+      ]
+    : [
+        // ローカル環境では全ブラウザテスト
+        {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+        {
+          name: 'Mobile Chrome',
+          use: { ...devices['Pixel 5'] },
+        },
+        {
+          name: 'Mobile Safari',
+          use: { ...devices['iPhone 12'] },
+        },
+      ],
 
   /* Test against branded browsers. */
   // {

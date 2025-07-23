@@ -23,7 +23,7 @@ test.describe('Homepage', () => {
     // Check if tool cards are displayed
     const toolCards = page.locator('.tool-card')
     const cardCount = await toolCards.count()
-    console.log(`Found ${cardCount} tool cards on the page`)
+    // console.log(`Found ${cardCount} tool cards on the page`)
     // Expect at least 50 tools to be visible (allowing for some variation)
     expect(cardCount).toBeGreaterThanOrEqual(50)
 

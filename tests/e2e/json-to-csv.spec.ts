@@ -89,7 +89,7 @@ test.describe('JSON to CSV Converter', () => {
         await delimiterSelect.selectOption('tab')
       } catch {
         // If both fail, just continue with default delimiter
-        console.log('Tab delimiter option not available, using default')
+        // console.log('Tab delimiter option not available, using default')
       }
     }
 
