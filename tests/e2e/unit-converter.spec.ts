@@ -3,6 +3,11 @@ import { test, expect } from '@playwright/test'
 test.describe('Unit Converter Tool', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/tools/unit-converter')
+    const clearButton = page.locator('.clear-btn')
+    if (await clearButton.isVisible()) {
+      await clearButton.click()
+    }
+    await expect(page.locator('.history-list li')).toHaveCount(0)
   })
 
   test('has correct title and description', async ({ page }) => {
@@ -128,7 +133,7 @@ test.describe('Unit Converter Tool', () => {
 
     // Check history section appears
     await expect(page.locator('.history-section')).toBeVisible()
-    await expect(page.locator('.history-list li')).toHaveCount(6)
+    await expect(page.locator('.history-list li')).toHaveCount(2)
 
     // Perform another conversion
     await page.locator('#fromValue').fill('50')
