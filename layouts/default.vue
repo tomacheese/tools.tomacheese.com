@@ -17,7 +17,7 @@
     <div class="main-layout">
       <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <h3 style="margin-bottom: 1rem; color: #1e293b; font-weight: 600">
+        <h3 class="sidebar-title">
           ツール一覧
         </h3>
         <nav>

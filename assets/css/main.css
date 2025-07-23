@@ -134,6 +134,12 @@ body {
 }
 
 /* Sidebar Navigation */
+.sidebar-title {
+  margin-bottom: 1rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
 .sidebar-nav {
   list-style: none;
 }
