@@ -2,7 +2,7 @@
 FROM node:22.17.1-alpine AS base
 
 # Set pnpm version
-ENV PNPM_VERSION=8.15.0
+ENV PNPM_VERSION=10.13.1
 
 # Install pnpm globally
 RUN npm install -g pnpm@$PNPM_VERSION
