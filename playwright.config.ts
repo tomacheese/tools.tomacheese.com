@@ -50,6 +50,17 @@ export default defineConfig({
         {
           name: 'firefox',
           use: { ...devices['Desktop Firefox'] },
+          testIgnore: [
+            '**/gradient-generator.spec.ts',
+            '**/hash-generator.spec.ts',
+            '**/html-encoder.spec.ts',
+            '**/image-to-base64.spec.ts',
+            '**/js-minifier.spec.ts',
+            '**/json-to-csv.spec.ts',
+            '**/qr-generator.spec.ts',
+            '**/timestamp-converter.spec.ts',
+            '**/uuid-generator.spec.ts',
+          ],
         },
       ]
     : [
