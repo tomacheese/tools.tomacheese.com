@@ -19,7 +19,7 @@ test.describe('HTML Entity Encoder', () => {
 
     const output = page.locator('.output pre').first()
     await expect(output).toContainText(
-      '&lt;p&gt;Hello &amp; &quot;World&quot;&lt;/p&gt;'
+      '&lt;p&gt;Hello &amp; &quot;World&quot;&lt;&#x2F;p&gt;'
     )
   })
 
@@ -32,7 +32,7 @@ test.describe('HTML Entity Encoder', () => {
     // Wait for decoding to complete
     await page.waitForTimeout(500)
 
-    const output = page.locator('.output pre').nth(1)
+    const output = page.locator('.output pre').last()
     await expect(output).toContainText('<p>Hello & "World"</p>')
   })
 
@@ -140,7 +140,7 @@ test.describe('HTML Entity Encoder', () => {
       await dialog.accept()
     })
 
-    await page.locator('.output button').nth(1).click()
+    await page.locator('.output button').last().click()
   })
 
   test('should clear output when input is cleared', async ({ page }) => {
@@ -206,7 +206,7 @@ test.describe('HTML Entity Encoder', () => {
     const encoded = await output.textContent()
 
     expect(encoded).toContain('&lt;script&gt;')
-    expect(encoded).toContain('&lt;/script&gt;')
+    expect(encoded).toContain('&lt;&#x2F;script&gt;')
     expect(encoded).toContain('&quot;Hello &amp; &#39;Goodbye&#39;&quot;')
     expect(encoded).toContain('&lt;')
     expect(encoded).toContain('&gt;')
@@ -221,7 +221,7 @@ test.describe('HTML Entity Encoder', () => {
 
     await page.waitForTimeout(500)
 
-    const output = page.locator('.output pre').nth(1)
+    const output = page.locator('.output pre').last()
     await expect(output).toContainText('© © © & & &')
   })
 

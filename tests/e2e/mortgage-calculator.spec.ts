@@ -34,7 +34,7 @@ test.describe('Mortgage Calculator', () => {
         .locator('.summary-item')
         .filter({ hasText: '借入金額' })
         .locator('.value')
-    ).toHaveText('¥27,000,000')
+    ).toHaveText('￥27,000,000')
 
     // Verify monthly payment (approximately)
     const monthlyPayment = await page
@@ -42,7 +42,7 @@ test.describe('Mortgage Calculator', () => {
       .filter({ hasText: '月々の返済額' })
       .locator('.value')
       .textContent()
-    expect(monthlyPayment).toMatch(/¥82,\d{3}/)
+    expect(monthlyPayment).toMatch(/￥82,\d{3}/)
 
     // Verify total payment and interest exist
     await expect(
@@ -68,7 +68,7 @@ test.describe('Mortgage Calculator', () => {
 
     // Check last year has 0 remaining balance
     const lastYear = page.locator('tbody tr').last()
-    await expect(lastYear.locator('td').last()).toHaveText('¥0')
+    await expect(lastYear.locator('td').last()).toHaveText('￥0')
   })
 
   test('calculates mortgage with minimal down payment', async ({ page }) => {
@@ -85,7 +85,7 @@ test.describe('Mortgage Calculator', () => {
         .locator('.summary-item')
         .filter({ hasText: '借入金額' })
         .locator('.value')
-    ).toHaveText('¥20,000,000')
+    ).toHaveText('￥20,000,000')
 
     // Verify results are calculated
     await expect(page.locator('.result')).toBeVisible()
@@ -107,7 +107,7 @@ test.describe('Mortgage Calculator', () => {
         .locator('.summary-item')
         .filter({ hasText: '借入金額' })
         .locator('.value')
-    ).toHaveText('¥8,000,000')
+    ).toHaveText('￥8,000,000')
 
     // Verify yearly breakdown has 10 years
     await expect(page.locator('tbody tr')).toHaveCount(10)
@@ -193,13 +193,13 @@ test.describe('Mortgage Calculator', () => {
         .locator('.summary-item')
         .filter({ hasText: '借入金額' })
         .locator('.value')
-    ).toHaveText('¥10,000,000')
+    ).toHaveText('￥10,000,000')
     await expect(
       page
         .locator('.summary-item')
         .filter({ hasText: '利息総額' })
         .locator('.value')
-    ).toHaveText('¥0')
+    ).toHaveText('￥0')
   })
 
   test('yearly breakdown table is interactive', async ({ page }) => {

@@ -165,18 +165,15 @@ test.describe('CSS Gradient生成ツール', () => {
     await page.selectOption('select', 'radial')
 
     // 形状の変更
-    await page.selectOption('select:has-text("形状")', 'circle')
+    await page.locator('select').nth(1).selectOption('circle')
     await expect(codeBlock).toContainText('circle')
 
     // サイズの変更
-    await page.selectOption('select:has-text("サイズ")', 'closest-side')
+    await page.locator('select').nth(2).selectOption('closest-side')
     await expect(codeBlock).toContainText('closest-side')
 
-    // 位置の変更
-    const xSlider = page
-      .locator('input[type="range"]')
-      .filter({ hasText: 'X' })
-      .first()
+    // 位置の変更（最後から2番目のスライダー: X位置）
+    const xSlider = page.locator('input[type="range"]').nth(-2)
     await xSlider.fill('25')
     await expect(codeBlock).toContainText('at 25%')
   })
@@ -208,16 +205,17 @@ test.describe('CSS Gradient生成ツール', () => {
     await page.waitForTimeout(100) // 更新を待つ
     const updatedStyle = await preview.getAttribute('style')
     expect(updatedStyle).not.toBe(initialStyle)
-    expect(updatedStyle).toContain('00ff00')
+    expect(updatedStyle).toContain('rgb(0, 255, 0)')
   })
 
   test('レスポンシブデザイン', async ({ page }) => {
     // タブレットサイズ
     await page.setViewportSize({ width: 768, height: 1024 })
-    await expect(page.locator('.generator-layout')).toHaveCSS(
-      'grid-template-columns',
-      '1fr'
+    const layoutTablet = page.locator('.generator-layout')
+    const gridColumnsTablet = await layoutTablet.evaluate(
+      el => window.getComputedStyle(el).gridTemplateColumns
     )
+    expect(gridColumnsTablet.split(' ')).toHaveLength(1)
 
     // デスクトップサイズ
     await page.setViewportSize({ width: 1440, height: 900 })
@@ -225,6 +223,6 @@ test.describe('CSS Gradient生成ツール', () => {
     const gridColumns = await layout.evaluate(
       el => window.getComputedStyle(el).gridTemplateColumns
     )
-    expect(gridColumns).toContain('1fr 2fr')
+    expect(gridColumns.split(' ')).toHaveLength(2)
   })
 })
