@@ -18,7 +18,9 @@ test.describe('Hash Generator', () => {
     await page.click('button:has-text("ハッシュ生成")')
 
     await expect(page.locator('.result')).toBeVisible()
-    await expect(page.locator('.hash-result code')).toHaveText('5d41402abc4b2a76b9719d911017c592')
+    await expect(page.locator('.hash-result code')).toHaveText(
+      '5d41402abc4b2a76b9719d911017c592'
+    )
   })
 
   test('should generate SHA-256 hash', async ({ page }) => {
@@ -27,23 +29,36 @@ test.describe('Hash Generator', () => {
     await page.click('button:has-text("ハッシュ生成")')
 
     await expect(page.locator('.result')).toBeVisible()
-    await expect(page.locator('.hash-result code')).toHaveText('2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824')
+    await expect(page.locator('.hash-result code')).toHaveText(
+      '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'
+    )
   })
 
-  test('should generate different hashes for different algorithms', async ({ page }) => {
+  test('should generate different hashes for different algorithms', async ({
+    page,
+  }) => {
     await page.fill('textarea', 'test')
-    
+
     // SHA-1
     await page.selectOption('select', 'SHA-1')
     await page.click('button:has-text("ハッシュ生成")')
+    await page.waitForTimeout(500)
     const sha1Hash = await page.locator('.hash-result code').textContent()
-    
+
     // SHA-256
     await page.selectOption('select', 'SHA-256')
+    await page.waitForTimeout(300)
     await page.click('button:has-text("ハッシュ生成")')
+    await page.waitForTimeout(500)
     const sha256Hash = await page.locator('.hash-result code').textContent()
-    
+
     expect(sha1Hash).not.toBe(sha256Hash)
+
+    // Verify correct hashes for 'test'
+    expect(sha1Hash).toBe('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3')
+    expect(sha256Hash).toBe(
+      '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08'
+    )
   })
 
   test('should copy hash to clipboard', async ({ page, context }) => {
@@ -76,19 +91,23 @@ test.describe('Hash Generator', () => {
     await expect(page.locator('.history')).toBeVisible()
     const historyItems = page.locator('.history-item')
     await expect(historyItems).toHaveCount(2)
-    
+
     // Check first history item (most recent)
     await expect(historyItems.nth(0).locator('strong')).toHaveText('SHA-1')
-    await expect(historyItems.nth(0).locator('.history-text')).toContainText('second')
-    
+    await expect(historyItems.nth(0).locator('.history-text')).toContainText(
+      'second'
+    )
+
     // Check second history item
     await expect(historyItems.nth(1).locator('strong')).toHaveText('MD5')
-    await expect(historyItems.nth(1).locator('.history-text')).toContainText('first')
+    await expect(historyItems.nth(1).locator('.history-text')).toContainText(
+      'first'
+    )
   })
 
   test('should handle empty input gracefully', async ({ page }) => {
     await page.click('button:has-text("ハッシュ生成")')
-    
+
     // Result should not be displayed
     await expect(page.locator('.result')).not.toBeVisible()
   })
@@ -120,7 +139,8 @@ test.describe('Hash Generator', () => {
 
     await expect(page.locator('.history')).toBeVisible()
     const historyText = await page.locator('.history-text').textContent()
+    expect(historyText).toBeTruthy()
     expect(historyText).toContain('...')
-    expect(historyText.length).toBeLessThan(longText.length)
+    expect(historyText!.length).toBeLessThan(longText.length)
   })
 })

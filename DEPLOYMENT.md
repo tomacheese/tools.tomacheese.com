@@ -18,9 +18,11 @@
 ### Vercel
 
 #### ワンクリックデプロイ
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tomacheese/tools.tomacheese.com)
 
 #### 手動デプロイ
+
 ```bash
 # Vercel CLIのインストール
 npm i -g vercel
@@ -33,6 +35,7 @@ vercel --prod
 ```
 
 #### 設定
+
 - Build Command: `pnpm generate`
 - Output Directory: `.output/public`
 - Install Command: `pnpm install`
@@ -41,9 +44,11 @@ vercel --prod
 ### Netlify
 
 #### ワンクリックデプロイ
+
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tomacheese/tools.tomacheese.com)
 
 #### 手動デプロイ
+
 ```bash
 # Netlify CLIのインストール
 npm install -g netlify-cli
@@ -56,6 +61,7 @@ ntl deploy --prod
 ```
 
 #### 設定
+
 - Build command: `pnpm generate`
 - Publish directory: `.output/public`
 - Node version: 20.15.1
@@ -96,12 +102,13 @@ docker run -p 3001:3000 -v $(pwd):/app tools-tomacheese-dev
 
 ### 本番環境
 
-| 変数名 | 説明 | デフォルト値 |
-|--------|------|-------------|
-| `DEPLOY_ENV` | デプロイ環境の識別 | - |
-| `NODE_ENV` | Node.js環境 | `production` |
+| 変数名       | 説明               | デフォルト値 |
+| ------------ | ------------------ | ------------ |
+| `DEPLOY_ENV` | デプロイ環境の識別 | -            |
+| `NODE_ENV`   | Node.js環境        | `production` |
 
 ### GitHub Pages用
+
 ```bash
 DEPLOY_ENV=GH_PAGES
 ```
@@ -109,6 +116,7 @@ DEPLOY_ENV=GH_PAGES
 ## 🔧 カスタムドメイン設定
 
 ### Vercel
+
 ```json
 // vercel.json
 {
@@ -117,6 +125,7 @@ DEPLOY_ENV=GH_PAGES
 ```
 
 ### Netlify
+
 ```toml
 # netlify.toml
 [[redirects]]
@@ -127,6 +136,7 @@ DEPLOY_ENV=GH_PAGES
 ```
 
 ### Docker (Nginx)
+
 ```nginx
 # docker/nginx.conf
 server_name yourdomain.com www.yourdomain.com;
@@ -135,12 +145,14 @@ server_name yourdomain.com www.yourdomain.com;
 ## 📊 パフォーマンス最適化
 
 ### ビルド時最適化
+
 - Gzip圧縮: 有効
 - 静的アセットキャッシュ: 1年
 - Tree-shaking: 自動
 - Code splitting: 自動
 
 ### セキュリティヘッダー
+
 - X-Frame-Options: DENY
 - X-Content-Type-Options: nosniff
 - X-XSS-Protection: 1; mode=block
@@ -149,6 +161,7 @@ server_name yourdomain.com www.yourdomain.com;
 ## 🚨 トラブルシューティング
 
 ### ビルドエラー
+
 ```bash
 # 依存関係のクリア
 rm -rf node_modules pnpm-lock.yaml
@@ -160,6 +173,7 @@ pnpm generate
 ```
 
 ### Docker関連
+
 ```bash
 # イメージのリビルド
 docker-compose build --no-cache
@@ -169,6 +183,7 @@ docker-compose logs -f
 ```
 
 ### パフォーマンス問題
+
 ```bash
 # バンドルサイズの分析
 pnpm build --analyze
@@ -180,18 +195,21 @@ npx lighthouse http://localhost:3000
 ## 📈 監視とアナリティクス
 
 ### Vercel Analytics
+
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
   modules: ['@nuxtjs/google-analytics'],
   googleAnalytics: {
-    id: 'GA_MEASUREMENT_ID'
-  }
+    id: 'GA_MEASUREMENT_ID',
+  },
 })
 ```
 
 ### カスタムメトリクス
+
 プロジェクトには以下が組み込まれています：
+
 - Core Web Vitals測定
 - エラートラッキング
 - パフォーマンス監視
@@ -199,10 +217,12 @@ export default defineNuxtConfig({
 ## 🔄 CI/CDパイプライン
 
 ### GitHub Actions
+
 - `nodejs-ci.yml`: テストとリント
 - `deploy.yml`: GitHub Pagesデプロイ
 
 ### 自動デプロイフロー
+
 1. コードプッシュ
 2. Lint・テスト実行
 3. ビルド
@@ -212,5 +232,6 @@ export default defineNuxtConfig({
 ## 📞 サポート
 
 デプロイメントに関する問題は、以下で報告してください：
+
 - GitHub Issues: https://github.com/tomacheese/tools.tomacheese.com/issues
 - 電子メール: support@tomacheese.com

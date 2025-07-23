@@ -7,7 +7,11 @@
       <div class="controls-section">
         <div class="shadows-list">
           <h3>シャドウレイヤー</h3>
-          <div v-for="(shadow, index) in shadows" :key="index" class="shadow-layer">
+          <div
+            v-for="(shadow, index) in shadows"
+            :key="index"
+            class="shadow-layer"
+          >
             <div class="layer-header">
               <span>レイヤー {{ index + 1 }}</span>
               <button
@@ -27,7 +31,7 @@
                 min="-100"
                 max="100"
                 @input="updatePreview"
-              >
+              />
             </div>
 
             <div class="control-group">
@@ -38,7 +42,7 @@
                 min="-100"
                 max="100"
                 @input="updatePreview"
-              >
+              />
             </div>
 
             <div class="control-group">
@@ -49,7 +53,7 @@
                 min="0"
                 max="100"
                 @input="updatePreview"
-              >
+              />
             </div>
 
             <div class="control-group">
@@ -60,7 +64,7 @@
                 min="-50"
                 max="50"
                 @input="updatePreview"
-              >
+              />
             </div>
 
             <div class="control-group">
@@ -70,7 +74,7 @@
                   v-model="shadow.color"
                   type="color"
                   @input="updatePreview"
-                >
+                />
                 <input
                   v-model.number="shadow.alpha"
                   type="range"
@@ -78,7 +82,7 @@
                   max="1"
                   step="0.01"
                   @input="updatePreview"
-                >
+                />
                 <span>{{ Math.round(shadow.alpha * 100) }}%</span>
               </div>
             </div>
@@ -88,14 +92,12 @@
                 v-model="shadow.inset"
                 type="checkbox"
                 @change="updatePreview"
-              >
+              />
               内側の影 (inset)
             </label>
           </div>
 
-          <button class="add-button" @click="addLayer">
-            レイヤーを追加
-          </button>
+          <button class="add-button" @click="addLayer">レイヤーを追加</button>
         </div>
 
         <div class="presets-section">
@@ -120,29 +122,22 @@
               v-model="backgroundColor"
               type="color"
               @input="updatePreview"
-            >
+            />
           </div>
           <div class="control-group">
             <label>ボックスの色:</label>
-            <input
-              v-model="boxColor"
-              type="color"
-              @input="updatePreview"
-            >
+            <input v-model="boxColor" type="color" @input="updatePreview" />
           </div>
         </div>
       </div>
 
       <div class="preview-section">
-        <div
-          class="preview-container"
-          :style="{ backgroundColor }"
-        >
+        <div class="preview-container" :style="{ backgroundColor }">
           <div
             class="preview-box"
             :style="{
               backgroundColor: boxColor,
-              boxShadow: currentShadow
+              boxShadow: currentShadow,
             }"
           />
         </div>
@@ -151,7 +146,7 @@
           <h3>CSSコード</h3>
           <div class="code-tabs">
             <button
-              v-for="format in ['css', 'sass', 'inline']"
+              v-for="format in formatOptions"
               :key="format"
               :class="{ active: selectedFormat === format }"
               class="tab-button"
@@ -161,9 +156,7 @@
             </button>
           </div>
           <pre class="code-block">{{ getFormattedCode() }}</pre>
-          <button class="copy-button" @click="copyCode">
-            コピー
-          </button>
+          <button class="copy-button" @click="copyCode">コピー</button>
         </div>
 
         <div class="export-section">
@@ -180,13 +173,13 @@
 import { ref } from 'vue'
 import {
   generateMultipleShadows,
-  generateCSSCode,
-  generateInlineStyle,
+  generateBoxShadowCSSCode,
+  generateBoxShadowInlineStyle,
   exportShadowAsSass,
   exportShadowAsJSON,
   presetShadows,
   type BoxShadow,
-  type BoxShadowConfig
+  type BoxShadowConfig,
 } from '~/utils/boxShadowGenerator'
 
 const shadows = ref<BoxShadow[]>([
@@ -197,14 +190,15 @@ const shadows = ref<BoxShadow[]>([
     spread: 0,
     color: '#000000',
     inset: false,
-    alpha: 0.3
-  }
+    alpha: 0.3,
+  },
 ])
 
 const backgroundColor = ref('#f0f0f0')
 const boxColor = ref('#ffffff')
 const selectedFormat = ref<'css' | 'sass' | 'inline'>('css')
 const currentShadow = ref('')
+const formatOptions = ['css', 'sass', 'inline'] as const
 
 const updatePreview = () => {
   currentShadow.value = generateMultipleShadows(shadows.value)
@@ -218,7 +212,7 @@ const addLayer = () => {
     spread: 0,
     color: '#000000',
     inset: false,
-    alpha: 0.5
+    alpha: 0.5,
   })
   updatePreview()
 }
@@ -236,11 +230,11 @@ const applyPreset = (preset: BoxShadow[]) => {
 const getFormattedCode = () => {
   switch (selectedFormat.value) {
     case 'css':
-      return generateCSSCode(shadows.value)
+      return generateBoxShadowCSSCode(shadows.value)
     case 'sass':
       return exportShadowAsSass(shadows.value)
     case 'inline':
-      return generateInlineStyle(shadows.value)
+      return generateBoxShadowInlineStyle(shadows.value)
     default:
       return ''
   }
@@ -259,7 +253,7 @@ const exportAsJSON = () => {
   const config: BoxShadowConfig = {
     shadows: shadows.value,
     backgroundColor: backgroundColor.value,
-    boxColor: boxColor.value
+    boxColor: boxColor.value,
   }
   const json = exportShadowAsJSON(config)
   const blob = new Blob([json], { type: 'application/json' })
@@ -281,9 +275,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'CSSのbox-shadowプロパティを視覚的に生成します。複数レイヤー、プリセット対応。'
-    }
-  ]
+      content:
+        'CSSのbox-shadowプロパティを視覚的に生成します。複数レイヤー、プリセット対応。',
+    },
+  ],
 })
 </script>
 
@@ -340,7 +335,7 @@ useHead({
   color: #495057;
 }
 
-.control-group input[type="range"] {
+.control-group input[type='range'] {
   width: 100%;
 }
 
@@ -350,7 +345,7 @@ useHead({
   gap: 0.5rem;
 }
 
-.color-controls input[type="color"] {
+.color-controls input[type='color'] {
   width: 50px;
   height: 35px;
   border: 1px solid #ddd;
@@ -358,7 +353,7 @@ useHead({
   cursor: pointer;
 }
 
-.color-controls input[type="range"] {
+.color-controls input[type='range'] {
   flex: 1;
 }
 

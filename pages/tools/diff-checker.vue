@@ -1,7 +1,9 @@
 <template>
   <div class="diff-checker">
     <h1>テキスト差分チェッカー</h1>
-    <p>2つのテキストの差分を視覚的に表示します。追加・削除・変更された部分がハイライトされます。</p>
+    <p>
+      2つのテキストの差分を視覚的に表示します。追加・削除・変更された部分がハイライトされます。
+    </p>
 
     <div class="input-container">
       <div class="input-section">
@@ -106,15 +108,15 @@ const wordLevel = ref(false)
 // テキスト前処理
 const preprocessText = (text: string): string => {
   let result = text
-  
+
   if (ignoreCase.value) {
     result = result.toLowerCase()
   }
-  
+
   if (ignoreWhitespace.value) {
     result = result.replace(/\s+/g, ' ').trim()
   }
-  
+
   return result
 }
 
@@ -122,7 +124,7 @@ const preprocessText = (text: string): string => {
 const diffResult = computed(() => {
   const processedA = preprocessText(textA.value)
   const processedB = preprocessText(textB.value)
-  
+
   if (wordLevel.value) {
     return diffWords(processedA, processedB)
   } else {
@@ -136,9 +138,9 @@ const stats = computed(() => {
     added: 0,
     removed: 0,
     modified: 0,
-    unchanged: 0
+    unchanged: 0,
   }
-  
+
   diffResult.value.forEach(part => {
     if (part.added) {
       result.added++
@@ -148,7 +150,7 @@ const stats = computed(() => {
       result.unchanged++
     }
   })
-  
+
   return result
 })
 
@@ -188,7 +190,7 @@ const unifiedDiff = computed(() => {
     .map(part => {
       let prefix = ' '
       let className = 'unchanged'
-      
+
       if (part.added) {
         prefix = '+'
         className = 'added'
@@ -196,10 +198,13 @@ const unifiedDiff = computed(() => {
         prefix = '-'
         className = 'removed'
       }
-      
+
       const lines = part.value.split('\n').filter(line => line !== '')
       return lines
-        .map(line => `<span class="unified-line ${className}">${prefix} ${escapeHtml(line)}</span>`)
+        .map(
+          line =>
+            `<span class="unified-line ${className}">${prefix} ${escapeHtml(line)}</span>`
+        )
         .join('\n')
     })
     .join('\n')
@@ -275,8 +280,12 @@ const loadJsonExample = () => {
 useHead({
   title: 'テキスト差分チェッカー - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: '2つのテキストの差分を視覚的に表示するツールです。追加・削除・変更された部分がハイライトされます。' }
-  ]
+    {
+      name: 'description',
+      content:
+        '2つのテキストの差分を視覚的に表示するツールです。追加・削除・変更された部分がハイライトされます。',
+    },
+  ],
 })
 </script>
 
@@ -528,12 +537,12 @@ h1 {
   .diff-container {
     grid-template-columns: 1fr;
   }
-  
+
   .stats {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .options {
     flex-direction: column;
     gap: 10px;

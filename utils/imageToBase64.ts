@@ -15,19 +15,15 @@ export interface Base64Result {
   height: number
 }
 
-export interface ImageInfo {
-  width: number
-  height: number
-  size: number
-  type: string
-}
-
-export function imageToBase64(file: File, options: ImageToBase64Options = {}): Promise<Base64Result> {
+export function imageToBase64(
+  file: File,
+  options: ImageToBase64Options = {}
+): Promise<Base64Result> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     const img = new Image()
 
-    reader.onload = (e) => {
+    reader.onload = e => {
       const dataUrl = e.target?.result as string
       img.src = dataUrl
 
@@ -76,7 +72,7 @@ export function imageToBase64(file: File, options: ImageToBase64Options = {}): P
             mimeType,
             size,
             width,
-            height
+            height,
           })
         } catch (error) {
           reject(error)
@@ -93,30 +89,6 @@ export function imageToBase64(file: File, options: ImageToBase64Options = {}): P
     }
 
     reader.readAsDataURL(file)
-  })
-}
-
-export function getImageInfo(file: File): Promise<ImageInfo> {
-  return new Promise((resolve, reject) => {
-    const img = new Image()
-    const url = URL.createObjectURL(file)
-
-    img.onload = () => {
-      URL.revokeObjectURL(url)
-      resolve({
-        width: img.width,
-        height: img.height,
-        size: file.size,
-        type: file.type
-      })
-    }
-
-    img.onerror = () => {
-      URL.revokeObjectURL(url)
-      reject(new Error('Failed to load image'))
-    }
-
-    img.src = url
   })
 }
 
@@ -170,21 +142,11 @@ function getMimeTypeFromFormat(format: 'jpeg' | 'png' | 'webp'): string {
   }
 }
 
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
-  
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
-}
-
 export function copyToClipboard(text: string): Promise<void> {
   if (navigator.clipboard) {
     return navigator.clipboard.writeText(text)
   }
-  
+
   // Fallback for older browsers
   return new Promise((resolve, reject) => {
     const textarea = document.createElement('textarea')
@@ -193,7 +155,7 @@ export function copyToClipboard(text: string): Promise<void> {
     textarea.style.opacity = '0'
     document.body.appendChild(textarea)
     textarea.select()
-    
+
     try {
       document.execCommand('copy')
       document.body.removeChild(textarea)
@@ -220,11 +182,11 @@ export function downloadAsText(text: string, filename: string) {
 export function convertFileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onload = (e) => {
+    reader.onload = e => {
       const result = e.target?.result as string
       resolve(result)
     }
-    reader.onerror = (error) => {
+    reader.onerror = error => {
       reject(error)
     }
     reader.readAsDataURL(file)

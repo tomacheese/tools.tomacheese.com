@@ -8,7 +8,9 @@
         <div class="section-header">
           <h3>Markdown入力</h3>
           <div class="actions">
-            <button class="example-btn" @click="insertExample">サンプル挿入</button>
+            <button class="example-btn" @click="insertExample">
+              サンプル挿入
+            </button>
             <button class="clear-btn" @click="clearInput">クリア</button>
           </div>
         </div>
@@ -24,7 +26,9 @@
           <h3>プレビュー</h3>
           <div class="actions">
             <button class="copy-btn" @click="copyHtml">HTMLコピー</button>
-            <button class="copy-btn" @click="copyMarkdown">Markdownコピー</button>
+            <button class="copy-btn" @click="copyMarkdown">
+              Markdownコピー
+            </button>
           </div>
         </div>
         <div class="markdown-preview-content" v-html="htmlOutput"></div>
@@ -36,23 +40,23 @@
       <div class="syntax-grid">
         <div class="syntax-item">
           <strong>見出し</strong>
-          <code># H1<br>## H2<br>### H3</code>
+          <code># H1<br />## H2<br />### H3</code>
         </div>
         <div class="syntax-item">
           <strong>強調</strong>
-          <code>**太字**<br>*斜体*<br>~~取り消し線~~</code>
+          <code>**太字**<br />*斜体*<br />~~取り消し線~~</code>
         </div>
         <div class="syntax-item">
           <strong>リスト</strong>
-          <code>- 箇条書き<br>1. 番号付きリスト</code>
+          <code>- 箇条書き<br />1. 番号付きリスト</code>
         </div>
         <div class="syntax-item">
           <strong>リンク</strong>
-          <code>[テキスト](URL)<br>![画像](URL)</code>
+          <code>[テキスト](URL)<br />![画像](URL)</code>
         </div>
         <div class="syntax-item">
           <strong>コード</strong>
-          <code>`インライン`<br>```<br>ブロック<br>```</code>
+          <code>`インライン`<br />```<br />ブロック<br />```</code>
         </div>
         <div class="syntax-item">
           <strong>引用</strong>
@@ -74,11 +78,13 @@ const htmlOutput = computed(() => {
   if (!markdownText.value) {
     return '<p class="placeholder">Markdownテキストを入力するとここにプレビューが表示されます</p>'
   }
-  
+
   try {
-    return marked(markdownText.value)
+    const result = marked(markdownText.value)
+    // Handle both sync and async cases
+    return typeof result === 'string' ? result : String(result)
   } catch (error) {
-    return `<p class="error">Markdown変換エラー: ${  error  }</p>`
+    return `<p class="error">Markdown変換エラー: ${error}</p>`
   }
 })
 
@@ -181,8 +187,12 @@ const copyMarkdown = async () => {
 useHead({
   title: 'Markdownプレビュー - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: 'MarkdownテキストをHTMLでリアルタイムプレビューできるツールです。' }
-  ]
+    {
+      name: 'description',
+      content:
+        'MarkdownテキストをHTMLでリアルタイムプレビューできるツールです。',
+    },
+  ],
 })
 </script>
 
@@ -201,7 +211,8 @@ useHead({
   min-height: 500px;
 }
 
-.editor-section, .preview-section {
+.editor-section,
+.preview-section {
   display: flex;
   flex-direction: column;
 }
@@ -225,7 +236,9 @@ useHead({
   gap: 8px;
 }
 
-.example-btn, .clear-btn, .copy-btn {
+.example-btn,
+.clear-btn,
+.copy-btn {
   padding: 6px 12px;
   border: none;
   border-radius: 4px;
@@ -341,13 +354,13 @@ h1 {
     grid-template-columns: 1fr;
     min-height: auto;
   }
-  
+
   .section-header {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
   }
-  
+
   .actions {
     justify-content: center;
   }

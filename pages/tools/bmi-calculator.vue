@@ -16,8 +16,10 @@
         max="3"
         placeholder="例: 1.70"
         class="form-input"
-      >
-      <p class="form-help">メートル単位で入力してください（例：170cm → 1.70）</p>
+      />
+      <p class="form-help">
+        メートル単位で入力してください（例：170cm → 1.70）
+      </p>
     </div>
 
     <div class="form-group">
@@ -31,29 +33,38 @@
         max="500"
         placeholder="例: 65"
         class="form-input"
-      >
+      />
     </div>
 
     <div v-if="result" class="result-section">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+        "
+      >
         <div class="result-box">
           <h3>BMI値</h3>
           <div class="result-value">{{ result.bmi }}</div>
         </div>
-        
+
         <div class="result-box">
           <h3>判定</h3>
-          <div class="result-value" :class="result.isHealthy ? 'healthy' : 'unhealthy'">
+          <div
+            class="result-value"
+            :class="result.isHealthy ? 'healthy' : 'unhealthy'"
+          >
             {{ result.category }}
           </div>
         </div>
       </div>
-      
+
       <div class="result-description">
         <h4>アドバイス</h4>
         <p>{{ result.description }}</p>
       </div>
-      
+
       <div class="bmi-chart">
         <h4>BMI分類表</h4>
         <div class="chart-grid">
@@ -61,15 +72,24 @@
             <span class="range">18.5未満</span>
             <span class="category">痩せ</span>
           </div>
-          <div class="chart-item" :class="{ active: result.bmi >= 18.5 && result.bmi < 25 }">
+          <div
+            class="chart-item"
+            :class="{ active: result.bmi >= 18.5 && result.bmi < 25 }"
+          >
             <span class="range">18.5-24.9</span>
             <span class="category">普通体重</span>
           </div>
-          <div class="chart-item" :class="{ active: result.bmi >= 25 && result.bmi < 30 }">
+          <div
+            class="chart-item"
+            :class="{ active: result.bmi >= 25 && result.bmi < 30 }"
+          >
             <span class="range">25.0-29.9</span>
             <span class="category">肥満(1度)</span>
           </div>
-          <div class="chart-item" :class="{ active: result.bmi >= 30 && result.bmi < 35 }">
+          <div
+            class="chart-item"
+            :class="{ active: result.bmi >= 30 && result.bmi < 35 }"
+          >
             <span class="range">30.0-34.9</span>
             <span class="category">肥満(2度)</span>
           </div>
@@ -85,7 +105,14 @@
       {{ error }}
     </div>
 
-    <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: 6px;">
+    <div
+      style="
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 6px;
+      "
+    >
       <h4>使用方法</h4>
       <ul>
         <li>身長をメートル単位で入力してください（例：170cm → 1.70）</li>
@@ -93,7 +120,7 @@
         <li>BMI = 体重(kg) ÷ 身長(m)² で計算されます</li>
         <li>日本肥満学会の基準に基づいて判定を行います</li>
       </ul>
-      
+
       <h4>注意事項</h4>
       <ul>
         <li>BMIは成人向けの指標です</li>
@@ -108,7 +135,7 @@
 import { calculateBMI, type BMIResult } from '~/utils/health'
 
 definePageMeta({
-  layout: 'tool'
+  layout: 'tool',
 })
 
 const height = ref<number>()
@@ -117,11 +144,19 @@ const error = ref('')
 
 const result = computed((): BMIResult | null => {
   error.value = ''
-  
+
+  // ゼロ値チェック（入力があるがゼロの場合）
+  if (height.value === 0 || weight.value === 0) {
+    if (height.value === 0 || weight.value === 0) {
+      error.value = '身長と体重は正の数である必要があります'
+      return null
+    }
+  }
+
   if (!height.value || !weight.value) {
     return null
   }
-  
+
   try {
     return calculateBMI(weight.value, height.value)
   } catch (e) {
@@ -133,9 +168,16 @@ const result = computed((): BMIResult | null => {
 useHead({
   title: 'BMI計算 - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: '身長と体重からBMI値を計算し、健康状態を判定します。日本肥満学会基準に基づく正確なBMI計算ツール。' },
-    { name: 'keywords', content: 'BMI, 計算, 肥満度, 健康, 体重, 身長, ボディマス指数' }
-  ]
+    {
+      name: 'description',
+      content:
+        '身長と体重からBMI値を計算し、健康状態を判定します。日本肥満学会基準に基づく正確なBMI計算ツール。',
+    },
+    {
+      name: 'keywords',
+      content: 'BMI, 計算, 肥満度, 健康, 体重, 身長, ボディマス指数',
+    },
+  ],
 })
 </script>
 
@@ -222,7 +264,7 @@ useHead({
   .chart-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .result-value {
     font-size: 1.5rem;
   }

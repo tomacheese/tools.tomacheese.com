@@ -1,16 +1,14 @@
 {
-  "ignoreMatches": [
-    "@nuxt/*",
-    "@vue/*",
-    "@vitest/*",
-    "@playwright/*",
-    "eslint-*",
-    "prettier",
-    "typescript",
+  "ignores": [
+    "highlight.js",
+    "vue-router",
+    "@nuxt/test-utils",
+    "@vue/test-utils",
     "tsx",
-    "vitest",
-    "playwright",
-    "happy-dom"
+    "vue-tsc",
+    "@eslint/js",
+    "vue-eslint-parser",
+    "~"
   ],
   "ignorePatterns": [
     "node_modules",

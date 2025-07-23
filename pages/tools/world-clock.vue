@@ -2,14 +2,18 @@
   <div class="tool-content">
     <div class="tool-header">
       <h1>世界時計</h1>
-      <p>世界各地の現在時刻を表示します。都市を追加・削除したり、12/24時間形式を切り替えることができます。</p>
+      <p>
+        世界各地の現在時刻を表示します。都市を追加・削除したり、12/24時間形式を切り替えることができます。
+      </p>
     </div>
 
-    <div class="form-group" style="margin-bottom: 2rem;">
-      <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
-        <div style="flex: 1; min-width: 200px;">
+    <div class="form-group" style="margin-bottom: 2rem">
+      <div
+        style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center"
+      >
+        <div style="flex: 1; min-width: 200px">
           <label for="citySearch" class="form-label">都市を検索</label>
-          <div style="position: relative;">
+          <div style="position: relative">
             <input
               id="citySearch"
               v-model="searchQuery"
@@ -20,7 +24,10 @@
               @focus="showSuggestions = true"
               @blur="hideSuggestions"
             />
-            <div v-if="showSuggestions && searchResults.length > 0" class="search-suggestions">
+            <div
+              v-if="showSuggestions && searchResults.length > 0"
+              class="search-suggestions"
+            >
               <div
                 v-for="city in searchResults"
                 :key="city.timezone"
@@ -32,13 +39,13 @@
             </div>
           </div>
         </div>
-        
-        <div class="form-group" style="margin: 0;">
+
+        <div class="form-group" style="margin: 0">
           <label class="checkbox-label">
             <input
               v-model="use12HourFormat"
               type="checkbox"
-              style="margin-right: 0.5rem;"
+              style="margin-right: 0.5rem"
             />
             12時間形式
           </label>
@@ -47,11 +54,7 @@
     </div>
 
     <div class="cities-grid">
-      <div
-        v-for="city in cityTimes"
-        :key="city.id"
-        class="city-card"
-      >
+      <div v-for="city in cityTimes" :key="city.id" class="city-card">
         <div class="city-header">
           <h3>{{ city.name }}</h3>
           <button
@@ -63,9 +66,9 @@
             ×
           </button>
         </div>
-        
+
         <div class="time-display">{{ city.time }}</div>
-        
+
         <div class="city-info">
           <div>{{ city.date }}</div>
           <div class="timezone-info">
@@ -76,15 +79,22 @@
       </div>
     </div>
 
-    <div v-if="customCities.length > 0" style="margin-top: 2rem;">
+    <div v-if="customCities.length > 0" style="margin-top: 2rem">
       <button class="btn btn-secondary" @click="resetToDefaults">
         デフォルト都市にリセット
       </button>
     </div>
 
-    <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: 6px;">
-      <h4 style="color: #1e293b; margin-bottom: 0.5rem;">使用方法</h4>
-      <ul style="margin-left: 1.5rem; color: #64748b;">
+    <div
+      style="
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 6px;
+      "
+    >
+      <h4 style="color: #1e293b; margin-bottom: 0.5rem">使用方法</h4>
+      <ul style="margin-left: 1.5rem; color: #64748b">
         <li>検索ボックスに都市名を入力して、世界中の都市を追加できます</li>
         <li>12時間形式と24時間形式を切り替えることができます</li>
         <li>カスタム追加した都市は×ボタンで削除できます</li>
@@ -97,18 +107,18 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { 
-  DEFAULT_CITIES, 
-  getCityTime, 
+import {
+  DEFAULT_CITIES,
+  getCityTime,
   searchCities,
   getTimeZoneOffset,
   type CityTime,
-  type TimeFormat
+  type TimeFormat,
 } from '~/utils/world-clock'
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool'
+  layout: 'tool',
 })
 
 // リアクティブデータ
@@ -116,7 +126,9 @@ const use12HourFormat = ref(false)
 const searchQuery = ref('')
 const showSuggestions = ref(false)
 const searchResults = ref<Array<{ name: string; timezone: string }>>([])
-const customCities = ref<Array<{ id: string; name: string; timezone: string }>>([])
+const customCities = ref<Array<{ id: string; name: string; timezone: string }>>(
+  []
+)
 const cityTimes = ref<CityTime[]>([])
 let updateInterval: NodeJS.Timeout | null = null
 
@@ -125,17 +137,14 @@ const timeFormat = computed<TimeFormat>(() => ({
   hour12: use12HourFormat.value,
   hour: use12HourFormat.value ? 'numeric' : '2-digit',
   minute: '2-digit',
-  second: '2-digit'
+  second: '2-digit',
 }))
 
-const allCities = computed(() => [
-  ...DEFAULT_CITIES,
-  ...customCities.value
-])
+const allCities = computed(() => [...DEFAULT_CITIES, ...customCities.value])
 
 // メソッド
 const updateCityTimes = () => {
-  cityTimes.value = allCities.value.map(city => 
+  cityTimes.value = allCities.value.map(city =>
     getCityTime(city.name, city.timezone, timeFormat.value)
   )
 }
@@ -152,18 +161,16 @@ const hideSuggestions = () => {
 
 const addCity = (name: string, timezone: string) => {
   // Check if city already exists
-  const exists = allCities.value.some(
-    city => city.timezone === timezone
-  )
-  
+  const exists = allCities.value.some(city => city.timezone === timezone)
+
   if (!exists) {
     customCities.value.push({
       id: `custom-${Date.now()}`,
       name,
-      timezone
+      timezone,
     })
   }
-  
+
   searchQuery.value = ''
   searchResults.value = []
   showSuggestions.value = false
@@ -200,9 +207,16 @@ onUnmounted(() => {
 useHead({
   title: '世界時計 - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: '世界各地の現在時刻を表示する世界時計。複数の都市の時刻を同時に確認でき、カスタム都市の追加・削除も可能です。' },
-    { name: 'keywords', content: '世界時計, 時刻, タイムゾーン, 時差, GMT, UTC, DST, 夏時間' }
-  ]
+    {
+      name: 'description',
+      content:
+        '世界各地の現在時刻を表示する世界時計。複数の都市の時刻を同時に確認でき、カスタム都市の追加・削除も可能です。',
+    },
+    {
+      name: 'keywords',
+      content: '世界時計, 時刻, タイムゾーン, 時差, GMT, UTC, DST, 夏時間',
+    },
+  ],
 })
 </script>
 
@@ -351,7 +365,7 @@ useHead({
   .cities-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .time-display {
     font-size: 1.5rem;
   }

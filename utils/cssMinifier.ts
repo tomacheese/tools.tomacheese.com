@@ -7,7 +7,7 @@ export interface MinifyResult {
   reductionPercentage: number
 }
 
-export interface MinifyOptions {
+export interface CSSMinifyOptions {
   removeComments?: boolean
   removeWhitespace?: boolean
   removeSemicolons?: boolean
@@ -17,7 +17,7 @@ export interface MinifyOptions {
   removeQuotes?: boolean
 }
 
-export function minifyCss(css: string, options: MinifyOptions = {}): string {
+export function minifyCss(css: string, options: CSSMinifyOptions = {}): string {
   const {
     removeComments = true,
     removeWhitespace = true,
@@ -25,7 +25,7 @@ export function minifyCss(css: string, options: MinifyOptions = {}): string {
     mergeSelectors = true,
     shortenHex = true,
     removeUnits = true,
-    removeQuotes = true
+    removeQuotes = true,
   } = options
 
   let minified = css
@@ -55,19 +55,27 @@ export function minifyCss(css: string, options: MinifyOptions = {}): string {
   // Shorten hex colors
   if (shortenHex) {
     // Convert #RRGGBB to #RGB when possible
-    minified = minified.replace(/#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/g, (match, r1, r2, g1, g2, b1, b2) => {
-      if (r1 === r2 && g1 === g2 && b1 === b2) {
-        return `#${r1}${g1}${b1}`
+    minified = minified.replace(
+      /#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])/g,
+      (match, r1, r2, g1, g2, b1, b2) => {
+        if (r1 === r2 && g1 === g2 && b1 === b2) {
+          return `#${r1}${g1}${b1}`
+        }
+        return match
       }
-      return match
-    })
+    )
     // Convert hex to lowercase
-    minified = minified.replace(/#[0-9A-F]{3,6}/gi, match => match.toLowerCase())
+    minified = minified.replace(/#[0-9A-F]{3,6}/gi, match =>
+      match.toLowerCase()
+    )
   }
 
   // Remove units from zero values
   if (removeUnits) {
-    minified = minified.replace(/:\s*0(px|em|rem|%|vh|vw|vmin|vmax|ex|ch|cm|mm|in|pt|pc)/gi, ':0')
+    minified = minified.replace(
+      /:\s*0(px|em|rem|%|vh|vw|vmin|vmax|ex|ch|cm|mm|in|pt|pc)/gi,
+      ':0'
+    )
   }
 
   // Remove last semicolon before closing brace
@@ -89,7 +97,7 @@ export function minifyCss(css: string, options: MinifyOptions = {}): string {
     while ((match = ruleRegex.exec(minified)) !== null) {
       const selector = match[1].trim()
       const declarations = match[2].trim()
-      
+
       if (!rules[selector]) {
         rules[selector] = []
       }
@@ -111,11 +119,15 @@ export function minifyCss(css: string, options: MinifyOptions = {}): string {
   return minified
 }
 
-export function calculateMinifyStats(original: string, minified: string): MinifyResult {
+export function calculateCSSMinifyStats(
+  original: string,
+  minified: string
+): MinifyResult {
   const originalSize = new Blob([original]).size
   const minifiedSize = new Blob([minified]).size
   const reduction = originalSize - minifiedSize
-  const reductionPercentage = originalSize > 0 ? (reduction / originalSize) * 100 : 0
+  const reductionPercentage =
+    originalSize > 0 ? (reduction / originalSize) * 100 : 0
 
   return {
     original,
@@ -123,17 +135,17 @@ export function calculateMinifyStats(original: string, minified: string): Minify
     originalSize,
     minifiedSize,
     reduction,
-    reductionPercentage
+    reductionPercentage,
   }
 }
 
 export function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
 
@@ -142,13 +154,13 @@ export function beautifyCss(css: string): string {
 
   // Add newlines after opening braces
   beautified = beautified.replace(/{/g, ' {\n  ')
-  
+
   // Add newlines after semicolons
   beautified = beautified.replace(/;/g, ';\n  ')
-  
+
   // Add newlines before closing braces
   beautified = beautified.replace(/}/g, '\n}\n\n')
-  
+
   // Clean up extra spaces and newlines
   beautified = beautified.replace(/\n\s*\n/g, '\n')
   // Replace two spaces followed by a newline and a closing brace with just a newline and a closing brace
@@ -156,10 +168,10 @@ export function beautifyCss(css: string): string {
   // Replace opening braces followed by a newline, two spaces, and another newline
   // with an opening brace followed by a newline and two spaces.
   beautified = beautified.replace(/{\n {2}\n/g, '{\n  ')
-  
+
   // Fix spacing around selectors
   beautified = beautified.replace(/,\s*/g, ',\n')
-  
+
   // Trim
   beautified = beautified.trim()
 

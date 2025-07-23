@@ -1,3 +1,5 @@
+import { generateCSSCode } from './cssUtils'
+
 export interface BoxShadow {
   offsetX: number
   offsetY: number
@@ -17,8 +19,8 @@ export interface BoxShadowConfig {
 export function generateBoxShadowCSS(shadow: BoxShadow): string {
   const { offsetX, offsetY, blur, spread, color, inset, alpha } = shadow
   const insetStr = inset ? 'inset ' : ''
-  const colorWithAlpha = alpha < 1 ? hexToRgba(color, alpha) : color
-  
+  const colorWithAlpha = alpha < 1 ? hexToRgbaForShadow(color, alpha) : color
+
   return `${insetStr}${offsetX}px ${offsetY}px ${blur}px ${spread}px ${colorWithAlpha}`
 }
 
@@ -26,22 +28,25 @@ export function generateMultipleShadows(shadows: BoxShadow[]): string {
   return shadows.map(shadow => generateBoxShadowCSS(shadow)).join(', ')
 }
 
-export function hexToRgba(hex: string, alpha: number = 1): string {
+export function hexToRgbaForShadow(hex: string, alpha: number = 1): string {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   if (!result) {
     return hex
   }
-  
+
   const r = parseInt(result[1], 16)
   const g = parseInt(result[2], 16)
   const b = parseInt(result[3], 16)
-  
+
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export function generateCSSCode(shadows: BoxShadow[], selector: string = '.box'): string {
+export function generateBoxShadowCSSCode(
+  shadows: BoxShadow[],
+  selector: string = '.box'
+): string {
   const shadowCSS = generateMultipleShadows(shadows)
-  
+
   return `${selector} {
   box-shadow: ${shadowCSS};
   -webkit-box-shadow: ${shadowCSS};
@@ -49,7 +54,7 @@ export function generateCSSCode(shadows: BoxShadow[], selector: string = '.box')
 }`
 }
 
-export function generateInlineStyle(shadows: BoxShadow[]): string {
+export function generateBoxShadowInlineStyle(shadows: BoxShadow[]): string {
   const shadowCSS = generateMultipleShadows(shadows)
   return `box-shadow: ${shadowCSS};`
 }
@@ -63,7 +68,7 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: false,
-      alpha: 0.12
+      alpha: 0.12,
     },
     {
       offsetX: 0,
@@ -72,8 +77,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: false,
-      alpha: 0.24
-    }
+      alpha: 0.24,
+    },
   ],
   elevation: [
     {
@@ -83,7 +88,7 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: -1,
       color: '#000000',
       inset: false,
-      alpha: 0.2
+      alpha: 0.2,
     },
     {
       offsetX: 0,
@@ -92,7 +97,7 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: false,
-      alpha: 0.14
+      alpha: 0.14,
     },
     {
       offsetX: 0,
@@ -101,8 +106,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: false,
-      alpha: 0.12
-    }
+      alpha: 0.12,
+    },
   ],
   neumorphism: [
     {
@@ -112,7 +117,7 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#bebebe',
       inset: false,
-      alpha: 1
+      alpha: 1,
     },
     {
       offsetX: -20,
@@ -121,8 +126,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#ffffff',
       inset: false,
-      alpha: 1
-    }
+      alpha: 1,
+    },
   ],
   insetPressed: [
     {
@@ -132,7 +137,7 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: true,
-      alpha: 0
+      alpha: 0,
     },
     {
       offsetX: 2,
@@ -141,8 +146,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#000000',
       inset: true,
-      alpha: 0.25
-    }
+      alpha: 0.25,
+    },
   ],
   glowing: [
     {
@@ -152,8 +157,8 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 5,
       color: '#00ff00',
       inset: false,
-      alpha: 0.8
-    }
+      alpha: 0.8,
+    },
   ],
   longShadow: [
     {
@@ -163,13 +168,14 @@ export const presetShadows: Record<string, BoxShadow[]> = {
       spread: 0,
       color: '#333333',
       inset: false,
-      alpha: 0.5
-    }
-  ]
+      alpha: 0.5,
+    },
+  ],
 }
 
 export function exportShadowAsCSS(shadows: BoxShadow[]): string {
-  return generateCSSCode(shadows)
+  const shadowCSS = generateMultipleShadows(shadows)
+  return generateCSSCode(shadowCSS, 'box-shadow')
 }
 
 export function exportShadowAsSass(shadows: BoxShadow[]): string {
@@ -190,7 +196,7 @@ export function parseBoxShadow(cssString: string): BoxShadow[] {
   // This is a basic implementation and may not handle all edge cases
   const shadows: BoxShadow[] = []
   const shadowStrings = cssString.split(/,(?![^(]*\))/)
-  
+
   for (const shadowStr of shadowStrings) {
     const parts = shadowStr.trim().split(/\s+/)
     const shadow: BoxShadow = {
@@ -200,15 +206,15 @@ export function parseBoxShadow(cssString: string): BoxShadow[] {
       spread: 0,
       color: '#000000',
       inset: false,
-      alpha: 1
+      alpha: 1,
     }
-    
+
     let index = 0
     if (parts[index] === 'inset') {
       shadow.inset = true
       index++
     }
-    
+
     // Parse numeric values
     if (index < parts.length && /^-?\d+/.test(parts[index])) {
       shadow.offsetX = parseInt(parts[index])
@@ -226,7 +232,7 @@ export function parseBoxShadow(cssString: string): BoxShadow[] {
       shadow.spread = parseInt(parts[index])
       index++
     }
-    
+
     // Parse color
     if (index < parts.length) {
       shadow.color = parts.slice(index).join(' ')
@@ -236,9 +242,9 @@ export function parseBoxShadow(cssString: string): BoxShadow[] {
         shadow.alpha = parseFloat(rgbaMatch[1])
       }
     }
-    
+
     shadows.push(shadow)
   }
-  
+
   return shadows
 }

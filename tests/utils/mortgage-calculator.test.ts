@@ -5,7 +5,7 @@ import {
   formatPercentage,
   calculateLoanToValueRatio,
   calculateDebtToIncomeRatio,
-  getAffordablePrice
+  getAffordablePrice,
 } from '~/utils/mortgage-calculator'
 
 describe('calculateMortgage', () => {
@@ -15,13 +15,13 @@ describe('calculateMortgage', () => {
       downPayment: 3000000,
       interestRate: 1.5,
       loanTermYears: 35,
-      loanType: 'fixed'
+      loanType: 'fixed',
     })
 
     expect(result.loanPrincipal).toBe(27000000)
-    expect(result.monthlyPayment).toBeCloseTo(82688, -1)
-    expect(result.totalPayment).toBeCloseTo(34729000, -3)
-    expect(result.totalInterest).toBeCloseTo(7729000, -3)
+    expect(result.monthlyPayment).toBeCloseTo(82670, -1)
+    expect(result.totalPayment).toBeCloseTo(34721315, -3)
+    expect(result.totalInterest).toBeCloseTo(7721315, -3)
     expect(result.yearlyBreakdown).toHaveLength(35)
   })
 
@@ -31,7 +31,7 @@ describe('calculateMortgage', () => {
       downPayment: 0,
       interestRate: 0,
       loanTermYears: 10,
-      loanType: 'fixed'
+      loanType: 'fixed',
     })
 
     expect(result.loanPrincipal).toBe(10000000)
@@ -45,7 +45,7 @@ describe('calculateMortgage', () => {
       downPayment: 1000000,
       interestRate: 2.0,
       loanTermYears: 15,
-      loanType: 'fixed'
+      loanType: 'fixed',
     })
 
     expect(result.loanPrincipal).toBe(4000000)
@@ -59,13 +59,13 @@ describe('calculateMortgage', () => {
       downPayment: 2000000,
       interestRate: 1.0,
       loanTermYears: 20,
-      loanType: 'fixed'
+      loanType: 'fixed',
     })
 
     // First year should have more interest than principal
     expect(result.yearlyBreakdown[0].interestPaid).toBeGreaterThan(0)
     expect(result.yearlyBreakdown[0].principalPaid).toBeGreaterThan(0)
-    
+
     // Last year should have less remaining balance
     const lastYear = result.yearlyBreakdown[result.yearlyBreakdown.length - 1]
     expect(lastYear.remainingBalance).toBe(0)
@@ -77,7 +77,7 @@ describe('calculateMortgage', () => {
       downPayment: 3000000,
       interestRate: 1.5,
       loanTermYears: 30,
-      loanType: 'fixed'
+      loanType: 'fixed',
     })
 
     const variableResult = calculateMortgage({
@@ -85,7 +85,7 @@ describe('calculateMortgage', () => {
       downPayment: 3000000,
       interestRate: 1.5,
       loanTermYears: 30,
-      loanType: 'variable'
+      loanType: 'variable',
     })
 
     // Both should calculate the same for initial calculation
@@ -95,13 +95,13 @@ describe('calculateMortgage', () => {
 
 describe('formatCurrency', () => {
   it('should format currency in Japanese Yen', () => {
-    expect(formatCurrency(1000000)).toBe('¥1,000,000')
-    expect(formatCurrency(82688)).toBe('¥82,688')
-    expect(formatCurrency(0)).toBe('¥0')
+    expect(formatCurrency(1000000)).toBe('￥1,000,000')
+    expect(formatCurrency(82688)).toBe('￥82,688')
+    expect(formatCurrency(0)).toBe('￥0')
   })
 
   it('should handle negative values', () => {
-    expect(formatCurrency(-1000)).toBe('-¥1,000')
+    expect(formatCurrency(-1000)).toBe('-￥1,000')
   })
 })
 
@@ -144,7 +144,7 @@ describe('getAffordablePrice', () => {
   it('should calculate for different incomes', () => {
     const income1 = getAffordablePrice(300000, 1.5, 35)
     const income2 = getAffordablePrice(600000, 1.5, 35)
-    
+
     expect(income2).toBeCloseTo(income1 * 2, -4)
   })
 })

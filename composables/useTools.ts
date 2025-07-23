@@ -12,10 +12,11 @@ export const useTools = () => {
     {
       id: 'color-picker',
       name: 'カラーピッカー',
-      description: 'HEX、RGB、HSLなど様々な形式でカラーコードを取得・変換できます。',
+      description:
+        'HEX、RGB、HSLなど様々な形式でカラーコードを取得・変換できます。',
       path: '/tools/color-picker',
       category: 'デザイン',
-      keywords: ['カラー', '色', 'hex', 'rgb', 'hsl', 'デザイン']
+      keywords: ['カラー', '色', 'hex', 'rgb', 'hsl', 'デザイン'],
     },
     {
       id: 'character-counter',
@@ -23,15 +24,16 @@ export const useTools = () => {
       description: 'テキストの文字数、行数、バイト数を瞬時にカウントします。',
       path: '/tools/character-counter',
       category: 'テキスト',
-      keywords: ['文字数', 'カウント', 'テキスト', '行数', 'バイト']
+      keywords: ['文字数', 'カウント', 'テキスト', '行数', 'バイト'],
     },
     {
       id: 'gcd-lcm',
       name: '最大公約数・最小公倍数',
-      description: '複数の数値の最大公約数（GCD）と最小公倍数（LCM）を計算します。',
+      description:
+        '複数の数値の最大公約数（GCD）と最小公倍数（LCM）を計算します。',
       path: '/tools/gcd-lcm',
       category: '数学',
-      keywords: ['最大公約数', '最小公倍数', 'gcd', 'lcm', '数学', '計算']
+      keywords: ['最大公約数', '最小公倍数', 'gcd', 'lcm', '数学', '計算'],
     },
     {
       id: 'base64',
@@ -39,7 +41,7 @@ export const useTools = () => {
       description: 'テキストをBase64形式にエンコード・デコードします。',
       path: '/tools/base64',
       category: 'エンコーディング',
-      keywords: ['base64', 'エンコード', 'デコード', '変換']
+      keywords: ['base64', 'エンコード', 'デコード', '変換'],
     },
     {
       id: 'url-encoder',
@@ -47,7 +49,7 @@ export const useTools = () => {
       description: 'URLの特殊文字をエンコード・デコードします。',
       path: '/tools/url-encoder',
       category: 'エンコーディング',
-      keywords: ['url', 'エンコード', 'デコード', '特殊文字']
+      keywords: ['url', 'エンコード', 'デコード', '特殊文字'],
     },
     {
       id: 'hash-generator',
@@ -55,7 +57,7 @@ export const useTools = () => {
       description: 'MD5、SHA-1、SHA-256などのハッシュ値を生成します。',
       path: '/tools/hash-generator',
       category: 'セキュリティ',
-      keywords: ['ハッシュ', 'md5', 'sha1', 'sha256', 'セキュリティ']
+      keywords: ['ハッシュ', 'md5', 'sha1', 'sha256', 'セキュリティ'],
     },
     {
       id: 'qr-generator',
@@ -63,7 +65,7 @@ export const useTools = () => {
       description: 'テキストやURLからQRコードを生成します。',
       path: '/tools/qr-generator',
       category: 'ユーティリティ',
-      keywords: ['qr', 'qrコード', '生成', 'url']
+      keywords: ['qr', 'qrコード', '生成', 'url'],
     },
     {
       id: 'password-generator',
@@ -71,7 +73,7 @@ export const useTools = () => {
       description: 'セキュアなランダムパスワードを生成します。',
       path: '/tools/password-generator',
       category: 'セキュリティ',
-      keywords: ['パスワード', '生成', 'ランダム', 'セキュリティ']
+      keywords: ['パスワード', '生成', 'ランダム', 'セキュリティ'],
     },
     {
       id: 'timestamp-converter',
@@ -79,7 +81,7 @@ export const useTools = () => {
       description: 'Unix タイムスタンプと日時を相互変換します。',
       path: '/tools/timestamp-converter',
       category: 'ユーティリティ',
-      keywords: ['タイムスタンプ', 'unix', '日時', '変換']
+      keywords: ['タイムスタンプ', 'unix', '日時', '変換'],
     },
     {
       id: 'json-formatter',
@@ -87,7 +89,7 @@ export const useTools = () => {
       description: 'JSONデータを見やすく整形・バリデーションします。',
       path: '/tools/json-formatter',
       category: 'テキスト',
-      keywords: ['json', '整形', 'フォーマット', 'バリデーション']
+      keywords: ['json', '整形', 'フォーマット', 'バリデーション'],
     },
     {
       id: 'uuid-generator',
@@ -95,7 +97,7 @@ export const useTools = () => {
       description: 'ランダムなUUID (v4) を生成します。',
       path: '/tools/uuid-generator',
       category: 'ユーティリティ',
-      keywords: ['uuid', 'guid', '生成', 'ランダム']
+      keywords: ['uuid', 'guid', '生成', 'ランダム'],
     },
     {
       id: 'percentage-calculator',
@@ -103,7 +105,7 @@ export const useTools = () => {
       description: '割合、増減率、パーセンテージを簡単に計算します。',
       path: '/tools/percentage-calculator',
       category: '数学',
-      keywords: ['パーセント', '割合', '増減率', '計算']
+      keywords: ['パーセント', '割合', '増減率', '計算'],
     },
     {
       id: 'unit-converter',
@@ -111,7 +113,7 @@ export const useTools = () => {
       description: '長さ、重さ、温度などの単位を変換します。',
       path: '/tools/unit-converter',
       category: 'ユーティリティ',
-      keywords: ['単位', '変換', '長さ', '重さ', '温度']
+      keywords: ['単位', '変換', '長さ', '重さ', '温度'],
     },
     {
       id: 'regex-tester',
@@ -119,7 +121,7 @@ export const useTools = () => {
       description: '正規表現のテストとマッチング結果を確認できます。',
       path: '/tools/regex-tester',
       category: 'テキスト',
-      keywords: ['正規表現', 'regex', 'テスト', 'マッチング']
+      keywords: ['正規表現', 'regex', 'テスト', 'マッチング'],
     },
     {
       id: 'markdown-preview',
@@ -127,7 +129,7 @@ export const useTools = () => {
       description: 'MarkdownテキストをHTMLでプレビューします。',
       path: '/tools/markdown-preview',
       category: 'テキスト',
-      keywords: ['markdown', 'プレビュー', 'html', 'テキスト']
+      keywords: ['markdown', 'プレビュー', 'html', 'テキスト'],
     },
     {
       id: 'css-minifier',
@@ -135,7 +137,7 @@ export const useTools = () => {
       description: 'CSSコードを圧縮してファイルサイズを削減します。',
       path: '/tools/css-minifier',
       category: 'Web開発',
-      keywords: ['css', '圧縮', 'minify', 'ファイルサイズ']
+      keywords: ['css', '圧縮', 'minify', 'ファイルサイズ'],
     },
     {
       id: 'js-minifier',
@@ -143,7 +145,7 @@ export const useTools = () => {
       description: 'JavaScriptコードを圧縮してファイルサイズを削減します。',
       path: '/tools/js-minifier',
       category: 'Web開発',
-      keywords: ['javascript', 'js', '圧縮', 'minify']
+      keywords: ['javascript', 'js', '圧縮', 'minify'],
     },
     {
       id: 'html-encoder',
@@ -151,7 +153,7 @@ export const useTools = () => {
       description: 'HTMLの特殊文字をエンティティ形式に変換します。',
       path: '/tools/html-encoder',
       category: 'Web開発',
-      keywords: ['html', 'エンティティ', 'エンコード', '特殊文字']
+      keywords: ['html', 'エンティティ', 'エンコード', '特殊文字'],
     },
     {
       id: 'image-resizer',
@@ -159,7 +161,7 @@ export const useTools = () => {
       description: '画像のサイズを変更・リサイズします。',
       path: '/tools/image-resizer',
       category: 'デザイン',
-      keywords: ['画像', 'リサイズ', 'サイズ変更', '縮小']
+      keywords: ['画像', 'リサイズ', 'サイズ変更', '縮小'],
     },
     {
       id: 'lorem-generator',
@@ -167,7 +169,7 @@ export const useTools = () => {
       description: 'ダミーテキスト（Lorem Ipsum）を生成します。',
       path: '/tools/lorem-generator',
       category: 'テキスト',
-      keywords: ['lorem', 'ipsum', 'ダミーテキスト', '文章生成']
+      keywords: ['lorem', 'ipsum', 'ダミーテキスト', '文章生成'],
     },
     {
       id: 'gradient-generator',
@@ -175,7 +177,7 @@ export const useTools = () => {
       description: 'CSSのgradientコードを視覚的に生成します。',
       path: '/tools/gradient-generator',
       category: 'デザイン',
-      keywords: ['gradient', 'グラデーション', 'css', 'デザイン']
+      keywords: ['gradient', 'グラデーション', 'css', 'デザイン'],
     },
     {
       id: 'box-shadow-generator',
@@ -183,7 +185,7 @@ export const useTools = () => {
       description: 'CSSのbox-shadowプロパティを視覚的に生成します。',
       path: '/tools/box-shadow-generator',
       category: 'デザイン',
-      keywords: ['box-shadow', 'シャドウ', 'css', 'デザイン']
+      keywords: ['box-shadow', 'シャドウ', 'css', 'デザイン'],
     },
     {
       id: 'border-radius-generator',
@@ -191,7 +193,7 @@ export const useTools = () => {
       description: 'CSSのborder-radiusプロパティを視覚的に生成します。',
       path: '/tools/border-radius-generator',
       category: 'デザイン',
-      keywords: ['border-radius', '角丸', 'css', 'デザイン']
+      keywords: ['border-radius', '角丸', 'css', 'デザイン'],
     },
     {
       id: 'csv-to-json',
@@ -199,7 +201,7 @@ export const useTools = () => {
       description: 'CSVデータをJSON形式に変換します。',
       path: '/tools/csv-to-json',
       category: 'データ変換',
-      keywords: ['csv', 'json', '変換', 'データ']
+      keywords: ['csv', 'json', '変換', 'データ'],
     },
     {
       id: 'json-to-csv',
@@ -207,7 +209,7 @@ export const useTools = () => {
       description: 'JSONデータをCSV形式に変換します。',
       path: '/tools/json-to-csv',
       category: 'データ変換',
-      keywords: ['json', 'csv', '変換', 'データ']
+      keywords: ['json', 'csv', '変換', 'データ'],
     },
     {
       id: 'diff-checker',
@@ -215,7 +217,7 @@ export const useTools = () => {
       description: '2つのテキストの差分を視覚的に表示します。',
       path: '/tools/diff-checker',
       category: 'テキスト',
-      keywords: ['差分', 'diff', 'テキスト', '比較']
+      keywords: ['差分', 'diff', 'テキスト', '比較'],
     },
     {
       id: 'text-case-converter',
@@ -223,7 +225,7 @@ export const useTools = () => {
       description: 'テキストを大文字・小文字・キャメルケースなどに変換します。',
       path: '/tools/text-case-converter',
       category: 'テキスト',
-      keywords: ['テキスト', '大文字', '小文字', 'キャメルケース', '変換']
+      keywords: ['テキスト', '大文字', '小文字', 'キャメルケース', '変換'],
     },
     {
       id: 'random-number-generator',
@@ -231,7 +233,7 @@ export const useTools = () => {
       description: '指定した範囲内でランダムな数値を生成します。',
       path: '/tools/random-number-generator',
       category: '数学',
-      keywords: ['乱数', 'ランダム', '数値', '生成']
+      keywords: ['乱数', 'ランダム', '数値', '生成'],
     },
     {
       id: 'prime-checker',
@@ -239,7 +241,7 @@ export const useTools = () => {
       description: '入力した数値が素数かどうかを判定します。',
       path: '/tools/prime-checker',
       category: '数学',
-      keywords: ['素数', '判定', '数学', '計算']
+      keywords: ['素数', '判定', '数学', '計算'],
     },
     {
       id: 'fibonacci-generator',
@@ -247,7 +249,7 @@ export const useTools = () => {
       description: 'フィボナッチ数列を指定した項数まで生成します。',
       path: '/tools/fibonacci-generator',
       category: '数学',
-      keywords: ['フィボナッチ', '数列', '数学', '生成']
+      keywords: ['フィボナッチ', '数列', '数学', '生成'],
     },
     {
       id: 'factorial-calculator',
@@ -255,7 +257,7 @@ export const useTools = () => {
       description: '指定した数値の階乗を計算します。',
       path: '/tools/factorial-calculator',
       category: '数学',
-      keywords: ['階乗', '計算', '数学', 'factorial']
+      keywords: ['階乗', '計算', '数学', 'factorial'],
     },
     {
       id: 'binary-calculator',
@@ -263,7 +265,7 @@ export const useTools = () => {
       description: '10進数、2進数、8進数、16進数を相互変換します。',
       path: '/tools/binary-calculator',
       category: '数学',
-      keywords: ['進数', '変換', '2進数', '16進数', '8進数']
+      keywords: ['進数', '変換', '2進数', '16進数', '8進数'],
     },
     {
       id: 'age-calculator',
@@ -271,7 +273,7 @@ export const useTools = () => {
       description: '生年月日から現在の年齢を詳細に計算します。',
       path: '/tools/age-calculator',
       category: 'ユーティリティ',
-      keywords: ['年齢', '計算', '生年月日', '日数']
+      keywords: ['年齢', '計算', '生年月日', '日数'],
     },
     {
       id: 'stopwatch',
@@ -279,7 +281,7 @@ export const useTools = () => {
       description: '高精度なストップウォッチ機能を提供します。',
       path: '/tools/stopwatch',
       category: 'ユーティリティ',
-      keywords: ['ストップウォッチ', 'タイマー', '時間測定']
+      keywords: ['ストップウォッチ', 'タイマー', '時間測定'],
     },
     {
       id: 'pomodoro-timer',
@@ -287,7 +289,7 @@ export const useTools = () => {
       description: '作業効率向上のためのポモドーロテクニック用タイマーです。',
       path: '/tools/pomodoro-timer',
       category: 'ユーティリティ',
-      keywords: ['ポモドーロ', 'タイマー', '作業効率', '集中']
+      keywords: ['ポモドーロ', 'タイマー', '作業効率', '集中'],
     },
     {
       id: 'expense-splitter',
@@ -295,7 +297,7 @@ export const useTools = () => {
       description: '複数人での飲み会などの費用を簡単に割り勘計算します。',
       path: '/tools/expense-splitter',
       category: '数学',
-      keywords: ['割り勘', '計算', '費用', '分割']
+      keywords: ['割り勘', '計算', '費用', '分割'],
     },
     {
       id: 'tip-calculator',
@@ -303,7 +305,7 @@ export const useTools = () => {
       description: 'レストランなどでのチップ額を簡単に計算します。',
       path: '/tools/tip-calculator',
       category: '数学',
-      keywords: ['チップ', '計算', 'レストラン', '金額']
+      keywords: ['チップ', '計算', 'レストラン', '金額'],
     },
     {
       id: 'mortgage-calculator',
@@ -311,7 +313,7 @@ export const useTools = () => {
       description: '住宅ローンの月額返済額や総返済額を計算します。',
       path: '/tools/mortgage-calculator',
       category: '数学',
-      keywords: ['住宅ローン', '計算', '返済', '金利']
+      keywords: ['住宅ローン', '計算', '返済', '金利'],
     },
     {
       id: 'compound-interest-calculator',
@@ -319,7 +321,7 @@ export const useTools = () => {
       description: '複利での投資収益や貯蓄額を計算します。',
       path: '/tools/compound-interest-calculator',
       category: '数学',
-      keywords: ['複利', '投資', '計算', '収益']
+      keywords: ['複利', '投資', '計算', '収益'],
     },
     {
       id: 'bmi-calculator',
@@ -327,7 +329,7 @@ export const useTools = () => {
       description: '身長と体重からBMI値を計算し、健康状態を判定します。',
       path: '/tools/bmi-calculator',
       category: 'ヘルス',
-      keywords: ['bmi', '身長', '体重', '健康']
+      keywords: ['bmi', '身長', '体重', '健康'],
     },
     {
       id: 'calorie-calculator',
@@ -335,7 +337,7 @@ export const useTools = () => {
       description: '基礎代謝や必要カロリーを計算します。',
       path: '/tools/calorie-calculator',
       category: 'ヘルス',
-      keywords: ['カロリー', '基礎代謝', '健康', '栄養']
+      keywords: ['カロリー', '基礎代謝', '健康', '栄養'],
     },
     {
       id: 'water-intake-calculator',
@@ -343,7 +345,7 @@ export const useTools = () => {
       description: '体重や活動レベルから推奨水分摂取量を計算します。',
       path: '/tools/water-intake-calculator',
       category: 'ヘルス',
-      keywords: ['水分', '摂取量', '健康', '体重']
+      keywords: ['水分', '摂取量', '健康', '体重'],
     },
     {
       id: 'world-clock',
@@ -351,7 +353,7 @@ export const useTools = () => {
       description: '世界各地の現在時刻を表示します。',
       path: '/tools/world-clock',
       category: 'ユーティリティ',
-      keywords: ['世界時計', '時刻', 'タイムゾーン', '時差']
+      keywords: ['世界時計', '時刻', 'タイムゾーン', '時差'],
     },
     {
       id: 'emoji-picker',
@@ -359,15 +361,16 @@ export const useTools = () => {
       description: '豊富な絵文字から選択してコピーできます。',
       path: '/tools/emoji-picker',
       category: 'テキスト',
-      keywords: ['絵文字', 'emoji', 'ピッカー', 'コピー']
+      keywords: ['絵文字', 'emoji', 'ピッカー', 'コピー'],
     },
     {
       id: 'credit-card-validator',
       name: 'クレジットカード番号検証',
-      description: 'クレジットカード番号の妥当性をLuhnアルゴリズムで検証します。',
+      description:
+        'クレジットカード番号の妥当性をLuhnアルゴリズムで検証します。',
       path: '/tools/credit-card-validator',
       category: 'セキュリティ',
-      keywords: ['クレジットカード', '検証', 'luhn', 'バリデーション']
+      keywords: ['クレジットカード', '検証', 'luhn', 'バリデーション'],
     },
     {
       id: 'iban-validator',
@@ -375,7 +378,7 @@ export const useTools = () => {
       description: '国際銀行口座番号（IBAN）の妥当性を検証します。',
       path: '/tools/iban-validator',
       category: 'セキュリティ',
-      keywords: ['iban', '銀行', '口座番号', '検証']
+      keywords: ['iban', '銀行', '口座番号', '検証'],
     },
     {
       id: 'image-to-base64',
@@ -383,7 +386,7 @@ export const useTools = () => {
       description: '画像ファイルをBase64エンコードされた文字列に変換します。',
       path: '/tools/image-to-base64',
       category: 'データ変換',
-      keywords: ['画像', 'base64', '変換', 'エンコード']
+      keywords: ['画像', 'base64', '変換', 'エンコード'],
     },
     {
       id: 'meta-tag-generator',
@@ -391,7 +394,7 @@ export const useTools = () => {
       description: 'SEO用のメタタグを簡単に生成します。',
       path: '/tools/meta-tag-generator',
       category: 'Web開発',
-      keywords: ['メタタグ', 'seo', 'html', 'meta']
+      keywords: ['メタタグ', 'seo', 'html', 'meta'],
     },
     {
       id: 'robots-txt-generator',
@@ -399,7 +402,7 @@ export const useTools = () => {
       description: 'Webサイト用のrobots.txtファイルを生成します。',
       path: '/tools/robots-txt-generator',
       category: 'Web開発',
-      keywords: ['robots.txt', 'seo', 'クローラー', 'ウェブサイト']
+      keywords: ['robots.txt', 'seo', 'クローラー', 'ウェブサイト'],
     },
     {
       id: 'htaccess-generator',
@@ -407,7 +410,7 @@ export const useTools = () => {
       description: 'Apache用の.htaccessファイルを簡単に生成します。',
       path: '/tools/htaccess-generator',
       category: 'Web開発',
-      keywords: ['htaccess', 'apache', 'リダイレクト', 'セキュリティ']
+      keywords: ['htaccess', 'apache', 'リダイレクト', 'セキュリティ'],
     },
     {
       id: 'sql-formatter',
@@ -415,7 +418,7 @@ export const useTools = () => {
       description: 'SQLクエリを見やすく整形します。',
       path: '/tools/sql-formatter',
       category: 'データベース',
-      keywords: ['sql', '整形', 'フォーマット', 'クエリ']
+      keywords: ['sql', '整形', 'フォーマット', 'クエリ'],
     },
     {
       id: 'cron-expression-generator',
@@ -423,25 +426,29 @@ export const useTools = () => {
       description: 'Cronジョブの実行スケジュールを視覚的に設定します。',
       path: '/tools/cron-expression-generator',
       category: 'Web開発',
-      keywords: ['cron', 'スケジュール', 'ジョブ', '設定']
-    }
+      keywords: ['cron', 'スケジュール', 'ジョブ', '設定'],
+    },
   ]
 
   const getAllTools = () => tools
 
   const getToolById = (id: string) => tools.find(tool => tool.id === id)
 
-  const getToolsByCategory = (category: string) => 
+  const getToolsByCategory = (category: string) =>
     tools.filter(tool => tool.category === category)
 
   const getCategories = () => [...new Set(tools.map(tool => tool.category))]
 
   const searchTools = (query: string) => {
+    if (!query.trim()) return []
     const lowerQuery = query.toLowerCase()
-    return tools.filter(tool => 
-      tool.name.toLowerCase().includes(lowerQuery) ||
-      tool.description.toLowerCase().includes(lowerQuery) ||
-      tool.keywords.some(keyword => keyword.toLowerCase().includes(lowerQuery))
+    return tools.filter(
+      tool =>
+        tool.name.toLowerCase().includes(lowerQuery) ||
+        tool.description.toLowerCase().includes(lowerQuery) ||
+        tool.keywords.some(keyword =>
+          keyword.toLowerCase().includes(lowerQuery)
+        )
     )
   }
 
@@ -451,6 +458,6 @@ export const useTools = () => {
     getToolById,
     getToolsByCategory,
     getCategories,
-    searchTools
+    searchTools,
   }
 }

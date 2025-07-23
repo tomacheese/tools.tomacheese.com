@@ -1,7 +1,9 @@
 <template>
   <div class="tool-container">
     <h1>水分摂取量計算</h1>
-    <p>体重や活動レベル、環境などから、1日に必要な水分摂取量を計算します。適切な水分補給は健康維持に重要です。</p>
+    <p>
+      体重や活動レベル、環境などから、1日に必要な水分摂取量を計算します。適切な水分補給は健康維持に重要です。
+    </p>
 
     <div class="input-section">
       <div class="form-group">
@@ -15,7 +17,7 @@
             max="200"
             step="0.1"
             placeholder="60"
-          >
+          />
           <select v-model="weightUnit">
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>
@@ -60,7 +62,7 @@
           max="300"
           step="5"
           placeholder="0"
-        >
+        />
       </div>
 
       <button class="primary-button" @click="calculate">計算する</button>
@@ -68,14 +70,17 @@
 
     <div v-if="result" class="result">
       <h2>推奨水分摂取量</h2>
-      
+
       <div class="main-result">
         <div class="total-intake">
           <span class="big-number">{{ result.totalIntakeLiters }}</span>
           <span class="unit">リットル/日</span>
         </div>
         <div class="alternative-units">
-          <span>{{ formatWaterAmount(result.totalIntake) }} / {{ formatOunces(result.totalIntakeOunces) }}</span>
+          <span
+            >{{ formatWaterAmount(result.totalIntake) }} /
+            {{ formatOunces(result.totalIntakeOunces) }}</span
+          >
         </div>
         <div class="glasses-count">
           <span class="glass-icon">🥤</span>
@@ -91,19 +96,28 @@
         </div>
         <div v-if="result.activityAdjustment > 0" class="breakdown-item">
           <span class="label">活動レベルによる追加</span>
-          <span class="value">+{{ formatWaterAmount(result.activityAdjustment) }}</span>
+          <span class="value"
+            >+{{ formatWaterAmount(result.activityAdjustment) }}</span
+          >
         </div>
         <div v-if="result.climateAdjustment !== 0" class="breakdown-item">
           <span class="label">気候による調整</span>
-          <span class="value">{{ result.climateAdjustment > 0 ? '+' : '' }}{{ formatWaterAmount(result.climateAdjustment) }}</span>
+          <span class="value"
+            >{{ result.climateAdjustment > 0 ? '+' : ''
+            }}{{ formatWaterAmount(result.climateAdjustment) }}</span
+          >
         </div>
         <div v-if="result.specialAdjustment > 0" class="breakdown-item">
           <span class="label">特別な状態による追加</span>
-          <span class="value">+{{ formatWaterAmount(result.specialAdjustment) }}</span>
+          <span class="value"
+            >+{{ formatWaterAmount(result.specialAdjustment) }}</span
+          >
         </div>
         <div v-if="result.exerciseAdjustment > 0" class="breakdown-item">
           <span class="label">運動による追加</span>
-          <span class="value">+{{ formatWaterAmount(result.exerciseAdjustment) }}</span>
+          <span class="value"
+            >+{{ formatWaterAmount(result.exerciseAdjustment) }}</span
+          >
         </div>
       </div>
 
@@ -117,7 +131,9 @@
         <ul>
           <li>この計算結果は一般的な目安です。個人差があります</li>
           <li>のどが渇く前に水分補給をしましょう</li>
-          <li>カフェインやアルコールは利尿作用があるため、水分補給には適しません</li>
+          <li>
+            カフェインやアルコールは利尿作用があるため、水分補給には適しません
+          </li>
           <li>体調不良時や医師の指示がある場合は、それに従ってください</li>
         </ul>
       </div>
@@ -127,16 +143,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { 
-  calculateWaterIntake, 
-  formatWaterAmount, 
+import {
+  calculateWaterIntake,
+  formatWaterAmount,
   formatOunces,
   getHydrationTips,
   type WeightUnit,
   type ActivityLevel,
   type Climate,
   type SpecialCondition,
-  type WaterIntakeResult
+  type WaterIntakeResult,
 } from '~/utils/water-intake'
 
 const weight = ref<number>(60)
@@ -164,15 +180,19 @@ const calculate = () => {
     activityLevel: activityLevel.value,
     climate: climate.value,
     specialCondition: specialCondition.value,
-    exerciseMinutes: exerciseMinutes.value
+    exerciseMinutes: exerciseMinutes.value,
   })
 }
 
 useHead({
   title: '水分摂取量計算 | Tools',
   meta: [
-    { name: 'description', content: '体重や活動レベル、環境などから1日に必要な水分摂取量を計算します。適切な水分補給で健康を維持しましょう。' }
-  ]
+    {
+      name: 'description',
+      content:
+        '体重や活動レベル、環境などから1日に必要な水分摂取量を計算します。適切な水分補給で健康を維持しましょう。',
+    },
+  ],
 })
 </script>
 
@@ -211,7 +231,7 @@ label {
   font-weight: 500;
 }
 
-input[type="number"],
+input[type='number'],
 select {
   width: 100%;
   padding: 0.75rem;
@@ -221,7 +241,7 @@ select {
   box-sizing: border-box;
 }
 
-input[type="number"]:focus,
+input[type='number']:focus,
 select:focus {
   outline: none;
   border-color: #007bff;
@@ -261,7 +281,9 @@ select:focus {
   border-radius: 8px;
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
   color: #333;
   margin-bottom: 1.5rem;
 }

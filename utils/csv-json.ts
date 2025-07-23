@@ -15,65 +15,73 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
     delimiter = ',',
     headers = true,
     skipEmptyRows = true,
-    trimValues = true
+    trimValues = true,
   } = options
 
   if (!csv || !csv.trim()) {
     return []
   }
 
-  const lines = csv.split(/\r?\n/)
-  const result: any[] = []
+  // Parse the entire CSV properly handling quotes and newlines
+  const result = parseCSVText(csv, delimiter, trimValues)
+
+  if (!result.length) return []
+
   let headerRow: string[] = []
   let startIndex = 0
 
   // Parse headers if enabled
-  if (headers && lines.length > 0) {
-    headerRow = parseCSVLine(lines[0], delimiter, trimValues)
+  if (headers) {
+    headerRow = result[0]
     startIndex = 1
   }
 
+  const finalResult: any[] = []
+
   // Parse data rows
-  for (let i = startIndex; i < lines.length; i++) {
-    const line = lines[i]
-    
+  for (let i = startIndex; i < result.length; i++) {
+    const values = result[i]
+
     // Skip empty rows if configured
-    if (skipEmptyRows && !line.trim()) {
+    if (skipEmptyRows && values.every(v => !v.trim())) {
       continue
     }
 
-    const values = parseCSVLine(line, delimiter, trimValues)
-    
     if (headers && headerRow.length > 0) {
       // Create object with headers as keys
       const obj: any = {}
       for (let j = 0; j < headerRow.length; j++) {
         obj[headerRow[j]] = j < values.length ? values[j] : ''
       }
-      result.push(obj)
+      finalResult.push(obj)
     } else {
       // Return as array
-      result.push(values)
+      finalResult.push(values)
     }
   }
 
-  return result
+  return finalResult
 }
 
-function parseCSVLine(line: string, delimiter: string, trim: boolean): string[] {
-  const values: string[] = []
-  let current = ''
+function parseCSVText(
+  csv: string,
+  delimiter: string,
+  trim: boolean
+): string[][] {
+  const rows: string[][] = []
+  let currentRow: string[] = []
+  let currentField = ''
   let inQuotes = false
   let i = 0
 
-  while (i < line.length) {
-    const char = line[i]
-    const nextChar = line[i + 1]
+  while (i < csv.length) {
+    const char = csv[i]
+    const nextChar = csv[i + 1]
 
     if (char === '"') {
       if (inQuotes && nextChar === '"') {
         // Escaped quote
-        current += '"'
+        currentField += '"'
         i += 2
         continue
       } else {
@@ -86,28 +94,46 @@ function parseCSVLine(line: string, delimiter: string, trim: boolean): string[] 
 
     if (char === delimiter && !inQuotes) {
       // End of field
-      values.push(trim ? current.trim() : current)
-      current = ''
+      currentRow.push(trim ? currentField.trim() : currentField)
+      currentField = ''
       i++
       continue
     }
 
-    // Regular character
-    current += char
+    if ((char === '\n' || char === '\r') && !inQuotes) {
+      // End of row
+      currentRow.push(trim ? currentField.trim() : currentField)
+      if (currentRow.length > 0 || currentField.length > 0) {
+        rows.push(currentRow)
+      }
+      currentRow = []
+      currentField = ''
+
+      // Skip \r\n combination
+      if (char === '\r' && nextChar === '\n') {
+        i += 2
+      } else {
+        i++
+      }
+      continue
+    }
+
+    // Regular character (including newlines inside quotes)
+    currentField += char
     i++
   }
 
-  // Add the last field
-  values.push(trim ? current.trim() : current)
+  // Add the last field and row
+  currentRow.push(trim ? currentField.trim() : currentField)
+  if (currentRow.length > 0 || currentField.length > 0) {
+    rows.push(currentRow)
+  }
 
-  return values
+  return rows
 }
 
 export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
-  const {
-    headers = true,
-    delimiter = ','
-  } = options
+  const { headers = true, delimiter = ',' } = options
 
   if (!Array.isArray(data) || data.length === 0) {
     return ''
@@ -120,7 +146,9 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
     // Handle array of arrays
     data.forEach(row => {
       if (Array.isArray(row)) {
-        rows.push(row.map(cell => formatCSVValue(String(cell ?? ''), delimiter)))
+        rows.push(
+          row.map(cell => formatCSVValue(String(cell ?? ''), delimiter))
+        )
       }
     })
   } else {
@@ -152,10 +180,11 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
 
 function formatCSVValue(value: string, delimiter: string): string {
   // Check if value needs to be quoted
-  const needsQuoting = value.includes(delimiter) || 
-                      value.includes('"') || 
-                      value.includes('\n') || 
-                      value.includes('\r')
+  const needsQuoting =
+    value.includes(delimiter) ||
+    value.includes('"') ||
+    value.includes('\n') ||
+    value.includes('\r')
 
   if (needsQuoting) {
     // Escape quotes by doubling them
@@ -167,22 +196,30 @@ function formatCSVValue(value: string, delimiter: string): string {
 }
 
 export function detectDelimiter(csv: string): string {
+  if (!csv || !csv.trim()) {
+    return ','
+  }
+
   // Count occurrences of common delimiters in first few lines
   const delimiters = [',', ';', '\t', '|']
   const sampleLines = csv.split(/\r?\n/).slice(0, 5).join('\n')
-  
+
   let maxCount = 0
   let detectedDelimiter = ','
 
   for (const delimiter of delimiters) {
-    const count = (sampleLines.match(new RegExp(delimiter, 'g')) || []).length
+    // Escape special regex characters
+    const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const count = (sampleLines.match(new RegExp(escapedDelimiter, 'g')) || [])
+      .length
     if (count > maxCount) {
       maxCount = count
       detectedDelimiter = delimiter
     }
   }
 
-  return detectedDelimiter
+  // If no delimiters found, return comma as default
+  return maxCount > 0 ? detectedDelimiter : ','
 }
 
 export function validateJSON(json: string): { valid: boolean; error?: string } {
@@ -190,7 +227,10 @@ export function validateJSON(json: string): { valid: boolean; error?: string } {
     JSON.parse(json)
     return { valid: true }
   } catch (error) {
-    return { valid: false, error: error.message }
+    return {
+      valid: false,
+      error: error instanceof Error ? error.message : String(error),
+    }
   }
 }
 

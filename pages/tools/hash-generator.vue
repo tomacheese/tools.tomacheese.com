@@ -28,7 +28,9 @@
       <h3>ハッシュ値</h3>
       <div class="hash-result">
         <code>{{ result }}</code>
-        <button class="secondary" @click="copyToClipboard(result)">コピー</button>
+        <button class="secondary" @click="copyToClipboard(result)">
+          コピー
+        </button>
       </div>
     </div>
 
@@ -41,7 +43,9 @@
         </div>
         <div class="history-hash">
           <code>{{ item.hash }}</code>
-          <button class="secondary small" @click="copyToClipboard(item.hash)">コピー</button>
+          <button class="secondary small" @click="copyToClipboard(item.hash)">
+            コピー
+          </button>
         </div>
       </div>
     </div>
@@ -59,7 +63,9 @@ interface HashHistoryItem {
 }
 
 const inputText = ref('')
-const algorithm = ref<'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512'>('SHA-256')
+const algorithm = ref<'MD5' | 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512'>(
+  'SHA-256'
+)
 const result = ref('')
 const history = ref<HashHistoryItem[]>([])
 
@@ -74,7 +80,7 @@ const generateHashValue = async () => {
     history.value.unshift({
       text: inputText.value,
       algorithm: algorithm.value,
-      hash
+      hash,
     })
 
     // 履歴は最大10件まで
@@ -99,7 +105,7 @@ const copyToClipboard = async (text: string) => {
 
 const truncate = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text
-  return `${text.substring(0, maxLength)  }...`
+  return `${text.substring(0, maxLength)}...`
 }
 
 // generateHashValue関数を直接使用
@@ -107,8 +113,11 @@ const truncate = (text: string, maxLength: number) => {
 useHead({
   title: 'ハッシュ生成 - Web Tools',
   meta: [
-    { name: 'description', content: 'MD5、SHA-1、SHA-256などのハッシュ値を生成します。' }
-  ]
+    {
+      name: 'description',
+      content: 'MD5、SHA-1、SHA-256などのハッシュ値を生成します。',
+    },
+  ],
 })
 </script>
 

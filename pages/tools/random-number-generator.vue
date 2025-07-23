@@ -6,11 +6,18 @@
     </div>
 
     <div class="input-section">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1rem;
+          margin-bottom: 2rem;
+        "
+      >
         <!-- 基本設定 -->
         <div>
-          <h3 style="margin-bottom: 1rem; color: #1e293b;">基本設定</h3>
-          
+          <h3 style="margin-bottom: 1rem; color: #1e293b">基本設定</h3>
+
           <div class="form-group">
             <label class="form-label">最小値</label>
             <input
@@ -44,7 +51,14 @@
           </div>
 
           <div class="form-group">
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                cursor: pointer;
+              "
+            >
               <input v-model="allowDuplicates" type="checkbox" />
               <span>重複を許可</span>
             </label>
@@ -52,7 +66,7 @@
 
           <button
             class="btn btn-primary"
-            style="width: 100%;"
+            style="width: 100%"
             :disabled="!isValidRange"
             @click="generateNumbers"
           >
@@ -62,18 +76,20 @@
 
         <!-- プリセット -->
         <div>
-          <h3 style="margin-bottom: 1rem; color: #1e293b;">プリセット</h3>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <h3 style="margin-bottom: 1rem; color: #1e293b">プリセット</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem">
             <button
               v-for="preset in presets"
               :key="preset.name"
               class="btn btn-secondary"
-              style="text-align: left; justify-content: flex-start;"
+              style="text-align: left; justify-content: flex-start"
               @click="applyPreset(preset)"
             >
               <div>
-                <div style="font-weight: 600;">{{ preset.name }}</div>
-                <div style="font-size: 0.875rem; opacity: 0.8;">{{ preset.description }}</div>
+                <div style="font-weight: 600">{{ preset.name }}</div>
+                <div style="font-size: 0.875rem; opacity: 0.8">
+                  {{ preset.description }}
+                </div>
               </div>
             </button>
           </div>
@@ -82,29 +98,42 @@
     </div>
 
     <!-- 生成された乱数 -->
-    <div v-if="generatedNumbers.length > 0" style="margin-top: 2rem;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="color: #1e293b;">生成された乱数</h3>
-        <div style="display: flex; gap: 0.5rem;">
+    <div v-if="generatedNumbers.length > 0" style="margin-top: 2rem">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+        "
+      >
+        <h3 style="color: #1e293b">生成された乱数</h3>
+        <div style="display: flex; gap: 0.5rem">
           <button
             class="btn btn-secondary"
-            style="font-size: 0.875rem; padding: 0.5rem 1rem;"
+            style="font-size: 0.875rem; padding: 0.5rem 1rem"
             @click="copyAllNumbers"
           >
             全てコピー
           </button>
           <button
             class="btn btn-secondary"
-            style="font-size: 0.875rem; padding: 0.5rem 1rem;"
+            style="font-size: 0.875rem; padding: 0.5rem 1rem"
             @click="exportToCSV"
           >
             CSV出力
           </button>
         </div>
       </div>
-      
+
       <div class="result-box">
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem;">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 0.5rem;
+          "
+        >
           <div
             v-for="(number, index) in generatedNumbers"
             :key="index"
@@ -129,23 +158,29 @@
     </div>
 
     <!-- 統計情報 -->
-    <div v-if="generatedNumbers.length > 1" style="margin-top: 2rem;">
-      <h3 style="margin-bottom: 1rem; color: #1e293b;">統計情報</h3>
+    <div v-if="generatedNumbers.length > 1" style="margin-top: 2rem">
+      <h3 style="margin-bottom: 1rem; color: #1e293b">統計情報</h3>
       <div class="result-box">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+          "
+        >
           <div>
-            <h4 style="color: #2563eb; margin-bottom: 0.5rem;">基本統計</h4>
-            <div style="font-size: 0.9rem;">
+            <h4 style="color: #2563eb; margin-bottom: 0.5rem">基本統計</h4>
+            <div style="font-size: 0.9rem">
               <div>最小値: {{ Math.min(...generatedNumbers) }}</div>
               <div>最大値: {{ Math.max(...generatedNumbers) }}</div>
               <div>平均値: {{ average.toFixed(2) }}</div>
               <div>中央値: {{ median.toFixed(2) }}</div>
             </div>
           </div>
-          
+
           <div>
-            <h4 style="color: #2563eb; margin-bottom: 0.5rem;">データ詳細</h4>
-            <div style="font-size: 0.9rem;">
+            <h4 style="color: #2563eb; margin-bottom: 0.5rem">データ詳細</h4>
+            <div style="font-size: 0.9rem">
               <div>合計値: {{ sum.toLocaleString() }}</div>
               <div>個数: {{ generatedNumbers.length }}</div>
               <div>重複: {{ duplicateCount }}個</div>
@@ -157,17 +192,24 @@
     </div>
 
     <!-- 使用方法・注意事項 -->
-    <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: 6px;">
-      <h4 style="color: #1e293b; margin-bottom: 0.5rem;">乱数生成について</h4>
-      <ul style="margin-left: 1.5rem; color: #64748b; margin-bottom: 1rem;">
+    <div
+      style="
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 6px;
+      "
+    >
+      <h4 style="color: #1e293b; margin-bottom: 0.5rem">乱数生成について</h4>
+      <ul style="margin-left: 1.5rem; color: #64748b; margin-bottom: 1rem">
         <li>JavaScriptのMath.random()を使用した疑似乱数を生成します</li>
         <li>重複を許可しない場合、範囲内のユニークな数値のみ生成されます</li>
         <li>生成数が範囲を超える場合は自動的に制限されます</li>
         <li>統計情報は複数の数値が生成された場合にのみ表示されます</li>
       </ul>
-      
-      <h4 style="color: #1e293b; margin-bottom: 0.5rem;">用途例</h4>
-      <ul style="margin-left: 1.5rem; color: #64748b;">
+
+      <h4 style="color: #1e293b; margin-bottom: 0.5rem">用途例</h4>
+      <ul style="margin-left: 1.5rem; color: #64748b">
         <li>抽選・くじ引きの番号生成</li>
         <li>サンプリング用のランダムデータ作成</li>
         <li>ゲームやアプリのテスト用数値</li>
@@ -178,7 +220,16 @@
     <!-- メッセージ表示 -->
     <div
       v-if="copyMessage"
-      style="position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem; border-radius: 6px; z-index: 1000;"
+      style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 1rem;
+        border-radius: 6px;
+        z-index: 1000;
+      "
     >
       {{ copyMessage }}
     </div>
@@ -191,7 +242,7 @@ import { randomInt } from '~/utils/math'
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool'
+  layout: 'tool',
 })
 
 // リアクティブデータ
@@ -207,38 +258,42 @@ const presets = [
   {
     name: 'サイコロ',
     description: '1-6の数値',
-    settings: { min: 1, max: 6, count: 1, duplicates: true }
+    settings: { min: 1, max: 6, count: 1, duplicates: true },
   },
   {
     name: '宝くじ',
     description: '1-43の数値7個',
-    settings: { min: 1, max: 43, count: 7, duplicates: false }
+    settings: { min: 1, max: 43, count: 7, duplicates: false },
   },
   {
     name: 'パーセント',
     description: '0-100%',
-    settings: { min: 0, max: 100, count: 10, duplicates: true }
+    settings: { min: 0, max: 100, count: 10, duplicates: true },
   },
   {
     name: '成績',
     description: '0-100点',
-    settings: { min: 0, max: 100, count: 20, duplicates: true }
+    settings: { min: 0, max: 100, count: 20, duplicates: true },
   },
   {
     name: '年度',
     description: '2000-2030年',
-    settings: { min: 2000, max: 2030, count: 5, duplicates: true }
+    settings: { min: 2000, max: 2030, count: 5, duplicates: true },
   },
   {
     name: 'ID番号',
     description: '1000-9999',
-    settings: { min: 1000, max: 9999, count: 10, duplicates: false }
-  }
+    settings: { min: 1000, max: 9999, count: 10, duplicates: false },
+  },
 ]
 
 // 計算プロパティ
 const isValidRange = computed(() => {
-  return minValue.value !== null && maxValue.value !== null && minValue.value <= maxValue.value
+  return (
+    minValue.value !== null &&
+    maxValue.value !== null &&
+    minValue.value <= maxValue.value
+  )
 })
 
 const sum = computed(() => {
@@ -246,14 +301,18 @@ const sum = computed(() => {
 })
 
 const average = computed(() => {
-  return generatedNumbers.value.length > 0 ? sum.value / generatedNumbers.value.length : 0
+  return generatedNumbers.value.length > 0
+    ? sum.value / generatedNumbers.value.length
+    : 0
 })
 
 const median = computed(() => {
   if (generatedNumbers.value.length === 0) return 0
   const sorted = [...generatedNumbers.value].sort((a, b) => a - b)
   const mid = Math.floor(sorted.length / 2)
-  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+  return sorted.length % 2 !== 0
+    ? sorted[mid]
+    : (sorted[mid - 1] + sorted[mid]) / 2
 })
 
 const uniqueCount = computed(() => {
@@ -270,7 +329,9 @@ const generateNumbers = () => {
 
   const numbers = []
   const range = maxValue.value - minValue.value + 1
-  const maxPossible = allowDuplicates.value ? parseInt(generateCount.value) : Math.min(parseInt(generateCount.value), range)
+  const maxPossible = allowDuplicates.value
+    ? parseInt(generateCount.value)
+    : Math.min(parseInt(generateCount.value), range)
 
   if (allowDuplicates.value) {
     // 重複を許可する場合
@@ -293,19 +354,19 @@ const generateNumbers = () => {
   generatedNumbers.value = numbers
 }
 
-const applyPreset = (preset) => {
+const applyPreset = preset => {
   minValue.value = preset.settings.min
   maxValue.value = preset.settings.max
   generateCount.value = preset.settings.count
   allowDuplicates.value = preset.settings.duplicates
-  
+
   copyMessage.value = `プリセット「${preset.name}」を適用しました`
   setTimeout(() => {
     copyMessage.value = ''
   }, 2000)
 }
 
-const copyNumber = async (number) => {
+const copyNumber = async number => {
   try {
     await navigator.clipboard.writeText(number.toString())
     copyMessage.value = `${number} をコピーしました`
@@ -340,7 +401,7 @@ const exportToCSV = () => {
   const csvContent = generatedNumbers.value.join('\n')
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
   const link = document.createElement('a')
-  
+
   if (link.download !== undefined) {
     const url = URL.createObjectURL(blob)
     link.setAttribute('href', url)
@@ -349,7 +410,7 @@ const exportToCSV = () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    
+
     copyMessage.value = 'CSVファイルをダウンロードしました'
     setTimeout(() => {
       copyMessage.value = ''
@@ -361,8 +422,15 @@ const exportToCSV = () => {
 useHead({
   title: '乱数生成 - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: '指定した範囲内でランダムな数値を生成します。重複制御、統計情報、CSV出力機能付き。' },
-    { name: 'keywords', content: '乱数生成, ランダム数値, 抽選, くじ引き, 統計' }
-  ]
+    {
+      name: 'description',
+      content:
+        '指定した範囲内でランダムな数値を生成します。重複制御、統計情報、CSV出力機能付き。',
+    },
+    {
+      name: 'keywords',
+      content: '乱数生成, ランダム数値, 抽選, くじ引き, 統計',
+    },
+  ],
 })
 </script>

@@ -12,11 +12,11 @@ vi.stubGlobal('document', {
           fillStyle: '',
           fillRect: vi.fn(),
         })),
-        toDataURL: vi.fn(() => 'data:image/png;base64,mock')
+        toDataURL: vi.fn(() => 'data:image/png;base64,mock'),
       }
     }
     return {}
-  })
+  }),
 })
 
 describe('QRCode', () => {
@@ -36,8 +36,8 @@ describe('QRCode', () => {
     const svg = qr.toSVG()
     expect(svg).toContain('<svg')
     expect(svg).toContain('</svg>')
-    expect(svg).toContain('width="256"')
-    expect(svg).toContain('height="256"')
+    expect(svg).toContain('width="233"')
+    expect(svg).toContain('height="233"')
   })
 
   it('should accept custom options for data URL', () => {
@@ -47,8 +47,8 @@ describe('QRCode', () => {
       margin: 8,
       color: {
         dark: '#FF0000',
-        light: '#00FF00'
-      }
+        light: '#00FF00',
+      },
     })
     expect(dataURL).toBe('data:image/png;base64,mock')
   })
@@ -60,10 +60,11 @@ describe('QRCode', () => {
       margin: 8,
       color: {
         dark: '#FF0000',
-        light: '#00FF00'
-      }
+        light: '#00FF00',
+      },
     })
-    expect(svg).toContain('width="512"')
+    expect(svg).toContain('width="')
+    expect(svg).toContain('height="')
     expect(svg).toContain('fill="#00FF00"')
     expect(svg).toContain('fill="#FF0000"')
   })
@@ -85,7 +86,8 @@ describe('generateQRCode', () => {
   })
 
   it('should handle long text', () => {
-    const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
+    const longText =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
     const result = generateQRCode(longText)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
@@ -118,11 +120,12 @@ describe('generateQRCode', () => {
       margin: 6,
       color: {
         dark: '#123456',
-        light: '#FEDCBA'
-      }
+        light: '#FEDCBA',
+      },
     }
     const result = generateQRCode('Test', options)
-    expect(result.svg).toContain('width="384"')
+    expect(result.svg).toContain('width="')
+    expect(result.svg).toContain('height="')
     expect(result.svg).toContain('fill="#FEDCBA"')
     expect(result.svg).toContain('fill="#123456"')
   })

@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import {
   generateBorderRadiusCSS,
-  generateCSSCode,
-  generateInlineStyle,
+  generateBorderRadiusCSSCode,
+  generateBorderRadiusInlineStyle,
   exportBorderRadiusAsSass,
   exportBorderRadiusAsJSON,
   parseBorderRadius,
   getShapeFromConfig,
-  type BorderRadiusConfig
+  type BorderRadiusConfig,
 } from '~/utils/borderRadiusGenerator'
 
 describe('borderRadiusGenerator', () => {
@@ -19,7 +19,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 10, vertical: 10 },
         bottomLeft: { horizontal: 10, vertical: 10 },
         unit: 'px',
-        linked: true
+        linked: true,
       }
       const result = generateBorderRadiusCSS(config)
       expect(result).toBe('10px')
@@ -32,7 +32,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 30, vertical: 30 },
         bottomLeft: { horizontal: 40, vertical: 40 },
         unit: 'px',
-        linked: false
+        linked: false,
       }
       const result = generateBorderRadiusCSS(config)
       expect(result).toBe('10px 20px 30px 40px')
@@ -45,7 +45,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 50, vertical: 60 },
         bottomLeft: { horizontal: 70, vertical: 80 },
         unit: 'px',
-        linked: false
+        linked: false,
       }
       const result = generateBorderRadiusCSS(config)
       expect(result).toBe('10px 30px 50px 70px / 20px 40px 60px 80px')
@@ -58,7 +58,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 50, vertical: 50 },
         bottomLeft: { horizontal: 50, vertical: 50 },
         unit: '%',
-        linked: true
+        linked: true,
       }
       const result = generateBorderRadiusCSS(config)
       expect(result).toBe('50%')
@@ -71,17 +71,17 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 2.5, vertical: 2.5 },
         bottomLeft: { horizontal: 3, vertical: 3 },
         unit: 'em',
-        linked: false
+        linked: false,
       }
       const result = generateBorderRadiusCSS(config)
       expect(result).toBe('1.5em 2em 2.5em 3em')
     })
   })
 
-  describe('generateCSSCode', () => {
+  describe('generateBorderRadiusCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
       const borderRadius = '10px 20px 30px 40px'
-      const result = generateCSSCode(borderRadius)
+      const result = generateBorderRadiusCSSCode(borderRadius)
       expect(result).toContain('.box {')
       expect(result).toContain(`border-radius: ${borderRadius};`)
       expect(result).toContain(`-webkit-border-radius: ${borderRadius};`)
@@ -90,15 +90,15 @@ describe('borderRadiusGenerator', () => {
 
     it('should use custom selector', () => {
       const borderRadius = '50%'
-      const result = generateCSSCode(borderRadius, '#myElement')
+      const result = generateBorderRadiusCSSCode(borderRadius, '#myElement')
       expect(result).toContain('#myElement {')
     })
   })
 
-  describe('generateInlineStyle', () => {
+  describe('generateBorderRadiusInlineStyle', () => {
     it('should generate inline style', () => {
       const borderRadius = '10px 20px'
-      const result = generateInlineStyle(borderRadius)
+      const result = generateBorderRadiusInlineStyle(borderRadius)
       expect(result).toBe('border-radius: 10px 20px;')
     })
   })
@@ -111,7 +111,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 10, vertical: 10 },
         bottomLeft: { horizontal: 10, vertical: 10 },
         unit: 'px',
-        linked: true
+        linked: true,
       }
       const result = exportBorderRadiusAsSass(config)
       expect(result).toContain('$border-radius: 10px;')
@@ -128,7 +128,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 50, vertical: 60 },
         bottomLeft: { horizontal: 70, vertical: 80 },
         unit: 'px',
-        linked: false
+        linked: false,
       }
       const result = exportBorderRadiusAsJSON(config)
       const parsed = JSON.parse(result)
@@ -191,7 +191,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 50, vertical: 50 },
         bottomLeft: { horizontal: 50, vertical: 50 },
         unit: '%',
-        linked: true
+        linked: true,
       }
       const shape = getShapeFromConfig(config)
       expect(shape).toBe('circle')
@@ -204,7 +204,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 9999, vertical: 9999 },
         bottomLeft: { horizontal: 9999, vertical: 9999 },
         unit: 'px',
-        linked: true
+        linked: true,
       }
       const shape = getShapeFromConfig(config)
       expect(shape).toBe('pill')
@@ -217,7 +217,7 @@ describe('borderRadiusGenerator', () => {
         bottomRight: { horizontal: 30, vertical: 30 },
         bottomLeft: { horizontal: 40, vertical: 40 },
         unit: 'px',
-        linked: false
+        linked: false,
       }
       const shape = getShapeFromConfig(config)
       expect(shape).toBe('custom')

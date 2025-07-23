@@ -5,7 +5,7 @@ import {
   parseTimestamp,
   getTimestampInfo,
   getCurrentTimestamp,
-  formatRelativeTime
+  formatRelativeTime,
 } from '~/utils/timestamp'
 
 describe('timestampToDate', () => {
@@ -84,7 +84,7 @@ describe('getTimestampInfo', () => {
   it('should return complete timestamp information', () => {
     const date = new Date('2024-01-01T00:00:00.000Z')
     const info = getTimestampInfo(date)
-    
+
     expect(info.unix).toBe(1704067200)
     expect(info.unixMillis).toBe(1704067200000)
     expect(info.iso8601).toBe('2024-01-01T00:00:00.000Z')
@@ -102,7 +102,7 @@ describe('getCurrentTimestamp', () => {
   it('should return current timestamp information', () => {
     const now = new Date('2024-01-01T00:00:00.000Z')
     vi.setSystemTime(now)
-    
+
     const info = getCurrentTimestamp()
     expect(info.unix).toBe(1704067200)
     expect(info.unixMillis).toBe(1704067200000)

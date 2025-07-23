@@ -51,6 +51,7 @@ pnpm docker:run    # Dockerコンテナ実行
 ## アーキテクチャ
 
 ### ディレクトリ構造
+
 - `/pages/tools/`: 各ツールのページ（Vue単一ファイルコンポーネント）
 - `/composables/`: 共有Vueコンポーザブル（useTools.tsでツール一覧を管理）
 - `/utils/`: TypeScriptユーティリティ関数
@@ -60,6 +61,7 @@ pnpm docker:run    # Dockerコンテナ実行
 ### ツール実装パターン
 
 各ツールは以下の手順で実装します：
+
 1. `/pages/tools/[tool-name].vue`にツールページを作成
 2. `composables/useTools.ts`にツールメタデータを追加
 3. 必要に応じて`/utils/`にユーティリティ関数を実装
@@ -73,12 +75,12 @@ pnpm docker:run    # Dockerコンテナ実行
   <div class="tool-container">
     <h1>ツール名</h1>
     <p>ツールの説明</p>
-    
+
     <!-- 入力セクション -->
     <div class="input-section">
       <!-- フォーム要素 -->
     </div>
-    
+
     <!-- 結果表示 -->
     <div v-if="result" class="result">
       <!-- 結果表示 -->
@@ -106,6 +108,7 @@ pnpm docker:run    # Dockerコンテナ実行
 ## 実装状況
 
 ### 実装済みツール（10個）
+
 - Base64エンコード・デコード
 - 文字数カウンター
 - カラーピッカー
@@ -118,11 +121,13 @@ pnpm docker:run    # Dockerコンテナ実行
 - テキスト形式変換
 
 ### 実装中のツール（37個）
+
 テキスト処理、数学計算、セキュリティツールを優先的に実装中。外部API依存のツール（DNS検索、Whois、IP検索、サイト速度テスト）はuseTools.tsから除外済み。
 
 ## デプロイメント
 
 複数のデプロイメントターゲットをサポート：
+
 - **GitHub Pages**: GitHub Actionsで自動化
 - **Vercel**: vercel.json設定済み
 - **Netlify**: netlify.toml設定済み

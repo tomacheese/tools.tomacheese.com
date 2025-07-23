@@ -6,27 +6,27 @@
     <div class="input-section">
       <div class="options-grid">
         <label class="checkbox-label">
-          <input v-model="options.removeComments" type="checkbox">
+          <input v-model="options.removeComments" type="checkbox" />
           コメントを削除
         </label>
         <label class="checkbox-label">
-          <input v-model="options.removeWhitespace" type="checkbox">
+          <input v-model="options.removeWhitespace" type="checkbox" />
           空白文字を削除
         </label>
         <label class="checkbox-label">
-          <input v-model="options.shortenVariables" type="checkbox">
+          <input v-model="options.shortenVariables" type="checkbox" />
           変数名を短縮
         </label>
         <label class="checkbox-label">
-          <input v-model="options.removeConsoleLog" type="checkbox">
+          <input v-model="options.removeConsoleLog" type="checkbox" />
           console.logを削除
         </label>
         <label class="checkbox-label">
-          <input v-model="options.removeDebugger" type="checkbox">
+          <input v-model="options.removeDebugger" type="checkbox" />
           debuggerを削除
         </label>
         <label class="checkbox-label">
-          <input v-model="options.preserveLineBreaks" type="checkbox">
+          <input v-model="options.preserveLineBreaks" type="checkbox" />
           改行を保持
         </label>
       </div>
@@ -46,7 +46,11 @@
         <button :disabled="!input" class="secondary-button" @click="beautify">
           整形する
         </button>
-        <button :disabled="!input && !output" class="secondary-button" @click="clear">
+        <button
+          :disabled="!input && !output"
+          class="secondary-button"
+          @click="clear"
+        >
           クリア
         </button>
       </div>
@@ -68,7 +72,9 @@
         </div>
         <div class="stat-card">
           <div class="stat-label">圧縮率</div>
-          <div class="stat-value">{{ stats.reductionPercentage.toFixed(1) }}%</div>
+          <div class="stat-value">
+            {{ stats.reductionPercentage.toFixed(1) }}%
+          </div>
         </div>
       </div>
 
@@ -77,12 +83,7 @@
       </div>
 
       <h3>圧縮後のJavaScript:</h3>
-      <textarea
-        v-model="output"
-        readonly
-        rows="15"
-        class="code-textarea"
-      />
+      <textarea v-model="output" readonly rows="15" class="code-textarea" />
 
       <button class="secondary-button" @click="copyToClipboard">
         クリップボードにコピー
@@ -93,15 +94,15 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { 
-  minifyJavaScript, 
+import { type MinifyResult } from '~/utils/cssMinifier'
+import {
+  minifyJavaScript,
   beautifyJavaScript,
   validateJavaScript,
-  calculateMinifyStats,
-  formatBytes,
-  type MinifyOptions,
-  type MinifyResult
+  calculateJSMinifyStats,
+  type JSMinifyOptions,
 } from '~/utils/jsMinifier'
+import { formatBytes } from '~/utils/cssMinifier'
 
 const input = ref('')
 const output = ref('')
@@ -112,23 +113,23 @@ const stats = ref<MinifyResult>({
   originalSize: 0,
   minifiedSize: 0,
   reduction: 0,
-  reductionPercentage: 0
+  reductionPercentage: 0,
 })
 
-const options = ref<MinifyOptions>({
+const options = ref<JSMinifyOptions>({
   removeComments: true,
   removeWhitespace: true,
   shortenVariables: false,
   removeConsoleLog: false,
   removeDebugger: false,
-  preserveLineBreaks: false
+  preserveLineBreaks: false,
 })
 
 const minify = () => {
   if (!input.value) return
 
   error.value = ''
-  
+
   // Validate JavaScript syntax
   const validation = validateJavaScript(input.value)
   if (!validation.valid) {
@@ -139,7 +140,7 @@ const minify = () => {
   try {
     const minified = minifyJavaScript(input.value, options.value)
     output.value = minified
-    stats.value = calculateMinifyStats(input.value, minified)
+    stats.value = calculateJSMinifyStats(input.value, minified)
   } catch (e) {
     error.value = `圧縮エラー: ${e instanceof Error ? e.message : '不明なエラー'}`
   }
@@ -149,10 +150,10 @@ const beautify = () => {
   if (!input.value) return
 
   error.value = ''
-  
+
   try {
     output.value = beautifyJavaScript(input.value)
-    stats.value = calculateMinifyStats(input.value, output.value)
+    stats.value = calculateJSMinifyStats(input.value, output.value)
   } catch (e) {
     error.value = `整形エラー: ${e instanceof Error ? e.message : '不明なエラー'}`
   }
@@ -168,7 +169,7 @@ const clear = () => {
     originalSize: 0,
     minifiedSize: 0,
     reduction: 0,
-    reductionPercentage: 0
+    reductionPercentage: 0,
   }
 }
 
@@ -188,9 +189,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: 'JavaScriptコードを圧縮してファイルサイズを削減します。コメント削除、空白削除、変数名短縮などのオプション付き。'
-    }
-  ]
+      content:
+        'JavaScriptコードを圧縮してファイルサイズを削減します。コメント削除、空白削除、変数名短縮などのオプション付き。',
+    },
+  ],
 })
 </script>
 
@@ -222,7 +224,7 @@ useHead({
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   cursor: pointer;
 }
 

@@ -3,11 +3,11 @@ import {
   generateGradientCSS,
   generateMultipleBackgrounds,
   hexToRgba,
-  generateCSSCode,
-  generateInlineStyle,
+  generateGradientCSSCode,
+  generateGradientInlineStyle,
   exportGradientAsSass,
   exportGradientAsJSON,
-  type GradientConfig
+  type GradientConfig,
 } from '~/utils/gradientGenerator'
 
 describe('gradientGenerator', () => {
@@ -18,8 +18,8 @@ describe('gradientGenerator', () => {
         angle: 90,
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 100 }
-        ]
+          { color: '#0000ff', position: 100 },
+        ],
       }
       const result = generateGradientCSS(config)
       expect(result).toBe('linear-gradient(90deg, #ff0000 0%, #0000ff 100%)')
@@ -32,11 +32,13 @@ describe('gradientGenerator', () => {
         size: 'farthest-corner',
         stops: [
           { color: '#ffffff', position: 0 },
-          { color: '#000000', position: 100 }
-        ]
+          { color: '#000000', position: 100 },
+        ],
       }
       const result = generateGradientCSS(config)
-      expect(result).toBe('radial-gradient(circle farthest-corner at center, #ffffff 0%, #000000 100%)')
+      expect(result).toBe(
+        'radial-gradient(circle farthest-corner at center, #ffffff 0%, #000000 100%)'
+      )
     })
 
     it('should generate conic gradient', () => {
@@ -46,11 +48,13 @@ describe('gradientGenerator', () => {
         stops: [
           { color: '#ff0000', position: 0 },
           { color: '#00ff00', position: 50 },
-          { color: '#0000ff', position: 100 }
-        ]
+          { color: '#0000ff', position: 100 },
+        ],
       }
       const result = generateGradientCSS(config)
-      expect(result).toBe('conic-gradient(from 45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%)')
+      expect(result).toBe(
+        'conic-gradient(from 45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%)'
+      )
     })
 
     it('should generate repeating gradients', () => {
@@ -60,11 +64,13 @@ describe('gradientGenerator', () => {
         repeating: true,
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 20 }
-        ]
+          { color: '#0000ff', position: 20 },
+        ],
       }
       const result = generateGradientCSS(config)
-      expect(result).toBe('repeating-linear-gradient(45deg, #ff0000 0%, #0000ff 20%)')
+      expect(result).toBe(
+        'repeating-linear-gradient(45deg, #ff0000 0%, #0000ff 20%)'
+      )
     })
 
     it('should handle custom positions for radial gradient', () => {
@@ -73,8 +79,8 @@ describe('gradientGenerator', () => {
         position: { x: 30, y: 70 },
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 100 }
-        ]
+          { color: '#0000ff', position: 100 },
+        ],
       }
       const result = generateGradientCSS(config)
       expect(result).toContain('at 30% 70%')
@@ -83,9 +89,11 @@ describe('gradientGenerator', () => {
     it('should throw error for insufficient stops', () => {
       const config: GradientConfig = {
         type: 'linear',
-        stops: [{ color: '#ff0000', position: 0 }]
+        stops: [{ color: '#ff0000', position: 0 }],
       }
-      expect(() => generateGradientCSS(config)).toThrow('Gradient must have at least 2 color stops')
+      expect(() => generateGradientCSS(config)).toThrow(
+        'Gradient must have at least 2 color stops'
+      )
     })
 
     it('should handle multiple color stops', () => {
@@ -96,11 +104,13 @@ describe('gradientGenerator', () => {
           { color: '#ff0000', position: 0 },
           { color: '#00ff00', position: 33 },
           { color: '#0000ff', position: 66 },
-          { color: '#ffffff', position: 100 }
-        ]
+          { color: '#ffffff', position: 100 },
+        ],
       }
       const result = generateGradientCSS(config)
-      expect(result).toBe('linear-gradient(180deg, #ff0000 0%, #00ff00 33%, #0000ff 66%, #ffffff 100%)')
+      expect(result).toBe(
+        'linear-gradient(180deg, #ff0000 0%, #00ff00 33%, #0000ff 66%, #ffffff 100%)'
+      )
     })
   })
 
@@ -108,10 +118,12 @@ describe('gradientGenerator', () => {
     it('should combine multiple gradients', () => {
       const gradients = [
         'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)',
-        'radial-gradient(circle, #ffffff 0%, transparent 100%)'
+        'radial-gradient(circle, #ffffff 0%, transparent 100%)',
       ]
       const result = generateMultipleBackgrounds(gradients)
-      expect(result).toBe('linear-gradient(45deg, #ff0000 0%, #0000ff 100%), radial-gradient(circle, #ffffff 0%, transparent 100%)')
+      expect(result).toBe(
+        'linear-gradient(45deg, #ff0000 0%, #0000ff 100%), radial-gradient(circle, #ffffff 0%, transparent 100%)'
+      )
     })
   })
 
@@ -132,28 +144,30 @@ describe('gradientGenerator', () => {
     })
   })
 
-  describe('generateCSSCode', () => {
+  describe('generateGradientCSSCode', () => {
     it('should generate CSS with vendor prefixes', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateCSSCode(gradient)
-      expect(result).toContain(`background: ${  gradient}`)
-      expect(result).toContain(`-webkit-${  gradient}`)
-      expect(result).toContain(`-moz-${  gradient}`)
-      expect(result).toContain(`-o-${  gradient}`)
+      const result = generateGradientCSSCode(gradient)
+      expect(result).toContain(`background: ${gradient}`)
+      expect(result).toContain(`-webkit-${gradient}`)
+      expect(result).toContain(`-moz-${gradient}`)
+      expect(result).toContain(`-o-${gradient}`)
     })
 
     it('should use custom selector', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateCSSCode(gradient, '#myElement')
+      const result = generateGradientCSSCode(gradient, '#myElement')
       expect(result).toContain('#myElement {')
     })
   })
 
-  describe('generateInlineStyle', () => {
+  describe('generateGradientInlineStyle', () => {
     it('should generate inline style', () => {
       const gradient = 'linear-gradient(45deg, #ff0000 0%, #0000ff 100%)'
-      const result = generateInlineStyle(gradient)
-      expect(result).toBe('background: linear-gradient(45deg, #ff0000 0%, #0000ff 100%);')
+      const result = generateGradientInlineStyle(gradient)
+      expect(result).toBe(
+        'background: linear-gradient(45deg, #ff0000 0%, #0000ff 100%);'
+      )
     })
   })
 
@@ -164,12 +178,14 @@ describe('gradientGenerator', () => {
         angle: 90,
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 100 }
-        ]
+          { color: '#0000ff', position: 100 },
+        ],
       }
       const result = exportGradientAsSass(config)
       expect(result).toContain('$gradient:')
-      expect(result).toContain('linear-gradient(90deg, #ff0000 0%, #0000ff 100%)')
+      expect(result).toContain(
+        'linear-gradient(90deg, #ff0000 0%, #0000ff 100%)'
+      )
     })
   })
 
@@ -180,8 +196,8 @@ describe('gradientGenerator', () => {
         angle: 90,
         stops: [
           { color: '#ff0000', position: 0 },
-          { color: '#0000ff', position: 100 }
-        ]
+          { color: '#0000ff', position: 100 },
+        ],
       }
       const result = exportGradientAsJSON(config)
       const parsed = JSON.parse(result)

@@ -13,6 +13,7 @@
 ## 🛠️ 利用可能なツール
 
 ### テキスト処理
+
 - **文字数カウンター**: 文字数、行数、バイト数を瞬時にカウント
 - **JSON整形**: JSONデータの整形・バリデーション
 - **テキスト形式変換**: 大文字・小文字・キャメルケースなどの変換
@@ -20,12 +21,14 @@
 - **絵文字ピッカー**: 豊富な絵文字から選択してコピー
 
 ### デザイン
+
 - **カラーピッカー**: HEX・RGB・HSL形式でのカラーコード取得・変換
 - **CSS Gradient生成**: グラデーションコードの視覚的生成
 - **Box Shadow生成**: box-shadowプロパティの視覚的生成
 - **Border Radius生成**: border-radiusプロパティの視覚的生成
 
 ### 数学・計算
+
 - **最大公約数・最小公倍数**: 複数数値のGCD・LCM計算
 - **素数判定**: 数値の素数判定
 - **フィボナッチ数列生成**: 指定項数までの数列生成
@@ -33,6 +36,7 @@
 - **進数変換**: 2進数・8進数・10進数・16進数の相互変換
 
 ### エンコーディング・セキュリティ
+
 - **Base64エンコード・デコード**: テキストのBase64変換
 - **URLエンコード・デコード**: URL特殊文字の変換
 - **ハッシュ生成**: MD5・SHA-1・SHA-256ハッシュ値生成
@@ -112,11 +116,11 @@ pnpm test:coverage
 
 ### 🌐 静的ホスティング
 
-| プラットフォーム | デプロイボタン | 設定ファイル |
-|---|---|---|
-| **GitHub Pages** | 自動デプロイ | `.github/workflows/deploy.yml` |
-| **Vercel** | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tomacheese/tools.tomacheese.com) | `vercel.json` |
-| **Netlify** | [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tomacheese/tools.tomacheese.com) | `netlify.toml` |
+| プラットフォーム | デプロイボタン                                                                                                                                                            | 設定ファイル                   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **GitHub Pages** | 自動デプロイ                                                                                                                                                              | `.github/workflows/deploy.yml` |
+| **Vercel**       | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tomacheese/tools.tomacheese.com)                        | `vercel.json`                  |
+| **Netlify**      | [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tomacheese/tools.tomacheese.com) | `netlify.toml`                 |
 
 ### 🐳 Docker
 
@@ -135,11 +139,11 @@ pnpm docker:dev   # 開発環境
 
 ### ⚙️ 設定
 
-| 設定項目 | 値 |
-|---|---|
-| **Build Command** | `pnpm generate` |
+| 設定項目             | 値               |
+| -------------------- | ---------------- |
+| **Build Command**    | `pnpm generate`  |
 | **Output Directory** | `.output/public` |
-| **Install Command** | `pnpm install` |
-| **Node.js Version** | `20.15.1` |
+| **Install Command**  | `pnpm install`   |
+| **Node.js Version**  | `20.15.1`        |
 
 詳細なデプロイメントガイドは [DEPLOYMENT.md](./DEPLOYMENT.md) をご覧ください。

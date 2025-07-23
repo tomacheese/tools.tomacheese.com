@@ -5,7 +5,7 @@ import {
   encodeAttribute,
   stripTags,
   escapeForRegex,
-  getCommonEntities
+  getCommonEntities,
 } from '~/utils/html-entities'
 
 describe('encodeHTML', () => {
@@ -21,11 +21,15 @@ describe('encodeHTML', () => {
   })
 
   it('should encode multiple entities in text', () => {
-    expect(encodeHTML('<p>Hello & "World"</p>')).toBe('&lt;p&gt;Hello &amp; &quot;World&quot;&lt;&#x2F;p&gt;')
+    expect(encodeHTML('<p>Hello & "World"</p>')).toBe(
+      '&lt;p&gt;Hello &amp; &quot;World&quot;&lt;&#x2F;p&gt;'
+    )
   })
 
   it('should encode named entities when enabled', () => {
-    expect(encodeHTML('© 2024', { useNamedEntities: true })).toBe('&copy; 2024')
+    expect(encodeHTML('© 2024', { useNamedEntities: true })).toBe(
+      '&copy; 2024'
+    )
     expect(encodeHTML('€100', { useNamedEntities: true })).toBe('&euro;100')
     expect(encodeHTML('½ cup', { useNamedEntities: true })).toBe('&frac12; cup')
   })
@@ -35,12 +39,18 @@ describe('encodeHTML', () => {
   })
 
   it('should encode non-ASCII characters when enabled', () => {
-    expect(encodeHTML('こんにちは', { encodeNonAscii: true, decimal: false })).toMatch(/&#x[0-9A-F]+;/g)
-    expect(encodeHTML('🌸', { encodeNonAscii: true, decimal: false })).toMatch(/&#x[0-9A-F]+;/g)
+    expect(
+      encodeHTML('こんにちは', { encodeNonAscii: true, decimal: false })
+    ).toMatch(/&#x[0-9A-F]+;/g)
+    expect(encodeHTML('🌸', { encodeNonAscii: true, decimal: false })).toMatch(
+      /&#x[0-9A-F]+;/g
+    )
   })
 
   it('should encode non-ASCII characters with decimal notation', () => {
-    expect(encodeHTML('あ', { encodeNonAscii: true, decimal: true })).toBe('&#12354;')
+    expect(encodeHTML('あ', { encodeNonAscii: true, decimal: true })).toBe(
+      '&#12354;'
+    )
   })
 
   it('should handle empty string', () => {
@@ -53,7 +63,8 @@ describe('encodeHTML', () => {
 
   it('should encode all special characters in complex HTML', () => {
     const html = '<script>alert("Hello & Goodbye")</script>'
-    const encoded = '&lt;script&gt;alert(&quot;Hello &amp; Goodbye&quot;)&lt;&#x2F;script&gt;'
+    const encoded =
+      '&lt;script&gt;alert(&quot;Hello &amp; Goodbye&quot;)&lt;&#x2F;script&gt;'
     expect(encodeHTML(html)).toBe(encoded)
   })
 })
@@ -86,11 +97,13 @@ describe('decodeHTML', () => {
     expect(decodeHTML('&copy;')).toBe('©')
     expect(decodeHTML('&euro;')).toBe('€')
     expect(decodeHTML('&frac12;')).toBe('½')
-    expect(decodeHTML('&nbsp;')).toBe(' ')
+    expect(decodeHTML('&nbsp;')).toBe('\u00A0')
   })
 
   it('should decode multiple entities in text', () => {
-    expect(decodeHTML('&lt;p&gt;Hello &amp; &quot;World&quot;&lt;/p&gt;')).toBe('<p>Hello & "World"</p>')
+    expect(decodeHTML('&lt;p&gt;Hello &amp; &quot;World&quot;&lt;/p&gt;')).toBe(
+      '<p>Hello & "World"</p>'
+    )
   })
 
   it('should decode mixed entity types', () => {
@@ -113,8 +126,12 @@ describe('decodeHTML', () => {
 
 describe('encodeAttribute', () => {
   it('should encode attribute values', () => {
-    expect(encodeAttribute('value with "quotes"')).toBe('value with &quot;quotes&quot;')
-    expect(encodeAttribute("value with 'quotes'")).toBe('value with &#39;quotes&#39;')
+    expect(encodeAttribute('value with "quotes"')).toBe(
+      'value with &quot;quotes&quot;'
+    )
+    expect(encodeAttribute("value with 'quotes'")).toBe(
+      'value with &#39;quotes&#39;'
+    )
     expect(encodeAttribute('value & more')).toBe('value &amp; more')
   })
 
@@ -135,7 +152,9 @@ describe('stripTags', () => {
   })
 
   it('should handle attributes in tags', () => {
-    expect(stripTags('<a href="https://example.com" class="link">Link</a>')).toBe('Link')
+    expect(
+      stripTags('<a href="https://example.com" class="link">Link</a>')
+    ).toBe('Link')
   })
 
   it('should handle text without tags', () => {

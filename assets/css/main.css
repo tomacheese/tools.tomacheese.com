@@ -264,62 +264,62 @@ body {
   .container {
     padding: 0 0.5rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
   }
-  
+
   .nav {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
   }
-  
+
   .main-layout {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #e2e8f0;
     padding: 1rem;
   }
-  
+
   .sidebar-nav {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  
+
   .sidebar-nav li {
     margin-bottom: 0;
   }
-  
+
   .sidebar-nav a {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
   }
-  
+
   .main-content {
     padding: 1rem;
   }
-  
+
   .tool-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .tool-card {
     padding: 1rem;
   }
-  
+
   .tool-content {
     padding: 1rem;
   }
-  
+
   .tool-header h1 {
     font-size: 1.5rem;
   }
@@ -329,15 +329,15 @@ body {
   .container {
     padding: 0 0.25rem;
   }
-  
+
   .logo {
     font-size: 1.25rem;
   }
-  
+
   .tool-header h1 {
     font-size: 1.25rem;
   }
-  
+
   .btn {
     padding: 0.625rem 1.25rem;
     font-size: 0.875rem;
@@ -345,21 +345,45 @@ body {
 }
 
 /* Utilities */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
 
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-4 { margin-top: 1rem; }
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-4 { margin-bottom: 1rem; }
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
 
-.p-2 { padding: 0.5rem; }
-.p-4 { padding: 1rem; }
+.p-2 {
+  padding: 0.5rem;
+}
+.p-4 {
+  padding: 1rem;
+}
 
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
 /* Loading and States */
 .loading {
@@ -373,6 +397,10 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

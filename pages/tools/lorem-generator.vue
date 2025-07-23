@@ -1,7 +1,10 @@
 <template>
   <div class="lorem-generator">
     <h1>Lorem Ipsum生成</h1>
-    <p>ダミーテキスト（Lorem Ipsum）を生成します。デザインやレイアウトのテスト用にご利用ください。</p>
+    <p>
+      ダミーテキスト（Lorem
+      Ipsum）を生成します。デザインやレイアウトのテスト用にご利用ください。
+    </p>
 
     <div class="settings">
       <div class="form-group">
@@ -34,9 +37,7 @@
         </label>
       </div>
 
-      <button class="generate-btn" @click="generateText">
-        生成
-      </button>
+      <button class="generate-btn" @click="generateText">生成</button>
     </div>
 
     <div v-if="generatedText" class="result">
@@ -49,7 +50,7 @@
           <span class="character-count">{{ generatedText.length }}文字</span>
         </div>
       </div>
-      
+
       <textarea
         v-model="generatedText"
         class="result-text"
@@ -65,7 +66,7 @@
         16世紀からタイポグラフィの分野で標準的なダミーテキストとして使用されており、
         内容に気を取られることなくデザインに集中できるという利点があります。
       </p>
-      
+
       <h4>使用例</h4>
       <ul>
         <li>Webサイトのモックアップ作成</li>
@@ -81,7 +82,9 @@
 import { ref, computed } from 'vue'
 
 // フォームの状態
-const type = ref<'paragraphs' | 'sentences' | 'words' | 'characters'>('paragraphs')
+const type = ref<'paragraphs' | 'sentences' | 'words' | 'characters'>(
+  'paragraphs'
+)
 const count = ref(3)
 const startWithLorem = ref(true)
 const generatedText = ref('')
@@ -89,42 +92,153 @@ const copyStatus = ref('コピー')
 
 // Lorem Ipsum単語リスト
 const loremWords = [
-  'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
-  'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
-  'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud',
-  'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo',
-  'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate',
-  'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint',
-  'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia',
-  'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum', 'at', 'vero', 'eos',
-  'accusamus', 'accusantium', 'doloremque', 'laudantium', 'totam', 'rem',
-  'aperiam', 'eaque', 'ipsa', 'quae', 'ab', 'illo', 'inventore', 'veritatis',
-  'et', 'quasi', 'architecto', 'beatae', 'vitae', 'dicta', 'sunt', 'explicabo',
-  'nemo', 'ipsam', 'voluptatem', 'quia', 'voluptas', 'aspernatur', 'aut',
-  'odit', 'fugit', 'sed', 'quia', 'consequuntur', 'magni', 'dolores', 'ratione',
-  'sequi', 'nesciunt', 'neque', 'porro', 'quisquam', 'dolorem', 'adipisci',
-  'numquam', 'eius', 'modi', 'tempora', 'incidunt', 'magnam', 'quaerat'
+  'lorem',
+  'ipsum',
+  'dolor',
+  'sit',
+  'amet',
+  'consectetur',
+  'adipiscing',
+  'elit',
+  'sed',
+  'do',
+  'eiusmod',
+  'tempor',
+  'incididunt',
+  'ut',
+  'labore',
+  'et',
+  'dolore',
+  'magna',
+  'aliqua',
+  'enim',
+  'ad',
+  'minim',
+  'veniam',
+  'quis',
+  'nostrud',
+  'exercitation',
+  'ullamco',
+  'laboris',
+  'nisi',
+  'aliquip',
+  'ex',
+  'ea',
+  'commodo',
+  'consequat',
+  'duis',
+  'aute',
+  'irure',
+  'in',
+  'reprehenderit',
+  'voluptate',
+  'velit',
+  'esse',
+  'cillum',
+  'fugiat',
+  'nulla',
+  'pariatur',
+  'excepteur',
+  'sint',
+  'occaecat',
+  'cupidatat',
+  'non',
+  'proident',
+  'sunt',
+  'culpa',
+  'qui',
+  'officia',
+  'deserunt',
+  'mollit',
+  'anim',
+  'id',
+  'est',
+  'laborum',
+  'at',
+  'vero',
+  'eos',
+  'accusamus',
+  'accusantium',
+  'doloremque',
+  'laudantium',
+  'totam',
+  'rem',
+  'aperiam',
+  'eaque',
+  'ipsa',
+  'quae',
+  'ab',
+  'illo',
+  'inventore',
+  'veritatis',
+  'et',
+  'quasi',
+  'architecto',
+  'beatae',
+  'vitae',
+  'dicta',
+  'sunt',
+  'explicabo',
+  'nemo',
+  'ipsam',
+  'voluptatem',
+  'quia',
+  'voluptas',
+  'aspernatur',
+  'aut',
+  'odit',
+  'fugit',
+  'sed',
+  'quia',
+  'consequuntur',
+  'magni',
+  'dolores',
+  'ratione',
+  'sequi',
+  'nesciunt',
+  'neque',
+  'porro',
+  'quisquam',
+  'dolorem',
+  'adipisci',
+  'numquam',
+  'eius',
+  'modi',
+  'tempora',
+  'incidunt',
+  'magnam',
+  'quaerat',
 ]
 
 // 最大数量
 const maxCount = computed(() => {
   switch (type.value) {
-    case 'paragraphs': return 20
-    case 'sentences': return 100
-    case 'words': return 1000
-    case 'characters': return 10000
-    default: return 10
+    case 'paragraphs':
+      return 20
+    case 'sentences':
+      return 100
+    case 'words':
+      return 1000
+    case 'characters':
+      return 10000
+    default:
+      return 10
   }
 })
 
 // カウントラベル
 const getCountLabel = () => {
   switch (type.value) {
-    case 'paragraphs': return '1-20段落'
-    case 'sentences': return '1-100文'
-    case 'words': return '1-1000単語'
-    case 'characters': return '1-10000文字'
-    default: return ''
+    case 'paragraphs':
+      return '1-20段落'
+    case 'sentences':
+      return '1-100文'
+    case 'words':
+      return '1-1000単語'
+    case 'characters':
+      return '1-10000文字'
+    default:
+      return ''
   }
 }
 
@@ -135,35 +249,37 @@ const getRandomWord = (): string => {
 
 // ランダムな文を生成
 const generateSentence = (minWords = 4, maxWords = 18): string => {
-  const wordCount = Math.floor(Math.random() * (maxWords - minWords + 1)) + minWords
+  const wordCount =
+    Math.floor(Math.random() * (maxWords - minWords + 1)) + minWords
   const words = []
-  
+
   for (let i = 0; i < wordCount; i++) {
     words.push(getRandomWord())
   }
-  
+
   // 最初の文字を大文字に
   words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1)
-  
-  return `${words.join(' ')  }.`
+
+  return `${words.join(' ')}.`
 }
 
 // ランダムな段落を生成
 const generateParagraph = (minSentences = 3, maxSentences = 8): string => {
-  const sentenceCount = Math.floor(Math.random() * (maxSentences - minSentences + 1)) + minSentences
+  const sentenceCount =
+    Math.floor(Math.random() * (maxSentences - minSentences + 1)) + minSentences
   const sentences = []
-  
+
   for (let i = 0; i < sentenceCount; i++) {
     sentences.push(generateSentence())
   }
-  
+
   return sentences.join(' ')
 }
 
 // テキスト生成のメイン関数
 const generateText = () => {
   let result = ''
-  
+
   if (count.value < 1 || count.value > maxCount.value) {
     return
   }
@@ -190,11 +306,12 @@ const generateText = () => {
 // 文字数指定で生成
 const generateCharacters = (charCount: number): string => {
   let result = ''
-  
+
   if (startWithLorem.value) {
-    result = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
+    result =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '
   }
-  
+
   while (result.length < charCount) {
     const word = getRandomWord()
     if (result.length + word.length + 1 <= charCount) {
@@ -203,52 +320,65 @@ const generateCharacters = (charCount: number): string => {
       break
     }
   }
-  
+
   return result.substring(0, charCount)
 }
 
 // 単語数指定で生成
 const generateWords = (wordCount: number): string => {
   const words = []
-  
+
   if (startWithLorem.value) {
-    words.push('Lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit')
+    words.push(
+      'Lorem',
+      'ipsum',
+      'dolor',
+      'sit',
+      'amet',
+      'consectetur',
+      'adipiscing',
+      'elit'
+    )
   }
-  
+
   while (words.length < wordCount) {
     words.push(getRandomWord())
   }
-  
-  return `${words.slice(0, wordCount).join(' ')  }.`
+
+  return `${words.slice(0, wordCount).join(' ')}.`
 }
 
 // 文数指定で生成
 const generateSentences = (sentenceCount: number): string => {
   const sentences = []
-  
+
   if (startWithLorem.value && sentenceCount > 0) {
-    sentences.push('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.')
+    sentences.push(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    )
   }
-  
+
   while (sentences.length < sentenceCount) {
     sentences.push(generateSentence())
   }
-  
+
   return sentences.slice(0, sentenceCount).join(' ')
 }
 
 // 段落数指定で生成
 const generateParagraphs = (paragraphCount: number): string => {
   const paragraphs = []
-  
+
   if (startWithLorem.value && paragraphCount > 0) {
-    paragraphs.push('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
+    paragraphs.push(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    )
   }
-  
+
   while (paragraphs.length < paragraphCount) {
     paragraphs.push(generateParagraph())
   }
-  
+
   return paragraphs.slice(0, paragraphCount).join('\n\n')
 }
 
@@ -275,8 +405,12 @@ generateText()
 useHead({
   title: 'Lorem Ipsum生成 - Tools.tomacheese.com',
   meta: [
-    { name: 'description', content: 'ダミーテキスト（Lorem Ipsum）を生成するツールです。段落、文、単語、文字数を指定して生成できます。' }
-  ]
+    {
+      name: 'description',
+      content:
+        'ダミーテキスト（Lorem Ipsum）を生成するツールです。段落、文、単語、文字数を指定して生成できます。',
+    },
+  ],
 })
 </script>
 
@@ -419,7 +553,7 @@ h3 {
   color: #24292e;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   margin-right: 8px;
 }
 

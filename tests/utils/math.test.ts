@@ -11,7 +11,7 @@ import {
   convertBase,
   randomInt,
   calculatePercentage,
-  calculateValueFromPercentage
+  calculateValueFromPercentage,
 } from '~/utils/math'
 
 describe('Math utilities', () => {
@@ -198,6 +198,7 @@ describe('Math utilities', () => {
     it('should throw error for invalid numbers', () => {
       expect(() => convertBase('XYZ', 10, 2)).toThrow()
       expect(() => convertBase('123', 2, 10)).toThrow() // 2 and 3 are not valid in base 2
+      expect(() => convertBase('A', 9, 10)).toThrow() // A is not valid in base 9
     })
   })
 

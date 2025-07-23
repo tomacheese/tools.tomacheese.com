@@ -17,7 +17,9 @@ export class QRCode {
   constructor(text: string) {
     // 簡易実装のため、固定サイズのQRコードを生成
     this.size = 25
-    this.modules = Array(this.size).fill(null).map(() => Array(this.size).fill(false))
+    this.modules = Array(this.size)
+      .fill(null)
+      .map(() => Array(this.size).fill(false))
     this.generatePattern(text)
   }
 
@@ -40,9 +42,11 @@ export class QRCode {
         if (row + r <= -1 || this.size <= row + r) continue
         if (col + c <= -1 || this.size <= col + c) continue
 
-        if ((0 <= r && r <= 6 && (c === 0 || c === 6)) ||
-            (0 <= c && c <= 6 && (r === 0 || r === 6)) ||
-            (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
+        if (
+          (0 <= r && r <= 6 && (c === 0 || c === 6)) ||
+          (0 <= c && c <= 6 && (r === 0 || r === 6)) ||
+          (2 <= r && r <= 4 && 2 <= c && c <= 4)
+        ) {
           this.modules[row + r][col + c] = true
         } else {
           this.modules[row + r][col + c] = false
@@ -82,7 +86,8 @@ export class QRCode {
           if (this.modules[y][x] !== null) continue
 
           if (dataIndex < data.length) {
-            const bit = (data[Math.floor(dataIndex / 8)] >> (7 - (dataIndex % 8))) & 1
+            const bit =
+              (data[Math.floor(dataIndex / 8)] >> (7 - (dataIndex % 8))) & 1
             this.modules[y][x] = bit === 1
             dataIndex++
           } else {
@@ -156,10 +161,13 @@ export class QRCode {
   }
 }
 
-export function generateQRCode(text: string, options?: QRCodeOptions): { dataURL: string; svg: string } {
+export function generateQRCode(
+  text: string,
+  options?: QRCodeOptions
+): { dataURL: string; svg: string } {
   const qr = new QRCode(text)
   return {
     dataURL: qr.toDataURL(options),
-    svg: qr.toSVG(options)
+    svg: qr.toSVG(options),
   }
 }

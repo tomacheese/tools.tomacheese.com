@@ -27,7 +27,9 @@
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
         <p>画像をドラッグ＆ドロップ</p>
-        <p class="drop-zone-text">または<span class="highlight">クリックして選択</span></p>
+        <p class="drop-zone-text">
+          または<span class="highlight">クリックして選択</span>
+        </p>
         <p class="drop-zone-formats">対応形式: JPEG, PNG, GIF, WebP, BMP</p>
       </div>
       <input
@@ -47,10 +49,18 @@
           <img :src="imageData.dataUrl" alt="Preview" class="preview-image" />
           <div class="image-info">
             <p><strong>ファイル名:</strong> {{ fileName }}</p>
-            <p><strong>元のサイズ:</strong> {{ formatFileSize(originalSize) }}</p>
-            <p><strong>Base64サイズ:</strong> {{ formatFileSize(imageData.size) }}</p>
+            <p>
+              <strong>元のサイズ:</strong> {{ formatFileSize(originalSize) }}
+            </p>
+            <p>
+              <strong>Base64サイズ:</strong>
+              {{ formatFileSize(imageData.size) }}
+            </p>
             <p><strong>サイズ増加率:</strong> {{ sizeIncrease }}%</p>
-            <p><strong>画像サイズ:</strong> {{ imageData.width }} × {{ imageData.height }}px</p>
+            <p>
+              <strong>画像サイズ:</strong> {{ imageData.width }} ×
+              {{ imageData.height }}px
+            </p>
             <p><strong>形式:</strong> {{ imageData.mimeType }}</p>
           </div>
         </div>
@@ -60,19 +70,11 @@
         <h3>変換結果</h3>
         <div class="format-selector">
           <label>
-            <input
-              v-model="outputFormat"
-              type="radio"
-              value="dataUrl"
-            />
+            <input v-model="outputFormat" type="radio" value="dataUrl" />
             Data URL形式（埋め込み用）
           </label>
           <label>
-            <input
-              v-model="outputFormat"
-              type="radio"
-              value="base64"
-            />
+            <input v-model="outputFormat" type="radio" value="base64" />
             Base64文字列のみ
           </label>
         </div>
@@ -111,12 +113,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import {
-  formatFileSize,
   copyToClipboard,
   downloadAsText,
   type Base64Result,
-  imageToBase64
+  imageToBase64,
 } from '~/utils/imageToBase64'
+import { formatFileSize } from '~/utils/imageResizer'
 
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement>()
@@ -136,7 +138,9 @@ const outputText = computed(() => {
 
 const sizeIncrease = computed(() => {
   if (!imageData.value || originalSize.value === 0) return 0
-  return Math.round(((imageData.value.size - originalSize.value) / originalSize.value) * 100)
+  return Math.round(
+    ((imageData.value.size - originalSize.value) / originalSize.value) * 100
+  )
 })
 
 const triggerFileInput = () => {
@@ -146,7 +150,7 @@ const triggerFileInput = () => {
 const handleDrop = (e: DragEvent) => {
   e.preventDefault()
   isDragging.value = false
-  
+
   const files = e.dataTransfer?.files
   if (files && files.length > 0) {
     processFile(files[0])
@@ -163,22 +167,22 @@ const handleFileSelect = (e: Event) => {
 
 const processFile = async (file: File) => {
   error.value = ''
-  
+
   // Check if file is an image
   if (!file.type.startsWith('image/')) {
     error.value = '画像ファイルを選択してください。'
     return
   }
-  
+
   // Check file size (limit to 10MB)
   if (file.size > 10 * 1024 * 1024) {
     error.value = 'ファイルサイズは10MB以下にしてください。'
     return
   }
-  
+
   fileName.value = file.name
   originalSize.value = file.size
-  
+
   try {
     const result = await imageToBase64(file)
     imageData.value = result
@@ -210,9 +214,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '画像ファイルをBase64エンコードされた文字列に変換します。ドラッグ＆ドロップ対応、プレビュー表示、Data URL形式とBase64文字列の切り替えが可能です。'
-    }
-  ]
+      content:
+        '画像ファイルをBase64エンコードされた文字列に変換します。ドラッグ＆ドロップ対応、プレビュー表示、Data URL形式とBase64文字列の切り替えが可能です。',
+    },
+  ],
 })
 </script>
 
@@ -312,7 +317,7 @@ useHead({
   cursor: pointer;
 }
 
-.format-selector input[type="radio"] {
+.format-selector input[type='radio'] {
   margin-right: 0.5rem;
 }
 
@@ -401,19 +406,19 @@ useHead({
   .tool-container {
     padding: 1rem;
   }
-  
+
   .preview-container {
     grid-template-columns: 1fr;
   }
-  
+
   .drop-zone {
     padding: 2rem;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .btn {
     width: 100%;
   }

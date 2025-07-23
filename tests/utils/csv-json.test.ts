@@ -4,7 +4,7 @@ import {
   jsonToCSV,
   detectDelimiter,
   validateJSON,
-  formatJSON
+  formatJSON,
 } from '~/utils/csv-json'
 
 describe('parseCSV', () => {
@@ -12,22 +12,22 @@ describe('parseCSV', () => {
     const csv = `name,age,city
 John,30,Tokyo
 Jane,25,Osaka`
-    
+
     const result = parseCSV(csv)
     expect(result).toEqual([
       { name: 'John', age: '30', city: 'Tokyo' },
-      { name: 'Jane', age: '25', city: 'Osaka' }
+      { name: 'Jane', age: '25', city: 'Osaka' },
     ])
   })
 
   it('should parse CSV without headers', () => {
     const csv = `John,30,Tokyo
 Jane,25,Osaka`
-    
+
     const result = parseCSV(csv, { headers: false })
     expect(result).toEqual([
       ['John', '30', 'Tokyo'],
-      ['Jane', '25', 'Osaka']
+      ['Jane', '25', 'Osaka'],
     ])
   })
 
@@ -35,11 +35,11 @@ Jane,25,Osaka`
     const csv = `name,description
 "Product A","High quality, affordable"
 "Product B","Contains ""special"" features"`
-    
+
     const result = parseCSV(csv)
     expect(result).toEqual([
       { name: 'Product A', description: 'High quality, affordable' },
-      { name: 'Product B', description: 'Contains "special" features' }
+      { name: 'Product B', description: 'Contains "special" features' },
     ])
   })
 
@@ -47,11 +47,11 @@ Jane,25,Osaka`
     const csv = `name;age;city
 John;30;Tokyo
 Jane;25;Osaka`
-    
+
     const result = parseCSV(csv, { delimiter: ';' })
     expect(result).toEqual([
       { name: 'John', age: '30', city: 'Tokyo' },
-      { name: 'Jane', age: '25', city: 'Osaka' }
+      { name: 'Jane', age: '25', city: 'Osaka' },
     ])
   })
 
@@ -59,11 +59,11 @@ Jane;25;Osaka`
     const csv = `name\tage\tcity
 John\t30\tTokyo
 Jane\t25\tOsaka`
-    
+
     const result = parseCSV(csv, { delimiter: '\t' })
     expect(result).toEqual([
       { name: 'John', age: '30', city: 'Tokyo' },
-      { name: 'Jane', age: '25', city: 'Osaka' }
+      { name: 'Jane', age: '25', city: 'Osaka' },
     ])
   })
 
@@ -74,11 +74,11 @@ John,30
 Jane,25
 
 `
-    
+
     const result = parseCSV(csv, { skipEmptyRows: true })
     expect(result).toEqual([
       { name: 'John', age: '30' },
-      { name: 'Jane', age: '25' }
+      { name: 'Jane', age: '25' },
     ])
   })
 
@@ -87,12 +87,12 @@ Jane,25
 John,30
 
 Jane,25`
-    
+
     const result = parseCSV(csv, { skipEmptyRows: false })
     expect(result).toEqual([
       { name: 'John', age: '30' },
       { name: '', age: '' },
-      { name: 'Jane', age: '25' }
+      { name: 'Jane', age: '25' },
     ])
   })
 
@@ -100,11 +100,11 @@ Jane,25`
     const csv = `name,age
  John ,  30  
   Jane  ,25`
-    
+
     const result = parseCSV(csv, { trimValues: true })
     expect(result).toEqual([
       { name: 'John', age: '30' },
-      { name: 'Jane', age: '25' }
+      { name: 'Jane', age: '25' },
     ])
   })
 
@@ -112,11 +112,11 @@ Jane,25`
     const csv = `name,age
  John ,  30  
   Jane  ,25`
-    
+
     const result = parseCSV(csv, { trimValues: false })
     expect(result).toEqual([
       { name: ' John ', age: '  30  ' },
-      { name: '  Jane  ', age: '25' }
+      { name: '  Jane  ', age: '25' },
     ])
   })
 
@@ -136,11 +136,11 @@ Jane,25`
 "Product A","Line 1
 Line 2"
 "Product B","Single line"`
-    
+
     const result = parseCSV(csv)
     expect(result).toEqual([
       { name: 'Product A', description: 'Line 1\nLine 2' },
-      { name: 'Product B', description: 'Single line' }
+      { name: 'Product B', description: 'Single line' },
     ])
   })
 
@@ -149,12 +149,12 @@ Line 2"
 John,30,Tokyo
 Jane,25
 Mike`
-    
+
     const result = parseCSV(csv)
     expect(result).toEqual([
       { name: 'John', age: '30', city: 'Tokyo' },
       { name: 'Jane', age: '25', city: '' },
-      { name: 'Mike', age: '', city: '' }
+      { name: 'Mike', age: '', city: '' },
     ])
   })
 })
@@ -163,9 +163,9 @@ describe('jsonToCSV', () => {
   it('should convert array of objects to CSV', () => {
     const data = [
       { name: 'John', age: 30, city: 'Tokyo' },
-      { name: 'Jane', age: 25, city: 'Osaka' }
+      { name: 'Jane', age: 25, city: 'Osaka' },
     ]
-    
+
     const result = jsonToCSV(data)
     expect(result).toBe('name,age,city\nJohn,30,Tokyo\nJane,25,Osaka')
   })
@@ -173,9 +173,9 @@ describe('jsonToCSV', () => {
   it('should convert array of arrays to CSV', () => {
     const data = [
       ['John', 30, 'Tokyo'],
-      ['Jane', 25, 'Osaka']
+      ['Jane', 25, 'Osaka'],
     ]
-    
+
     const result = jsonToCSV(data)
     expect(result).toBe('John,30,Tokyo\nJane,25,Osaka')
   })
@@ -184,9 +184,9 @@ describe('jsonToCSV', () => {
     const data = [
       { name: 'John', age: 30 },
       { name: 'Jane', city: 'Osaka' },
-      { age: 25, city: 'Tokyo', country: 'Japan' }
+      { age: 25, city: 'Tokyo', country: 'Japan' },
     ]
-    
+
     const result = jsonToCSV(data)
     const lines = result.split('\n')
     expect(lines[0]).toContain('name')
@@ -198,9 +198,9 @@ describe('jsonToCSV', () => {
   it('should quote fields containing special characters', () => {
     const data = [
       { name: 'John, Jr.', description: 'Uses "quotes"' },
-      { name: 'Jane\nDoe', description: 'Multi\nline' }
+      { name: 'Jane\nDoe', description: 'Multi\nline' },
     ]
-    
+
     const result = jsonToCSV(data)
     expect(result).toContain('"John, Jr."')
     expect(result).toContain('"Uses ""quotes"""')
@@ -210,9 +210,9 @@ describe('jsonToCSV', () => {
   it('should use custom delimiter', () => {
     const data = [
       { name: 'John', age: 30 },
-      { name: 'Jane', age: 25 }
+      { name: 'Jane', age: 25 },
     ]
-    
+
     const result = jsonToCSV(data, { delimiter: ';' })
     expect(result).toBe('name;age\nJohn;30\nJane;25')
   })
@@ -220,9 +220,9 @@ describe('jsonToCSV', () => {
   it('should skip headers when configured', () => {
     const data = [
       { name: 'John', age: 30 },
-      { name: 'Jane', age: 25 }
+      { name: 'Jane', age: 25 },
     ]
-    
+
     const result = jsonToCSV(data, { headers: false })
     expect(result).toBe('John,30\nJane,25')
   })
@@ -234,9 +234,9 @@ describe('jsonToCSV', () => {
   it('should handle null and undefined values', () => {
     const data = [
       { name: 'John', age: null, city: undefined },
-      { name: 'Jane', age: 25, city: 'Osaka' }
+      { name: 'Jane', age: 25, city: 'Osaka' },
     ]
-    
+
     const result = jsonToCSV(data)
     const lines = result.split('\n')
     expect(lines[1]).toBe('John,,')
@@ -246,9 +246,9 @@ describe('jsonToCSV', () => {
   it('should handle nested objects by converting to string', () => {
     const data = [
       { name: 'John', data: { level: 1 } },
-      { name: 'Jane', data: [1, 2, 3] }
+      { name: 'Jane', data: [1, 2, 3] },
     ]
-    
+
     const result = jsonToCSV(data)
     expect(result).toContain('[object Object]')
     expect(result).toContain('1,2,3')
@@ -260,7 +260,7 @@ describe('detectDelimiter', () => {
     const csv = `name,age,city
 John,30,Tokyo
 Jane,25,Osaka`
-    
+
     expect(detectDelimiter(csv)).toBe(',')
   })
 
@@ -268,7 +268,7 @@ Jane,25,Osaka`
     const csv = `name;age;city
 John;30;Tokyo
 Jane;25;Osaka`
-    
+
     expect(detectDelimiter(csv)).toBe(';')
   })
 
@@ -276,7 +276,7 @@ Jane;25;Osaka`
     const csv = `name\tage\tcity
 John\t30\tTokyo
 Jane\t25\tOsaka`
-    
+
     expect(detectDelimiter(csv)).toBe('\t')
   })
 
@@ -284,7 +284,7 @@ Jane\t25\tOsaka`
     const csv = `name|age|city
 John|30|Tokyo
 Jane|25|Osaka`
-    
+
     expect(detectDelimiter(csv)).toBe('|')
   })
 
@@ -303,7 +303,7 @@ John,30,Tokyo
 Jane,25,Osaka
 Mike;35;Kyoto
 Tom;40;Nagoya`
-    
+
     expect(detectDelimiter(csv)).toBe(',')
   })
 })
@@ -327,7 +327,7 @@ describe('validateJSON', () => {
   it('should provide error message for invalid JSON', () => {
     const result = validateJSON('{name: John}')
     expect(result.valid).toBe(false)
-    expect(result.error).toContain('Unexpected token')
+    expect(result.error).toContain('Expected property name')
   })
 
   it('should handle empty string', () => {
@@ -380,7 +380,8 @@ describe('formatJSON', () => {
   })
 
   it('should handle complex nested structures', () => {
-    const json = '{"user":{"name":"John","contacts":{"email":"john@example.com","phone":"+1234567890"}},"active":true}'
+    const json =
+      '{"user":{"name":"John","contacts":{"email":"john@example.com","phone":"+1234567890"}},"active":true}'
     const formatted = formatJSON(json)
     expect(formatted).toContain('"user": {')
     expect(formatted).toContain('"contacts": {')

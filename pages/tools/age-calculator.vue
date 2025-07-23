@@ -13,7 +13,7 @@
             type="date"
             :max="maxDate"
             @change="calculateCurrentAge"
-          >
+          />
         </div>
 
         <div class="input-group">
@@ -23,10 +23,8 @@
             v-model="targetDateString"
             type="date"
             @change="calculateCurrentAge"
-          >
-          <button class="today-button" @click="setToday">
-            今日
-          </button>
+          />
+          <button class="today-button" @click="setToday">今日</button>
         </div>
       </div>
     </div>
@@ -42,7 +40,10 @@
           <h3>詳細な年齢</h3>
           <div class="detail-item">
             <span class="label">年月日:</span>
-            <span class="value">{{ result.years }}歳 {{ result.months }}ヶ月 {{ result.days }}日</span>
+            <span class="value"
+              >{{ result.years }}歳 {{ result.months }}ヶ月
+              {{ result.days }}日</span
+            >
           </div>
           <div class="detail-item">
             <span class="label">総日数:</span>
@@ -50,15 +51,21 @@
           </div>
           <div class="detail-item">
             <span class="label">総時間:</span>
-            <span class="value">{{ result.totalHours.toLocaleString() }}時間</span>
+            <span class="value"
+              >{{ result.totalHours.toLocaleString() }}時間</span
+            >
           </div>
           <div class="detail-item">
             <span class="label">総分数:</span>
-            <span class="value">{{ result.totalMinutes.toLocaleString() }}分</span>
+            <span class="value"
+              >{{ result.totalMinutes.toLocaleString() }}分</span
+            >
           </div>
           <div class="detail-item">
             <span class="label">総秒数:</span>
-            <span class="value">{{ result.totalSeconds.toLocaleString() }}秒</span>
+            <span class="value"
+              >{{ result.totalSeconds.toLocaleString() }}秒</span
+            >
           </div>
         </div>
 
@@ -70,7 +77,9 @@
           </div>
           <div class="detail-item">
             <span class="label">月数:</span>
-            <span class="value">{{ ageInUnits.months.toLocaleString() }}ヶ月</span>
+            <span class="value"
+              >{{ ageInUnits.months.toLocaleString() }}ヶ月</span
+            >
           </div>
           <div class="detail-item">
             <span class="label">年数:</span>
@@ -78,7 +87,9 @@
           </div>
           <div class="detail-item">
             <span class="label">10年単位:</span>
-            <span class="value">{{ ageInUnits.decades.toLocaleString() }}0年</span>
+            <span class="value"
+              >{{ ageInUnits.decades.toLocaleString() }}0年</span
+            >
           </div>
           <div class="detail-item">
             <span class="label">世紀:</span>
@@ -102,7 +113,7 @@
           </div>
           <div class="detail-item">
             <span class="label">年齢:</span>
-            <span class="value">{{ result.years + (result.nextBirthday > targetDate ? 0 : 1) }}歳</span>
+            <span class="value">{{ result.years + 1 }}歳</span>
           </div>
         </div>
 
@@ -118,7 +129,9 @@
           </div>
           <div class="detail-item">
             <span class="label">うるう年:</span>
-            <span class="value">{{ isLeapYear(birthDate.getFullYear()) ? 'はい' : 'いいえ' }}</span>
+            <span class="value">{{
+              isLeapYear(birthDate.getFullYear()) ? 'はい' : 'いいえ'
+            }}</span>
           </div>
         </div>
       </div>
@@ -140,10 +153,26 @@
       <div class="fun-facts">
         <h3>豆知識</h3>
         <ul>
-          <li>あなたは約 {{ Math.floor(result.totalDays / 365.25 * 3) }} 回、地球の周りを太陽と一緒に回りました。</li>
-          <li>心臓は約 {{ Math.floor(result.totalMinutes * 70).toLocaleString() }} 回鼓動しました（平均70回/分として）。</li>
-          <li>約 {{ Math.floor(result.totalDays * 8).toLocaleString() }} 時間眠りました（1日8時間として）。</li>
-          <li>約 {{ Math.floor(result.totalDays * 3).toLocaleString() }} 回食事をしました（1日3回として）。</li>
+          <li>
+            あなたは約
+            {{ Math.floor((result.totalDays / 365.25) * 3) }}
+            回、地球の周りを太陽と一緒に回りました。
+          </li>
+          <li>
+            心臓は約
+            {{ Math.floor(result.totalMinutes * 70).toLocaleString() }}
+            回鼓動しました（平均70回/分として）。
+          </li>
+          <li>
+            約
+            {{ Math.floor(result.totalDays * 8).toLocaleString() }}
+            時間眠りました（1日8時間として）。
+          </li>
+          <li>
+            約
+            {{ Math.floor(result.totalDays * 3).toLocaleString() }}
+            回食事をしました（1日3回として）。
+          </li>
         </ul>
       </div>
     </div>
@@ -164,7 +193,7 @@ import {
   getDaysOfWeek,
   isLeapYear,
   getAgeInDifferentUnits,
-  type AgeResult
+  type AgeResult,
 } from '~/utils/ageCalculator'
 
 const birthDateString = ref('')
@@ -177,7 +206,8 @@ const targetDate = computed(() => new Date(targetDateString.value))
 const maxDate = computed(() => new Date().toISOString().split('T')[0])
 
 const ageInUnits = computed(() => {
-  if (!birthDateString.value) return { weeks: 0, months: 0, years: 0, decades: 0, centuries: 0 }
+  if (!birthDateString.value)
+    return { weeks: 0, months: 0, years: 0, decades: 0, centuries: 0 }
   return getAgeInDifferentUnits(birthDate.value, targetDate.value)
 })
 
@@ -210,7 +240,7 @@ const calculateCurrentAge = () => {
 const setToday = () => {
   targetDateString.value = new Date().toISOString().split('T')[0]
   if (birthDateString.value) {
-    calculateAge()
+    calculateCurrentAge()
   }
 }
 
@@ -219,9 +249,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '生年月日から現在の年齢を詳細に計算します。総日数、次の誕生日、星座、干支なども表示。'
-    }
-  ]
+      content:
+        '生年月日から現在の年齢を詳細に計算します。総日数、次の誕生日、星座、干支なども表示。',
+    },
+  ],
 })
 </script>
 
@@ -252,7 +283,7 @@ useHead({
   font-weight: 500;
 }
 
-.input-group input[type="date"] {
+.input-group input[type='date'] {
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;

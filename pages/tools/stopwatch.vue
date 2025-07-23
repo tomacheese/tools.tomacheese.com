@@ -1,7 +1,9 @@
 <template>
   <div class="tool-container">
     <h1>ストップウォッチ</h1>
-    <p>高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。</p>
+    <p>
+      高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。
+    </p>
 
     <div class="stopwatch-layout">
       <div class="display-section">
@@ -16,12 +18,16 @@
 
         <div class="controls">
           <button
-            :class="['control-button', 'primary', { running: stopwatch.isRunning }]"
+            :class="[
+              'control-button',
+              'primary',
+              { running: stopwatch.isRunning },
+            ]"
             @click="toggleStopwatch"
           >
             {{ stopwatch.isRunning ? '停止' : '開始' }}
           </button>
-          
+
           <button
             :class="['control-button', 'secondary']"
             :disabled="!stopwatch.isRunning && stopwatch.elapsedTime === 0"
@@ -62,24 +68,29 @@
               データをエクスポート
             </button>
           </div>
-          
+
           <div class="laps-table">
             <div class="lap-header">
               <span class="lap-number">ラップ</span>
               <span class="lap-time">ラップタイム</span>
               <span class="total-time">合計時間</span>
             </div>
-            
+
             <div
               v-for="lap in reversedLaps"
               :key="lap.id"
-              :class="['lap-row', {
-                'best-lap': lap.id === bestLap?.id,
-                'worst-lap': lap.id === worstLap?.id
-              }]"
+              :class="[
+                'lap-row',
+                {
+                  'best-lap': lap.id === bestLap?.id,
+                  'worst-lap': lap.id === worstLap?.id,
+                },
+              ]"
             >
               <span class="lap-number">{{ lap.id }}</span>
-              <span class="lap-time">{{ formatTimeToString(lap.lapTime) }}</span>
+              <span class="lap-time">{{
+                formatTimeToString(lap.lapTime)
+              }}</span>
               <span class="total-time">{{ formatTimeToString(lap.time) }}</span>
             </div>
           </div>
@@ -88,7 +99,9 @@
         <div v-else class="no-laps">
           <div class="no-laps-content">
             <h3>ラップタイムなし</h3>
-            <p>ストップウォッチを開始してラップボタンを押すと、ラップタイムが記録されます。</p>
+            <p>
+              ストップウォッチを開始してラップボタンを押すと、ラップタイムが記録されます。
+            </p>
           </div>
         </div>
       </div>
@@ -128,7 +141,7 @@ import {
   getWorstLap,
   getAverageLapTime,
   exportStopwatchData,
-  type StopwatchState
+  type StopwatchState,
 } from '~/utils/stopwatch'
 
 const stopwatch = ref<StopwatchState>(createStopwatch())
@@ -197,7 +210,10 @@ const clearUpdateInterval = () => {
 
 const handleKeydown = (event: KeyboardEvent) => {
   // Prevent keyboard shortcuts when typing in inputs
-  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+  if (
+    event.target instanceof HTMLInputElement ||
+    event.target instanceof HTMLTextAreaElement
+  ) {
     return
   }
 
@@ -251,9 +267,10 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '高精度なストップウォッチツール。ラップタイムの記録、統計表示、データエクスポート機能付き。'
-    }
-  ]
+      content:
+        '高精度なストップウォッチツール。ラップタイムの記録、統計表示、データエクスポート機能付き。',
+    },
+  ],
 })
 </script>
 

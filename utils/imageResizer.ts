@@ -24,7 +24,7 @@ export function getImageInfo(file: File): Promise<ImageInfo> {
         width: img.width,
         height: img.height,
         size: file.size,
-        type: file.type
+        type: file.type,
       })
     }
 
@@ -44,7 +44,7 @@ export function resizeImage(file: File, options: ResizeOptions): Promise<Blob> {
 
     img.onload = () => {
       URL.revokeObjectURL(url)
-      
+
       const canvas = document.createElement('canvas')
       const ctx = canvas.getContext('2d')
       if (!ctx) {
@@ -75,13 +75,17 @@ export function resizeImage(file: File, options: ResizeOptions): Promise<Blob> {
       const mimeType = getMimeTypeFromFormat(format)
       const quality = options.quality || 0.92
 
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob)
-        } else {
-          reject(new Error('Failed to create blob'))
-        }
-      }, mimeType, quality)
+      canvas.toBlob(
+        blob => {
+          if (blob) {
+            resolve(blob)
+          } else {
+            reject(new Error('Failed to create blob'))
+          }
+        },
+        mimeType,
+        quality
+      )
     }
 
     img.onerror = () => {
@@ -107,7 +111,7 @@ function calculateDimensions(
   if (!maintainAspectRatio) {
     return {
       width: targetWidth || originalWidth,
-      height: targetHeight || originalHeight
+      height: targetHeight || originalHeight,
     }
   }
 
@@ -120,26 +124,26 @@ function calculateDimensions(
       // Image is wider
       return {
         width: targetWidth,
-        height: Math.round(targetWidth / aspectRatio)
+        height: Math.round(targetWidth / aspectRatio),
       }
     } else {
       // Image is taller
       return {
         width: Math.round(targetHeight * aspectRatio),
-        height: targetHeight
+        height: targetHeight,
       }
     }
   } else if (targetWidth) {
     // Only width specified
     return {
       width: targetWidth,
-      height: Math.round(targetWidth / aspectRatio)
+      height: Math.round(targetWidth / aspectRatio),
     }
   } else if (targetHeight) {
     // Only height specified
     return {
       width: Math.round(targetHeight * aspectRatio),
-      height: targetHeight
+      height: targetHeight,
     }
   }
 
@@ -171,11 +175,11 @@ function getMimeTypeFromFormat(format: 'jpeg' | 'png' | 'webp'): string {
 
 export function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const sizes = ['Bytes', 'KB', 'MB', 'GB']
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
 
@@ -190,7 +194,11 @@ export function downloadImage(blob: Blob, filename: string) {
   URL.revokeObjectURL(url)
 }
 
-export function generateFilename(originalName: string, format: string, suffix = 'resized'): string {
+export function generateFilename(
+  originalName: string,
+  format: string,
+  suffix = 'resized'
+): string {
   const parts = originalName.split('.')
   const nameWithoutExt = parts.slice(0, -1).join('.')
   return `${nameWithoutExt}_${suffix}.${format}`

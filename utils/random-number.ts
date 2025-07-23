@@ -20,24 +20,30 @@ export interface RandomNumberResult {
 /**
  * Generate a single random number between min and max with specified decimal places
  */
-export function generateRandomNumber(min: number, max: number, decimals: number = 0): number {
+export function generateRandomNumber(
+  min: number,
+  max: number,
+  decimals: number = 0
+): number {
   if (min > max) {
     throw new Error('最小値は最大値以下である必要があります')
   }
 
   const random = Math.random() * (max - min) + min
-  
+
   if (decimals === 0) {
     return Math.floor(random)
   }
-  
+
   return Math.round(random * Math.pow(10, decimals)) / Math.pow(10, decimals)
 }
 
 /**
  * Generate multiple random numbers with options
  */
-export function generateRandomNumbers(options: RandomNumberOptions): RandomNumberResult {
+export function generateRandomNumbers(
+  options: RandomNumberOptions
+): RandomNumberResult {
   const { min, max, count, decimals, allowDuplicates } = options
 
   if (min > max) {
@@ -56,7 +62,9 @@ export function generateRandomNumbers(options: RandomNumberOptions): RandomNumbe
   if (!allowDuplicates && decimals === 0) {
     const possibleValues = Math.floor(max) - Math.floor(min) + 1
     if (count > possibleValues) {
-      throw new Error(`重複なしの場合、生成可能な整数は最大${possibleValues}個です`)
+      throw new Error(
+        `重複なしの場合、生成可能な整数は最大${possibleValues}個です`
+      )
     }
   }
 
@@ -71,9 +79,11 @@ export function generateRandomNumbers(options: RandomNumberOptions): RandomNumbe
     do {
       number = generateRandomNumber(min, max, decimals)
       attempts++
-      
+
       if (attempts > maxAttempts) {
-        throw new Error('重複のない乱数の生成に失敗しました。範囲を広げてください')
+        throw new Error(
+          '重複のない乱数の生成に失敗しました。範囲を広げてください'
+        )
       }
     } while (!allowDuplicates && usedNumbers.has(number))
 
@@ -98,7 +108,7 @@ function calculateStatistics(numbers: number[]) {
       max: 0,
       average: 0,
       sum: 0,
-      median: 0
+      median: 0,
     }
   }
 
@@ -119,14 +129,18 @@ function calculateStatistics(numbers: number[]) {
     max: sorted[sorted.length - 1],
     average: Math.round(average * 1000) / 1000,
     sum: Math.round(sum * 1000) / 1000,
-    median: Math.round(median * 1000) / 1000
+    median: Math.round(median * 1000) / 1000,
   }
 }
 
 /**
  * Generate random numbers from a normal (Gaussian) distribution
  */
-export function generateNormalDistribution(mean: number, stdDev: number, count: number): number[] {
+export function generateNormalDistribution(
+  mean: number,
+  stdDev: number,
+  count: number
+): number[] {
   const numbers: number[] = []
 
   for (let i = 0; i < count; i++) {
@@ -150,7 +164,11 @@ export interface WeightedRange {
   weight: number
 }
 
-export function generateWeightedRandomNumbers(ranges: WeightedRange[], count: number, decimals: number = 0): number[] {
+export function generateWeightedRandomNumbers(
+  ranges: WeightedRange[],
+  count: number,
+  decimals: number = 0
+): number[] {
   if (ranges.length === 0) {
     throw new Error('範囲が指定されていません')
   }
@@ -183,7 +201,11 @@ export function generateWeightedRandomNumbers(ranges: WeightedRange[], count: nu
 /**
  * Generate lottery numbers (unique numbers within a range)
  */
-export function generateLotteryNumbers(totalNumbers: number, pickCount: number, startFrom: number = 1): number[] {
+export function generateLotteryNumbers(
+  totalNumbers: number,
+  pickCount: number,
+  startFrom: number = 1
+): number[] {
   if (pickCount > totalNumbers) {
     throw new Error('選択数が総数を超えています')
   }
@@ -192,7 +214,10 @@ export function generateLotteryNumbers(totalNumbers: number, pickCount: number, 
     throw new Error('数値は1以上である必要があります')
   }
 
-  const availableNumbers = Array.from({ length: totalNumbers }, (_, i) => i + startFrom)
+  const availableNumbers = Array.from(
+    { length: totalNumbers },
+    (_, i) => i + startFrom
+  )
   const selected: number[] = []
 
   for (let i = 0; i < pickCount; i++) {
@@ -283,7 +308,10 @@ function isPrime(num: number): boolean {
 /**
  * Format numbers for display
  */
-export function formatNumbers(numbers: number[], options: { sorted?: boolean; grouped?: boolean } = {}): string {
+export function formatNumbers(
+  numbers: number[],
+  options: { sorted?: boolean; grouped?: boolean } = {}
+): string {
   const result = [...numbers]
 
   if (options.sorted) {
@@ -301,7 +329,10 @@ export function formatNumbers(numbers: number[], options: { sorted?: boolean; gr
 /**
  * Generate dice roll simulation
  */
-export function rollDice(sides: number, count: number = 1): { rolls: number[]; total: number; average: number } {
+export function rollDice(
+  sides: number,
+  count: number = 1
+): { rolls: number[]; total: number; average: number } {
   if (sides < 2) {
     throw new Error('サイコロの面数は2以上である必要があります')
   }
@@ -321,7 +352,7 @@ export function rollDice(sides: number, count: number = 1): { rolls: number[]; t
   return {
     rolls,
     total,
-    average: Math.round(average * 100) / 100
+    average: Math.round(average * 100) / 100,
   }
 }
 

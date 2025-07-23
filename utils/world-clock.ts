@@ -28,7 +28,7 @@ export const DEFAULT_CITIES = [
   { id: 'beijing', name: '北京', timezone: 'Asia/Shanghai' },
   { id: 'moscow', name: 'モスクワ', timezone: 'Europe/Moscow' },
   { id: 'berlin', name: 'ベルリン', timezone: 'Europe/Berlin' },
-  { id: 'mumbai', name: 'ムンバイ', timezone: 'Asia/Kolkata' }
+  { id: 'mumbai', name: 'ムンバイ', timezone: 'Asia/Kolkata' },
 ]
 
 // All available timezones
@@ -93,7 +93,7 @@ export const ALL_TIMEZONES = [
   { name: 'メルボルン', timezone: 'Australia/Melbourne' },
   { name: 'パース', timezone: 'Australia/Perth' },
   { name: 'オークランド', timezone: 'Pacific/Auckland' },
-  { name: 'フィジー', timezone: 'Pacific/Fiji' }
+  { name: 'フィジー', timezone: 'Pacific/Fiji' },
 ]
 
 export function getTimeZoneOffset(timezone: string): string {
@@ -101,12 +101,13 @@ export function getTimeZoneOffset(timezone: string): string {
     const now = new Date()
     const formatter = new Intl.DateTimeFormat('ja-JP', {
       timeZone: timezone,
-      timeZoneName: 'short'
+      timeZoneName: 'short',
     })
-    
+
     const parts = formatter.formatToParts(now)
-    const timeZoneName = parts.find(part => part.type === 'timeZoneName')?.value || ''
-    
+    const timeZoneName =
+      parts.find(part => part.type === 'timeZoneName')?.value || ''
+
     // Extract offset from timezone name (e.g., "GMT+9" -> "+9:00")
     const match = timeZoneName.match(/GMT([+-]\d+)/)
     if (match) {
@@ -115,7 +116,7 @@ export function getTimeZoneOffset(timezone: string): string {
       const absHours = Math.abs(hours)
       return `UTC${sign}${absHours}:00`
     }
-    
+
     // Fallback: calculate offset manually
     const utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }))
     const tzDate = new Date(now.toLocaleString('en-US', { timeZone: timezone }))
@@ -133,21 +134,30 @@ export function getTimeZoneOffset(timezone: string): string {
 export function isDaylightSavingTime(timezone: string): boolean {
   try {
     const now = new Date()
-    const january = new Date(now.getFullYear(), 0, 1)
-    const july = new Date(now.getFullYear(), 6, 1)
-    
-    const getOffset = (date: Date) => {
-      const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }))
-      const tzDate = new Date(date.toLocaleString('en-US', { timeZone: timezone }))
-      return (tzDate.getTime() - utcDate.getTime()) / (1000 * 60)
+
+    // より正確なタイムゾーンオフセット取得方法
+    const getTimezoneOffset = (date: Date): number => {
+      const utc = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }))
+      const tz = new Date(date.toLocaleString('en-US', { timeZone: timezone }))
+      return tz.getTime() - utc.getTime()
     }
-    
-    const januaryOffset = getOffset(january)
-    const julyOffset = getOffset(july)
-    const currentOffset = getOffset(now)
-    
-    const maxOffset = Math.max(januaryOffset, julyOffset)
-    return currentOffset === maxOffset
+
+    // 年の最初と中間でオフセットを比較
+    const january = new Date(now.getFullYear(), 0, 15) // 1月15日
+    const july = new Date(now.getFullYear(), 6, 15) // 7月15日
+
+    const januaryOffset = getTimezoneOffset(january)
+    const julyOffset = getTimezoneOffset(july)
+    const currentOffset = getTimezoneOffset(now)
+
+    // DSTを観測しないタイムゾーンの場合
+    if (januaryOffset === julyOffset) {
+      return false
+    }
+
+    // 現在のオフセットがより大きい方（DST期間）と一致するかチェック
+    const dstOffset = Math.max(januaryOffset, julyOffset)
+    return currentOffset === dstOffset
   } catch {
     return false
   }
@@ -156,28 +166,33 @@ export function isDaylightSavingTime(timezone: string): boolean {
 export function getCityTime(
   name: string,
   timezone: string,
-  format: TimeFormat = { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }
+  format: TimeFormat = {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }
 ): CityTime {
   const now = new Date()
-  
+
   const timeOptions: Intl.DateTimeFormatOptions = {
     timeZone: timezone,
-    ...format
+    ...format,
   }
-  
+
   const dateOptions: Intl.DateTimeFormatOptions = {
     timeZone: timezone,
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-    weekday: 'short'
+    weekday: 'short',
   }
-  
+
   const time = now.toLocaleTimeString('ja-JP', timeOptions)
   const date = now.toLocaleDateString('ja-JP', dateOptions)
   const offset = getTimeZoneOffset(timezone)
   const isDST = isDaylightSavingTime(timezone)
-  
+
   return {
     id: name.toLowerCase().replace(/\s+/g, '-'),
     name,
@@ -185,17 +200,20 @@ export function getCityTime(
     time,
     date,
     offset,
-    isDST
+    isDST,
   }
 }
 
-export function searchCities(query: string): Array<{ name: string; timezone: string }> {
+export function searchCities(
+  query: string
+): Array<{ name: string; timezone: string }> {
   if (!query || query.length < 2) return []
-  
+
   const lowerQuery = query.toLowerCase()
-  return ALL_TIMEZONES.filter(city => 
-    city.name.toLowerCase().includes(lowerQuery) ||
-    city.timezone.toLowerCase().includes(lowerQuery)
+  return ALL_TIMEZONES.filter(
+    city =>
+      city.name.toLowerCase().includes(lowerQuery) ||
+      city.timezone.toLowerCase().includes(lowerQuery)
   )
 }
 

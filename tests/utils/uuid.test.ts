@@ -4,7 +4,7 @@ import {
   generateMultipleUUIDs,
   isValidUUID,
   formatUUID,
-  generateUUIDsWithOptions
+  generateUUIDsWithOptions,
 } from '~/utils/uuid'
 
 // Mock crypto.getRandomValues
@@ -14,13 +14,15 @@ vi.stubGlobal('crypto', {
       array[i] = Math.floor(Math.random() * 256)
     }
     return array
-  })
+  }),
 })
 
 describe('generateUUID', () => {
   it('should generate a valid UUID v4', () => {
     const uuid = generateUUID()
-    expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i)
+    expect(uuid).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    )
   })
 
   it('should generate unique UUIDs', () => {
@@ -89,15 +91,15 @@ describe('isValidUUID', () => {
     // Wrong format
     expect(isValidUUID('550e8400-e29b-41d4-a716')).toBe(false)
     expect(isValidUUID('550e8400e29b41d4a716446655440000')).toBe(false)
-    
+
     // Wrong version
     expect(isValidUUID('550e8400-e29b-11d4-a716-446655440000')).toBe(false)
     expect(isValidUUID('550e8400-e29b-51d4-a716-446655440000')).toBe(false)
-    
+
     // Wrong variant
     expect(isValidUUID('550e8400-e29b-41d4-c716-446655440000')).toBe(false)
     expect(isValidUUID('550e8400-e29b-41d4-7716-446655440000')).toBe(false)
-    
+
     // Invalid characters
     expect(isValidUUID('550e8400-e29b-41d4-a716-44665544000g')).toBe(false)
     expect(isValidUUID('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx')).toBe(false)
@@ -113,16 +115,22 @@ describe('formatUUID', () => {
   const uuid = '550e8400-e29b-41d4-a716-446655440000'
 
   it('should convert to uppercase', () => {
-    expect(formatUUID(uuid, 'uppercase')).toBe('550E8400-E29B-41D4-A716-446655440000')
+    expect(formatUUID(uuid, 'uppercase')).toBe(
+      '550E8400-E29B-41D4-A716-446655440000'
+    )
   })
 
   it('should convert to lowercase', () => {
     const upperUuid = '550E8400-E29B-41D4-A716-446655440000'
-    expect(formatUUID(upperUuid, 'lowercase')).toBe('550e8400-e29b-41d4-a716-446655440000')
+    expect(formatUUID(upperUuid, 'lowercase')).toBe(
+      '550e8400-e29b-41d4-a716-446655440000'
+    )
   })
 
   it('should remove hyphens', () => {
-    expect(formatUUID(uuid, 'no-hyphens')).toBe('550e8400e29b41d4a716446655440000')
+    expect(formatUUID(uuid, 'no-hyphens')).toBe(
+      '550e8400e29b41d4a716446655440000'
+    )
   })
 })
 
@@ -141,7 +149,9 @@ describe('generateUUIDsWithOptions', () => {
     const uuids = generateUUIDsWithOptions(options)
     expect(uuids).toHaveLength(2)
     uuids.forEach(uuid => {
-      expect(uuid).toMatch(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/)
+      expect(uuid).toMatch(
+        /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/
+      )
     })
   })
 
@@ -156,28 +166,32 @@ describe('generateUUIDsWithOptions', () => {
   })
 
   it('should add prefix and suffix', () => {
-    const options = { 
-      count: 2, 
+    const options = {
+      count: 2,
       format: 'standard' as const,
       prefix: 'user_',
-      suffix: '_id'
+      suffix: '_id',
     }
     const uuids = generateUUIDsWithOptions(options)
     expect(uuids).toHaveLength(2)
     uuids.forEach(uuid => {
-      expect(uuid).toMatch(/^user_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}_id$/i)
+      expect(uuid).toMatch(
+        /^user_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}_id$/i
+      )
     })
   })
 
   it('should combine all options', () => {
-    const options = { 
-      count: 1, 
+    const options = {
+      count: 1,
       format: 'uppercase' as const,
       prefix: 'ID:',
-      suffix: ':END'
+      suffix: ':END',
     }
     const uuids = generateUUIDsWithOptions(options)
     expect(uuids).toHaveLength(1)
-    expect(uuids[0]).toMatch(/^ID:[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}:END$/)
+    expect(uuids[0]).toMatch(
+      /^ID:[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}:END$/
+    )
   })
 })

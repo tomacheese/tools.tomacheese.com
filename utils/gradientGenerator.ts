@@ -1,3 +1,5 @@
+import { generateCSSCode } from './cssUtils'
+
 export interface GradientStop {
   color: string
   position: number
@@ -15,7 +17,7 @@ export interface GradientConfig {
 
 export function generateGradientCSS(config: GradientConfig): string {
   const { type, stops, repeating = false } = config
-  
+
   if (stops.length < 2) {
     throw new Error('Gradient must have at least 2 color stops')
   }
@@ -30,16 +32,16 @@ export function generateGradientCSS(config: GradientConfig): string {
       const angle = config.angle ?? 90
       return `${prefix}linear-gradient(${angle}deg, ${stopString})`
     }
-    
+
     case 'radial': {
       const shape = config.shape || 'ellipse'
       const size = config.size || 'farthest-corner'
-      const position = config.position 
+      const position = config.position
         ? `at ${config.position.x}% ${config.position.y}%`
         : 'at center'
       return `${prefix}radial-gradient(${shape} ${size} ${position}, ${stopString})`
     }
-    
+
     case 'conic': {
       const conicAngle = config.angle ?? 0
       const conicPosition = config.position
@@ -47,7 +49,7 @@ export function generateGradientCSS(config: GradientConfig): string {
         : `from ${conicAngle}deg`
       return `${prefix}conic-gradient(${conicPosition}, ${stopString})`
     }
-    
+
     default:
       throw new Error(`Unknown gradient type: ${type}`)
   }
@@ -62,15 +64,18 @@ export function hexToRgba(hex: string, alpha: number = 1): string {
   if (!result) {
     return hex
   }
-  
+
   const r = parseInt(result[1], 16)
   const g = parseInt(result[2], 16)
   const b = parseInt(result[3], 16)
-  
+
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-export function generateCSSCode(gradient: string, selector: string = '.gradient'): string {
+export function generateGradientCSSCode(
+  gradient: string,
+  selector: string = '.gradient'
+): string {
   return `${selector} {
   background: ${gradient};
   /* Fallback for old browsers */
@@ -80,7 +85,7 @@ export function generateCSSCode(gradient: string, selector: string = '.gradient'
 }`
 }
 
-export function generateInlineStyle(gradient: string): string {
+export function generateGradientInlineStyle(gradient: string): string {
   return `background: ${gradient};`
 }
 
@@ -91,8 +96,8 @@ export const presetGradients: Record<string, GradientConfig> = {
     stops: [
       { color: '#ff6b6b', position: 0 },
       { color: '#feca57', position: 50 },
-      { color: '#48dbfb', position: 100 }
-    ]
+      { color: '#48dbfb', position: 100 },
+    ],
   },
   sunset: {
     type: 'linear',
@@ -101,8 +106,8 @@ export const presetGradients: Record<string, GradientConfig> = {
       { color: '#ff9ff3', position: 0 },
       { color: '#ff6b6b', position: 33 },
       { color: '#ff9ff3', position: 66 },
-      { color: '#c471ed', position: 100 }
-    ]
+      { color: '#c471ed', position: 100 },
+    ],
   },
   ocean: {
     type: 'linear',
@@ -110,8 +115,8 @@ export const presetGradients: Record<string, GradientConfig> = {
     stops: [
       { color: '#2980b9', position: 0 },
       { color: '#3498db', position: 50 },
-      { color: '#5dade2', position: 100 }
-    ]
+      { color: '#5dade2', position: 100 },
+    ],
   },
   forest: {
     type: 'radial',
@@ -119,8 +124,8 @@ export const presetGradients: Record<string, GradientConfig> = {
     stops: [
       { color: '#134e13', position: 0 },
       { color: '#228b22', position: 50 },
-      { color: '#32cd32', position: 100 }
-    ]
+      { color: '#32cd32', position: 100 },
+    ],
   },
   fire: {
     type: 'radial',
@@ -128,8 +133,8 @@ export const presetGradients: Record<string, GradientConfig> = {
     stops: [
       { color: '#ff0000', position: 0 },
       { color: '#ff7f00', position: 50 },
-      { color: '#ffff00', position: 100 }
-    ]
+      { color: '#ffff00', position: 100 },
+    ],
   },
   rainbow: {
     type: 'conic',
@@ -142,14 +147,14 @@ export const presetGradients: Record<string, GradientConfig> = {
       { color: '#0000ff', position: 57 },
       { color: '#4b0082', position: 71 },
       { color: '#9400d3', position: 85 },
-      { color: '#ff0000', position: 100 }
-    ]
-  }
+      { color: '#ff0000', position: 100 },
+    ],
+  },
 }
 
 export function exportGradientAsCSS(config: GradientConfig): string {
   const gradient = generateGradientCSS(config)
-  return generateCSSCode(gradient)
+  return generateCSSCode(gradient, 'background')
 }
 
 export function exportGradientAsSass(config: GradientConfig): string {
