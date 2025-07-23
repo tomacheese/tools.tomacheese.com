@@ -244,7 +244,7 @@ const getCountLabel = () => {
 
 // ランダムな単語を取得
 const getRandomWord = (): string => {
-  return loremWords[Math.floor(Math.random() * loremWords.length)]
+  return loremWords[Math.floor(Math.random() * loremWords.length)] || 'lorem'
 }
 
 // ランダムな文を生成

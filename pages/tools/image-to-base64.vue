@@ -152,7 +152,7 @@ const handleDrop = (e: DragEvent) => {
   isDragging.value = false
 
   const files = e.dataTransfer?.files
-  if (files && files.length > 0) {
+  if (files && files.length > 0 && files[0]) {
     processFile(files[0])
   }
 }
@@ -160,7 +160,7 @@ const handleDrop = (e: DragEvent) => {
 const handleFileSelect = (e: Event) => {
   const target = e.target as HTMLInputElement
   const files = target.files
-  if (files && files.length > 0) {
+  if (files && files.length > 0 && files[0]) {
     processFile(files[0])
   }
 }
