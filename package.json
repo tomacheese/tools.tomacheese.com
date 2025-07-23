@@ -22,6 +22,11 @@
     "pnpm": "10.13.1"
   },
   "packageManager": "pnpm@10.13.1",
+  "pnpm": {
+    "shamefullyHoist": false,
+    "strictPeerDependencies": false,
+    "autoInstallPeers": true
+  },
   "private": true,
   "type": "module",
   "scripts": {
