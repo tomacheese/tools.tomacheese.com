@@ -115,10 +115,8 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Run E2E tests (full)
+      - name: Run E2E tests
         run: pnpm test:e2e
-        env:
-          GITHUB_BASE_REF: ${{ github.base_ref }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
