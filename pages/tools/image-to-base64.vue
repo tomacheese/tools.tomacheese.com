@@ -186,7 +186,7 @@ const processFile = async (file: File) => {
   try {
     const result = await imageToBase64(file)
     imageData.value = result
-  } catch (err) {
+  } catch {
     error.value = '画像の変換中にエラーが発生しました。'
   }
 }
@@ -198,7 +198,7 @@ const copyResult = async () => {
     setTimeout(() => {
       copyButtonText.value = 'コピー'
     }, 2000)
-  } catch (err) {
+  } catch {
     error.value = 'クリップボードへのコピーに失敗しました。'
   }
 }

@@ -410,7 +410,7 @@ const copyNumber = async (number, index) => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }
@@ -423,7 +423,7 @@ const copySequence = async () => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }

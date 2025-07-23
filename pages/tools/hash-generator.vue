@@ -87,7 +87,7 @@ const generateHashValue = async () => {
     if (history.value.length > 10) {
       history.value = history.value.slice(0, 10)
     }
-  } catch (error) {
+  } catch {
     // Hash generation failed
     alert('ハッシュの生成中にエラーが発生しました。')
   }
@@ -97,7 +97,7 @@ const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
     alert('クリップボードにコピーしました')
-  } catch (error) {
+  } catch {
     // Copy failed silently
     alert('コピーに失敗しました')
   }

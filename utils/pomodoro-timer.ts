@@ -221,7 +221,7 @@ export function getDailySummary(sessions: SessionRecord[]): {
 export function savePomodoroState(state: PomodoroState): void {
   try {
     localStorage.setItem('pomodoro-timer-state', JSON.stringify(state))
-  } catch (error) {
+  } catch {
     // localStorage access failed - silently ignore
   }
 }
@@ -241,7 +241,7 @@ export function loadPomodoroState(): Partial<PomodoroState> | null {
       }
       return state
     }
-  } catch (error) {
+  } catch {
     // localStorage access failed - silently ignore
   }
   return null
@@ -250,7 +250,7 @@ export function loadPomodoroState(): Partial<PomodoroState> | null {
 export function clearPomodoroState(): void {
   try {
     localStorage.removeItem('pomodoro-timer-state')
-  } catch (error) {
+  } catch {
     // localStorage access failed - silently ignore
   }
 }

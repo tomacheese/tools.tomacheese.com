@@ -168,7 +168,7 @@ const copyHtml = async () => {
   try {
     await navigator.clipboard.writeText(htmlOutput.value)
     alert('HTMLがクリップボードにコピーされました')
-  } catch (err) {
+  } catch {
     alert('コピーに失敗しました')
   }
 }
@@ -178,7 +178,7 @@ const copyMarkdown = async () => {
   try {
     await navigator.clipboard.writeText(markdownText.value)
     alert('Markdownがクリップボードにコピーされました')
-  } catch (err) {
+  } catch {
     alert('コピーに失敗しました')
   }
 }

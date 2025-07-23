@@ -287,7 +287,7 @@ const encodedUrl = computed(() => {
   if (!plainUrl.value) return ''
   try {
     return encodeURIComponent(plainUrl.value)
-  } catch (error) {
+  } catch {
     return 'エンコードエラー'
   }
 })
@@ -302,7 +302,7 @@ const decodedUrl = computed(() => {
     const decoded = decodeURIComponent(encodedUrlInput.value)
     decodeError.value = ''
     return decoded
-  } catch (error) {
+  } catch {
     decodeError.value = 'デコードエラー: 無効なエンコード形式です'
     return ''
   }
@@ -316,7 +316,7 @@ const setSampleUrl = text => {
     // エンコードしてからセット
     try {
       encodedUrlInput.value = encodeURIComponent(text)
-    } catch (error) {
+    } catch {
       encodedUrlInput.value = 'エンコードエラー'
     }
   }
@@ -329,7 +329,7 @@ const copyToClipboard = async text => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     // Copy failed silently
   }
 }

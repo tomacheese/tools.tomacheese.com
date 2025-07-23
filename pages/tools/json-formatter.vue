@@ -257,7 +257,7 @@ const sampleJsons = [
 const parseJsonSafely = jsonString => {
   try {
     return { success: true, data: JSON.parse(jsonString) }
-  } catch (error) {
+  } catch {
     return { success: false, error: error.message }
   }
 }
@@ -362,7 +362,7 @@ const copyToClipboard = async text => {
     setTimeout(() => {
       copyMessage.value = ''
     }, 2000)
-  } catch (err) {
+  } catch {
     copyMessage.value = 'コピーに失敗しました'
     setTimeout(() => {
       copyMessage.value = ''

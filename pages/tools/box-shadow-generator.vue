@@ -244,7 +244,7 @@ const copyCode = async () => {
   try {
     await navigator.clipboard.writeText(getFormattedCode())
     alert('コードをクリップボードにコピーしました')
-  } catch (error) {
+  } catch {
     alert('コピーに失敗しました')
   }
 }

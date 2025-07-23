@@ -54,7 +54,7 @@ export const analyzeText = (text: string): TextStats => {
 export const encodeBase64 = (text: string): string => {
   try {
     return btoa(unescape(encodeURIComponent(text)))
-  } catch (error) {
+  } catch {
     throw new Error('Base64エンコードに失敗しました')
   }
 }
@@ -70,7 +70,7 @@ export const decodeBase64 = (base64: string): string => {
     }
 
     return decodeURIComponent(escape(atob(base64)))
-  } catch (error) {
+  } catch {
     throw new Error('Base64デコードに失敗しました')
   }
 }
@@ -81,7 +81,7 @@ export const decodeBase64 = (base64: string): string => {
 export const encodeUrl = (text: string): string => {
   try {
     return encodeURIComponent(text)
-  } catch (error) {
+  } catch {
     throw new Error('URLエンコードに失敗しました')
   }
 }
@@ -92,7 +92,7 @@ export const encodeUrl = (text: string): string => {
 export const decodeUrl = (encodedText: string): string => {
   try {
     return decodeURIComponent(encodedText)
-  } catch (error) {
+  } catch {
     throw new Error('URLデコードに失敗しました')
   }
 }
