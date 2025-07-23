@@ -83,7 +83,7 @@ test.describe('CSS Minifier Tool', () => {
     await page.locator('.css-input').fill(minifiedCss)
 
     // Click beautify button
-    await page.locator('text=整形').click()
+    await page.getByRole('button', { name: '整形' }).click()
 
     // Check that output is beautified
     const output = await page.locator('.css-output').inputValue()
