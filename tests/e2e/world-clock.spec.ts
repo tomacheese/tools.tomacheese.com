@@ -27,6 +27,10 @@ test.describe('World Clock Tool', () => {
   })
 
   test('should display default cities', async ({ page }) => {
+    // Wait for cities to load
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(1000)
+    
     // Check that default cities are displayed
     const cityCards = page.locator('.city-card')
     await expect(cityCards).toHaveCount(12) // 12 default cities

@@ -6,6 +6,7 @@ test.describe('JavaScript圧縮ツール', () => {
   })
 
   test('ページが正しく表示される', async ({ page }) => {
+    await page.waitForLoadState('networkidle')
     await expect(page.locator('h1')).toHaveText('JavaScript圧縮')
     await expect(page.locator('textarea').first()).toBeVisible()
     await expect(page.locator('button:has-text("圧縮する")')).toBeVisible()

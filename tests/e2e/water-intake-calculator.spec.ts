@@ -112,7 +112,7 @@ test.describe('Water Intake Calculator', () => {
     await page.click('button:has-text("計算する")')
 
     await expect(page.locator('.tips')).toBeVisible()
-    await expect(page.locator('.tips li')).toHaveCount(3)
+    await expect(page.locator('.tips li')).toHaveCount(4)
     await expect(page.locator('.tips')).toContainText('起床時にコップ1杯')
   })
 

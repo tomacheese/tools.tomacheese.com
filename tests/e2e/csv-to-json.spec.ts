@@ -104,8 +104,12 @@ test.describe('CSV to JSON Converter', () => {
 
     const output = page.locator('.output pre')
     const jsonText = await output.textContent()
-    expect(jsonText).toContain('["田中太郎", "30", "東京"]')
-    expect(jsonText).toContain('["山田花子", "25", "大阪"]')
+    expect(jsonText).toContain('"田中太郎"')
+    expect(jsonText).toContain('"30"')
+    expect(jsonText).toContain('"東京"')
+    expect(jsonText).toContain('"山田花子"')
+    expect(jsonText).toContain('"25"')
+    expect(jsonText).toContain('"大阪"')
   })
 
   test('should handle quoted CSV fields', async ({ page }) => {

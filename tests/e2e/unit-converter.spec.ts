@@ -171,8 +171,11 @@ test.describe('Unit Converter Tool', () => {
   })
 
   test('handles invalid input gracefully', async ({ page }) => {
-    // Enter non-numeric value
-    await page.locator('#fromValue').fill('abc')
+    // Try to enter non-numeric value (should be handled gracefully)
+    const fromInput = page.locator('#fromValue')
+    await fromInput.click()
+    await fromInput.clear()
+    await page.keyboard.type('abc')
     const result = await page.locator('#toValue').inputValue()
     expect(result).toBe('')
 

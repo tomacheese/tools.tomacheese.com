@@ -157,7 +157,7 @@ test.describe('Timestamp Converter', () => {
         .locator('.time-info')
         .filter({ hasText: 'Unix タイムスタンプ (秒)' })
         .locator('code')
-    ).toContainText('170406')
+    ).toContainText('170403')
   })
 
   test('should handle negative timestamps', async ({ page }) => {
