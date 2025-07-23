@@ -26,7 +26,6 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
-          hid: 'description',
           name: 'description',
           content:
             'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを提供しています。',

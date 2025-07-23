@@ -19,9 +19,9 @@
   ],
   "engines": {
     "node": ">=20.15.1",
-    "pnpm": ">=8.0.0"
+    "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@10.13.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -54,7 +54,7 @@
     "diff": "^8.0.2",
     "highlight.js": "^11.11.1",
     "marked": "^16.1.1",
-    "nuxt": "3.13.2",
+    "nuxt": "3.17.7",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
