@@ -1,6 +1,6 @@
-# CLAUDE.md
+# GEMINI.md
 
-このファイルは Claude Code（claude.ai/code）がこのリポジトリのコードを操作する際の指示を提供します。
+このファイルは Gemini CLI がこのリポジトリのコードを操作する際の指示を提供します。
 
 ## 📖 メイン開発ガイドライン
 
@@ -8,11 +8,11 @@
 
 **[`.ai/index.md`](.ai/index.md)** - AI 開発支援ドキュメントのメインインデックス
 
-## 🎯 Claude Code 固有の情報
+## 🎯 Gemini CLI 固有の情報
 
-Claude Code 特有の使用方法やベストプラクティスについては：
+Gemini CLI 特有の使用方法やベストプラクティスについては：
 
-**[`.ai/tools/claude.md`](.ai/tools/claude.md)** - Claude Code 固有設定
+**[`.ai/tools/gemini.md`](.ai/tools/gemini.md)** - Gemini CLI 固有設定
 
 ## 📚 共通ドキュメント
 
@@ -30,7 +30,7 @@ Claude Code 特有の使用方法やベストプラクティスについては�
 # 依存関係のインストール
 pnpm install
 
-# 開発サーバー起動  
+# 開発サーバー起動
 pnpm dev
 
 # テスト実行
@@ -42,3 +42,7 @@ pnpm generate
 ```
 
 詳細なコマンドについては [デプロイメントガイド](.ai/common/deployment.md) を参照してください。
+
+## 🔗 プロジェクト関連リンク
+
+この作業は [book000/book000#79](https://github.com/book000/book000/issues/79) に関連しています。
