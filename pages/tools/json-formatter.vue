@@ -257,7 +257,7 @@ const sampleJsons = [
 const parseJsonSafely = jsonString => {
   try {
     return { success: true, data: JSON.parse(jsonString) }
-  } catch {
+  } catch (error) {
     return { success: false, error: error.message }
   }
 }
