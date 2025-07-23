@@ -149,12 +149,10 @@ test.describe('Timestamp Converter', () => {
     // 直接タイムスタンプを入力してテスト
     await page.fill('#input', '1704067200') // 2024-01-01T00:00:00Z のUnixタイムスタンプ
 
+    // 入力値が反映されたことを確認
     await expect(page.locator('#input')).toHaveValue('1704067200')
 
-    // Check the result
-    await expect(
-      page.locator('.section').nth(2).locator('.result')
-    ).toBeVisible()
+    // 結果のUnixタイムスタンプが表示されるまで待機し、内容を検証
     await expect(
       page
         .locator('.section')
