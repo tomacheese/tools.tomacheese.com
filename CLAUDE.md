@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-Tools.tomacheese.comは、Nuxt.js v3.17.7で構築されたプライバシー重視のWebツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
+Tools.tomacheese.comは、Nuxt.js v3で構築されたプライバシー重視のWebツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
 
 ## 重要な要件
 

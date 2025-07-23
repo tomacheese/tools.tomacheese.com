@@ -73,7 +73,7 @@
           技術仕様
         </h2>
         <ul style="color: #64748b; line-height: 1.8; margin-left: 1.5rem">
-          <li>フレームワーク: Nuxt.js v3.17.7</li>
+          <li>フレームワーク: Nuxt.js v3</li>
           <li>ホスティング: GitHub Pages</li>
           <li>デザイン: レスポンシブ対応のカスタムCSS</li>
           <li>処理: 100% クライアントサイドJavaScript</li>
