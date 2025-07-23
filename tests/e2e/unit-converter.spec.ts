@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test'
 
 test.describe('Unit Converter Tool', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, context }) => {
+    await context.clearCookies()
+    await context.clearPermissions()
     await page.goto('/tools/unit-converter')
     const clearButton = page.locator('.clear-btn')
     // Attempt to clear history if the button is visible
