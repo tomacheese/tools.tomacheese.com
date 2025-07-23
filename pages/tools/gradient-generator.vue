@@ -191,7 +191,7 @@ const updateGradient = () => {
 
 const addStop = () => {
   const lastStop = config.value.stops[config.value.stops.length - 1]
-  const newPosition = Math.min(lastStop.position + 10, 100)
+  const newPosition = Math.min((lastStop?.position || 0) + 10, 100)
   config.value.stops.push({
     color: '#000000',
     position: newPosition,
