@@ -43,6 +43,3 @@ pnpm generate
 
 詳細なコマンドについては [デプロイメントガイド](.ai/common/deployment.md) を参照してください。
 
-## 🔗 プロジェクト関連リンク
-
-この作業は [book000/book000#79](https://github.com/book000/book000/issues/79) に関連しています。
