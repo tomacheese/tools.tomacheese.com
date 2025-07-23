@@ -19,7 +19,7 @@
           style="display: none"
           @change="handleFileSelect"
         />
-        <button class="upload-button" @click="$refs.fileInput.click()">
+        <button class="upload-button" @click="fileInput?.click()">
           画像を選択
         </button>
         <p class="upload-hint">またはここにドラッグ＆ドロップ</p>
