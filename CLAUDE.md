@@ -1,4 +1,4 @@
-# CLAUDE.md
+# Claude Code 向けガイドライン
 
 このファイルは Claude Code（claude.ai/code）がこのリポジトリのコードを操作する際の指示を提供します。
 

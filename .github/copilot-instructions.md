@@ -1,4 +1,4 @@
-# Copilot Instructions
+# GitHub Copilot 向けガイドライン
 
 このファイルは GitHub Copilot がこのリポジトリのコードを操作する際の指示を提供します。
 
