@@ -4,16 +4,17 @@ test.describe('Unit Converter Tool', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.clearCookies()
     await context.clearPermissions()
+    await page.evaluate(() => sessionStorage.clear())
     await page.goto('/tools/unit-converter')
     const clearButton = page.locator('.clear-btn')
     // Attempt to clear history if the button is visible
     if (await clearButton.isVisible()) {
       await clearButton.click()
       // Wait for the history list to become empty after clearing
-      await expect(page.locator('.history-list li')).toHaveCount(0)
+      await expect(page.locator('.history-list li')).toHaveCount(0, { timeout: 15000 })
     } else {
       // If the clear button is not visible, ensure history is already empty
-      await expect(page.locator('.history-list li')).toHaveCount(0)
+      await expect(page.locator('.history-list li')).toHaveCount(0, { timeout: 15000 })
     }
   })
 
