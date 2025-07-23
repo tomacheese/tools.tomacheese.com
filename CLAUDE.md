@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-Tools.tomacheese.comは、Nuxt.js v3で構築されたプライバシー重視のWebツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
+Tools.tomacheese.comは、Nuxt.js v3.17.7で構築されたプライバシー重視のWebツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
 
 ## 重要な要件
 
@@ -139,6 +139,6 @@ GitHub Pages用のベースURL処理はnuxt.config.tsで`DEPLOY_ENV`環境変数
 
 - Node.jsバージョン: 20.15.1（.node-versionと.nvmrcで指定）
 - パッケージマネージャー: pnpm 8.15.0
-- ARM64でのNuxt 3.17.5の問題は3.13.2へのダウングレードで解決済み
+- Nuxt 3.17.7にアップデート済み（以前のARM64問題は解決）
 - TypeScriptエラーは除外ではなく根本原因を修正すること
 - すべての新しいツールにはテストが必須
