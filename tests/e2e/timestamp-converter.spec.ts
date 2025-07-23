@@ -144,17 +144,9 @@ test.describe('Timestamp Converter', () => {
     page,
   }) => {
     // Set date using date picker
-    // await page.fill('#date-picker', '2024-01-01T00:00') // この行を削除またはコメントアウト
+    await page.fill('#date-picker', '2024-01-01T00:00')
 
-    // 直接タイムスタンプを入力してテスト
-    await page.fill('#input', '1704067200') // 2024-01-01T00:00:00Z のUnixタイムスタンプ
-
-    // 入力値が反映されたことを確認
-    await expect(page.locator('#input')).toHaveValue('1704067200')
-
-    await page.waitForTimeout(500)
-
-    // 結果のUnixタイムスタンプが表示されるまで待機し、内容を検証
+    // Check the displayed Unix timestamp (seconds)
     await expect(
       page
         .locator('.section')
