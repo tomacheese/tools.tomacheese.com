@@ -128,7 +128,7 @@ test.describe('Unit Converter Tool', () => {
 
     // Check history section appears
     await expect(page.locator('.history-section')).toBeVisible()
-    await expect(page.locator('.history-list li')).toHaveCount(5)
+    await expect(page.locator('.history-list li')).toHaveCount(6)
 
     // Perform another conversion
     await page.locator('#fromValue').fill('50')
