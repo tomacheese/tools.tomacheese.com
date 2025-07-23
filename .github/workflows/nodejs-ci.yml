@@ -115,8 +115,8 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Run E2E tests (diff-based)
-        run: pnpm test:e2e:diff
+      - name: Run E2E tests (full)
+        run: pnpm test:e2e
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
 
