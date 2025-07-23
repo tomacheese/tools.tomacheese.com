@@ -16,7 +16,7 @@ test.describe('Water Intake Calculator', () => {
   test('should calculate basic water intake', async ({ page }) => {
     // Fill form
     await page.fill('#weight', '70')
-    await page.selectOption('select[v-model="weightUnit"]', 'kg')
+    await page.locator('select').first().selectOption('kg')
     await page.selectOption('#activityLevel', 'sedentary')
     await page.selectOption('#climate', 'temperate')
     await page.selectOption('#specialCondition', 'none')
@@ -99,7 +99,7 @@ test.describe('Water Intake Calculator', () => {
 
   test('should handle imperial units', async ({ page }) => {
     await page.fill('#weight', '154') // lbs
-    await page.selectOption('select[v-model="weightUnit"]', 'lbs')
+    await page.locator('select').first().selectOption('lbs')
 
     await page.click('button:has-text("計算する")')
 
