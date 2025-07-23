@@ -17,7 +17,7 @@
 
 - ファイル名: `*.test.ts`
 - 配置場所: `/tests/` ディレクトリ
-- 対応関係: `utils/math.ts` → `tests/math.test.ts`
+- 対応関係: `utils/math.ts` → `tests/utils/math.test.ts`
 
 ### カバレッジ目標
 
