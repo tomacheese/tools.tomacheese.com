@@ -1,4 +1,4 @@
-FROM node:20.15.1-alpine
+FROM node:20.19.4-alpine
 
 # Set pnpm version
 ENV PNPM_VERSION=8.15.0
