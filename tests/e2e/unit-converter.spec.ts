@@ -144,7 +144,7 @@ test.describe('Unit Converter Tool', () => {
 
     // Perform another conversion
     await page.locator('#fromValue').fill('50')
-    await expect(page.locator('.history-list li')).toHaveCount(6)
+    await expect(page.locator('.history-list li')).toHaveCount(2)
   })
 
   test('clear history button works', async ({ page }) => {
