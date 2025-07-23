@@ -16,8 +16,8 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 - **フレームワーク**: Nuxt.js v3 (3.13.2)
 - **言語**: TypeScript
-- **パッケージマネージャー**: pnpm 8.15.0
-- **Node.js**: v20.15.1
+- **パッケージマネージャー**: pnpm 8.15.9
+- **Node.js**: v20.15.1 以上
 - **スタイリング**: カスタム CSS (レスポンシブ対応)
 - **テスト**: Vitest (単体テスト) + Playwright (E2E テスト)
 
@@ -235,6 +235,7 @@ pnpm build     # 本番ビルド
 - UUID 生成
 - HTML エンティティエンコーダー
 - クレジットカード番号検証
+- IBAN 検証
 
 ### デザイン
 
@@ -277,7 +278,6 @@ pnpm build     # 本番ビルド
 
 - CSS 圧縮
 - JavaScript 圧縮
-- メタタグ生成
 - SQL 整形
 
 ### データ変換
@@ -285,6 +285,17 @@ pnpm build     # 本番ビルド
 - CSV to JSON 変換
 - JSON to CSV 変換
 - 画像を Base64 変換
+
+## 計画中ツール
+
+以下のツールは `useTools.ts` に定義されていますが、まだ実装されていません：
+
+- 絵文字ピッカー
+- ポモドーロタイマー
+- メタタグ生成
+- robots.txt 生成
+- .htaccess 生成
+- Cron 式生成
 
 ## 開発フロー
 
