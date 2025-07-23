@@ -151,7 +151,7 @@ test.describe('Box Shadow生成ツール', () => {
       test.skip()
       return
     }
-    
+
     await context.grantPermissions(['clipboard-write'])
 
     const copyButton = page.locator('.copy-button')

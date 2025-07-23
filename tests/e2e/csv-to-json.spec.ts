@@ -217,13 +217,17 @@ test.describe('CSV to JSON Converter', () => {
     expect(jsonText).toContain('"年齢": "  30  "')
   })
 
-  test('should copy JSON to clipboard', async ({ page, context, browserName }) => {
+  test('should copy JSON to clipboard', async ({
+    page,
+    context,
+    browserName,
+  }) => {
     // Firefoxではクリップボード権限がサポートされていないためスキップ
     if (browserName === 'firefox') {
       test.skip()
       return
     }
-    
+
     // Grant clipboard permissions
     await context.grantPermissions(['clipboard-read', 'clipboard-write'])
 

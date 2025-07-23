@@ -144,7 +144,7 @@ test.describe('Timestamp Converter', () => {
     page,
   }) => {
     // Set date using date picker
-    await page.fill('#date-picker', '2024-01-01T00:00')
+    await page.fill('#date-picker', '2024-01-01T00:00:00Z')
 
     // Check the result
     await expect(

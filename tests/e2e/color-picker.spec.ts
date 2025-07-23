@@ -134,13 +134,16 @@ test.describe('Color Picker Tool', () => {
     ).toContainText('rgb(0, 0, 0)')
   })
 
-  test('should copy color codes to clipboard', async ({ page, browserName }) => {
+  test('should copy color codes to clipboard', async ({
+    page,
+    browserName,
+  }) => {
     // Firefoxではクリップボード権限がサポートされていないためスキップ
     if (browserName === 'firefox') {
       test.skip()
       return
     }
-    
+
     // Grant clipboard permissions
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
 

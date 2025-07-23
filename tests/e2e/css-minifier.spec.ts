@@ -98,7 +98,7 @@ test.describe('CSS Minifier Tool', () => {
       test.skip()
       return
     }
-    
+
     // Grant clipboard permissions
     await context.grantPermissions(['clipboard-write', 'clipboard-read'])
 
