@@ -145,7 +145,13 @@ test.describe('Box Shadow生成ツール', () => {
     await expect(codeBlock).not.toContainText('.box')
   })
 
-  test('コードのコピー', async ({ page, context }) => {
+  test('コードのコピー', async ({ page, context, browserName }) => {
+    // Firefoxではクリップボード権限がサポートされていないためスキップ
+    if (browserName === 'firefox') {
+      test.skip()
+      return
+    }
+    
     await context.grantPermissions(['clipboard-write'])
 
     const copyButton = page.locator('.copy-button')

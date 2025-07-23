@@ -92,7 +92,13 @@ test.describe('CSS Minifier Tool', () => {
     expect(output).toContain('\n}')
   })
 
-  test('copies to clipboard', async ({ page, context }) => {
+  test('copies to clipboard', async ({ page, context, browserName }) => {
+    // Firefoxではクリップボード権限がサポートされていないためスキップ
+    if (browserName === 'firefox') {
+      test.skip()
+      return
+    }
+    
     // Grant clipboard permissions
     await context.grantPermissions(['clipboard-write', 'clipboard-read'])
 
