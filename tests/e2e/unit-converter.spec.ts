@@ -2,9 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Unit Converter Tool', () => {
   test.beforeEach(async ({ page }) => {
-    await page.evaluate(() => localStorage.clear())
     await page.goto('/tools/unit-converter')
-    await page.reload()
     const clearButton = page.locator('.clear-btn')
     // Attempt to clear history if the button is visible
     if (await clearButton.isVisible()) {
