@@ -126,7 +126,7 @@ test.describe('Unit Converter Tool', () => {
   test('conversion history is maintained', async ({ page }) => {
     // Check initial state - history section might not be visible initially
     const historySection = page.locator('.history-section')
-    
+
     // Perform a conversion
     await page.locator('#fromValue').fill('100')
     await page
@@ -145,17 +145,17 @@ test.describe('Unit Converter Tool', () => {
 
     // Check history section appears (but don't require a specific count due to possible existing history)
     await expect(historySection).toBeVisible()
-    
+
     // Check that history list has at least one item
     const historyItems = page.locator('.history-list li')
     await expect(historyItems.first()).toBeVisible()
 
     // Perform another conversion
     await page.locator('#fromValue').fill('50')
-    
+
     // Check that the second conversion also worked
     await expect(page.locator('#toValue')).not.toHaveValue('')
-    
+
     // History should still be visible
     await expect(historySection).toBeVisible()
   })
@@ -183,9 +183,9 @@ test.describe('Unit Converter Tool', () => {
     if (await clearButton.isVisible()) {
       await clearButton.click()
       // After clearing, history section should be hidden or empty
-      await expect(
-        page.locator('.history-list li').first()
-      ).not.toBeVisible({ timeout: 5000 })
+      await expect(page.locator('.history-list li').first()).not.toBeVisible({
+        timeout: 5000,
+      })
     }
   })
 
