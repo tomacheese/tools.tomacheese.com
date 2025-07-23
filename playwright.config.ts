@@ -81,7 +81,7 @@ export default defineConfig({
   webServer: {
     command: 'pnpm dev',
     url: 'http://localhost:3000',
-    reuseExistingServer: false, // CI環境では常に新しいサーバーを起動
+    reuseExistingServer: !process.env.CI, // ローカルでは既存サーバーを再利用、CIでは新しいサーバーを起動
     timeout: process.env.CI ? 600 * 1000 : 180 * 1000, // CI環境でのタイムアウトを10分に増加、ローカルも3分に
     /* Wait for server to be ready before running tests */
     stdout: 'pipe', // CIログでサーバーの起動ログを確認できるようにする
