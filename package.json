@@ -67,7 +67,7 @@
     "@vitest/ui": "^1.6.0",
     "@vue/test-utils": "^2.4.6",
     "depcheck": "^1.4.7",
-    "eslint": "^9.9.1",
+    "eslint": "^9.30.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.27.0",
     "happy-dom": "^14.12.3",
