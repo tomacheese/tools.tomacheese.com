@@ -14,7 +14,6 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
   - [`development-guidelines.md`](common/development-guidelines.md) - 開発方針とコーディング規約
   - [`architecture.md`](common/architecture.md) - アーキテクチャとディレクトリ構造
   - [`testing.md`](common/testing.md) - テスト戦略と実行方法
-  - [`deployment.md`](common/deployment.md) - デプロイメント手順
 - [`tools/`](tools/) - AI ツール固有の設定とベストプラクティス
   - [`claude.md`](tools/claude.md) - Claude Code 向け設定と指示
   - [`copilot.md`](tools/copilot.md) - GitHub Copilot 向け設定と指示
@@ -61,4 +60,3 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 2. [開発ガイドライン](common/development-guidelines.md) - コーディング規約とベストプラクティス
 3. [アーキテクチャ](common/architecture.md) - ディレクトリ構造と実装パターン
 4. [テスト戦略](common/testing.md) - 単体テストと E2E テストの方針
-5. [デプロイメント](common/deployment.md) - ビルドとデプロイの手順

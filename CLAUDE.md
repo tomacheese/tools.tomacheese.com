@@ -22,7 +22,6 @@ Claude Code 特有の使用方法やベストプラクティスについては�
 - [開発ガイドライン](.ai/common/development-guidelines.md) - コーディング規約、コミット規約
 - [アーキテクチャ](.ai/common/architecture.md) - ディレクトリ構造、実装パターン
 - [テスト戦略](.ai/common/testing.md) - 単体テスト、E2E テストの方針
-- [デプロイメント](.ai/common/deployment.md) - ビルド、デプロイ手順
 
 ## 🚀 クイックスタート
 
@@ -40,5 +39,3 @@ pnpm test:e2e
 # ビルド
 pnpm generate
 ```
-
-詳細なコマンドについては [デプロイメントガイド](.ai/common/deployment.md) を参照してください。
