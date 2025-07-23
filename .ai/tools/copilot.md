@@ -1,33 +1,37 @@
-# GitHub Copilot 使用ガイド
+# GitHub Copilot 向け設定
 
-このファイルは、開発者が GitHub Copilot を使ってこのプロジェクトで効果的に開発を行うためのガイドです。
+このファイルは GitHub Copilot がこのリポジトリで作業する際に従うべき設定とガイドラインを提供します。
 
-## GitHub Copilot とは
+## 基本原則
 
-GitHub Copilot は、リアルタイムでコード補完と開発支援を提供する AI ツールです。IDE に統合され、入力中に自動的にコードを提案します。
+### プライバシーファースト開発
 
-## セットアップ方法
+- **100% クライアントサイド**: すべてのツールは外部 API を使用せずブラウザ内で動作する必要があります
+- **データ送信禁止**: ユーザーのデータをサーバーに送信するコードを書いてはいけません
+- **ローカル処理**: すべての計算・変換・処理はブラウザ内で完結させてください
 
-1. GitHub Copilot のサブスクリプションを取得
-2. VS Code または JetBrains IDE に Copilot 拡張機能をインストール
-3. GitHub アカウントでサインイン
+### コード品質要件
 
-## 効果的な使用方法
+- **TypeScript 必須**: すべての新しいコードは TypeScript で記述してください
+- **型安全性**: `any` 型の使用は避け、適切な型定義を行ってください
+- **Vue 3 Composition API**: Options API ではなく Composition API を使用してください
 
-### コメント駆動開発
+## コード生成の指針
 
-Copilot の最大の強みは、コメントから意図を理解してコードを生成することです：
+### コメント駆動開発の活用
+
+開発者がコメントで意図を表現した場合、その意図に沿ったコードを生成してください：
 
 ```typescript
 // BMI を計算し、分類も含めて返す関数
 export function calculateBMI(weight: number, height: number): BMIResult {
-  // Tab キーを押すと適切な実装が提案される
+  // 適切な実装を生成
 }
 ```
 
-### 型定義の活用
+### 型定義の優先
 
-TypeScript の型定義を先に作成することで、より正確な補完が得られます：
+型定義が存在する場合、その型に準拠したコードを生成してください：
 
 ```typescript
 interface BMIResult {
@@ -36,111 +40,162 @@ interface BMIResult {
   isHealthy: boolean
 }
 
-// この型定義により、Copilot はより適切な実装を提案
+// この型定義に準拠した実装を生成
 export function calculateBMI(weight: number, height: number): BMIResult {
-  // 実装が自動生成される
+  // 型安全な実装
 }
 ```
 
-### Vue コンポーネントでの活用
+## プロジェクト固有のパターン
+
+### Vue コンポーネント構造
 
 ```vue
 <template>
-  <!-- レスポンシブな入力フォームを作成 -->
+  <div class="max-w-4xl mx-auto p-6">
+    <ToolHeader :title="title" :description="description" />
+    
+    <!-- ツール固有のコンテンツ -->
+    
+    <ToolFooter />
+  </div>
 </template>
 
 <script setup lang="ts">
-// BMI 計算ツールのロジック
-// 入力値の検証とリアルタイム計算を実装
+// TypeScript with Composition API
+// useSeoMeta() と definePageMeta() を適切に設定
 </script>
 ```
 
-## プロジェクト固有のベストプラクティス
-
-### プロンプト設計のコツ
-
-1. **具体的なコメント**: 何をするかを明確に記述
-2. **日本語の活用**: 日本語コメントでも適切に理解される
-3. **段階的な実装**: 小さな機能単位でコメントを書く
-
-### 推奨ワークフロー
-
-1. **要件整理**: 日本語コメントで機能の概要を記述
-2. **型定義**: インターフェースや型の定義
-3. **関数シグネチャ**: 関数名と引数、戻り値の型を定義
-4. **実装**: Copilot の提案を受けながら実装
-5. **レビュー**: 生成されたコードの品質とプロジェクト要件への適合性を確認
-
-### Vue Composition API でのパターン
+### エラーハンドリングパターン
 
 ```typescript
-// ツールの状態管理用コンポーザブル
-export function useToolState() {
-  // リアクティブな状態を定義
-  // 計算プロパティとメソッドを実装
-  // エラーハンドリングも含める
+try {
+  // 処理
+} catch (error) {
+  console.error('エラーが発生しました:', error)
+  // 日本語エラーメッセージをユーザーに表示
 }
 ```
 
-## 品質向上のためのチェックポイント
-
-### コード品質
-
-- Copilot の提案を盲目的に受け入れず、必ずレビュー
-- プロジェクトの命名規則に合わせて調整
-- TypeScript の型安全性を確保
-- ESLint のルールに準拠
-
-### プロジェクト要件の確認
-
-- **クライアントサイドのみ**: 外部 API 呼び出しコードが含まれていないか
-- **プライバシー重視**: ユーザーデータが外部に送信されないか
-- **レスポンシブ対応**: TailwindCSS のクラスが適切に使用されているか
-
-### テストの活用
+### ユーティリティ関数の構造
 
 ```typescript
-// このテストケースを満たす関数を実装してください
-describe('BMI計算', () => {
-  test('正常なBMI値の計算', () => {
-    // テストケースをコメントで記述すると
-    // Copilot が適切なテストコードを提案
+/**
+ * 機能の説明
+ * @param param1 パラメータの説明
+ * @param param2 パラメータの説明
+ * @returns 戻り値の説明
+ */
+export function utilityFunction(param1: string, param2: number): ReturnType {
+  // 純粋関数として実装
+}
+```
+
+## スタイリング要件
+
+### Tailwind CSS の使用
+
+```vue
+<template>
+  <!-- レスポンシブ対応 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- ダークモード対応 -->
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg">
+      <!-- コンテンツ -->
+    </div>
+  </div>
+</template>
+```
+
+### コンポーネント命名規則
+
+- **PascalCase**: コンポーネント名は PascalCase で記述
+- **Tool プレフィックス**: ツール共通コンポーネントには `Tool` プレフィックスを使用
+- **明確な命名**: コンポーネントの役割が分かる明確な名前を付ける
+
+## テストコードの生成
+
+### 単体テスト（Vitest）
+
+```typescript
+import { describe, it, expect } from 'vitest'
+import { functionName } from '~/utils/fileName'
+
+describe('functionName', () => {
+  it('正常なケースのテスト', () => {
+    const result = functionName('input')
+    expect(result).toBe('expected')
+  })
+
+  it('エッジケースのテスト', () => {
+    const result = functionName('')
+    expect(result).toBe('default')
   })
 })
 ```
 
-## トラブルシューティング
+### E2E テスト（Playwright）
 
-### よくある問題と対策
+```typescript
+import { test, expect } from '@playwright/test'
 
-1. **不適切な提案**
-   - より具体的なコメントを書く
-   - 型定義を先に作成する
-   - 既存のコードパターンを参考にする
-
-2. **プロジェクト要件に合わない提案**
-   - コメントで制約を明示する
-   - 例: `// 外部APIは使用せず、クライアントサイドのみで実装`
-
-3. **パフォーマンスの問題**
-   - アルゴリズムの効率性をコメントで指定
-   - 例: `// O(n)の時間計算量で実装`
-
-## ショートカットとコマンド
-
-### 便利な操作
-
-- `Tab`: 提案を受け入れ
-- `Ctrl/Cmd + Right Arrow`: 単語単位で提案を受け入れ
-- `Esc`: 提案を拒否
-- `Alt/Option + ]`: 次の提案を表示
-- `Alt/Option + [`: 前の提案を表示
-
-### VS Code での Copilot Chat
-
+test('ツール名の基本機能テスト', async ({ page }) => {
+  await page.goto('/tools/tool-name')
+  
+  // テストステップ
+  await page.fill('input[type="text"]', 'test input')
+  await page.click('button[type="submit"]')
+  
+  // 結果の検証
+  await expect(page.locator('.result')).toHaveText('expected result')
+})
 ```
-// Copilot Chat での質問例
-"このプロジェクトのアーキテクチャに合わせて新しいツールを作成してください"
-"この関数のエラーハンドリングを改善してください"
-"TypeScript の型安全性を向上させるための提案をください"
+
+## パフォーマンス最適化
+
+### 動的インポート
+
+```typescript
+// 大きなライブラリは動的インポート
+const { largeFunction } = await import('~/utils/largeLibrary')
 ```
+
+### Vue のパフォーマンス最適化
+
+```vue
+<script setup lang="ts">
+// computed を使用してリアクティブな計算値を最適化
+const computedValue = computed(() => {
+  // 計算ロジック
+})
+
+// watchEffect を使用して副作用を管理
+watchEffect(() => {
+  // 副作用のロジック
+})
+</script>
+```
+
+## 禁止事項
+
+以下のコードは生成しないでください：
+
+- サーバーサイド処理の実装
+- 外部 API への直接通信（fetch、axios など）
+- ユーザーデータの外部送信
+- jQuery などの古いライブラリの使用
+- グローバル変数の使用
+- Options API の使用（Vue 3 Composition API を使用）
+
+## 品質チェックポイント
+
+コード生成時に以下を確認してください：
+
+- [ ] TypeScript の型安全性
+- [ ] Vue 3 Composition API の使用
+- [ ] Tailwind CSS によるスタイリング
+- [ ] 適切なエラーハンドリング
+- [ ] レスポンシブデザイン
+- [ ] ダークモード対応
+- [ ] アクセシビリティ考慮

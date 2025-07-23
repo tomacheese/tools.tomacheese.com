@@ -1,6 +1,6 @@
 # AI 開発支援ドキュメント
 
-このディレクトリは、開発者が複数の生成 AI ツール（Claude Code、GitHub Copilot、Gemini CLI）を効果的に活用するための開発ガイドラインを一元管理するためのものです。
+このディレクトリは、複数の生成 AI ツール（Claude Code、GitHub Copilot、Gemini CLI）がこのリポジトリで作業する際の指示とガイドラインを一元管理するためのものです。
 
 ## プロジェクト概要
 
@@ -15,20 +15,20 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
   - [`architecture.md`](common/architecture.md) - アーキテクチャとディレクトリ構造
   - [`testing.md`](common/testing.md) - テスト戦略と実行方法
   - [`deployment.md`](common/deployment.md) - デプロイメント手順
-- [`tools/`](tools/) - AI ツールの効果的な使用方法
-  - [`claude.md`](tools/claude.md) - Claude Code の使用ガイド
-  - [`copilot.md`](tools/copilot.md) - GitHub Copilot の使用ガイド
-  - [`gemini.md`](tools/gemini.md) - Gemini CLI の使用ガイド
+- [`tools/`](tools/) - AI ツール固有の設定とベストプラクティス
+  - [`claude.md`](tools/claude.md) - Claude Code 向け設定と指示
+  - [`copilot.md`](tools/copilot.md) - GitHub Copilot 向け設定と指示
+  - [`gemini.md`](tools/gemini.md) - Gemini CLI 向け設定と指示
 
-## AI ツール活用ガイドの参照方法
+## AI ツール設定の参照方法
 
-開発者は各 AI ツールの効果的な使用方法について、以下のファイルから詳細なガイドにアクセスできます：
+各 AI ツールがこのリポジトリで作業する際の設定と指示については、以下のファイルから詳細な情報にアクセスできます：
 
 - **Claude Code**: [`/CLAUDE.md`](../CLAUDE.md) → `.ai/index.md` を参照
 - **GitHub Copilot**: [`/.github/copilot-instructions.md`](../.github/copilot-instructions.md) → `.ai/index.md` を参照  
 - **Gemini CLI**: [`/GEMINI.md`](../GEMINI.md) → `.ai/index.md` を参照
 
-各ファイルは対応する AI ツールの使用ガイド（`tools/` ディレクトリ内）へのエントリーポイントとして機能します。
+各ファイルは対応する AI ツールの設定（`tools/` ディレクトリ内）へのエントリーポイントとして機能します。
 
 ## 基本理念
 

@@ -1,238 +1,263 @@
-# Gemini CLI 使用ガイド
+# Gemini CLI 向け設定
 
-このファイルは、開発者が Gemini CLI を使ってこのプロジェクトで効果的に開発を行うためのガイドです。
+このファイルは Gemini CLI がこのリポジトリで作業する際に従うべき設定とガイドラインを提供します。
 
-## Gemini CLI とは
+## 基本原則
 
-Gemini CLI は、コマンドライン環境で Google の Gemini AI を活用した開発支援とコード生成を提供するツールです。
+### プライバシーファースト開発
 
-## セットアップ方法
+- **100% クライアントサイド**: すべてのツールは外部 API を使用せずブラウザ内で動作する必要があります
+- **データ送信禁止**: ユーザーのデータをサーバーに送信するコードを書いてはいけません
+- **ローカル処理**: すべての計算・変換・処理はブラウザ内で完結させてください
 
-1. Google AI Studio で API キーを取得
-2. Gemini CLI をインストール:
-   ```bash
-   npm install -g @google/generative-ai-cli
-   ```
-3. API キーを設定:
-   ```bash
-   gemini auth --api-key YOUR_API_KEY
-   ```
+### コード品質要件
 
-## 基本的な使用方法
+- **TypeScript 必須**: すべての新しいコードは TypeScript で記述してください
+- **型安全性**: `any` 型の使用は避け、適切な型定義を行ってください
+- **Vue 3 Composition API**: Options API ではなく Composition API を使用してください
 
-### プロジェクト全体の理解
+## 技術スタック制約
 
-```bash
-# プロジェクトディレクトリで Gemini CLI を起動
-gemini --project .
+### 必須技術
 
-# プロジェクト構造の分析
-gemini analyze "このプロジェクトの構造と主要なコンポーネントを説明してください"
+- **Nuxt.js v3**: フレームワークとして Nuxt.js v3 を使用
+- **Vue 3**: Composition API を使用してコンポーネントを作成
+- **TypeScript**: 型安全なコードを記述
+- **Tailwind CSS**: スタイリングは Tailwind CSS のみ使用
+
+### テストフレームワーク
+
+- **Vitest**: 単体テスト用
+- **Playwright**: E2E テスト用
+
+## プロジェクト構造の理解
+
+### ディレクトリ構造
+
+```
+pages/tools/          # ツールページ
+├── [tool-name].vue   # 各ツールのページ
+utils/                # ユーティリティ関数
+├── [function].ts     # 純粋関数として実装
+components/           # 共通コンポーネント
+├── Tool*.vue         # ツール関連コンポーネント
+tests/                # テストファイル
+├── utils/            # ユーティリティのテスト
+├── e2e/              # E2E テスト
 ```
 
-### コード生成
+### 実装パターン
 
-```bash
-# 特定のファイルに対してコード生成
-gemini generate --file src/utils/new-tool.ts --prompt "BMI計算ユーティリティを作成"
+#### 新しいツールの作成手順
 
-# インタラクティブモードで開発支援
-gemini interactive
+1. **ユーティリティ関数**: `utils/` に純粋関数を作成
+2. **ページコンポーネント**: `pages/tools/` にページを作成
+3. **メタデータ設定**: SEO とページメタデータを設定
+4. **テスト作成**: 単体テストと E2E テストを作成
+
+#### Vue コンポーネントの構造
+
+```vue
+<template>
+  <div class="max-w-4xl mx-auto p-6">
+    <ToolHeader :title="title" :description="description" />
+    
+    <!-- ツール固有のコンテンツ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- 入力エリア -->
+      <div class="space-y-4">
+        <!-- フォームコンポーネント -->
+      </div>
+      
+      <!-- 出力エリア -->
+      <div class="space-y-4">
+        <!-- 結果表示エリア -->
+      </div>
+    </div>
+    
+    <ToolFooter />
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { ToolMetadata } from '~/types/tool'
+
+// ページメタデータ
+const title = 'ツール名'
+const description = 'ツールの説明'
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+})
+
+definePageMeta({
+  layout: 'default',
+})
+
+// ツールのロジック（Composition API）
+</script>
 ```
 
-## 効果的なプロンプト設計
+## コード生成の指針
 
-### 具体的で詳細な指示
+### エラーハンドリング
 
-```bash
-gemini generate --prompt "
-BMI計算ツール用のVueコンポーネントを作成してください：
-- 体重（kg）と身長（cm）の入力フィールド
-- リアルタイムでBMI値を計算表示
-- 健康状態の分類も表示
-- TailwindCSSでレスポンシブデザイン
-- TypeScriptで型安全に実装
-- プライバシー重視（外部API使用禁止）
-"
+```typescript
+try {
+  const result = processData(input)
+  return result
+} catch (error) {
+  console.error('処理中にエラーが発生しました:', error)
+  throw new Error('データの処理に失敗しました')
+}
 ```
 
-### プロジェクト制約の明示
+### 型定義
 
-```bash
-gemini implement --context "
-このプロジェクトの制約：
-- 100%クライアントサイド実装
-- 外部APIへの通信は禁止
-- TypeScript必須
-- TailwindCSS使用
-- レスポンシブデザイン対応
-- アクセシビリティ考慮
-"
+```typescript
+// 明確な型定義を提供
+interface ToolInput {
+  value: string
+  options?: ProcessingOptions
+}
+
+interface ToolOutput {
+  result: string
+  metadata: {
+    processedAt: Date
+    isValid: boolean
+  }
+}
+
+// 純粋関数として実装
+export function processTool(input: ToolInput): ToolOutput {
+  // 実装
+}
 ```
 
-## 推奨ワークフロー
+### レスポンシブデザイン
 
-### 1. 要件分析フェーズ
-
-```bash
-# 新機能の要件整理
-gemini analyze "
-新しいツール「○○」を追加したいです。
-以下について分析・提案してください：
-- 必要な機能とユーザビリティ
-- 技術的実装方針
-- ディレクトリ構造
-- 必要なユーティリティ関数
-"
+```vue
+<template>
+  <!-- モバイルファースト、レスポンシブ対応 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- ダークモード対応 -->
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+      <!-- コンテンツ -->
+    </div>
+  </div>
+</template>
 ```
 
-### 2. 設計フェーズ
+## テストコードの要件
 
-```bash
-# アーキテクチャ設計
-gemini design "
-○○ツールのアーキテクチャを設計してください：
-- コンポーネント構成
-- 状態管理
-- ユーティリティ関数の分割
-- 型定義
-- テスト戦略
-"
+### 単体テスト（Vitest）
+
+```typescript
+import { describe, it, expect } from 'vitest'
+import { toolFunction } from '~/utils/toolName'
+
+describe('toolFunction', () => {
+  it('正常な入力で期待される結果を返す', () => {
+    const input = 'test input'
+    const result = toolFunction(input)
+    expect(result).toBe('expected output')
+  })
+
+  it('空の入力でエラーをスローする', () => {
+    expect(() => toolFunction('')).toThrow('入力が空です')
+  })
+
+  it('無効な入力でエラーをスローする', () => {
+    expect(() => toolFunction('invalid')).toThrow('無効な入力です')
+  })
+})
 ```
 
-### 3. 実装フェーズ
+### E2E テスト（Playwright）
 
-```bash
-# 段階的な実装
-gemini implement "設計に基づいてユーティリティ関数を実装"
-gemini implement "Vueコンポーネントを実装"
-gemini implement "スタイリングとレスポンシブ対応"
+```typescript
+import { test, expect } from '@playwright/test'
+
+test('ツール名の基本機能', async ({ page }) => {
+  await page.goto('/tools/tool-name')
+  
+  // ページタイトルの確認
+  await expect(page).toHaveTitle(/ツール名/)
+  
+  // 入力と結果の確認
+  await page.fill('input[type="text"]', 'test input')
+  await page.click('button[type="submit"]')
+  await expect(page.locator('.result')).toHaveText('expected result')
+})
+
+test('エラーハンドリング', async ({ page }) => {
+  await page.goto('/tools/tool-name')
+  
+  // 無効な入力でエラー表示
+  await page.fill('input[type="text"]', '')
+  await page.click('button[type="submit"]')
+  await expect(page.locator('.error')).toBeVisible()
+})
 ```
 
-### 4. テスト作成フェーズ
+## パフォーマンス要件
 
-```bash
-# テストコードの生成
-gemini test "
-実装した機能のテストコードを作成：
-- Vitestを使用した単体テスト
-- Playwrightを使用したE2Eテスト
-- エラーケースも含む包括的なテスト
-"
+### バンドルサイズ最適化
+
+```typescript
+// 大きなライブラリは動的インポート
+const processLargeData = async (data: string) => {
+  const { heavyFunction } = await import('~/utils/heavyLibrary')
+  return heavyFunction(data)
+}
 ```
 
-## バッチ処理の活用
+### Vue のパフォーマンス最適化
 
-### 複数ファイルの一括処理
+```vue
+<script setup lang="ts">
+// computed で計算値をキャッシュ
+const processedResult = computed(() => {
+  if (!inputValue.value) return ''
+  return expensiveCalculation(inputValue.value)
+})
 
-```bash
-# コメントの日本語化
-gemini batch --task "英語コメントを日本語に翻訳" --files "src/**/*.ts"
-
-# 型定義の改善
-gemini batch --task "TypeScript型安全性の向上" --files "src/utils/*.ts"
-
-# テストファイルの一括生成
-gemini generate-tests --source "src/utils/" --output "tests/utils/"
+// watchEffect で副作用を管理
+watchEffect(() => {
+  if (processedResult.value) {
+    // 結果に基づく副作用
+  }
+})
+</script>
 ```
 
-### 品質向上のための一括チェック
+## 禁止事項
 
-```bash
-# コードレビュー
-gemini review --files "src/**/*.vue" --criteria "
-- プロジェクト制約の遵守
-- TypeScript型安全性
-- アクセシビリティ
-- パフォーマンス
-"
+以下のコードは生成しないでください：
 
-# リファクタリング提案
-gemini refactor --pattern "重複コードの統合" --directory "src/"
-```
+- `fetch()` や `axios` による外部 API 通信
+- サーバーサイドレンダリングの実装
+- Node.js 固有の API の使用
+- ユーザーデータの外部送信
+- jQuery などの古いライブラリの使用
+- グローバル変数やグローバル状態の使用
+- Vue 2 の Options API の使用
 
-## 継続的開発支援
+## 品質チェックリスト
 
-### ファイル監視とリアルタイム支援
+コード生成時に以下を確認してください：
 
-```bash
-# ファイル変更を監視しながら開発支援
-gemini watch --directory src/ --auto-review
-
-# 特定のパターンのファイルのみ監視
-gemini watch --pattern "*.vue,*.ts" --suggestions
-```
-
-### 自動化タスク
-
-```bash
-# 新しいツール作成の自動化
-gemini template --type "web-tool" --name "新ツール名"
-
-# 既存ツールのアップデート支援
-gemini update --tool "BMI計算" --requirements "新機能追加"
-```
-
-## トラブルシューティング
-
-### よくある問題と解決法
-
-1. **生成されたコードがプロジェクト要件に合わない**
-   ```bash
-   # 制約をより明確に指定
-   gemini fix --file src/tool.vue --constraints "
-   - 外部API使用禁止
-   - クライアントサイドのみ
-   - TypeScript型チェック通過
-   "
-   ```
-
-2. **パフォーマンスの問題**
-   ```bash
-   # 最適化の提案
-   gemini optimize --file src/heavy-calculation.ts --focus "performance"
-   ```
-
-3. **テストが通らない**
-   ```bash
-   # テスト修正の支援
-   gemini debug --test-file tests/utils/tool.test.ts --fix-issues
-   ```
-
-## 高度な活用方法
-
-### Custom Prompt Templates
-
-```bash
-# プロジェクト専用プロンプトテンプレートの作成
-gemini template create --name "tools-project" --template "
-このプロジェクトの制約：
-- 100%クライアントサイド
-- プライバシーファースト
-- TypeScript + Vue 3 + TailwindCSS
-- レスポンシブ + アクセシブル
-
-タスク: {task}
-要件: {requirements}
-"
-
-# テンプレートの使用
-gemini use-template --name "tools-project" --task "新機能実装" --requirements "○○の追加"
-```
-
-### 複雑なワークフローの自動化
-
-```bash
-# 新ツール作成の完全自動化
-gemini workflow create --name "new-tool" --steps "
-1. 要件分析
-2. 設計
-3. ユーティリティ実装
-4. コンポーネント実装
-5. テスト作成
-6. ドキュメント生成
-"
-
-# ワークフローの実行
-gemini workflow run --name "new-tool" --input "パスワード生成ツール"
-```
+- [ ] TypeScript の型チェックが通る
+- [ ] Vue 3 Composition API を使用している
+- [ ] Tailwind CSS でスタイリングしている
+- [ ] レスポンシブデザインに対応している
+- [ ] ダークモードに対応している
+- [ ] エラーハンドリングが適切に実装されている
+- [ ] アクセシビリティを考慮している
+- [ ] 単体テストが作成されている
+- [ ] E2E テストが作成されている
+- [ ] プライバシー要件を満たしている（外部通信なし）
