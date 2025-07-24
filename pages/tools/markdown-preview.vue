@@ -69,18 +69,43 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { marked } from 'marked'
 
 const markdownText = ref('')
+const isLoading = ref(false)
+const markedModule = ref<any>(null)
+
+// marked.jsを動的にロード
+const loadMarked = async () => {
+  if (!markedModule.value) {
+    try {
+      isLoading.value = true
+      const module = await import('marked')
+      markedModule.value = module.marked
+    } catch (error) {
+      console.error('Failed to load marked.js:', error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+}
 
 // マークダウンをHTMLに変換
 const htmlOutput = computed(() => {
+  if (isLoading.value) {
+    return '<p class="loading">マークダウンパーサーを読み込み中...</p>'
+  }
+
   if (!markdownText.value) {
     return '<p class="placeholder">Markdownテキストを入力するとここにプレビューが表示されます</p>'
   }
 
+  if (!markedModule.value) {
+    loadMarked()
+    return '<p class="loading">マークダウンパーサーを読み込み中...</p>'
+  }
+
   try {
-    const result = marked(markdownText.value)
+    const result = markedModule.value(markdownText.value)
     // Handle both sync and async cases
     return typeof result === 'string' ? result : String(result)
   } catch (error) {
