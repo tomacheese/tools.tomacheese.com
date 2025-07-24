@@ -1,4 +1,4 @@
-import { generateRandomHex as generateRandomHexCore } from './hex-utils'
+// Note: hex utilities are provided by hex-utils.ts directly
 
 export interface RandomNumberOptions {
   min: number
@@ -374,9 +374,7 @@ export function generateRandomBinary(length: number): string {
   return binary
 }
 
-/**
- * Generate random hex string
- */
-export function generateRandomHex(length: number): string {
-  return generateRandomHexCore(length, { uppercase: true })
-}
+// Note: Use generateRandomHexCore directly from hex-utils.ts to avoid duplication
+// export function generateRandomHex(length: number): string {
+//   return generateRandomHexCore(length, { uppercase: true })
+// }

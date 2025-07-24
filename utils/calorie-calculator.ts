@@ -1,7 +1,6 @@
 import type { Gender, ActivityLevel, WeightUnit, HeightUnit } from './health-types'
 
-// Re-export types for external use
-export type { WeightUnit, HeightUnit }
+// Note: Types are imported from health-types.ts - no re-export needed to avoid duplication
 
 export type Goal = 'maintain' | 'lose' | 'gain'
 

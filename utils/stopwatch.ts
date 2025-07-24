@@ -1,9 +1,9 @@
 import {
-  type FormattedTime,
-  formatTime,
   formatTimeToString,
-  parseTimeString,
 } from './time-utils'
+
+// Note: Time utilities are available directly from ./time-utils:
+// - FormattedTime, formatTime, parseTimeString
 
 export interface StopwatchState {
   startTime: number | null

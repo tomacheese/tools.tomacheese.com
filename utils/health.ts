@@ -1,13 +1,9 @@
 import type {
   Gender,
   ActivityLevel,
-  Climate,
-  SpecialCondition,
-  WaterIntakeResult,
 } from './health-types'
 
-// Re-export types for external use
-export type { Gender, ActivityLevel }
+// Note: Types are imported from health-types.ts - no re-export needed to avoid duplication
 
 export interface BMIResult {
   bmi: number

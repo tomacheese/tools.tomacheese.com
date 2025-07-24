@@ -6,8 +6,7 @@ import type {
   WaterIntakeResult,
 } from './health-types'
 
-// Re-export types for external use
-export type { WeightUnit, ActivityLevel, Climate, SpecialCondition, WaterIntakeResult }
+// Note: Types are imported from health-types.ts - no re-export needed to avoid duplication
 
 export interface WaterIntakeInput {
   weight: number

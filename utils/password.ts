@@ -1,5 +1,6 @@
-import { generateUUID } from './uuid'
-import { generateRandomHex } from './hex-utils'
+// Note: Utility functions are available directly from their source files:
+// - generateUUID from ./uuid
+// - generateRandomHex from ./hex-utils
 export interface PasswordOptions {
   length: number
   includeUppercase: boolean
