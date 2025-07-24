@@ -1,5 +1,5 @@
 export type WeightUnit = 'kg' | 'lbs'
-export type ActivityLevel = 'sedentary' | 'moderate' | 'active'
+export type ActivityLevel = 'sedentary' | 'light' | 'moderate' | 'active' | 'extra'
 export type Climate = 'temperate' | 'hot' | 'cold'
 export type SpecialCondition = 'none' | 'pregnancy' | 'breastfeeding'
 
@@ -30,8 +30,10 @@ const BASE_WATER_PER_KG = 35
 // Activity level adjustments (percentage)
 const activityAdjustments: Record<ActivityLevel, number> = {
   sedentary: 0,
+  light: 0.1, // +10%
   moderate: 0.15, // +15%
   active: 0.3, // +30%
+  extra: 0.4, // +40%
 }
 
 // Climate adjustments (ml)
@@ -121,8 +123,10 @@ export function formatOunces(oz: number): string {
 export function getActivityLevelDescription(level: ActivityLevel): string {
   const descriptions: Record<ActivityLevel, string> = {
     sedentary: '座り仕事中心・軽い活動',
+    light: '軽い運動・散歩程度',
     moderate: '適度な活動・軽い運動',
     active: 'アクティブな生活・定期的な運動',
+    extra: '非常にアクティブ・高強度の運動',
   }
   return descriptions[level]
 }

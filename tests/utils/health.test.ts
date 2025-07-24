@@ -3,8 +3,8 @@ import {
   calculateBMI,
   calculateBMR,
   calculateCalories,
-  type ActivityLevel,
 } from '~/utils/health'
+import { type ActivityLevel } from '~/utils/water-intake'
 
 describe('Health Utils', () => {
   describe('calculateBMI', () => {

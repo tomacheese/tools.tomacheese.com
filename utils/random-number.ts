@@ -380,7 +380,7 @@ export function generateRandomHex(length: number): string {
     throw new Error('長さは1以上である必要があります')
   }
 
-  const chars = '0123456789ABCDEF'
+  const chars = '0123456789abcdef'
   let hex = ''
   for (let i = 0; i < length; i++) {
     hex += chars.charAt(Math.floor(Math.random() * chars.length))
