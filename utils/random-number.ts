@@ -374,6 +374,7 @@ export function generateRandomBinary(length: number): string {
 
 /**
  * Generate random hex string
+ * Note: Uses uppercase hex characters (0-9, A-F) for consistency with base conversion utilities
  */
 export function generateRandomHex(length: number): string {
   if (length <= 0) {
