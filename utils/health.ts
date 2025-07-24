@@ -1,3 +1,11 @@
+export type Gender = 'male' | 'female'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
+
 export interface BMIResult {
   bmi: number
   category: string
@@ -10,14 +18,6 @@ export interface CalorieResult {
   totalCalories: number
   description: string
 }
-
-export type Gender = 'male' | 'female'
-export type ActivityLevel =
-  | 'sedentary'
-  | 'light'
-  | 'moderate'
-  | 'active'
-  | 'extra'
 
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {
