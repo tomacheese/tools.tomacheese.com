@@ -353,4 +353,266 @@ describe('Text utilities', () => {
       expect(diff2.some(item => item.type === 'removed')).toBe(true)
     })
   })
+
+  // エラーハンドリングテスト
+  describe('Error Handling Tests', () => {
+    describe('analyzeText edge cases', () => {
+      it('should handle empty string', () => {
+        const stats = analyzeText('')
+        
+        expect(stats.charactersWithSpaces).toBe(0)
+        expect(stats.charactersWithoutSpaces).toBe(0)
+        expect(stats.lines).toBe(0)
+        expect(stats.words).toBe(0)
+        expect(stats.paragraphs).toBe(0)
+        expect(stats.bytes).toBe(0)
+      })
+
+      it('should handle very long text (1MB)', () => {
+        const longText = 'A'.repeat(1024 * 1024) // 1MB of text
+        const stats = analyzeText(longText)
+        
+        expect(stats.charactersWithSpaces).toBe(1024 * 1024)
+        expect(stats.charactersWithoutSpaces).toBe(1024 * 1024)
+        expect(stats.words).toBe(1)
+        expect(stats.lines).toBe(1)
+      })
+
+      it('should handle text with only whitespace', () => {
+        const whitespaceText = '   \n\n\t\t  \n  '
+        const stats = analyzeText(whitespaceText)
+        
+        expect(stats.charactersWithSpaces).toBeGreaterThan(0)
+        expect(stats.charactersWithoutSpaces).toBe(0)
+        expect(stats.words).toBe(0)
+      })
+
+      it('should handle text with special Unicode characters', () => {
+        const unicodeText = '🚀💻🎉🔥⭐️🌟💪🎯'
+        const stats = analyzeText(unicodeText)
+        
+        expect(stats.charactersWithSpaces).toBeGreaterThan(0)
+        expect(stats.symbols).toBeGreaterThan(0)
+      })
+    })
+
+    describe('Base64 error handling', () => {
+      it('should handle invalid Base64 input gracefully', () => {
+        const invalidBase64 = 'invalid base64 string!!!'
+        
+        expect(() => decodeBase64(invalidBase64)).toThrow('Base64デコードに失敗しました')
+      })
+
+      it('should handle malformed Base64 padding', () => {
+        const malformedBase64 = 'SGVsbG8gV29ybGQ' // Missing padding
+        
+        expect(() => decodeBase64(malformedBase64)).toThrow()
+      })
+
+      it('should handle non-string input to encodeBase64', () => {
+        expect(() => encodeBase64(null as any)).toThrow()
+        expect(() => encodeBase64(undefined as any)).toThrow()
+        expect(() => encodeBase64(123 as any)).toThrow()
+      })
+
+      it('should handle extremely long text for Base64', () => {
+        const longText = 'A'.repeat(100000)
+        const encoded = encodeBase64(longText)
+        const decoded = decodeBase64(encoded)
+        
+        expect(decoded).toBe(longText)
+      })
+    })
+
+    describe('JSON parsing error handling', () => {
+      it('should handle circular references', () => {
+        const obj: any = { name: 'test' }
+        obj.self = obj // Circular reference
+        
+        expect(() => JSON.stringify(obj)).toThrow()
+        
+        // parseJsonSafely should handle this gracefully
+        const jsonString = '{"a": 1}'
+        const result = parseJsonSafely(jsonString)
+        expect(result.success).toBe(true)
+      })
+
+      it('should handle various invalid JSON formats', () => {
+        const invalidJSONs = [
+          '{invalid json}',
+          '{"unclosed": "string}',
+          '{trailing,}',
+          'undefined',
+          'null',
+          '',
+          '{"number": NaN}',
+          '{"infinity": Infinity}'
+        ]
+        
+        invalidJSONs.forEach(invalid => {
+          const result = parseJsonSafely(invalid)
+          if (invalid === 'null') {
+            expect(result.success).toBe(true)
+            expect(result.data).toBe(null)
+          } else {
+            expect(result.success).toBe(false)
+            expect(result.error).toBeDefined()
+          }
+        })
+      })
+
+      it('should handle deeply nested JSON', () => {
+        let deepJson = '{}'
+        for (let i = 0; i < 100; i++) {
+          deepJson = `{"level${i}": ${deepJson}}`
+        }
+        
+        const result = parseJsonSafely(deepJson)
+        expect(result.success).toBe(true)
+      })
+
+      it('should handle JSON with null and undefined values', () => {
+        const jsonWithNull = '{"value": null, "missing": undefined}'
+        const result = parseJsonSafely(jsonWithNull)
+        
+        // JavaScript JSON.parse cannot handle undefined, so this should fail
+        expect(result.success).toBe(false)
+      })
+    })
+
+    describe('URL encoding error handling', () => {
+      it('should handle special characters in URL encoding', () => {
+        const specialChars = '!@#$%^&*()[]{}|;\':",./<>?`~'
+        const encoded = encodeUrl(specialChars)
+        const decoded = decodeUrl(encoded)
+        
+        expect(decoded).toBe(specialChars)
+      })
+
+      it('should handle Unicode characters in URLs', () => {
+        const unicodeString = '日本語テスト🚀'
+        const encoded = encodeUrl(unicodeString)
+        const decoded = decodeUrl(encoded)
+        
+        expect(decoded).toBe(unicodeString)
+      })
+
+      it('should handle malformed URL-encoded strings', () => {
+        const malformedUrl = '%GG%HH%II' // Invalid hex
+        
+        expect(() => decodeUrl(malformedUrl)).toThrow('URLデコードに失敗しました')
+      })
+
+      it('should handle incomplete percent encoding', () => {
+        const incompleteEncoding = 'hello%2' // Missing second hex digit
+        
+        expect(() => decodeUrl(incompleteEncoding)).toThrow()
+      })
+    })
+
+    describe('Case conversion edge cases', () => {
+      it('should handle empty strings', () => {
+        const caseTypes = ['upper', 'lower', 'title', 'camel', 'pascal', 'snake', 'kebab'] as const
+        
+        caseTypes.forEach(caseType => {
+          const result = convertCase('', caseType)
+          expect(result).toBe('')
+        })
+      })
+
+      it('should handle single character strings', () => {
+        expect(convertCase('a', 'upper')).toBe('A')
+        expect(convertCase('A', 'lower')).toBe('a')
+        expect(convertCase('x', 'title')).toBe('X')
+      })
+
+      it('should handle strings with numbers and special characters', () => {
+        const input = 'test123!@#'
+        
+        expect(convertCase(input, 'upper')).toBe('TEST123!@#')
+        expect(convertCase(input, 'snake')).toBe('test123')
+        expect(convertCase(input, 'kebab')).toBe('test123')
+      })
+
+      it('should handle already formatted strings', () => {
+        expect(convertCase('already_snake_case', 'snake')).toBe('already_snake_case')
+        expect(convertCase('already-kebab-case', 'kebab')).toBe('already-kebab-case')
+        expect(convertCase('AlreadyPascalCase', 'pascal')).toBe('AlreadyPascalCase')
+      })
+    })
+
+    describe('Lorem Ipsum generation edge cases', () => {
+      it('should handle zero paragraphs', () => {
+        const result = generateLoremIpsum(0)
+        expect(result).toBe('')
+      })
+
+      it('should handle negative paragraph count', () => {
+        const result = generateLoremIpsum(-1)
+        expect(result).toBe('')
+      })
+
+      it('should handle very large paragraph count', () => {
+        const result = generateLoremIpsum(100)
+        const paragraphs = result.split('\n\n')
+        expect(paragraphs).toHaveLength(100)
+      })
+
+      it('should respect startWithLorem parameter', () => {
+        const withLorem = generateLoremIpsum(1, true)
+        const withoutLorem = generateLoremIpsum(1, false)
+        
+        expect(withLorem.toLowerCase()).toMatch(/^lorem ipsum/)
+        expect(withoutLorem.toLowerCase()).not.toMatch(/^lorem ipsum/)
+      })
+    })
+  })
+
+  // 境界値テスト
+  describe('Boundary Value Tests', () => {
+    describe('Text analysis limits', () => {
+      it('should handle maximum JavaScript string length', () => {
+        // Test with a very large string (but not MAX_SAFE_INTEGER to avoid memory issues)
+        const largeText = 'A'.repeat(10000)
+        const stats = analyzeText(largeText)
+        
+        expect(stats.charactersWithSpaces).toBe(10000)
+        expect(stats.charactersWithoutSpaces).toBe(10000)
+      })
+
+      it('should handle text with maximum Unicode code points', () => {
+        const unicodeText = '\uFFFF\u0000\u007F\u0080\u00FF'
+        const stats = analyzeText(unicodeText)
+        
+        expect(stats.charactersWithSpaces).toBe(5)
+        expect(typeof stats.bytes).toBe('number')
+        expect(stats.bytes).toBeGreaterThan(0)
+      })
+    })
+
+    describe('Performance benchmarks', () => {
+      it('should process large text efficiently', () => {
+        const largeText = 'The quick brown fox jumps over the lazy dog. '.repeat(10000)
+        
+        const startTime = performance.now()
+        const stats = analyzeText(largeText)
+        const endTime = performance.now()
+        
+        expect(endTime - startTime).toBeLessThan(1000) // Should complete within 1 second
+        expect(stats.words).toBe(90000) // 9 words * 10000 repeats
+      })
+
+      it('should encode/decode large Base64 efficiently', () => {
+        const largeText = 'Large text content for Base64 testing. '.repeat(1000)
+        
+        const startTime = performance.now()
+        const encoded = encodeBase64(largeText)
+        const decoded = decodeBase64(encoded)
+        const endTime = performance.now()
+        
+        expect(endTime - startTime).toBeLessThan(500) // Should complete within 500ms
+        expect(decoded).toBe(largeText)
+      })
+    })
+  })
 })

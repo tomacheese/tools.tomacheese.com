@@ -22,8 +22,31 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['composables/**', 'utils/**', 'pages/**'],
-      exclude: ['tests/**', '**/*.test.ts', '**/*.spec.ts'],
-      reporter: ['text', 'html', 'lcov'],
+      exclude: [
+        'tests/**', 
+        '**/*.test.ts', 
+        '**/*.spec.ts',
+        '**/*.d.ts',
+        'node_modules/**',
+        '.nuxt/**',
+        'dist/**'
+      ],
+      reporter: ['text', 'html', 'lcov', 'json-summary'],
+      reportsDirectory: './coverage',
+      thresholds: {
+        global: {
+          branches: 85,
+          functions: 85,
+          lines: 85,
+          statements: 85
+        }
+      },
+      watermarks: {
+        statements: [80, 95],
+        functions: [80, 95], 
+        branches: [80, 95],
+        lines: [80, 95]
+      }
     },
   },
 })

@@ -63,8 +63,54 @@ jobs:
       - name: Run type check
         run: pnpm typecheck
 
-      - name: Run unit tests
-        run: pnpm test
+      - name: Run unit tests with coverage
+        run: pnpm test:coverage
+
+      - name: Upload unit test coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-coverage
+          path: coverage/
+          retention-days: 30
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/lcov.info
+          flags: unit-tests
+          name: unit-tests
+          fail_ci_if_error: false
+
+      - name: Coverage threshold check
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+            BRANCHES=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')  
+            FUNCTIONS=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')
+            STATEMENTS=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')
+            
+            echo "Coverage Summary:"
+            echo "Lines: $LINES%"
+            echo "Branches: $BRANCHES%"
+            echo "Functions: $FUNCTIONS%"
+            echo "Statements: $STATEMENTS%"
+            
+            # Coverage thresholds (85% target)
+            if (( $(echo "$LINES < 85" | bc -l) )); then
+              echo "⚠️ Line coverage ($LINES%) is below 85% threshold"
+            fi
+            if (( $(echo "$BRANCHES < 85" | bc -l) )); then
+              echo "⚠️ Branch coverage ($BRANCHES%) is below 85% threshold"
+            fi
+            if (( $(echo "$FUNCTIONS < 85" | bc -l) )); then
+              echo "⚠️ Function coverage ($FUNCTIONS%) is below 85% threshold"  
+            fi
+            if (( $(echo "$STATEMENTS < 85" | bc -l) )); then
+              echo "⚠️ Statement coverage ($STATEMENTS%) is below 85% threshold"
+            fi
+          fi
 
       - name: Run dependency check
         run: pnpm depcheck
@@ -117,11 +163,134 @@ jobs:
 
       - name: Run E2E tests
         run: pnpm test:e2e
+        env:
+          CI: true
 
-      - name: Upload test results
+      - name: Run accessibility tests
+        run: pnpm exec playwright test tests/e2e/accessibility.spec.ts
+        continue-on-error: true
+
+      - name: Run workflow tests
+        run: pnpm exec playwright test tests/e2e/pomodoro-workflow.spec.ts
+        continue-on-error: true
+
+      - name: Upload E2E test results
         uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 30
+
+      - name: Upload E2E test report
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      - name: Generate E2E test summary
+        if: always()
+        run: |
+          if [ -f test-results/results.json ]; then
+            echo "## 🧪 E2E Test Results" >> $GITHUB_STEP_SUMMARY
+            
+            PASSED=$(cat test-results/results.json | jq '.stats.expected // 0')
+            FAILED=$(cat test-results/results.json | jq '.stats.unexpected // 0')
+            FLAKY=$(cat test-results/results.json | jq '.stats.flaky // 0')
+            TOTAL=$(cat test-results/results.json | jq '.stats.total // 0')
+            
+            echo "- ✅ Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔄 Flaky: $FLAKY" >> $GITHUB_STEP_SUMMARY
+            echo "- 📊 Total: $TOTAL" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FAILED" -gt 0 ]; then
+              echo "⚠️ E2E tests have failures. Check the detailed report." >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "## 🧪 E2E Test Results" >> $GITHUB_STEP_SUMMARY
+            echo "Test results not found. Check test execution." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # 新しいテストメトリクス監視ジョブ
+  test-metrics:
+    runs-on: ubuntu-latest
+    needs: [test, e2e]
+    if: always()
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-test-coverage
+          path: coverage/
+        continue-on-error: true
+        
+      - name: Download E2E test results
+        uses: actions/download-artifact@v4
+        with:
+          name: e2e-test-results
+          path: test-results/
+        continue-on-error: true
+        
+      - name: Generate test metrics summary
+        run: |
+          echo "# 📊 Test Metrics Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Unit test coverage metrics
+          if [ -f coverage/coverage-summary.json ]; then
+            echo "## 📈 Unit Test Coverage" >> $GITHUB_STEP_SUMMARY
+            
+            LINES=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+            BRANCHES=$(cat coverage/coverage-summary.json | jq '.total.branches.pct')
+            FUNCTIONS=$(cat coverage/coverage-summary.json | jq '.total.functions.pct')
+            STATEMENTS=$(cat coverage/coverage-summary.json | jq '.total.statements.pct')
+            
+            echo "| Metric | Coverage | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|----------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            # Add status indicators based on 85% threshold
+            LINES_STATUS="🔴"
+            BRANCHES_STATUS="🔴"
+            FUNCTIONS_STATUS="🔴"
+            STATEMENTS_STATUS="🔴"
+            
+            if (( $(echo "$LINES >= 85" | bc -l) )); then LINES_STATUS="🟢"; fi
+            if (( $(echo "$BRANCHES >= 85" | bc -l) )); then BRANCHES_STATUS="🟢"; fi
+            if (( $(echo "$FUNCTIONS >= 85" | bc -l) )); then FUNCTIONS_STATUS="🟢"; fi
+            if (( $(echo "$STATEMENTS >= 85" | bc -l) )); then STATEMENTS_STATUS="🟢"; fi
+            
+            echo "| Lines | ${LINES}% | ${LINES_STATUS} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Branches | ${BRANCHES}% | ${BRANCHES_STATUS} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Functions | ${FUNCTIONS}% | ${FUNCTIONS_STATUS} |" >> $GITHUB_STEP_SUMMARY
+            echo "| Statements | ${STATEMENTS}% | ${STATEMENTS_STATUS} |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Test execution times and flaky test detection
+          echo "## ⏱️ Test Performance" >> $GITHUB_STEP_SUMMARY
+          echo "- Unit tests: Completed in job 'test'" >> $GITHUB_STEP_SUMMARY
+          echo "- E2E tests: Completed in job 'e2e'" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Recommendations
+          echo "## 💡 Recommendations" >> $GITHUB_STEP_SUMMARY
+          if [ -f coverage/coverage-summary.json ]; then
+            OVERALL_COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+            if (( $(echo "$OVERALL_COVERAGE < 85" | bc -l) )); then
+              echo "- 📊 Consider adding more unit tests to reach 85% coverage target" >> $GITHUB_STEP_SUMMARY
+            fi
+            if (( $(echo "$OVERALL_COVERAGE >= 90" | bc -l) )); then
+              echo "- ⭐ Excellent test coverage! Keep up the good work" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+          echo "- 🔍 Monitor flaky tests and improve stability" >> $GITHUB_STEP_SUMMARY
+          echo "- 🚀 Ensure E2E tests cover critical user workflows" >> $GITHUB_STEP_SUMMARY
