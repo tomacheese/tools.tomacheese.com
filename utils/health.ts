@@ -6,6 +6,9 @@ import type {
   WaterIntakeResult,
 } from './health-types'
 
+// Re-export types for external use
+export type { Gender, ActivityLevel }
+
 export interface BMIResult {
   bmi: number
   category: string

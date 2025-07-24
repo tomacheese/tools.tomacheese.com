@@ -1,4 +1,6 @@
 import { generateRandomHex as generateRandomHexCore } from './hex-utils'
+
+export interface RandomNumberOptions {
   min: number
   max: number
   count: number

@@ -6,6 +6,9 @@ import type {
   WaterIntakeResult,
 } from './health-types'
 
+// Re-export types for external use
+export type { WeightUnit, ActivityLevel, Climate, SpecialCondition, WaterIntakeResult }
+
 export interface WaterIntakeInput {
   weight: number
   weightUnit: WeightUnit
@@ -21,8 +24,10 @@ const BASE_WATER_PER_KG = 35
 // Activity level adjustments (percentage)
 const activityAdjustments: Record<ActivityLevel, number> = {
   sedentary: 0,
+  light: 0.05, // +5%
   moderate: 0.15, // +15%
   active: 0.3, // +30%
+  extra: 0.5, // +50%
 }
 
 // Climate adjustments (ml)
@@ -112,8 +117,10 @@ export function formatOunces(oz: number): string {
 export function getActivityLevelDescription(level: ActivityLevel): string {
   const descriptions: Record<ActivityLevel, string> = {
     sedentary: '座り仕事中心・軽い活動',
+    light: '軽い運動（週1-3回）',
     moderate: '適度な活動・軽い運動',
     active: 'アクティブな生活・定期的な運動',
+    extra: '非常に激しい運動・肉体労働',
   }
   return descriptions[level]
 }
