@@ -11,23 +11,7 @@ export interface CalorieResult {
   description: string
 }
 
-export interface WaterIntakeResult {
-  baseWater: number
-  totalWater: number
-  totalWaterOz: number
-  activityAdjustment: number
-  climateAdjustment: number
-  exerciseAdjustment: number
-  specialConditionAdjustment: number
-  description: string
-  breakdown: {
-    base: string
-    activity: string
-    climate: string
-    exercise: string
-    specialCondition: string
-  }
-}
+// WaterIntakeResult has been moved to water-intake.ts for comprehensive functionality
 
 export type Gender = 'male' | 'female'
 export type ActivityLevel =
@@ -36,8 +20,7 @@ export type ActivityLevel =
   | 'moderate'
   | 'active'
   | 'extra'
-export type Climate = 'temperate' | 'hot' | 'cold'
-export type SpecialCondition = 'none' | 'pregnancy' | 'breastfeeding'
+// Climate and SpecialCondition have been moved to water-intake.ts
 
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {

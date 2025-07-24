@@ -234,61 +234,7 @@ export const calculateExpenseSplit = (
   }
 }
 
-/**
- * 住宅ローン計算
- */
-export const calculateMortgage = (
-  loanAmount: number,
-  annualRate: number,
-  termYears: number
-): {
-  monthlyPayment: number
-  totalPayment: number
-  totalInterest: number
-  monthlyBreakdown: Array<{
-    month: number
-    payment: number
-    principal: number
-    interest: number
-    balance: number
-  }>
-} => {
-  const monthlyRate = annualRate / 100 / 12
-  const numberOfPayments = termYears * 12
-
-  // 月額返済額計算
-  const monthlyPayment =
-    (loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments))) /
-    (Math.pow(1 + monthlyRate, numberOfPayments) - 1)
-
-  const totalPayment = monthlyPayment * numberOfPayments
-  const totalInterest = totalPayment - loanAmount
-
-  // 月別内訳計算
-  const monthlyBreakdown = []
-  let remainingBalance = loanAmount
-
-  for (let month = 1; month <= numberOfPayments; month++) {
-    const interestPayment = remainingBalance * monthlyRate
-    const principalPayment = monthlyPayment - interestPayment
-    remainingBalance -= principalPayment
-
-    monthlyBreakdown.push({
-      month,
-      payment: monthlyPayment,
-      principal: principalPayment,
-      interest: interestPayment,
-      balance: Math.max(0, remainingBalance),
-    })
-  }
-
-  return {
-    monthlyPayment,
-    totalPayment,
-    totalInterest,
-    monthlyBreakdown,
-  }
-}
+// calculateMortgage has been moved to mortgage-calculator.ts for dedicated functionality
 
 /**
  * 基礎代謝計算（Harris-Benedict式）

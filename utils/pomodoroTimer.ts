@@ -247,11 +247,7 @@ export function getPhaseDisplayName(phase: PomodoroPhase): string {
   }
 }
 
-export function formatTime(seconds: number): string {
-  const minutes = Math.floor(seconds / 60)
-  const remainingSeconds = seconds % 60
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
-}
+// formatTime has been moved to stopwatch.ts for shared time formatting functionality
 
 export function formatDuration(minutes: number): string {
   if (minutes < 60) {

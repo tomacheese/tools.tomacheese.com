@@ -219,34 +219,9 @@ export const estimateCrackTime = (
   }
 }
 
-/**
- * UUID v4を生成する
- */
-export const generateUUID = (): string => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
+// generateUUID has been moved to uuid.ts for dedicated functionality
 
-/**
- * ランダムな16進数文字列を生成する
- */
-export const generateRandomHex = (length: number): string => {
-  if (length < 1) {
-    throw new Error('長さは1以上である必要があります')
-  }
-
-  const hexChars = '0123456789abcdef'
-  let result = ''
-
-  for (let i = 0; i < length; i++) {
-    result += hexChars[Math.floor(Math.random() * hexChars.length)]
-  }
-
-  return result
-}
+// generateRandomHex has been moved to random-number.ts for dedicated functionality
 
 /**
  * Luhnアルゴリズムでクレジットカード番号を検証する
