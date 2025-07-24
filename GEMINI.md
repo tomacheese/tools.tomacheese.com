@@ -29,9 +29,6 @@ Gemini CLI 特有の使用方法やベストプラクティスについては：
 # 依存関係のインストール
 pnpm install
 
-# 開発サーバー起動
-pnpm dev
-
 # テスト実行
 pnpm test
 pnpm test:e2e
