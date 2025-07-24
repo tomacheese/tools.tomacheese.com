@@ -1,0 +1,264 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    # 毎週月曜日の2時に実行
+    - cron: '0 2 * * 1'
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    name: Security Audit
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.4.1'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.13.1'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run npm audit
+        run: |
+          pnpm audit --audit-level moderate --json > audit-results.json || true
+          
+      - name: Parse audit results
+        run: |
+          if [ -f audit-results.json ]; then
+            VULNERABILITIES=$(cat audit-results.json | jq -r '.metadata.vulnerabilities.total // 0')
+            HIGH_VULNS=$(cat audit-results.json | jq -r '.metadata.vulnerabilities.high // 0')
+            CRITICAL_VULNS=$(cat audit-results.json | jq -r '.metadata.vulnerabilities.critical // 0')
+            
+            echo "Total vulnerabilities: $VULNERABILITIES"
+            echo "High vulnerabilities: $HIGH_VULNS"
+            echo "Critical vulnerabilities: $CRITICAL_VULNS"
+            
+            if [ "$CRITICAL_VULNS" -gt 0 ]; then
+              echo "❌ Critical vulnerabilities found!"
+              exit 1
+            elif [ "$HIGH_VULNS" -gt 0 ]; then
+              echo "⚠️ High severity vulnerabilities found!"
+              # 警告は表示するが、CIは成功させる（プロジェクトの要件に応じて調整）
+            fi
+          fi
+        
+      - name: Upload audit results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-audit-results
+          path: audit-results.json
+          
+  dependency-check:
+    runs-on: ubuntu-latest
+    name: Dependency Vulnerability Check
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.4.1'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.13.1'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Check for known vulnerabilities in dependencies
+        run: |
+          # package.jsonから依存関係を取得してセキュリティチェック
+          echo "Checking package.json for known vulnerable packages..."
+          
+          # よく知られた脆弱なパッケージのリスト
+          VULNERABLE_PACKAGES="event-stream flatmap-stream getcookies rc"
+          
+          for package in $VULNERABLE_PACKAGES; do
+            if grep -q "\"$package\"" package.json; then
+              echo "❌ Potentially vulnerable package found: $package"
+              exit 1
+            fi
+          done
+          
+          echo "✅ No known vulnerable packages detected"
+          
+      - name: Check for outdated dependencies
+        run: |
+          pnpm outdated --format json > outdated.json || true
+          
+          if [ -f outdated.json ] && [ -s outdated.json ]; then
+            echo "📊 Outdated dependencies found:"
+            cat outdated.json | jq -r 'to_entries[] | "\(.key): current \(.value.current), wanted \(.value.wanted), latest \(.value.latest)"'
+          else
+            echo "✅ All dependencies are up to date"
+          fi
+          
+      - name: Upload outdated dependencies report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: outdated-dependencies
+          path: outdated.json
+
+  security-test:
+    runs-on: ubuntu-latest
+    name: Security Tests
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.4.1'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.13.1'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+        
+      - name: Run security tests
+        run: pnpm exec playwright test tests/security.spec.ts
+        
+      - name: Upload security test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-test-results
+          path: |
+            test-results/
+            playwright-report/
+
+  lint-security:
+    runs-on: ubuntu-latest
+    name: Security Linting
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.4.1'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.13.1'
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run ESLint with security rules
+        run: pnpm lint
+        
+      - name: Check for security anti-patterns
+        run: |
+          echo "🔍 Checking for security anti-patterns..."
+          
+          # 危険なパターンをチェック
+          ISSUES_FOUND=0
+          
+          # eval() の使用をチェック
+          if grep -r "eval(" --include="*.ts" --include="*.js" --include="*.vue" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "❌ Found eval() usage - potential security risk"
+            ISSUES_FOUND=$((ISSUES_FOUND + 1))
+          fi
+          
+          # innerHTML の直接使用をチェック
+          if grep -r "\.innerHTML\s*=" --include="*.ts" --include="*.js" --include="*.vue" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "⚠️ Found innerHTML usage - consider using textContent or sanitization"
+          fi
+          
+          # document.write の使用をチェック
+          if grep -r "document\.write" --include="*.ts" --include="*.js" --include="*.vue" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "❌ Found document.write() usage - potential XSS risk"
+            ISSUES_FOUND=$((ISSUES_FOUND + 1))
+          fi
+          
+          # 平文パスワードやAPIキーをチェック
+          if grep -r -i "password\s*=\s*['\"][^'\"]*['\"]" --include="*.ts" --include="*.js" --include="*.vue" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "❌ Found hardcoded password - security risk"
+            ISSUES_FOUND=$((ISSUES_FOUND + 1))
+          fi
+          
+          if grep -r -i "api.*key\s*=\s*['\"][^'\"]*['\"]" --include="*.ts" --include="*.js" --include="*.vue" --exclude-dir=node_modules --exclude-dir=.git .; then
+            echo "❌ Found hardcoded API key - security risk"
+            ISSUES_FOUND=$((ISSUES_FOUND + 1))
+          fi
+          
+          if [ $ISSUES_FOUND -gt 0 ]; then
+            echo "❌ Security issues found: $ISSUES_FOUND"
+            exit 1
+          else
+            echo "✅ No security anti-patterns detected"
+          fi
+
+  security-summary:
+    runs-on: ubuntu-latest
+    name: Security Summary
+    needs: [security-audit, dependency-check, security-test, lint-security]
+    if: always()
+    
+    steps:
+      - name: Generate security summary
+        run: |
+          echo "# 🔒 Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.security-audit.result }}" == "success" ]; then
+            echo "✅ **Security Audit**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Security Audit**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.dependency-check.result }}" == "success" ]; then
+            echo "✅ **Dependency Check**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Dependency Check**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.security-test.result }}" == "success" ]; then
+            echo "✅ **Security Tests**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Security Tests**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.lint-security.result }}" == "success" ]; then
+            echo "✅ **Security Linting**: Passed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Security Linting**: Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Recommendations:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Review any failed checks above" >> $GITHUB_STEP_SUMMARY
+          echo "- Keep dependencies updated regularly" >> $GITHUB_STEP_SUMMARY
+          echo "- Follow secure coding practices" >> $GITHUB_STEP_SUMMARY
+          echo "- Monitor security advisories for used packages" >> $GITHUB_STEP_SUMMARY

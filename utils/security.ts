@@ -169,3 +169,190 @@ export function formatIBAN(iban: string): string {
   const cleanIBAN = iban.replace(/\s/g, '').toUpperCase()
   return cleanIBAN.replace(/(.{4})/g, '$1 ').trim()
 }
+
+// ====================
+// セキュリティ機能
+// ====================
+
+/**
+ * HTMLエンティティエスケープによる入力値サニタイゼーション
+ */
+export function sanitizeInput(input: string): string {
+  if (typeof input !== 'string') {
+    throw new Error('Input must be a string')
+  }
+  
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;')
+}
+
+/**
+ * 入力値の危険なパターンをチェック
+ */
+export function validateInput(input: string, maxLength: number = 1000): boolean {
+  if (typeof input !== 'string') return false
+  if (input.length > maxLength) return false
+  
+  // 危険なパターンのチェック
+  const dangerousPatterns = [
+    /<script/i,
+    /javascript:/i,
+    /on\w+\s*=/i,
+    /data:text\/html/i,
+    /vbscript:/i,
+    /expression\s*\(/i
+  ]
+  
+  return !dangerousPatterns.some(pattern => pattern.test(input))
+}
+
+/**
+ * DOM要素への安全なテキスト設定
+ */
+export function safeSetTextContent(element: HTMLElement, content: string): void {
+  if (!element || typeof content !== 'string') {
+    throw new Error('Invalid element or content')
+  }
+  
+  element.textContent = sanitizeInput(content)
+}
+
+/**
+ * 安全なHTML要素作成
+ */
+export function safeCreateElement(tagName: string, content?: string): HTMLElement {
+  const allowedTags = ['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'label', 'strong', 'em']
+  
+  if (!allowedTags.includes(tagName.toLowerCase())) {
+    throw new Error(`Tag ${tagName} is not allowed`)
+  }
+  
+  const element = document.createElement(tagName)
+  if (content) {
+    element.textContent = sanitizeInput(content)
+  }
+  
+  return element
+}
+
+/**
+ * 安全なLocalStorage操作
+ */
+export const secureStorage = {
+  /**
+   * 安全にアイテムを保存
+   */
+  setItem(key: string, value: unknown): void {
+    try {
+      if (typeof key !== 'string' || key.length === 0) {
+        throw new Error('Key must be a non-empty string')
+      }
+      
+      const sanitizedKey = sanitizeInput(key)
+      const serializedValue = JSON.stringify(value)
+      
+      localStorage.setItem(`secure_${sanitizedKey}`, serializedValue)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Secure storage setItem failed:', error)
+    }
+  },
+
+  /**
+   * 安全にアイテムを取得
+   */
+  getItem<T = unknown>(key: string): T | null {
+    try {
+      if (typeof key !== 'string' || key.length === 0) {
+        return null
+      }
+      
+      const sanitizedKey = sanitizeInput(key)
+      const value = localStorage.getItem(`secure_${sanitizedKey}`)
+      
+      if (!value) return null
+      
+      return JSON.parse(value) as T
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Secure storage getItem failed:', error)
+      return null
+    }
+  },
+
+  /**
+   * 安全にアイテムを削除
+   */
+  removeItem(key: string): void {
+    try {
+      if (typeof key !== 'string' || key.length === 0) {
+        return
+      }
+      
+      const sanitizedKey = sanitizeInput(key)
+      localStorage.removeItem(`secure_${sanitizedKey}`)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Secure storage removeItem failed:', error)
+    }
+  },
+
+  /**
+   * 全てのセキュアアイテムをクリア
+   */
+  clear(): void {
+    try {
+      const keys = Object.keys(localStorage)
+      keys.forEach(key => {
+        if (key.startsWith('secure_')) {
+          localStorage.removeItem(key)
+        }
+      })
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Secure storage clear failed:', error)
+    }
+  }
+}
+
+/**
+ * URLの妥当性をチェック
+ */
+export function validateURL(url: string): boolean {
+  try {
+    const parsedURL = new URL(url)
+    
+    // HTTPSのみ許可（開発時はlocalhostのHTTPも許可）
+    const isValidProtocol = parsedURL.protocol === 'https:' || 
+      (parsedURL.hostname === 'localhost' && parsedURL.protocol === 'http:')
+    
+    return isValidProtocol
+  } catch {
+    return false
+  }
+}
+
+/**
+ * CSRFトークン生成
+ */
+export function generateCSRFToken(): string {
+  const array = new Uint8Array(32)
+  crypto.getRandomValues(array)
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
+}
+
+/**
+ * セキュアなランダム文字列生成
+ */
+export function generateSecureRandomString(length: number = 32): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  const array = new Uint8Array(length)
+  crypto.getRandomValues(array)
+  
+  return Array.from(array, byte => chars[byte % chars.length]).join('')
+}
