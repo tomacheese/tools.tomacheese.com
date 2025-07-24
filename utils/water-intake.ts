@@ -3,6 +3,18 @@ export type WaterActivityLevel = 'sedentary' | 'moderate' | 'active'
 export type Climate = 'temperate' | 'hot' | 'cold'
 export type SpecialCondition = 'none' | 'pregnancy' | 'breastfeeding'
 
+export interface WaterIntakeResult {
+  baseIntake: number
+  activityAdjustment: number
+  climateAdjustment: number
+  specialAdjustment: number
+  exerciseAdjustment: number
+  totalIntake: number
+  totalIntakeLiters: number
+  totalIntakeOunces: number
+  glasses: number
+}
+
 export interface WaterIntakeInput {
   weight: number
   weightUnit: WeightUnit
@@ -10,18 +22,6 @@ export interface WaterIntakeInput {
   climate: Climate
   specialCondition: SpecialCondition
   exerciseMinutes: number
-}
-
-export interface WaterIntakeResult {
-  baseIntake: number // ml
-  activityAdjustment: number // ml
-  climateAdjustment: number // ml
-  specialAdjustment: number // ml
-  exerciseAdjustment: number // ml
-  totalIntake: number // ml
-  totalIntakeLiters: number
-  totalIntakeOunces: number
-  glasses: number // 250ml glasses
 }
 
 // Base water intake per kg of body weight (ml)

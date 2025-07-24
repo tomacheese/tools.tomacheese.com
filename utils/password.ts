@@ -1,6 +1,6 @@
-/**
- * パスワード生成のオプション
- */
+// Note: Utility functions are available directly from their source files:
+// - generateUUID from ./uuid
+// - generateRandomHex from ./hex-utils
 export interface PasswordOptions {
   length: number
   includeUppercase: boolean

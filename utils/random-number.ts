@@ -1,3 +1,5 @@
+// Note: hex utilities are provided by hex-utils.ts directly
+
 export interface RandomNumberOptions {
   min: number
   max: number
