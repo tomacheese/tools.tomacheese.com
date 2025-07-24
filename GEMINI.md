@@ -1,6 +1,6 @@
-# Claude Code 向けガイドライン
+# Gemini CLI 向けガイドライン
 
-このファイルは Claude Code（claude.ai/code）がこのリポジトリのコードを操作する際の指示を提供します。
+このファイルは Gemini CLI がこのリポジトリのコードを操作する際の指示を提供します。
 
 ## 📖 メイン開発ガイドライン
 
@@ -8,11 +8,11 @@
 
 **[`.ai/index.md`](.ai/index.md)** - AI 開発支援ドキュメントのメインインデックス
 
-## 🎯 Claude Code 固有の情報
+## 🎯 Gemini CLI 固有の情報
 
-Claude Code 特有の使用方法やベストプラクティスについては：
+Gemini CLI 特有の使用方法やベストプラクティスについては：
 
-**[`.ai/tools/claude.md`](.ai/tools/claude.md)** - Claude Code 固有設定
+**[`.ai/tools/gemini.md`](.ai/tools/gemini.md)** - Gemini CLI 固有設定
 
 ## 📚 共通ドキュメント
 
@@ -36,3 +36,4 @@ pnpm test:e2e
 # ビルド
 pnpm generate
 ```
+
