@@ -1,11 +1,8 @@
-import type {
-  Gender,
-  ActivityLevel,
-  WeightUnit,
-  HeightUnit,
-} from './health-types'
+import type { Gender, ActivityLevel } from './health'
+import type { WeightUnit } from './water-intake'
 
 export type Goal = 'maintain' | 'lose' | 'gain'
+export type HeightUnit = 'cm' | 'ft'
 
 export interface CalorieCalculatorInput {
   gender: Gender

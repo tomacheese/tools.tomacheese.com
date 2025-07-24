@@ -374,7 +374,20 @@ export function generateRandomBinary(length: number): string {
   return binary
 }
 
-// Note: Use generateRandomHexCore directly from hex-utils.ts to avoid duplication
-// export function generateRandomHex(length: number): string {
-//   return generateRandomHexCore(length, { uppercase: true })
-// }
+/**
+ * Generate random hex string
+ * Note: Uses uppercase hex characters (0-9, A-F) for consistency with base conversion utilities
+ */
+export function generateRandomHex(length: number): string {
+  if (length <= 0) {
+    throw new Error('長さは1以上である必要があります')
+  }
+
+  const chars = '0123456789ABCDEF'
+  let hex = ''
+  for (let i = 0; i < length; i++) {
+    hex += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+
+  return hex
+}

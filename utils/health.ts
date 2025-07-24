@@ -1,4 +1,10 @@
-import type { Gender, ActivityLevel } from './health-types'
+export type Gender = 'male' | 'female'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
 
 export interface BMIResult {
   bmi: number

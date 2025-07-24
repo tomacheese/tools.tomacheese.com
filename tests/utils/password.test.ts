@@ -10,7 +10,7 @@ import {
   type PasswordOptions,
 } from '~/utils/password'
 import { generateUUID } from '~/utils/uuid'
-import { generateRandomHex } from '~/utils/hex-utils'
+import { generateRandomHex } from '~/utils/random-number'
 
 describe('Password utilities', () => {
   describe('generatePassword', () => {
@@ -273,7 +273,7 @@ describe('Password utilities', () => {
     it('should generate hex string of correct length', () => {
       const hex = generateRandomHex(16)
       expect(hex).toHaveLength(16)
-      expect(hex).toMatch(/^[0-9a-f]+$/)
+      expect(hex).toMatch(/^[0-9A-F]+$/)
     })
 
     it('should generate different hex strings', () => {
@@ -290,7 +290,7 @@ describe('Password utilities', () => {
     it('should handle single character', () => {
       const hex = generateRandomHex(1)
       expect(hex).toHaveLength(1)
-      expect(hex).toMatch(/^[0-9a-f]$/)
+      expect(hex).toMatch(/^[0-9A-F]$/)
     })
   })
 

@@ -151,7 +151,7 @@ import {
 } from '~/utils/water-intake'
 import {
   type WeightUnit,
-  type ActivityLevel,
+  type WaterActivityLevel,
   type Climate,
   type SpecialCondition,
   type WaterIntakeResult,
@@ -159,7 +159,7 @@ import {
 
 const weight = ref<number>(60)
 const weightUnit = ref<WeightUnit>('kg')
-const activityLevel = ref<ActivityLevel>('moderate')
+const activityLevel = ref<WaterActivityLevel>('moderate')
 const climate = ref<Climate>('temperate')
 const specialCondition = ref<SpecialCondition>('none')
 const exerciseMinutes = ref<number>(0)
