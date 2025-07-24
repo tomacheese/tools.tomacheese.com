@@ -11,8 +11,10 @@ let audioContext: AudioContext | null = null
 export function initializeAudio(): void {
   if (!audioContext) {
     // Proper typing for webkit AudioContext
-    const AudioContextClass = window.AudioContext || 
-      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext
     audioContext = new AudioContextClass()
   }
 }
@@ -235,11 +237,13 @@ export function loadPomodoroState(): Partial<PomodoroState> | null {
       const state = JSON.parse(saved) as Partial<PomodoroState>
       // Convert date strings back to Date objects
       if (state.sessionHistory) {
-        state.sessionHistory = state.sessionHistory.map((session: SessionRecord) => ({
-          ...session,
-          startTime: new Date(session.startTime),
-          endTime: session.endTime ? new Date(session.endTime) : undefined,
-        }))
+        state.sessionHistory = state.sessionHistory.map(
+          (session: SessionRecord) => ({
+            ...session,
+            startTime: new Date(session.startTime),
+            endTime: session.endTime ? new Date(session.endTime) : undefined,
+          })
+        )
       }
       return state
     }
