@@ -17,9 +17,7 @@
     <div class="main-layout">
       <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <h3 class="sidebar-title">
-          ツール一覧
-        </h3>
+        <h3 class="sidebar-title">ツール一覧</h3>
         <nav>
           <ul class="sidebar-nav">
             <li v-for="tool in tools" :key="tool.id">
