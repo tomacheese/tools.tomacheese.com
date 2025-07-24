@@ -69,6 +69,17 @@ jobs:
       - name: Run dependency check
         run: pnpm depcheck
 
+      - name: Check for duplicate imports
+        run: |
+          # generateでduplicate imports警告が出ないことを確認
+          if pnpm generate 2>&1 | grep -q "Duplicated imports"; then
+            echo "❌ Duplicate imports detected!"
+            pnpm generate 2>&1 | grep "Duplicated imports"
+            exit 1
+          else
+            echo "✅ No duplicate imports found"
+          fi
+
       - name: Build
         run: pnpm build
 

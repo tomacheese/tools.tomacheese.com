@@ -1,14 +1,14 @@
 import type { Gender, ActivityLevel } from './health'
 
 export type Goal = 'maintain' | 'lose' | 'gain'
-export type WeightUnit = 'kg' | 'lbs'
+export type CalorieWeightUnit = 'kg' | 'lbs'
 export type HeightUnit = 'cm' | 'ft'
 
 export interface CalorieCalculatorInput {
   gender: Gender
   age: number
   weight: number
-  weightUnit: WeightUnit
+  weightUnit: CalorieWeightUnit
   height: number
   heightUnit: HeightUnit
   activityLevel: ActivityLevel
@@ -41,7 +41,7 @@ const goalAdjustments: Record<Goal, number> = {
 }
 
 // Convert units to metric
-function convertToMetric(value: number, unit: WeightUnit | HeightUnit): number {
+function convertToMetric(value: number, unit: CalorieWeightUnit | HeightUnit): number {
   switch (unit) {
     case 'lbs':
       return value * 0.453592
