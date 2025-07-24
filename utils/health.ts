@@ -1,3 +1,11 @@
+export type Gender = 'male' | 'female'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
+
 export interface BMIResult {
   bmi: number
   category: string
@@ -11,33 +19,7 @@ export interface CalorieResult {
   description: string
 }
 
-export interface WaterIntakeResult {
-  baseWater: number
-  totalWater: number
-  totalWaterOz: number
-  activityAdjustment: number
-  climateAdjustment: number
-  exerciseAdjustment: number
-  specialConditionAdjustment: number
-  description: string
-  breakdown: {
-    base: string
-    activity: string
-    climate: string
-    exercise: string
-    specialCondition: string
-  }
-}
 
-export type Gender = 'male' | 'female'
-export type ActivityLevel =
-  | 'sedentary'
-  | 'light'
-  | 'moderate'
-  | 'active'
-  | 'extra'
-export type Climate = 'temperate' | 'hot' | 'cold'
-export type SpecialCondition = 'none' | 'pregnancy' | 'breastfeeding'
 
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {
