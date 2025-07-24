@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { calculateBMI, calculateBMR, calculateCalories } from '~/utils/health'
-import { type ActivityLevel } from '~/utils/health-types'
+import {
+  calculateBMI,
+  calculateBMR,
+  calculateCalories,
+  type ActivityLevel,
+} from '~/utils/health'
 
 describe('Health Utils', () => {
   describe('calculateBMI', () => {

@@ -148,14 +148,12 @@ import {
   formatWaterAmount,
   formatOunces,
   getHydrationTips,
-} from '~/utils/water-intake'
-import {
   type WeightUnit,
   type WaterActivityLevel,
   type Climate,
   type SpecialCondition,
   type WaterIntakeResult,
-} from '~/utils/health-types'
+} from '~/utils/water-intake'
 
 const weight = ref<number>(60)
 const weightUnit = ref<WeightUnit>('kg')

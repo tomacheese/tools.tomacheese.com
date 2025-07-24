@@ -188,12 +188,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  type Gender,
-  type ActivityLevel,
-  type WeightUnit,
-  type HeightUnit,
-} from '~/utils/health-types'
+import { type Gender, type ActivityLevel } from '~/utils/health'
 import {
   calculateDetailedCalories,
   formatCalories,
