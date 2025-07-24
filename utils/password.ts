@@ -1,6 +1,5 @@
-/**
- * パスワード生成のオプション
- */
+import { generateUUID } from './uuid'
+import { generateRandomHex } from './hex-utils'
 export interface PasswordOptions {
   length: number
   includeUppercase: boolean
@@ -217,35 +216,6 @@ export const estimateCrackTime = (
   } else {
     return `${Math.floor(secondsToCrack)}秒`
   }
-}
-
-/**
- * UUID v4を生成する
- */
-export const generateUUID = (): string => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = (Math.random() * 16) | 0
-    const v = c === 'x' ? r : (r & 0x3) | 0x8
-    return v.toString(16)
-  })
-}
-
-/**
- * ランダムな16進数文字列を生成する
- */
-export const generateRandomHex = (length: number): string => {
-  if (length < 1) {
-    throw new Error('長さは1以上である必要があります')
-  }
-
-  const hexChars = '0123456789abcdef'
-  let result = ''
-
-  for (let i = 0; i < length; i++) {
-    result += hexChars[Math.floor(Math.random() * hexChars.length)]
-  }
-
-  return result
 }
 
 /**

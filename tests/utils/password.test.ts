@@ -6,11 +6,11 @@ import {
   calculatePasswordEntropy,
   getPasswordCharset,
   estimateCrackTime,
-  generateUUID,
-  generateRandomHex,
   validateCreditCard,
   type PasswordOptions,
 } from '~/utils/password'
+import { generateUUID } from '~/utils/uuid'
+import { generateRandomHex } from '~/utils/hex-utils'
 
 describe('Password utilities', () => {
   describe('generatePassword', () => {

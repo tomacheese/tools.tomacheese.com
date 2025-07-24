@@ -1,4 +1,4 @@
-export interface RandomNumberOptions {
+import { generateRandomHex as generateRandomHexCore } from './hex-utils'
   min: number
   max: number
   count: number
@@ -376,15 +376,5 @@ export function generateRandomBinary(length: number): string {
  * Generate random hex string
  */
 export function generateRandomHex(length: number): string {
-  if (length <= 0) {
-    throw new Error('長さは1以上である必要があります')
-  }
-
-  const chars = '0123456789ABCDEF'
-  let hex = ''
-  for (let i = 0; i < length; i++) {
-    hex += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-
-  return hex
+  return generateRandomHexCore(length, { uppercase: true })
 }
