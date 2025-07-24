@@ -340,23 +340,23 @@ export function exportPomodoroData(state: PomodoroState): string {
 }
 
 export function validatePomodoroSettings(
-  settings: any
+  settings: unknown
 ): settings is PomodoroSettings {
   return (
     typeof settings === 'object' &&
     settings !== null &&
-    typeof settings.workDuration === 'number' &&
-    typeof settings.shortBreakDuration === 'number' &&
-    typeof settings.longBreakDuration === 'number' &&
-    typeof settings.sessionsUntilLongBreak === 'number' &&
-    typeof settings.autoStartBreaks === 'boolean' &&
-    typeof settings.autoStartSessions === 'boolean' &&
-    typeof settings.notificationsEnabled === 'boolean' &&
-    typeof settings.soundEnabled === 'boolean' &&
-    settings.workDuration > 0 &&
-    settings.shortBreakDuration > 0 &&
-    settings.longBreakDuration > 0 &&
-    settings.sessionsUntilLongBreak > 0
+    typeof (settings as Record<string, unknown>).workDuration === 'number' &&
+    typeof (settings as Record<string, unknown>).shortBreakDuration === 'number' &&
+    typeof (settings as Record<string, unknown>).longBreakDuration === 'number' &&
+    typeof (settings as Record<string, unknown>).sessionsUntilLongBreak === 'number' &&
+    typeof (settings as Record<string, unknown>).autoStartBreaks === 'boolean' &&
+    typeof (settings as Record<string, unknown>).autoStartSessions === 'boolean' &&
+    typeof (settings as Record<string, unknown>).notificationsEnabled === 'boolean' &&
+    typeof (settings as Record<string, unknown>).soundEnabled === 'boolean' &&
+    (settings as Record<string, unknown>).workDuration as number > 0 &&
+    (settings as Record<string, unknown>).shortBreakDuration as number > 0 &&
+    (settings as Record<string, unknown>).longBreakDuration as number > 0 &&
+    (settings as Record<string, unknown>).sessionsUntilLongBreak as number > 0
   )
 }
 
