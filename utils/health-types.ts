@@ -9,11 +9,11 @@ export type WeightUnit = 'kg' | 'lbs'
 export type HeightUnit = 'cm' | 'ft'
 
 export type ActivityLevel =
-  | 'sedentary'   // 座り仕事中心・軽い活動
-  | 'light'       // 軽い運動（週1-3回）
-  | 'moderate'    // 中程度の運動（週3-5回）
-  | 'active'      // 激しい運動（週6-7回）
-  | 'extra'       // 非常に激しい運動・肉体労働
+  | 'sedentary' // 座り仕事中心・軽い活動
+  | 'light' // 軽い運動（週1-3回）
+  | 'moderate' // 中程度の運動（週3-5回）
+  | 'active' // 激しい運動（週6-7回）
+  | 'extra' // 非常に激しい運動・肉体労働
 
 export type Climate = 'temperate' | 'hot' | 'cold'
 

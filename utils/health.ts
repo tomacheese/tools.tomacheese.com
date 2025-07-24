@@ -1,9 +1,4 @@
-import type {
-  Gender,
-  ActivityLevel,
-} from './health-types'
-
-// Note: Types are imported from health-types.ts - no re-export needed to avoid duplication
+import type { Gender, ActivityLevel } from './health-types'
 
 export interface BMIResult {
   bmi: number

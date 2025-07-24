@@ -1,6 +1,4 @@
-import {
-  formatTimeToString,
-} from './time-utils'
+import { formatTimeToString } from './time-utils'
 
 // Note: Time utilities are available directly from ./time-utils:
 // - FormattedTime, formatTime, parseTimeString
