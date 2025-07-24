@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/* Critical CSS - Above the fold styles */
 * {
   margin: 0;
   padding: 0;
@@ -10,11 +10,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   line-height: 1.6;
   color: #333;
   background-color: #f8fafc;
+  font-display: swap; /* Improve font loading performance */
 }
 
 /* Container and Layout */
@@ -57,11 +73,21 @@ body {
   text-decoration: none;
   color: #64748b;
   font-weight: 500;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
+  position: relative;
 }
 
-.nav a:hover {
-  color: #2563eb;
+@media (hover: hover) {
+  .nav a:hover {
+    color: #2563eb;
+  }
+}
+
+/* Focus indicator for accessibility */
+.nav a:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* Main Layout */
@@ -101,9 +127,21 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.tool-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+/* Only apply hover effects on devices that support hover */
+@media (hover: hover) {
+  .tool-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    will-change: transform, box-shadow;
+  }
+}
+
+/* Fallback for touch devices */
+@media (hover: none) {
+  .tool-card:active {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
 }
 
 .tool-title {
