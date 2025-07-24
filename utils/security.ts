@@ -169,3 +169,42 @@ export function formatIBAN(iban: string): string {
   const cleanIBAN = iban.replace(/\s/g, '').toUpperCase()
   return cleanIBAN.replace(/(.{4})/g, '$1 ').trim()
 }
+
+// ====================
+// 型ガード関数
+// ====================
+
+/**
+ * 値がValidなJSONオブジェクトかどうかを判定
+ */
+export function isValidJSON(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/**
+ * 値が文字列配列かどうかを判定
+ */
+export function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string')
+}
+
+/**
+ * 値がnumber配列かどうかを判定
+ */
+export function isNumberArray(value: unknown): value is number[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'number')
+}
+
+/**
+ * 値がnullまたはundefinedではないことを判定
+ */
+export function isNotNullOrUndefined<T>(value: T | null | undefined): value is T {
+  return value != null
+}
+
+/**
+ * 値が空でない文字列かどうかを判定
+ */
+export function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0
+}

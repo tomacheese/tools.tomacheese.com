@@ -1,4 +1,10 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json"
+  // Note: 厳格な型チェック設定は段階的に導入予定
+  // "compilerOptions": {
+  //   "noUncheckedIndexedAccess": true,
+  //   "exactOptionalPropertyTypes": true,
+  //   "noImplicitReturns": true
+  // }
 }

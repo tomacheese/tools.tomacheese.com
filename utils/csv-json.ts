@@ -10,7 +10,15 @@ export interface JSONToCSVOptions {
   delimiter?: string
 }
 
-export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
+// 型定義の追加
+export interface CSVRow {
+  [key: string]: string
+}
+
+export type CSVData = CSVRow[] | string[][]
+export type JSONData = Record<string, unknown>[] | unknown[][]
+
+export function parseCSV(csv: string, options: CSVParseOptions = {}): CSVData {
   const {
     delimiter = ',',
     headers = true,
@@ -36,31 +44,39 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
     startIndex = 1
   }
 
-  const finalResult: any[] = []
-
   // Parse data rows
-  for (let i = startIndex; i < result.length; i++) {
-    const values = result[i]
+  if (headers && headerRow.length > 0) {
+    const finalResult: CSVRow[] = []
+    for (let i = startIndex; i < result.length; i++) {
+      const values = result[i]
 
-    // Skip empty rows if configured
-    if (skipEmptyRows && values.every(v => !v.trim())) {
-      continue
-    }
+      // Skip empty rows if configured
+      if (skipEmptyRows && values.every(v => !v.trim())) {
+        continue
+      }
 
-    if (headers && headerRow.length > 0) {
       // Create object with headers as keys
-      const obj: any = {}
+      const obj: CSVRow = {}
       for (let j = 0; j < headerRow.length; j++) {
         obj[headerRow[j]] = j < values.length ? values[j] : ''
       }
       finalResult.push(obj)
-    } else {
-      // Return as array
+    }
+    return finalResult
+  } else {
+    const finalResult: string[][] = []
+    for (let i = startIndex; i < result.length; i++) {
+      const values = result[i]
+
+      // Skip empty rows if configured
+      if (skipEmptyRows && values.every(v => !v.trim())) {
+        continue
+      }
+
       finalResult.push(values)
     }
+    return finalResult
   }
-
-  return finalResult
 }
 
 function parseCSVText(
@@ -132,7 +148,7 @@ function parseCSVText(
   return rows
 }
 
-export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
+export function jsonToCSV<T extends Record<string, unknown>>(data: T[] | unknown[][], options: JSONToCSVOptions = {}): string {
   const { headers = true, delimiter = ',' } = options
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -154,9 +170,9 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
   } else {
     // Handle array of objects
     const allKeys = new Set<string>()
-    data.forEach(obj => {
-      if (obj && typeof obj === 'object') {
-        Object.keys(obj).forEach(key => allKeys.add(key))
+    data.forEach(item => {
+      if (item && typeof item === 'object' && !Array.isArray(item)) {
+        Object.keys(item as Record<string, unknown>).forEach(key => allKeys.add(key))
       }
     })
 
@@ -166,12 +182,15 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
       rows.push(headerKeys.map(key => formatCSVValue(key, delimiter)))
     }
 
-    data.forEach(obj => {
-      const row = headerKeys.map(key => {
-        const value = obj[key] ?? ''
-        return formatCSVValue(String(value), delimiter)
-      })
-      rows.push(row)
+    data.forEach(item => {
+      if (item && typeof item === 'object' && !Array.isArray(item)) {
+        const obj = item as Record<string, unknown>
+        const row = headerKeys.map(key => {
+          const value = obj[key] ?? ''
+          return formatCSVValue(String(value), delimiter)
+        })
+        rows.push(row)
+      }
     })
   }
 

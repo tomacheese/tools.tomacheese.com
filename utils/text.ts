@@ -100,11 +100,11 @@ export const decodeUrl = (encodedText: string): string => {
 /**
  * JSONの妥当性をチェックし、解析する
  */
-export const parseJsonSafely = (
+export const parseJsonSafely = <T = unknown>(
   jsonString: string
-): { success: boolean; data?: any; error?: string } => {
+): { success: true; data: T; error?: never } | { success: false; data?: never; error: string } => {
   try {
-    const data = JSON.parse(jsonString)
+    const data = JSON.parse(jsonString) as T
     return { success: true, data }
   } catch (error) {
     return {
