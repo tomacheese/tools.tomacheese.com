@@ -19,8 +19,6 @@ export interface CalorieResult {
   description: string
 }
 
-
-
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {
     throw new Error('身長と体重は正の数である必要があります')
