@@ -234,7 +234,6 @@ export const calculateExpenseSplit = (
   }
 }
 
-
 /**
  * 基礎代謝計算（Harris-Benedict式）
  */

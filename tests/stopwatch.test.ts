@@ -6,9 +6,6 @@ import {
   resetStopwatch,
   addLap,
   getCurrentElapsedTime,
-  formatTime,
-  formatTimeToString,
-  parseTimeString,
   getBestLap,
   getWorstLap,
   getAverageLapTime,
@@ -17,6 +14,11 @@ import {
   type StopwatchState,
   type Lap,
 } from '~/utils/stopwatch'
+import {
+  formatTime,
+  formatTimeToString,
+  parseTimeString,
+} from '~/utils/time-utils'
 
 describe('stopwatch', () => {
   beforeEach(() => {

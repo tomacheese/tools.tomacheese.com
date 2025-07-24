@@ -63,6 +63,23 @@ jobs:
       - name: Run type check
         run: pnpm typecheck
 
+      - name: Check for duplicate imports
+        run: |
+          echo "Checking for duplicate imports..."
+          BUILD_OUTPUT=$(pnpm generate 2>&1 || true)
+          if echo "$BUILD_OUTPUT" | grep -i "duplicated imports" > /dev/null; then
+            echo "❌ Duplicate imports detected:"
+            echo "$BUILD_OUTPUT" | grep -i "duplicated imports"
+            echo ""
+            echo "Please fix duplicate imports by:"
+            echo "1. Removing duplicated exports from one of the conflicting files"
+            echo "2. Updating imports to use the correct source"
+            echo "3. Ensuring only one canonical source exists for each export"
+            exit 1
+          else
+            echo "✅ No duplicate imports found"
+          fi
+
       - name: Run unit tests with coverage
         run: pnpm test:coverage
 
