@@ -32,7 +32,6 @@ export default defineNuxtConfig({
   // CSS Framework with optimization
   css: ['~/assets/css/main.css'],
 
-<<<<<<< HEAD
   // Vite configuration for optimization
   vite: {
     build: {
@@ -64,10 +63,7 @@ export default defineNuxtConfig({
     },
   },
 
-  // SEO with performance optimizations
-=======
   // SEO and Social Media
->>>>>>> origin/issue-41-seo-enhancements
   app: {
     baseURL:
       process.env.DEPLOY_ENV === 'GH_PAGES' ? '/tools.tomacheese.com/' : '/',
@@ -122,10 +118,7 @@ export default defineNuxtConfig({
         { rel: 'dns-prefetch', href: '//fonts.googleapis.com' },
         // Preconnect for critical resources
         { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossorigin: '' },
-      ],
-      link: [
         // Canonical URL will be set dynamically per page
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {
           rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
