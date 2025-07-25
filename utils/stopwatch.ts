@@ -1,3 +1,8 @@
+import { formatTimeToString } from './time-utils'
+
+// Note: Time utilities are available directly from ./time-utils:
+// - FormattedTime, formatTime, parseTimeString
+
 export interface StopwatchState {
   startTime: number | null
   elapsedTime: number
@@ -15,7 +20,6 @@ export interface Lap {
 import { formatTimeToString } from './time-utils'
 
 // Note: Time utilities are now centralized in time-utils.ts
-
 export function createStopwatch(): StopwatchState {
   return {
     startTime: null,
@@ -92,7 +96,6 @@ export function getCurrentElapsedTime(state: StopwatchState): number {
 }
 
 // Time formatting functions are now imported from time-utils.ts
-
 export function getBestLap(laps: Lap[]): Lap | null {
   if (laps.length === 0) {
     return null

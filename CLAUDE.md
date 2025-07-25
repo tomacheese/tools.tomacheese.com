@@ -1,74 +1,117 @@
-# CLAUDE.md
+# Claude Code 向けガイドライン
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは Claude Code（claude.ai/code）がこのリポジトリのコードを操作する際の指示を提供します。
 
 ## プロジェクト概要
 
-Tools.tomacheese.comは、Nuxt.js v3で構築されたプライバシー重視のWebツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
+Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
 
-## 重要な要件
+### 技術スタック
 
-- **100% クライアントサイド**: すべてのツールは外部APIを使用せずブラウザ内で動作する必要があります
-- **TypeScript**: 新しいコードはすべてTypeScriptで記述してください
-- **レスポンシブデザイン**: モバイル、タブレット、デスクトップすべてで動作する必要があります
-- **テスト**: 各ツールには単体テストとE2Eテストの両方が必要です
+- **フレームワーク**: Nuxt.js v3 (3.17.7)
+- **言語**: TypeScript
+- **パッケージマネージャー**: pnpm 10.13.1
+- **Node.js**: v20.15.1 以上
+- **スタイリング**: カスタム CSS（レスポンシブ対応）
+- **テスト**: Vitest（単体テスト）+ Playwright（E2E テスト）
 
-## ビルドコマンド
+## 基本理念
 
-```bash
-# 依存関係のインストール（pnpm使用）
-pnpm install
+### プライバシーファースト
 
-# 開発サーバー起動
-pnpm dev
+- **100% クライアントサイド**: すべてのツールは外部 API を使用せずブラウザ内で動作する必要があります
+- **データ送信禁止**: ユーザーのデータをサーバーに送信してはいけません
+- **ローカル処理**: すべての計算・変換・処理はブラウザ内で完結させてください
 
-# 本番ビルド
-pnpm build
+### セキュリティ要件
 
-# 静的サイト生成（デプロイ用）
-pnpm generate
+- **外部通信禁止**: API コール、データ送信の禁止
+- **ローカルストレージ**: 必要最小限の使用
+- **XSS 対策**: ユーザー入力の適切なサニタイズ
+- **暗号化**: 必要に応じてクライアントサイド暗号化
+- **履歴削除**: ブラウザ履歴にセンシティブデータを残さない
 
-# テスト実行
-pnpm test          # 単体テスト
-pnpm test:e2e      # E2Eテスト
-pnpm test:coverage # カバレッジレポート
+### コミュニケーション要件
 
-# 単一テストの実行
-pnpm test path/to/test.test.ts
-pnpm test:e2e path/to/test.spec.ts
+- **PR 本文**: 日本語で記述
+- **PR タイトル**: 英語で記述（Conventional Commits の仕様に従う）
+- **コミットメッセージ**: 英語で記述
+- **レビューコメント**: 日本語で記述
+- **コード内コメント**: 日本語で記述
+- **ドキュメント**: 日本語で記述
 
-# Lint・フォーマット
-pnpm lint
-pnpm lint:fix
-pnpm format
-pnpm typecheck
+### 文書作成ルール
 
-# デプロイメント
-pnpm docker:build  # Dockerイメージビルド
-pnpm docker:run    # Dockerコンテナ実行
+- **見出しの間隔**: すべての見出し（`#`）とその本文の間には空白行を入れる
+- **英数字の間隔**: 英数字と日本語の間には半角スペースを入れる
+- **例**: `Nuxt.js v3 で構築された Web アプリケーション`
+
+## 開発ガイドライン
+
+### コミット規約
+
+PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください：
+
+```
+feat: 新機能追加
+fix: バグ修正
+docs: ドキュメント変更
+style: コードフォーマット変更
+refactor: リファクタリング
+test: テスト追加・修正
+chore: その他の変更
 ```
 
-## アーキテクチャ
+### PR 作成後の対応方法
 
-### ディレクトリ構造
+すべての CI が成功するまで監視・対応する。失敗した場合は修正を行い、コミット・プッシュし、再度監視を行う。
 
-- `/pages/tools/`: 各ツールのページ（Vue単一ファイルコンポーネント）
-- `/composables/`: 共有Vueコンポーザブル（useTools.tsでツール一覧を管理）
-- `/utils/`: TypeScriptユーティリティ関数
-- `/tests/`: テストファイル（単体テスト: .test.ts、E2E: .spec.ts）
-- `/assets/css/`: グローバルスタイル（main.css）
+### コーディング規約
+
+#### TypeScript
+
+- **型安全性**: `any` の使用は避け、適切な型定義を行ってください
+- **Null 安全性**: Non-null assertion（`!`）の使用は警告対象
+- **関数型**: 明示的な戻り値の型定義は不要（型推論を活用）
+- **Import**: ES6 モジュール形式を使用
+
+#### Vue.js
+
+- **Composition API**: `<script setup>` を使用
+- **リアクティブ**: `ref()`、`computed()`、`watch()` を適切に使用
+- **Props**: TypeScript インターフェースで型定義
+- **Events**: TypeScript で型安全なイベント定義
+
+#### CSS
+
+- **レスポンシブ**: モバイルファースト設計
+- **CSS Grid/Flexbox**: レイアウトに活用
+- **CSS 変数**: 色やサイズの統一に使用
+- **BEM 記法**: クラス名の命名規則として推奨
+
+## アーキテクチャとディレクトリ構造
+
+### 基本構造
+
+```
+/pages/tools/     # 各ツールのページ（Vue SFC）
+/composables/     # 共有 Vue コンポーザブル
+/utils/          # TypeScript ユーティリティ関数
+/tests/          # テストファイル
+/assets/css/     # グローバルスタイル
+```
 
 ### ツール実装パターン
 
-各ツールは以下の手順で実装します：
+新しいツールを実装する場合の手順：
 
-1. `/pages/tools/[tool-name].vue`にツールページを作成
-2. `composables/useTools.ts`にツールメタデータを追加
-3. 必要に応じて`/utils/`にユーティリティ関数を実装
-4. ユーティリティ関数の単体テストを作成
-5. ユーザー操作のE2Eテストを作成
+1. `/pages/tools/[tool-name].vue` にツールページを作成
+2. `composables/useTools.ts` にツールメタデータを追加
+3. 必要に応じて `/utils/` にユーティリティ関数を実装
+4. ユーティリティ関数の単体テスト（`*.test.ts`）を作成
+5. ユーザー操作の E2E テスト（`*.spec.ts`）を作成
 
-### Vueコンポーネント構造
+### Vue コンポーネント構造
 
 ```vue
 <template>
@@ -89,10 +132,9 @@ pnpm docker:run    # Dockerコンテナ実行
 </template>
 
 <script setup lang="ts">
-// コンポーザブルとユーティリティのインポート
+// TypeScript で記述
+// useHead() でメタデータ設定
 // リアクティブな状態管理
-// 計算処理の実装
-// useHead()でメタデータ設定
 </script>
 
 <style scoped>
@@ -100,45 +142,135 @@ pnpm docker:run    # Dockerコンテナ実行
 </style>
 ```
 
-### テスト戦略
+## Claude Code 固有の設定
 
-- **単体テスト**: ユーティリティ関数と計算ロジックをテスト（Vitest使用）
-- **E2Eテスト**: 実際のブラウザでユーザーワークフローをテスト（Playwright使用）
+### 実装パターン
 
-## 実装状況
+#### 新しいツールの作成
 
-### 実装済みツール（10個）
+1. **ページ作成**: `pages/tools/[tool-name].vue` でページを作成
+2. **メタデータ設定**: `useSeoMeta()` と `definePageMeta()` を適切に設定
+3. **既存パターンの踏襲**: 他のツールと同じディレクトリ構造とスタイルに従う
 
-- Base64エンコード・デコード
-- 文字数カウンター
-- カラーピッカー
-- 最大公約数・最小公倍数計算
-- JSON整形
-- パスワード生成
-- URLエンコード・デコード
-- 正規表現テスター
-- Lorem Ipsum生成
-- テキスト形式変換
+#### コンポーネント構造
 
-### 実装中のツール（37個）
+```vue
+<template>
+  <div class="max-w-4xl mx-auto p-6">
+    <ToolHeader :title="title" :description="description" />
+    
+    <!-- ツール固有のコンテンツ -->
+    
+    <ToolFooter />
+  </div>
+</template>
 
-テキスト処理、数学計算、セキュリティツールを優先的に実装中。外部API依存のツール（DNS検索、Whois、IP検索、サイト速度テスト）はuseTools.tsから除外済み。
+<script setup lang="ts">
+// TypeScript with Composition API
+</script>
+```
 
-## デプロイメント
+#### エラーハンドリング
 
-複数のデプロイメントターゲットをサポート：
+- ユーザー入力の検証を必ず行う
+- エラーメッセージは日本語で表示
+- `try-catch` ブロックを適切に配置
 
-- **GitHub Pages**: GitHub Actionsで自動化
-- **Vercel**: vercel.json設定済み
-- **Netlify**: netlify.toml設定済み
-- **Docker**: nginxを使用したマルチステージDockerfile
+### スタイリング
 
-GitHub Pages用のベースURL処理はnuxt.config.tsで`DEPLOY_ENV`環境変数を使用して設定。
+- **Tailwind CSS**: すべてのスタイリングは Tailwind CSS クラスを使用
+- **レスポンシブ**: モバイルファーストでレスポンシブ対応
+- **ダークモード**: システム設定に応じたダークモード対応
 
-## 重要な注意事項
+### コンポーネント命名
 
-- Node.jsバージョン: 20.15.1（.node-versionと.nvmrcで指定）
-- パッケージマネージャー: pnpm 8.15.0
-- Nuxt 3.17.7にアップデート済み（以前のARM64問題は解決）
-- TypeScriptエラーは除外ではなく根本原因を修正すること
-- すべての新しいツールにはテストが必須
+- **PascalCase**: コンポーネント名は PascalCase で記述
+- **Tool プレフィックス**: ツール共通コンポーネントには `Tool` プレフィックスを使用
+- **明確な命名**: コンポーネントの役割が分かる明確な名前を付ける
+
+### ユーティリティ関数
+
+- `utils/` ディレクトリに配置
+- 純粋関数として実装
+- 適切な JSDoc コメントを追加
+
+## テスト戦略
+
+### 単体テスト（Vitest）
+
+#### 対象
+
+- `/utils/` 内のユーティリティ関数
+- 計算ロジック
+- データ変換処理
+- バリデーション機能
+
+#### ファイル命名規則
+
+- ファイル名: `*.test.ts`
+- 配置場所: `/tests/` ディレクトリ
+- 対応関係: `utils/math.ts` → `tests/utils/math.test.ts`
+
+#### カバレッジ目標
+
+- **重要な計算ロジック**: 100% を目指す
+- **ユーティリティ関数**: 90% 以上
+- **全体**: 80% 以上
+
+### E2E テスト（Playwright）
+
+#### 対象
+
+- ユーザーワークフローの検証
+- ブラウザ間の互換性確認
+- 実際の操作シナリオ
+
+#### ファイル命名規則
+
+- ファイル名: `*.spec.ts`
+- 配置場所: `/tests/` ディレクトリ
+- 機能別: `tests/color-picker.spec.ts`
+
+#### 対象ブラウザ
+
+- **Chrome**: メインブラウザ
+- **Firefox**: 互換性確認
+- **Safari**: macOS での動作確認
+
+## パフォーマンス要件
+
+### Lighthouse スコア目標
+
+- **Performance**: 90 以上
+- **Accessibility**: 100
+- **Best Practices**: 100
+- **SEO**: 100
+
+### 最適化指針
+
+- **バンドルサイズ**: 新しい依存関係の追加は最小限に
+- **コード分割**: 大きなライブラリは動的インポート
+- **画像最適化**: 画像は WebP 形式を使用
+
+## 禁止事項
+
+- サーバーサイド処理の実装
+- 外部 API への直接通信
+- ユーザーデータの外部送信
+- jQuery などの古いライブラリの使用
+- グローバル変数の使用
+
+## 🚀 クイックスタート
+
+```bash
+# 依存関係のインストール
+pnpm install
+
+# テスト実行
+pnpm test           # 単体テスト
+pnpm test:coverage  # カバレッジレポート
+pnpm test:e2e       # E2E テスト
+
+# ビルド
+pnpm generate
+```

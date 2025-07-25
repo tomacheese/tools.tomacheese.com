@@ -5,14 +5,25 @@ export interface FormattedTime {
   milliseconds: string
 }
 
+export function formatTimeSimple(seconds: number): string {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const remainingSeconds = seconds % 60
+
+  if (hours > 0) {
+    return `${hours}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+}
+
 export function formatTime(milliseconds: number): FormattedTime {
-  const totalMs = Math.abs(milliseconds)
-  const ms = totalMs % 1000
-  const totalSeconds = Math.floor(totalMs / 1000)
-  const seconds = totalSeconds % 60
-  const totalMinutes = Math.floor(totalSeconds / 60)
-  const minutes = totalMinutes % 60
-  const hours = Math.floor(totalMinutes / 60)
+  // Handle negative values by using absolute value
+  const absMs = Math.abs(milliseconds)
+
+  const ms = absMs % 1000
+  const seconds = Math.floor(absMs / 1000) % 60
+  const minutes = Math.floor(absMs / (1000 * 60)) % 60
+  const hours = Math.floor(absMs / (1000 * 60 * 60))
 
   return {
     hours: hours.toString().padStart(2, '0'),
