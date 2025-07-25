@@ -5,7 +5,6 @@ import {
   pauseTimer,
   stopTimer,
   updateTimer,
-  completePhase,
   skipPhase,
   resetSession,
   getCurrentPhaseDuration,
