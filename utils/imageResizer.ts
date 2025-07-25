@@ -71,9 +71,9 @@ export function resizeImage(file: File, options: ResizeOptions): Promise<Blob> {
       ctx.drawImage(img, 0, 0, width, height)
 
       // Convert to blob
-      const format = options.format || getFormatFromMimeType(file.type)
+      const format = options.format ?? getFormatFromMimeType(file.type)
       const mimeType = getMimeTypeFromFormat(format)
-      const quality = options.quality || 0.92
+      const quality = options.quality ?? 0.92
 
       canvas.toBlob(
         blob => {
@@ -110,8 +110,8 @@ function calculateDimensions(
 
   if (!maintainAspectRatio) {
     return {
-      width: targetWidth || originalWidth,
-      height: targetHeight || originalHeight,
+      width: targetWidth ?? originalWidth,
+      height: targetHeight ?? originalHeight,
     }
   }
 

@@ -199,7 +199,6 @@ import {
   type HeightUnit,
   type CalorieCalculatorResult,
 } from '~/utils/calorie-calculator'
-import type { WeightUnit } from '~/utils/water-intake'
 
 const gender = ref<Gender>('male')
 const age = ref<number>(30)

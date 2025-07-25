@@ -272,8 +272,8 @@ export function validateSql(sql: string): {
   }
 
   // Check parentheses balance
-  const openParens = (sql.match(/\(/g) || []).length
-  const closeParens = (sql.match(/\)/g) || []).length
+  const openParens = (sql.match(/\(/g) ?? []).length
+  const closeParens = (sql.match(/\)/g) ?? []).length
   if (openParens !== closeParens) {
     errors.push(
       `括弧の数が一致しません（開き: ${openParens}, 閉じ: ${closeParens}）`
@@ -345,24 +345,24 @@ export function extractSqlStatistics(sql: string): SqlStatistics {
   }
 
   // Count query types
-  stats.queryTypes.select = (upperSql.match(/\bSELECT\b/g) || []).length
-  stats.queryTypes.insert = (upperSql.match(/\bINSERT\b/g) || []).length
-  stats.queryTypes.update = (upperSql.match(/\bUPDATE\b/g) || []).length
-  stats.queryTypes.delete = (upperSql.match(/\bDELETE\b/g) || []).length
+  stats.queryTypes.select = (upperSql.match(/\bSELECT\b/g) ?? []).length
+  stats.queryTypes.insert = (upperSql.match(/\bINSERT\b/g) ?? []).length
+  stats.queryTypes.update = (upperSql.match(/\bUPDATE\b/g) ?? []).length
+  stats.queryTypes.delete = (upperSql.match(/\bDELETE\b/g) ?? []).length
   stats.queryTypes.ddl = (
-    upperSql.match(/\b(CREATE|ALTER|DROP|TRUNCATE)\b/g) || []
+    upperSql.match(/\b(CREATE|ALTER|DROP|TRUNCATE)\b/g) ?? []
   ).length
 
   // Count JOINs
   stats.joinCount = (
-    upperSql.match(/\b(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN\b/g) || []
+    upperSql.match(/\b(INNER|LEFT|RIGHT|FULL|CROSS)\s+JOIN\b/g) ?? []
   ).length
 
   // Count WHERE conditions
-  stats.whereConditions = (upperSql.match(/\bWHERE\b/g) || []).length
+  stats.whereConditions = (upperSql.match(/\bWHERE\b/g) ?? []).length
 
   // Estimate table count (FROM clauses + JOINs)
-  const fromMatches = upperSql.match(/\bFROM\s+\w+/g) || []
+  const fromMatches = upperSql.match(/\bFROM\s+\w+/g) ?? []
   stats.tableCount = fromMatches.length + stats.joinCount
 
   return stats
@@ -409,7 +409,7 @@ export function detectSqlDialect(sql: string): string {
   }
 
   // SQLite specific
-  if (upperSql.includes('PRAGMA') || upperSql.includes('ATTACH DATABASE')) {
+  if (upperSql.includes('PRAGMA') ?? upperSql.includes('ATTACH DATABASE')) {
     return 'sqlite'
   }
 

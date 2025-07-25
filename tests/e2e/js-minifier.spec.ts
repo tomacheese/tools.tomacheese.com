@@ -157,7 +157,7 @@ console.log(x + y);`
       .nth(3)
       .locator('.stat-value')
       .textContent()
-    expect(parseFloat(compressionRate || '0')).toBeGreaterThan(0)
+    expect(parseFloat(compressionRate ?? '0')).toBeGreaterThan(0)
   })
 
   test('レスポンシブデザインが機能する', async ({ page }) => {

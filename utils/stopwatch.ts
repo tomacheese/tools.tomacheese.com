@@ -135,8 +135,8 @@ export function exportStopwatchData(state: StopwatchState): string {
       timestamp: lap.timestamp.toISOString(),
     })),
     statistics: {
-      bestLapTime: getBestLap(state.laps)?.lapTime || 0,
-      worstLapTime: getWorstLap(state.laps)?.lapTime || 0,
+      bestLapTime: getBestLap(state.laps)?.lapTime ?? 0,
+      worstLapTime: getWorstLap(state.laps)?.lapTime ?? 0,
       averageLapTime: getAverageLapTime(state.laps),
       formattedBestLapTime: getBestLap(state.laps)
         ? formatTimeToString(getBestLap(state.laps)!.lapTime)
