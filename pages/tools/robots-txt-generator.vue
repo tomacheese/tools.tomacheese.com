@@ -260,7 +260,7 @@
     </div>
 
     <!-- プレビュー情報 -->
-    <div v-if="validationResult && validationResult.isValid" class="preview-info">
+    <div v-if="validationResult && validationResult.isValid && previewInfo" class="preview-info">
       <h4>📊 ファイル情報</h4>
       <div class="info-grid">
         <div class="info-item">
