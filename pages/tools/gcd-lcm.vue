@@ -287,9 +287,7 @@ const gcdExplanation = computed(() => {
     })
 
     Object.entries(counted).forEach(([prime, count]) => {
-      if (!allFactors[prime]) {
-        allFactors[prime] = []
-      }
+      allFactors[prime] ??= []
       allFactors[prime].push(count)
     })
   })
@@ -318,9 +316,7 @@ const lcmExplanation = computed(() => {
     })
 
     Object.entries(counted).forEach(([prime, count]) => {
-      if (!allFactors[prime]) {
-        allFactors[prime] = []
-      }
+      allFactors[prime] ??= []
       allFactors[prime].push(count)
     })
   })
