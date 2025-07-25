@@ -25,7 +25,7 @@ export function dateToTimestamp(
 
 export function parseTimestamp(input: string): number | null {
   // First, check if input contains only digits (Unix timestamp)
-  if (/^-?\d+(\.\d+)?$/.test(input)) {
+  if (/^-?\d+(?:\.\d+)?$/.test(input)) {
     const num = parseFloat(input)
     if (!isNaN(num) && isFinite(num)) {
       // Check if it's likely milliseconds (13+ digits) or seconds (10 digits)
@@ -46,7 +46,7 @@ export function parseTimestamp(input: string): number | null {
   // Try common date formats
   const formats = [
     // ISO 8601
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/,
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?$/,
     // RFC 2822
     /^\w{3}, \d{1,2} \w{3} \d{4} \d{2}:\d{2}:\d{2} [+-]\d{4}$/,
     // Common formats

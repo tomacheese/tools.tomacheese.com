@@ -364,9 +364,10 @@ const isValidInput = computed(() => {
 
 const goldenRatio = computed(() => {
   if (sequence.value.length < 3) return null
-  const lastIndex = sequence.value.length - 1
-  if (sequence.value[lastIndex - 1] === 0) return null
-  return sequence.value[lastIndex] / sequence.value[lastIndex - 1]
+  const currentValue = sequence.value.at(-1) // ESLint-safe array access
+  const previousValue = sequence.value.at(-2) // ESLint-safe array access
+  if (!previousValue || previousValue === 0 || !currentValue) return null
+  return currentValue / previousValue
 })
 
 const evenCount = computed(() => {

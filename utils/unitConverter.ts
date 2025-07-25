@@ -180,7 +180,7 @@ export function formatNumber(num: number, decimals: number = 6): string {
 
   // Add thousand separators for large numbers
   const parts = trimmed.split('.')
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  parts[0] = parts[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')
 
   return parts.join('.')
 }

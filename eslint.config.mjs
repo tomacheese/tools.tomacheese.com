@@ -3,11 +3,34 @@ import tseslint from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import vueParser from 'vue-eslint-parser'
 import vuePlugin from 'eslint-plugin-vue'
+import securityPlugin from 'eslint-plugin-security'
 import prettierConfig from 'eslint-config-prettier'
 
 export default [
   // ESLint recommended rules
   eslint.configs.recommended,
+
+  // Security rules
+  {
+    plugins: {
+      security: securityPlugin,
+    },
+    rules: {
+      ...securityPlugin.configs.recommended.rules,
+      'security/detect-eval-with-expression': 'error',
+      'security/detect-non-literal-fs-filename': 'warn',
+      'security/detect-non-literal-regexp': 'warn',
+      'security/detect-unsafe-regex': 'error',
+      'security/detect-buffer-noassert': 'error',
+      'security/detect-child-process': 'warn',
+      'security/detect-disable-mustache-escape': 'error',
+      'security/detect-new-buffer': 'error',
+      'security/detect-no-csrf-before-method-override': 'error',
+      'security/detect-object-injection': 'off', // 一時的に無効化、段階的修正予定
+      'security/detect-possible-timing-attacks': 'warn',
+      'security/detect-pseudoRandomBytes': 'error',
+    },
+  },
 
   // TypeScript rules
   {

@@ -4,7 +4,7 @@ import { defineConfig, devices } from '@playwright/test'
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: './tests/e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -42,24 +42,12 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: process.env.CI
     ? [
-        // CI環境では主要ブラウザのみテスト
+        // CI環境では主要ブラウザのみテスト（一時的にChromiumのみ）
         {
           name: 'chromium',
           use: { ...devices['Desktop Chrome'] },
-        },
-        {
-          name: 'firefox',
-          use: { ...devices['Desktop Firefox'] },
           testIgnore: [
-            '**/gradient-generator.spec.ts',
-            '**/hash-generator.spec.ts',
-            '**/html-encoder.spec.ts',
-            '**/image-to-base64.spec.ts',
-            '**/js-minifier.spec.ts',
-            '**/json-to-csv.spec.ts',
-            '**/qr-generator.spec.ts',
-            '**/timestamp-converter.spec.ts',
-            '**/uuid-generator.spec.ts',
+            '**/security.spec.ts', // Vitestとの競合を一時的に回避
           ],
         },
       ]

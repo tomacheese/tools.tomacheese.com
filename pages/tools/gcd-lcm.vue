@@ -269,7 +269,7 @@ const lcmResult = computed(() => {
 })
 
 const primeFactorizations = computed(() => {
-  const result = {}
+  const result: Record<number, number[]> = {}
   validNumbers.value.forEach(num => {
     result[num] = primeFactorize(num)
   })
@@ -279,11 +279,11 @@ const primeFactorizations = computed(() => {
 const gcdExplanation = computed(() => {
   if (!gcdResult.value) return ''
 
-  const allFactors = {}
+  const allFactors: Record<number, number> = {}
   Object.values(primeFactorizations.value).forEach(factors => {
-    const counted = {}
+    const counted: Record<number, number> = {}
     factors.forEach(f => {
-      counted[f] = (counted[f] || 0) + 1
+      counted[f] = (counted[f] ?? 0) + 1
     })
 
     Object.entries(counted).forEach(([prime, count]) => {
@@ -310,11 +310,11 @@ const gcdExplanation = computed(() => {
 const lcmExplanation = computed(() => {
   if (!lcmResult.value) return ''
 
-  const allFactors = {}
+  const allFactors: Record<number, number> = {}
   Object.values(primeFactorizations.value).forEach(factors => {
-    const counted = {}
+    const counted: Record<number, number> = {}
     factors.forEach(f => {
-      counted[f] = (counted[f] || 0) + 1
+      counted[f] = (counted[f] ?? 0) + 1
     })
 
     Object.entries(counted).forEach(([prime, count]) => {

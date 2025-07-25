@@ -10,7 +10,7 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
-    globals: true,
+    globals: false, // PlaywrightとVitestの競合を回避
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.test.ts'],
     exclude: [
