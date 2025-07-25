@@ -1,3 +1,11 @@
+export type Gender = 'male' | 'female'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
+
 export interface BMIResult {
   bmi: number
   category: string
@@ -11,16 +19,6 @@ export interface CalorieResult {
   description: string
 }
 
-// WaterIntakeResult has been moved to water-intake.ts for comprehensive functionality
-
-export type Gender = 'male' | 'female'
-export type ActivityLevel =
-  | 'sedentary'
-  | 'light'
-  | 'moderate'
-  | 'active'
-  | 'extra'
-// Climate and SpecialCondition have been moved to water-intake.ts
 
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {

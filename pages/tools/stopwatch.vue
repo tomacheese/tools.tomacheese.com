@@ -136,13 +136,13 @@ import {
   resetStopwatch,
   addLap,
   getCurrentElapsedTime,
-  formatTimeToString,
   getBestLap,
   getWorstLap,
   getAverageLapTime,
   exportStopwatchData,
   type StopwatchState,
 } from '~/utils/stopwatch'
+import { formatTimeToString } from '~/utils/time-utils'
 
 const stopwatch = ref<StopwatchState>(createStopwatch())
 const updateInterval = ref<number | null>(null)

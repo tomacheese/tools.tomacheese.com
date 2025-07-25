@@ -234,7 +234,6 @@ export const calculateExpenseSplit = (
   }
 }
 
-// calculateMortgage has been moved to mortgage-calculator.ts for dedicated functionality
 
 /**
  * 基礎代謝計算（Harris-Benedict式）

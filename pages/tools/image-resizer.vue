@@ -209,7 +209,7 @@ const handleFileSelect = async (event: Event) => {
 const handleDrop = async (event: DragEvent) => {
   event.preventDefault()
   const file = event.dataTransfer?.files[0]
-  if (file && file.type.startsWith('image/')) {
+  if (file?.type.startsWith('image/')) {
     await loadImage(file)
   }
 }
