@@ -163,6 +163,12 @@ const testRegex = () => {
   }
 
   try {
+    // Basic safety check for ReDoS patterns
+    if (pattern.value.includes('(.*)*') || pattern.value.includes('(.*)+')) {
+      throw new Error('潜在的に危険な正規表現パターンが検出されました')
+    }
+    
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const regex = new RegExp(pattern.value, flagString.value)
     const text = testText.value
     const foundMatches = []

@@ -164,6 +164,7 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
 
   // Add line breaks before keywords
   LINE_BREAK_KEYWORDS.forEach(keyword => {
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
     formatted = formatted.replace(regex, `\n${keyword}`)
   })
@@ -172,6 +173,7 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
   if (options.keywordCase !== 'preserve') {
     const allKeywords = [...SQL_KEYWORDS, ...SQL_FUNCTIONS]
     allKeywords.forEach(keyword => {
+      // eslint-disable-next-line security/detect-non-literal-regexp
       const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
       formatted = formatted.replace(regex, match => {
         return options.keywordCase === 'upper'
