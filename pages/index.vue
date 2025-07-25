@@ -104,25 +104,38 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // ツール一覧の取得
 const { getAllTools } = useTools()
 const tools = getAllTools()
 
-// SEO
-useHead({
+// SEO設定
+const { setWebsiteSchema } = useSEO()
+
+// WebSiteスキーマの設定
+setWebsiteSchema()
+
+// ページのSEOメタデータ
+useSeoMeta({
   title: 'Tools.tomacheese.com - 便利なWebツール集',
-  meta: [
-    {
-      name: 'description',
-      content:
-        'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。すべてクライアントサイドで動作し、プライバシーも安心です。',
-    },
-    {
-      name: 'keywords',
-      content:
-        'ツール, カラーピッカー, 文字数カウンター, Base64, URL エンコード, ハッシュ, QRコード, パスワード生成',
-    },
-  ],
+  description:
+    'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。すべてクライアントサイドで動作し、プライバシーも安心です。',
+  keywords:
+    'ツール, カラーピッカー, 文字数カウンター, Base64, URLエンコード, ハッシュ, QRコード, パスワード生成, オンラインツール, 無料ツール',
+  robots: 'index, follow',
+
+  // Open Graph
+  ogTitle: 'Tools.tomacheese.com - 便利なWebツール集',
+  ogDescription:
+    'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。',
+  ogType: 'website',
+  ogSiteName: 'Tools.tomacheese.com',
+  ogLocale: 'ja_JP',
+
+  // Twitter Card
+  twitterCard: 'summary',
+  twitterTitle: 'Tools.tomacheese.com - 便利なWebツール集',
+  twitterDescription:
+    'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。',
 })
 </script>
