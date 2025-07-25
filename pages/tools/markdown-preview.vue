@@ -69,10 +69,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import type { Marked } from 'marked'
 
 const markdownText = ref('')
 const isLoading = ref(false)
-const markedModule = ref<any>(null)
+const markedModule = ref<Marked | null>(null)
 
 // marked.jsを動的にロード
 const loadMarked = async () => {
