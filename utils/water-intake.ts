@@ -1,34 +1,34 @@
 export type WeightUnit = 'kg' | 'lbs'
-export type ActivityLevel = 'sedentary' | 'moderate' | 'active'
+export type WaterActivityLevel = 'sedentary' | 'moderate' | 'active'
 export type Climate = 'temperate' | 'hot' | 'cold'
 export type SpecialCondition = 'none' | 'pregnancy' | 'breastfeeding'
+
+export interface WaterIntakeResult {
+  baseIntake: number
+  activityAdjustment: number
+  climateAdjustment: number
+  specialAdjustment: number
+  exerciseAdjustment: number
+  totalIntake: number
+  totalIntakeLiters: number
+  totalIntakeOunces: number
+  glasses: number
+}
 
 export interface WaterIntakeInput {
   weight: number
   weightUnit: WeightUnit
-  activityLevel: ActivityLevel
+  activityLevel: WaterActivityLevel
   climate: Climate
   specialCondition: SpecialCondition
   exerciseMinutes: number
-}
-
-export interface WaterIntakeResult {
-  baseIntake: number // ml
-  activityAdjustment: number // ml
-  climateAdjustment: number // ml
-  specialAdjustment: number // ml
-  exerciseAdjustment: number // ml
-  totalIntake: number // ml
-  totalIntakeLiters: number
-  totalIntakeOunces: number
-  glasses: number // 250ml glasses
 }
 
 // Base water intake per kg of body weight (ml)
 const BASE_WATER_PER_KG = 35
 
 // Activity level adjustments (percentage)
-const activityAdjustments: Record<ActivityLevel, number> = {
+const activityAdjustments: Record<WaterActivityLevel, number> = {
   sedentary: 0,
   moderate: 0.15, // +15%
   active: 0.3, // +30%
@@ -118,8 +118,8 @@ export function formatOunces(oz: number): string {
   return `${oz} oz`
 }
 
-export function getActivityLevelDescription(level: ActivityLevel): string {
-  const descriptions: Record<ActivityLevel, string> = {
+export function getActivityLevelDescription(level: WaterActivityLevel): string {
+  const descriptions: Record<WaterActivityLevel, string> = {
     sedentary: '座り仕事中心・軽い活動',
     moderate: '適度な活動・軽い運動',
     active: 'アクティブな生活・定期的な運動',

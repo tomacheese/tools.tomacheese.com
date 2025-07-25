@@ -247,8 +247,13 @@ export function getPhaseDisplayName(phase: PomodoroPhase): string {
   }
 }
 
+export function formatPomodoroTime(seconds: number): string {
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+}
 
-export function formatDuration(minutes: number): string {
+export function formatPomodoroTimeDuration(minutes: number): string {
   if (minutes < 60) {
     return `${minutes}分`
   }
@@ -335,23 +340,27 @@ export function exportPomodoroData(state: PomodoroState): string {
 }
 
 export function validatePomodoroSettings(
-  settings: any
+  settings: unknown
 ): settings is PomodoroSettings {
+  if (typeof settings !== 'object' || settings === null) {
+    return false
+  }
+
+  const settingsObj = settings as Record<string, unknown>
+
   return (
-    typeof settings === 'object' &&
-    settings !== null &&
-    typeof settings.workDuration === 'number' &&
-    typeof settings.shortBreakDuration === 'number' &&
-    typeof settings.longBreakDuration === 'number' &&
-    typeof settings.sessionsUntilLongBreak === 'number' &&
-    typeof settings.autoStartBreaks === 'boolean' &&
-    typeof settings.autoStartSessions === 'boolean' &&
-    typeof settings.notificationsEnabled === 'boolean' &&
-    typeof settings.soundEnabled === 'boolean' &&
-    settings.workDuration > 0 &&
-    settings.shortBreakDuration > 0 &&
-    settings.longBreakDuration > 0 &&
-    settings.sessionsUntilLongBreak > 0
+    typeof settingsObj.workDuration === 'number' &&
+    typeof settingsObj.shortBreakDuration === 'number' &&
+    typeof settingsObj.longBreakDuration === 'number' &&
+    typeof settingsObj.sessionsUntilLongBreak === 'number' &&
+    typeof settingsObj.autoStartBreaks === 'boolean' &&
+    typeof settingsObj.autoStartSessions === 'boolean' &&
+    typeof settingsObj.notificationsEnabled === 'boolean' &&
+    typeof settingsObj.soundEnabled === 'boolean' &&
+    settingsObj.workDuration > 0 &&
+    settingsObj.shortBreakDuration > 0 &&
+    settingsObj.longBreakDuration > 0 &&
+    settingsObj.sessionsUntilLongBreak > 0
   )
 }
 

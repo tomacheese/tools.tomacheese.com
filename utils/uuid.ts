@@ -4,7 +4,7 @@ export function generateUUID(): string {
   // where x is any hexadecimal digit and y is one of 8, 9, A, or B
 
   const cryptoObj = window.crypto || (window as any).msCrypto
-  if (!cryptoObj || !cryptoObj.getRandomValues) {
+  if (!cryptoObj?.getRandomValues) {
     // Fallback for older browsers
     return generateUUIDFallback()
   }

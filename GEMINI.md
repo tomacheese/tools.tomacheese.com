@@ -1,6 +1,6 @@
-# GitHub Copilot 向けガイドライン
+# Gemini CLI 向けガイドライン
 
-このファイルは GitHub Copilot がこのリポジトリのコードを操作する際の指示を提供します。
+このファイルは Gemini CLI がこのリポジトリのコードを操作する際の指示を提供します。
 
 ## プロジェクト概要
 
@@ -62,6 +62,10 @@ test: テスト追加・修正
 chore: その他の変更
 ```
 
+### PR 作成後の対応方法
+
+すべての CI が成功するまで監視・対応する。失敗した場合は修正を行い、コミット・プッシュし、再度監視を行う。
+
 ### コーディング規約
 
 #### TypeScript
@@ -107,72 +111,23 @@ chore: その他の変更
 4. ユーティリティ関数の単体テスト（`*.test.ts`）を作成
 5. ユーザー操作の E2E テスト（`*.spec.ts`）を作成
 
-### Vue コンポーネント構造
+### プロジェクト構造の詳細
 
-```vue
-<template>
-  <div class="tool-container">
-    <h1>ツール名</h1>
-    <p>ツールの説明</p>
+#### ディレクトリ構造
 
-    <!-- 入力セクション -->
-    <div class="input-section">
-      <!-- フォーム要素 -->
-    </div>
-
-    <!-- 結果表示 -->
-    <div v-if="result" class="result">
-      <!-- 結果表示 -->
-    </div>
-  </div>
-</template>
-
-<script setup lang="ts">
-// TypeScript で記述
-// useHead() でメタデータ設定
-// リアクティブな状態管理
-</script>
-
-<style scoped>
-/* コンポーネント固有のスタイル */
-</style>
+```
+pages/tools/          # ツールページ
+├── [tool-name].vue   # 各ツールのページ
+utils/                # ユーティリティ関数
+├── [function].ts     # 純粋関数として実装
+components/           # 共通コンポーネント
+├── Tool*.vue         # ツール関連コンポーネント
+tests/                # テストファイル
+├── utils/            # ユーティリティのテスト
+├── e2e/              # E2E テスト
 ```
 
-## GitHub Copilot 固有の設定
-
-### コード生成の指針
-
-#### コメント駆動開発の活用
-
-開発者がコメントで意図を表現した場合、その意図に沿ったコードを生成してください：
-
-```typescript
-// BMI を計算し、分類も含めて返す関数
-export function calculateBMI(weight: number, height: number): BMIResult {
-  // 適切な実装を生成
-}
-```
-
-#### 型定義の優先
-
-型定義が存在する場合、その型に準拠したコードを生成してください：
-
-```typescript
-interface BMIResult {
-  bmi: number
-  category: 'underweight' | 'normal' | 'overweight' | 'obese'
-  isHealthy: boolean
-}
-
-// この型定義に準拠した実装を生成
-export function calculateBMI(weight: number, height: number): BMIResult {
-  // 型安全な実装
-}
-```
-
-### プロジェクト固有のパターン
-
-#### Vue コンポーネント構造
+#### Vue コンポーネントの構造
 
 ```vue
 <template>
@@ -180,63 +135,108 @@ export function calculateBMI(weight: number, height: number): BMIResult {
     <ToolHeader :title="title" :description="description" />
     
     <!-- ツール固有のコンテンツ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- 入力エリア -->
+      <div class="space-y-4">
+        <!-- フォームコンポーネント -->
+      </div>
+      
+      <!-- 出力エリア -->
+      <div class="space-y-4">
+        <!-- 結果表示エリア -->
+      </div>
+    </div>
     
     <ToolFooter />
   </div>
 </template>
 
 <script setup lang="ts">
-// TypeScript with Composition API
-// useSeoMeta() と definePageMeta() を適切に設定
+import type { ToolMetadata } from '~/types/tool'
+
+// ページメタデータ
+const title = 'ツール名'
+const description = 'ツールの説明'
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+})
+
+definePageMeta({
+  layout: 'default',
+})
+
+// ツールのロジック（Composition API）
 </script>
 ```
 
-#### エラーハンドリングパターン
+## Gemini CLI 固有の設定
+
+### 必須技術
+
+- **Nuxt.js v3**: フレームワークとして Nuxt.js v3 を使用
+- **Vue 3**: Composition API を使用してコンポーネントを作成
+- **TypeScript**: 型安全なコードを記述
+- **Tailwind CSS**: スタイリングは Tailwind CSS のみ使用
+
+### テストフレームワーク
+
+- **Vitest**: 単体テスト用
+- **Playwright**: E2E テスト用
+
+### コード生成の指針
+
+#### エラーハンドリング
 
 ```typescript
 try {
-  // 処理
+  const result = processData(input)
+  return result
 } catch (error) {
-  console.error('エラーが発生しました:', error)
-  // 日本語エラーメッセージをユーザーに表示
+  console.error('処理中にエラーが発生しました:', error)
+  throw new Error('データの処理に失敗しました')
 }
 ```
 
-#### ユーティリティ関数の構造
+#### 型定義
 
 ```typescript
-/**
- * 機能の説明
- * @param param1 パラメータの説明
- * @param param2 パラメータの説明
- * @returns 戻り値の説明
- */
-export function utilityFunction(param1: string, param2: number): ReturnType {
-  // 純粋関数として実装
+// 明確な型定義を提供
+interface ToolInput {
+  value: string
+  options?: ProcessingOptions
+}
+
+interface ToolOutput {
+  result: string
+  metadata: {
+    processedAt: Date
+    isValid: boolean
+  }
+}
+
+// 純粋関数として実装
+export function processTool(input: ToolInput): ToolOutput {
+  // 実装
 }
 ```
 
-### スタイリング要件
-
-#### Tailwind CSS の使用
+#### レスポンシブデザイン
 
 ```vue
 <template>
-  <!-- レスポンシブ対応 -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <!-- モバイルファースト、レスポンシブ対応 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     <!-- ダークモード対応 -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
       <!-- コンテンツ -->
     </div>
   </div>
 </template>
 ```
-
-#### コンポーネント命名規則
-
-- **PascalCase**: コンポーネント名は PascalCase で記述
-- **Tool プレフィックス**: ツール共通コンポーネントには `Tool` プレフィックスを使用
-- **明確な命名**: コンポーネントの役割が分かる明確な名前を付ける
 
 ## テスト戦略
 
@@ -249,41 +249,67 @@ export function utilityFunction(param1: string, param2: number): ReturnType {
 - データ変換処理
 - バリデーション機能
 
-#### テストコードの生成
+#### ファイル命名規則
+
+- ファイル名: `*.test.ts`
+- 配置場所: `/tests/` ディレクトリ
+- 対応関係: `utils/math.ts` → `tests/utils/math.test.ts`
+
+#### テスト例
 
 ```typescript
 import { describe, it, expect } from 'vitest'
-import { functionName } from '~/utils/fileName'
+import { toolFunction } from '~/utils/toolName'
 
-describe('functionName', () => {
-  it('正常なケースのテスト', () => {
-    const result = functionName('input')
-    expect(result).toBe('expected')
+describe('toolFunction', () => {
+  it('正常な入力で期待される結果を返す', () => {
+    const input = 'test input'
+    const result = toolFunction(input)
+    expect(result).toBe('expected output')
   })
 
-  it('エッジケースのテスト', () => {
-    const result = functionName('')
-    expect(result).toBe('default')
+  it('空の入力でエラーをスローする', () => {
+    expect(() => toolFunction('')).toThrow('入力が空です')
+  })
+
+  it('無効な入力でエラーをスローする', () => {
+    expect(() => toolFunction('invalid')).toThrow('無効な入力です')
   })
 })
 ```
 
 ### E2E テスト（Playwright）
 
-#### E2E テストコードの生成
+#### 対象
+
+- ユーザーワークフローの検証
+- ブラウザ間の互換性確認
+- 実際の操作シナリオ
+
+#### E2E テスト例
 
 ```typescript
 import { test, expect } from '@playwright/test'
 
-test('ツール名の基本機能テスト', async ({ page }) => {
+test('ツール名の基本機能', async ({ page }) => {
   await page.goto('/tools/tool-name')
   
-  // テストステップ
+  // ページタイトルの確認
+  await expect(page).toHaveTitle(/ツール名/)
+  
+  // 入力と結果の確認
   await page.fill('input[type="text"]', 'test input')
   await page.click('button[type="submit"]')
-  
-  // 結果の検証
   await expect(page.locator('.result')).toHaveText('expected result')
+})
+
+test('エラーハンドリング', async ({ page }) => {
+  await page.goto('/tools/tool-name')
+  
+  // 無効な入力でエラー表示
+  await page.fill('input[type="text"]', '')
+  await page.click('button[type="submit"]')
+  await expect(page.locator('.error')).toBeVisible()
 })
 ```
 
@@ -292,12 +318,6 @@ test('ツール名の基本機能テスト', async ({ page }) => {
 - **Chrome**: メインブラウザ
 - **Firefox**: 互換性確認
 - **Safari**: macOS での動作確認
-
-#### カバレッジ目標
-
-- **重要な計算ロジック**: 100% を目指す
-- **ユーティリティ関数**: 90% 以上
-- **全体**: 80% 以上
 
 ## パフォーマンス要件
 
@@ -308,27 +328,31 @@ test('ツール名の基本機能テスト', async ({ page }) => {
 - **Best Practices**: 100
 - **SEO**: 100
 
-### パフォーマンス最適化
-
-#### 動的インポート
+### バンドルサイズ最適化
 
 ```typescript
 // 大きなライブラリは動的インポート
-const { largeFunction } = await import('~/utils/largeLibrary')
+const processLargeData = async (data: string) => {
+  const { heavyFunction } = await import('~/utils/heavyLibrary')
+  return heavyFunction(data)
+}
 ```
 
-#### Vue のパフォーマンス最適化
+### Vue のパフォーマンス最適化
 
 ```vue
 <script setup lang="ts">
-// computed を使用してリアクティブな計算値を最適化
-const computedValue = computed(() => {
-  // 計算ロジック
+// computed で計算値をキャッシュ
+const processedResult = computed(() => {
+  if (!inputValue.value) return ''
+  return expensiveCalculation(inputValue.value)
 })
 
-// watchEffect を使用して副作用を管理
+// watchEffect で副作用を管理
 watchEffect(() => {
-  // 副作用のロジック
+  if (processedResult.value) {
+    // 結果に基づく副作用
+  }
 })
 </script>
 ```
@@ -337,24 +361,28 @@ watchEffect(() => {
 
 以下のコードは生成しないでください：
 
-- サーバーサイド処理の実装
-- 外部 API への直接通信（fetch、axios など）
+- `fetch()` や `axios` による外部 API 通信
+- サーバーサイドレンダリングの実装
+- Node.js 固有の API の使用
 - ユーザーデータの外部送信
 - jQuery などの古いライブラリの使用
-- グローバル変数の使用
-- Options API の使用（Vue 3 Composition API を使用）
+- グローバル変数やグローバル状態の使用
+- Vue 2 の Options API の使用
 
-## 品質チェックポイント
+## 品質チェックリスト
 
 コード生成時に以下を確認してください：
 
-- [ ] TypeScript の型安全性
-- [ ] Vue 3 Composition API の使用
-- [ ] Tailwind CSS によるスタイリング
-- [ ] 適切なエラーハンドリング
-- [ ] レスポンシブデザイン
-- [ ] ダークモード対応
-- [ ] アクセシビリティ考慮
+- [ ] TypeScript の型チェックが通る
+- [ ] Vue 3 Composition API を使用している
+- [ ] Tailwind CSS でスタイリングしている
+- [ ] レスポンシブデザインに対応している
+- [ ] ダークモードに対応している
+- [ ] エラーハンドリングが適切に実装されている
+- [ ] アクセシビリティを考慮している
+- [ ] 単体テストが作成されている
+- [ ] E2E テストが作成されている
+- [ ] プライバシー要件を満たしている（外部通信なし）
 
 ## 🚀 クイックスタート
 
@@ -366,4 +394,8 @@ pnpm install
 pnpm test           # 単体テスト
 pnpm test:coverage  # カバレッジレポート
 pnpm test:e2e       # E2E テスト
+
+# ビルド
+pnpm generate
 ```
+

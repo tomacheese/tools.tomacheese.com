@@ -148,9 +148,7 @@ export function formatSql(sql: string, options: SqlFormatOptions): string {
   if (!sql.trim()) return ''
 
   const indent =
-    options.indentSize === 'tab'
-      ? '\t'
-      : ' '.repeat(options.indentSize as number)
+    options.indentSize === 'tab' ? '\t' : ' '.repeat(options.indentSize)
 
   let formatted = sql
     .replace(/\s+/g, ' ') // Normalize whitespace
