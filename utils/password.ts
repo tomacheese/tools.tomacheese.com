@@ -1,6 +1,6 @@
-/**
- * パスワード生成のオプション
- */
+// Note: Utility functions are available directly from their source files:
+// - generateUUID from ./uuid
+// - generateRandomHex from ./hex-utils
 export interface PasswordOptions {
   length: number
   includeUppercase: boolean
@@ -219,8 +219,8 @@ export const estimateCrackTime = (
   }
 }
 
-
-
+// Note: For UUID generation, use the dedicated uuid.ts utility
+// Note: For random hex generation, use the dedicated random-number.ts utility
 /**
  * Luhnアルゴリズムでクレジットカード番号を検証する
  */

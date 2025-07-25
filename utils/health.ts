@@ -1,3 +1,11 @@
+export type Gender = 'male' | 'female'
+export type ActivityLevel =
+  | 'sedentary'
+  | 'light'
+  | 'moderate'
+  | 'active'
+  | 'extra'
+
 export interface BMIResult {
   bmi: number
   category: string
@@ -11,9 +19,7 @@ export interface CalorieResult {
   description: string
 }
 
-
-export type Gender = 'male' | 'female'
-
+// Note: For water intake related types, use water-intake.ts
 export const calculateBMI = (weight: number, height: number): BMIResult => {
   if (weight <= 0 || height <= 0) {
     throw new Error('身長と体重は正の数である必要があります')

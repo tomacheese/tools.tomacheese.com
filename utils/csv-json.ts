@@ -26,7 +26,7 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): CSVData {
     trimValues = true,
   } = options
 
-  if (!csv || !csv.trim()) {
+  if (!csv?.trim()) {
     return []
   }
 
@@ -215,7 +215,7 @@ function formatCSVValue(value: string, delimiter: string): string {
 }
 
 export function detectDelimiter(csv: string): string {
-  if (!csv || !csv.trim()) {
+  if (!csv?.trim()) {
     return ','
   }
 

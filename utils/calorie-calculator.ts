@@ -1,5 +1,5 @@
-import type { Gender } from './health'
-import type { WeightUnit, ActivityLevel } from './water-intake'
+import type { Gender, ActivityLevel } from './health'
+import type { WeightUnit } from './water-intake'
 
 export type Goal = 'maintain' | 'lose' | 'gain'
 export type HeightUnit = 'cm' | 'ft'
