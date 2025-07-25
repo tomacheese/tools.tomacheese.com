@@ -26,7 +26,7 @@ test.describe('Accessibility Comprehensive Tests', () => {
           const textContent = await focusedElement.textContent()
           
           // フォーカス可能な要素が適切にラベル付けされていることを確認
-          expect(ariaLabel || textContent).toBeTruthy()
+          expect(ariaLabel ?? textContent).toBeTruthy()
         }
 
         // Tab キーで全ての操作可能な要素にアクセス可能
@@ -65,7 +65,7 @@ test.describe('Accessibility Comprehensive Tests', () => {
             const textContent = await button.textContent()
             
             // ボタンは適切にラベル付けされている必要がある
-            expect(ariaLabel || textContent?.trim()).toBeTruthy()
+            expect(ariaLabel ?? textContent?.trim()).toBeTruthy()
           }
         }
 
@@ -80,7 +80,7 @@ test.describe('Accessibility Comprehensive Tests', () => {
             // 入力フィールドは適切にラベル付けされている必要がある
             if (id) {
               const associatedLabel = await page.locator(`label[for="${id}"]`).count()
-              expect(associatedLabel > 0 || ariaLabel || placeholder).toBeTruthy()
+              expect(associatedLabel > 0 || (ariaLabel ?? placeholder)).toBeTruthy()
             }
           }
         }
@@ -410,7 +410,7 @@ test.describe('Accessibility Comprehensive Tests', () => {
           const counterRole = await counter.getAttribute('role')
           
           // ライブリージョンまたはステータスロールが設定されていることを確認
-          expect(counterAriaLive || counterRole).toBeTruthy()
+          expect(counterAriaLive ?? counterRole).toBeTruthy()
         }
       }
     })

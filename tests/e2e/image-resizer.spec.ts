@@ -141,7 +141,7 @@ test.describe('画像リサイズツール', () => {
       .locator('.error-message')
       .isVisible()
       .catch(() => false)
-    expect(hasSettings || hasError).toBeTruthy()
+    expect(hasSettings ?? hasError).toBeTruthy()
   })
 
   test('品質スライダーの動作', async ({ page }) => {

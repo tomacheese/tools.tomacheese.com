@@ -218,7 +218,7 @@ function onCategoryChange() {
   // Reset units to first available units in the new category
   const units = availableUnits.value
   fromUnit.value = units[0] || ''
-  toUnit.value = units[1] || units[0] || ''
+  toUnit.value = (units[1] ?? units[0]) || ''
   performConversion()
 }
 

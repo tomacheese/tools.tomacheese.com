@@ -52,6 +52,9 @@ export const analyzeText = (text: string): TextStats => {
  * Base64エンコード（UTF-8対応）
  */
 export const encodeBase64 = (text: string): string => {
+  if (typeof text !== 'string') {
+    throw new Error('入力値は文字列である必要があります')
+  }
   try {
     return btoa(unescape(encodeURIComponent(text)))
   } catch {

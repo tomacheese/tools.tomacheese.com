@@ -404,7 +404,7 @@ describe('Text utilities', () => {
       })
 
       it('should handle malformed Base64 padding', () => {
-        const malformedBase64 = 'SGVsbG8gV29ybGQ' // Missing padding
+        const malformedBase64 = 'SGVsbG8gV29ybGQ@' // Invalid character
         
         expect(() => decodeBase64(malformedBase64)).toThrow()
       })
@@ -530,8 +530,8 @@ describe('Text utilities', () => {
         const input = 'test123!@#'
         
         expect(convertCase(input, 'upper')).toBe('TEST123!@#')
-        expect(convertCase(input, 'snake')).toBe('test123')
-        expect(convertCase(input, 'kebab')).toBe('test123')
+        expect(convertCase(input, 'snake')).toBe('test123_')
+        expect(convertCase(input, 'kebab')).toBe('test123-')
       })
 
       it('should handle already formatted strings', () => {

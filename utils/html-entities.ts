@@ -74,7 +74,7 @@ export function encodeHTML(
   let result = text
 
   // First encode basic HTML entities
-  result = result.replace(/[&<>"'`=/]/g, match => htmlEntities[match] || match)
+  result = result.replace(/[&<>"'`=/]/g, match => htmlEntities[match] ?? match)
 
   // Encode named entities if requested
   if (useNamedEntities) {
@@ -120,7 +120,7 @@ export function decodeHTML(text: string): string {
 
 export function encodeAttribute(text: string): string {
   // For attributes, we need to encode quotes and basic entities
-  return text.replace(/[&<>"']/g, match => htmlEntities[match] || match)
+  return text.replace(/[&<>"']/g, match => htmlEntities[match] ?? match)
 }
 
 export function stripTags(html: string): string {

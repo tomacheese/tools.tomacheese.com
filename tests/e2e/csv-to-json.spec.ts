@@ -349,7 +349,7 @@ test.describe('CSV to JSON Converter', () => {
     const hasOutput = await page.locator('.output').isVisible()
 
     // Either shows error or handles gracefully with output
-    expect(hasError || hasOutput).toBe(true)
+    expect(hasError ?? hasOutput).toBe(true)
   })
 
   test('should display placeholder when no input', async ({ page }) => {

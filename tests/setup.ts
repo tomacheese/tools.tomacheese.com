@@ -34,7 +34,7 @@ Object.defineProperty(window, 'location', {
 // Mock localStorage with error handling capabilities
 const mockLocalStorage = {
   store: {} as Record<string, string>,
-  getItem: vi.fn((key: string) => mockLocalStorage.store[key] || null),
+  getItem: vi.fn((key: string) => mockLocalStorage.store[key] ?? null),
   setItem: vi.fn((key: string, value: string) => {
     mockLocalStorage.store[key] = value
   }),
