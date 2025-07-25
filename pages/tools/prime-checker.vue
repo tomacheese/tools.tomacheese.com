@@ -291,7 +291,7 @@ const checkPrime = () => {
     // 約数の個数を計算
     const factorCounts = {}
     factors.forEach(factor => {
-      factorCounts[factor] = (factorCounts[factor] || 0) + 1
+      factorCounts[factor] = (factorCounts[factor] ?? 0) + 1
     })
     divisorCount = Object.values(factorCounts).reduce(
       (acc, count) => acc * (count + 1),
