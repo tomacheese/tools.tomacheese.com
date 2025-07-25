@@ -189,7 +189,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { type Gender, type ActivityLevel } from '~/utils/health'
-import { type WeightUnit } from '~/utils/water-intake'
 import {
   calculateDetailedCalories,
   formatCalories,
@@ -198,8 +197,8 @@ import {
   type Goal,
   type HeightUnit,
   type CalorieCalculatorResult,
+  type WeightUnit,
 } from '~/utils/calorie-calculator'
-import type { WeightUnit } from '~/utils/water-intake'
 
 const gender = ref<Gender>('male')
 const age = ref<number>(30)
