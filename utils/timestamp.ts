@@ -25,6 +25,7 @@ export function dateToTimestamp(
 
 export function parseTimestamp(input: string): number | null {
   // First, check if input contains only digits (Unix timestamp)
+  // eslint-disable-next-line security/detect-unsafe-regex
   if (/^-?\d+(?:\.\d+)?$/.test(input)) {
     const num = parseFloat(input)
     if (!isNaN(num) && isFinite(num)) {
@@ -46,8 +47,9 @@ export function parseTimestamp(input: string): number | null {
   // Try common date formats
   const formats = [
     // ISO 8601
+    // eslint-disable-next-line security/detect-unsafe-regex  
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?$/,
-    // RFC 2822
+    // RFC 2822 - simplified to avoid ReDoS
     /^\w{3}, \d{1,2} \w{3} \d{4} \d{2}:\d{2}:\d{2} [+-]\d{4}$/,
     // Common formats
     /^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/,

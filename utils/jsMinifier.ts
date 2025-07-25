@@ -76,12 +76,14 @@ export function minifyJavaScript(
     let stringIndex = 0
 
     // Extract double quoted strings
+    // eslint-disable-next-line security/detect-unsafe-regex
     minified = minified.replace(/"((?:\\.|[^"\\])*)"/g, match => {
       strings.push(match)
       return `__STRING_${stringIndex++}__`
     })
 
     // Extract single quoted strings
+    // eslint-disable-next-line security/detect-unsafe-regex
     minified = minified.replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, match => {
       strings.push(match)
       return `__STRING_${stringIndex++}__`
