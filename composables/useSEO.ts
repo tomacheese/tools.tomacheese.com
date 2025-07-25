@@ -36,13 +36,14 @@ export const useSEO = () => {
    * ツールページのSEOメタデータとOGタグを設定
    */
   const setToolSEO = (data: ToolSEOData) => {
-    const baseURL = process.env.DEPLOY_ENV === 'GH_PAGES' 
-      ? 'https://tomacheese.github.io/tools.tomacheese.com'
-      : 'http://localhost:3000'
-    
+    const baseURL =
+      process.env.DEPLOY_ENV === 'GH_PAGES'
+        ? 'https://tomacheese.github.io/tools.tomacheese.com'
+        : 'http://localhost:3000'
+
     const currentURL = baseURL + route.path
     const fullTitle = `${data.title} - Tools.tomacheese.com`
-    
+
     // Basic SEO
     useSeoMeta({
       title: fullTitle,
@@ -50,7 +51,7 @@ export const useSEO = () => {
       keywords: data.keywords?.join(', '),
       robots: 'index, follow',
       canonical: currentURL,
-      
+
       // Open Graph
       ogTitle: fullTitle,
       ogDescription: data.description,
@@ -58,13 +59,14 @@ export const useSEO = () => {
       ogType: 'website',
       ogSiteName: 'Tools.tomacheese.com',
       ogLocale: 'ja_JP',
-      
+
       // Twitter Card
       twitterCard: 'summary',
       twitterTitle: fullTitle,
-      twitterDescription: data.description.length > 160 
-        ? `${data.description.substring(0, 157)}...` 
-        : data.description,
+      twitterDescription:
+        data.description.length > 160
+          ? `${data.description.substring(0, 157)}...`
+          : data.description,
     })
 
     // 構造化データを設定
@@ -85,12 +87,12 @@ export const useSEO = () => {
       operatingSystem: 'Any',
       offers: {
         '@type': 'Offer',
-        price: '0'
+        price: '0',
       },
       creator: {
         '@type': 'Person',
-        name: 'tomacheese'
-      }
+        name: 'tomacheese',
+      },
     }
 
     // キーワードがある場合は about フィールドに追加
@@ -102,9 +104,9 @@ export const useSEO = () => {
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(structuredData)
-        }
-      ]
+          children: JSON.stringify(structuredData),
+        },
+      ],
     })
   }
 
@@ -112,38 +114,40 @@ export const useSEO = () => {
    * WebSiteスキーマの構造化データを設定（トップページ用）
    */
   const setWebsiteSchema = () => {
-    const baseURL = process.env.DEPLOY_ENV === 'GH_PAGES' 
-      ? 'https://tomacheese.github.io/tools.tomacheese.com'
-      : 'http://localhost:3000'
+    const baseURL =
+      process.env.DEPLOY_ENV === 'GH_PAGES'
+        ? 'https://tomacheese.github.io/tools.tomacheese.com'
+        : 'http://localhost:3000'
 
     const websiteSchema = {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Tools.tomacheese.com',
-      description: 'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを提供しています。無料で安全なブラウザ上で動作するオンラインツール集です。',
+      description:
+        'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを提供しています。無料で安全なブラウザ上で動作するオンラインツール集です。',
       url: baseURL,
       author: {
         '@type': 'Person',
-        name: 'tomacheese'
+        name: 'tomacheese',
       },
       inLanguage: 'ja',
       potentialAction: {
         '@type': 'SearchAction',
         target: {
           '@type': 'EntryPoint',
-          urlTemplate: `${baseURL}/?q={search_term_string}`
+          urlTemplate: `${baseURL}/?q={search_term_string}`,
         },
-        'query-input': 'required name=search_term_string'
-      }
+        'query-input': 'required name=search_term_string',
+      },
     }
 
     useHead({
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(websiteSchema)
-        }
-      ]
+          children: JSON.stringify(websiteSchema),
+        },
+      ],
     })
   }
 
@@ -152,19 +156,19 @@ export const useSEO = () => {
    */
   const mapCategoryToSchema = (category: string): string => {
     const categoryMap: Record<string, string> = {
-      'utility': 'UtilitiesApplication',
-      'calculator': 'UtilitiesApplication',
-      'generator': 'UtilitiesApplication',
-      'converter': 'UtilitiesApplication',
-      'analyzer': 'UtilitiesApplication',
-      'encoder': 'UtilitiesApplication',
-      'timer': 'UtilitiesApplication',
-      'color': 'GraphicsApplication',
-      'image': 'GraphicsApplication',
-      'text': 'UtilitiesApplication',
-      'number': 'UtilitiesApplication',
-      'health': 'HealthApplication',
-      'finance': 'FinanceApplication'
+      utility: 'UtilitiesApplication',
+      calculator: 'UtilitiesApplication',
+      generator: 'UtilitiesApplication',
+      converter: 'UtilitiesApplication',
+      analyzer: 'UtilitiesApplication',
+      encoder: 'UtilitiesApplication',
+      timer: 'UtilitiesApplication',
+      color: 'GraphicsApplication',
+      image: 'GraphicsApplication',
+      text: 'UtilitiesApplication',
+      number: 'UtilitiesApplication',
+      health: 'HealthApplication',
+      finance: 'FinanceApplication',
     }
 
     return categoryMap[category] || 'UtilitiesApplication'
@@ -173,7 +177,9 @@ export const useSEO = () => {
   /**
    * FAQ構造化データを生成
    */
-  const generateFAQSchema = (faqs: Array<{ question: string; answer: string }>) => {
+  const generateFAQSchema = (
+    faqs: Array<{ question: string; answer: string }>
+  ) => {
     const faqSchema = {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -182,28 +188,31 @@ export const useSEO = () => {
         name: faq.question,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: faq.answer
-        }
-      }))
+          text: faq.answer,
+        },
+      })),
     }
 
     useHead({
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(faqSchema)
-        }
-      ]
+          children: JSON.stringify(faqSchema),
+        },
+      ],
     })
   }
 
   /**
    * BreadcrumbList構造化データを生成
    */
-  const generateBreadcrumbSchema = (breadcrumbs: Array<{ name: string; url: string }>) => {
-    const baseURL = process.env.DEPLOY_ENV === 'GH_PAGES' 
-      ? 'https://tomacheese.github.io/tools.tomacheese.com'
-      : 'http://localhost:3000'
+  const generateBreadcrumbSchema = (
+    breadcrumbs: Array<{ name: string; url: string }>
+  ) => {
+    const baseURL =
+      process.env.DEPLOY_ENV === 'GH_PAGES'
+        ? 'https://tomacheese.github.io/tools.tomacheese.com'
+        : 'http://localhost:3000'
 
     const breadcrumbSchema = {
       '@context': 'https://schema.org',
@@ -212,17 +221,17 @@ export const useSEO = () => {
         '@type': 'ListItem',
         position: index + 1,
         name: breadcrumb.name,
-        item: `${baseURL}${breadcrumb.url}`
-      }))
+        item: `${baseURL}${breadcrumb.url}`,
+      })),
     }
 
     useHead({
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(breadcrumbSchema)
-        }
-      ]
+          children: JSON.stringify(breadcrumbSchema),
+        },
+      ],
     })
   }
 
@@ -230,6 +239,6 @@ export const useSEO = () => {
     setToolSEO,
     setWebsiteSchema,
     generateFAQSchema,
-    generateBreadcrumbSchema
+    generateBreadcrumbSchema,
   }
 }

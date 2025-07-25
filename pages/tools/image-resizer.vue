@@ -300,7 +300,7 @@ const downloadResized = () => {
 
   const filename = generateFilename(
     originalImage.value.name,
-    resizeOptions.value.format || 'jpeg'
+    resizeOptions.value.format ?? 'jpeg'
   )
   downloadImage(resizedImage.value, filename)
 }
