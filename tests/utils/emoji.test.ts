@@ -96,13 +96,17 @@ describe('emoji utils', () => {
     it('should find emojis by keywords', () => {
       const results = searchEmojis('嬉しい')
       expect(results.length).toBeGreaterThan(0)
-      expect(results.some(emoji => emoji.keywords.includes('嬉しい'))).toBe(true)
+      expect(results.some(emoji => emoji.keywords.includes('嬉しい'))).toBe(
+        true
+      )
     })
 
     it('should find emojis by shortcodes', () => {
       const results = searchEmojis(':smile:')
       expect(results.length).toBeGreaterThan(0)
-      expect(results.some(emoji => emoji.shortcodes.includes(':smile:'))).toBe(true)
+      expect(results.some(emoji => emoji.shortcodes.includes(':smile:'))).toBe(
+        true
+      )
     })
 
     it('should be case insensitive', () => {
@@ -141,7 +145,7 @@ describe('emoji utils', () => {
     it('should return all emojis from all categories', () => {
       const allEmojis = getAllEmojis()
       expect(allEmojis.length).toBeGreaterThan(0)
-      
+
       const totalFromCategories = EMOJI_CATEGORIES.reduce(
         (total, cat) => total + cat.emojis.length,
         0
@@ -151,7 +155,7 @@ describe('emoji utils', () => {
 
     it('should include emojis from each category', () => {
       const allEmojis = getAllEmojis()
-      
+
       EMOJI_CATEGORIES.forEach(category => {
         category.emojis.forEach(emoji => {
           expect(allEmojis.some(e => e.emoji === emoji.emoji)).toBe(true)
@@ -170,7 +174,7 @@ describe('emoji utils', () => {
     it('should return recent emojis from localStorage', () => {
       const recentData = JSON.stringify(['😀', '😍']) // Only use emojis that exist in our data
       localStorageMock.getItem.mockReturnValue(recentData)
-      
+
       const result = getRecentlyUsedEmojis()
       expect(result.length).toBe(2)
       expect(result[0].emoji).toBe('😀')
@@ -186,7 +190,7 @@ describe('emoji utils', () => {
     it('should filter out unknown emojis', () => {
       const recentData = JSON.stringify(['😀', '🚫unknown🚫', '😍'])
       localStorageMock.getItem.mockReturnValue(recentData)
-      
+
       const result = getRecentlyUsedEmojis()
       expect(result.length).toBe(2)
       expect(result[0].emoji).toBe('😀')
@@ -197,16 +201,16 @@ describe('emoji utils', () => {
   describe('addToRecentlyUsed', () => {
     it('should add emoji to recent list', () => {
       localStorageMock.getItem.mockReturnValue(JSON.stringify([]))
-      
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       addToRecentlyUsed(emoji)
-      
+
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'recently-used-emojis',
         JSON.stringify(['😀'])
@@ -215,16 +219,16 @@ describe('emoji utils', () => {
 
     it('should move existing emoji to front', () => {
       localStorageMock.getItem.mockReturnValue(JSON.stringify(['😍', '😀']))
-      
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       addToRecentlyUsed(emoji)
-      
+
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'recently-used-emojis',
         JSON.stringify(['😀', '😍'])
@@ -233,20 +237,49 @@ describe('emoji utils', () => {
 
     it('should limit recent emojis to 30', () => {
       // Create array with valid emoji characters
-      const existing = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇',
-                        '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚',
-                        '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔']
+      const existing = [
+        '😀',
+        '😃',
+        '😄',
+        '😁',
+        '😆',
+        '😅',
+        '😂',
+        '🤣',
+        '😊',
+        '😇',
+        '🙂',
+        '🙃',
+        '😉',
+        '😌',
+        '😍',
+        '🥰',
+        '😘',
+        '😗',
+        '😙',
+        '😚',
+        '😋',
+        '😛',
+        '😜',
+        '🤪',
+        '😝',
+        '🤑',
+        '🤗',
+        '🤭',
+        '🤫',
+        '🤔',
+      ]
       localStorageMock.getItem.mockReturnValue(JSON.stringify(existing))
-      
+
       const emoji: Emoji = {
         emoji: '🥳', // New emoji to add
         name: 'パーティー顔',
         keywords: ['パーティー'],
-        shortcodes: [':partying_face:']
+        shortcodes: [':partying_face:'],
       }
-      
+
       addToRecentlyUsed(emoji)
-      
+
       // Check that only the new emoji is stored (since getRecentlyUsedEmojis filters unknown emojis)
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'recently-used-emojis',
@@ -258,14 +291,14 @@ describe('emoji utils', () => {
       localStorageMock.getItem.mockImplementation(() => {
         throw new Error('localStorage error')
       })
-      
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       expect(() => addToRecentlyUsed(emoji)).not.toThrow()
     })
   })
@@ -273,16 +306,16 @@ describe('emoji utils', () => {
   describe('copyEmojiToClipboard', () => {
     it('should copy emoji using clipboard API', async () => {
       clipboardMock.writeText.mockResolvedValue(undefined)
-      
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       const result = await copyEmojiToClipboard(emoji)
-      
+
       expect(result).toBe(true)
       expect(clipboardMock.writeText).toHaveBeenCalledWith('😀')
       expect(localStorageMock.setItem).toHaveBeenCalled()
@@ -291,25 +324,31 @@ describe('emoji utils', () => {
     it('should fallback to execCommand when clipboard API fails', async () => {
       clipboardMock.writeText.mockRejectedValue(new Error('Clipboard error'))
       document.execCommand = vi.fn().mockReturnValue(true)
-      
+
       // Mock document.createElement and related methods
       const mockTextArea = {
         value: '',
         select: vi.fn(),
       }
-      const createElementSpy = vi.spyOn(document, 'createElement').mockReturnValue(mockTextArea as any)
-      const appendChildSpy = vi.spyOn(document.body, 'appendChild').mockImplementation(() => mockTextArea as any)
-      const removeChildSpy = vi.spyOn(document.body, 'removeChild').mockImplementation(() => mockTextArea as any)
-      
+      const createElementSpy = vi
+        .spyOn(document, 'createElement')
+        .mockReturnValue(mockTextArea as any)
+      const appendChildSpy = vi
+        .spyOn(document.body, 'appendChild')
+        .mockImplementation(() => mockTextArea as any)
+      const removeChildSpy = vi
+        .spyOn(document.body, 'removeChild')
+        .mockImplementation(() => mockTextArea as any)
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       const result = await copyEmojiToClipboard(emoji)
-      
+
       expect(result).toBe(true)
       expect(createElementSpy).toHaveBeenCalledWith('textarea')
       expect(mockTextArea.value).toBe('😀')
@@ -317,7 +356,7 @@ describe('emoji utils', () => {
       expect(document.execCommand).toHaveBeenCalledWith('copy')
       expect(appendChildSpy).toHaveBeenCalled()
       expect(removeChildSpy).toHaveBeenCalled()
-      
+
       createElementSpy.mockRestore()
       appendChildSpy.mockRestore()
       removeChildSpy.mockRestore()
@@ -328,14 +367,14 @@ describe('emoji utils', () => {
       document.execCommand = vi.fn().mockImplementation(() => {
         throw new Error('execCommand error')
       })
-      
+
       const emoji: Emoji = {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       const result = await copyEmojiToClipboard(emoji)
       expect(result).toBe(false)
     })
@@ -347,9 +386,9 @@ describe('emoji utils', () => {
         emoji: '😀',
         name: 'にっこり顔',
         keywords: ['笑顔'],
-        shortcodes: [':grinning:']
+        shortcodes: [':grinning:'],
       }
-      
+
       const variants = getEmojiVariants(emoji)
       expect(variants).toEqual([])
     })
@@ -359,9 +398,9 @@ describe('emoji utils', () => {
         emoji: '👋',
         name: '手を振る',
         keywords: ['挨拶'],
-        shortcodes: [':wave:']
+        shortcodes: [':wave:'],
       }
-      
+
       const variants = getEmojiVariants(emoji)
       expect(variants.length).toBe(5) // 5 skin tones
       expect(variants[0].emoji).toBe('👋🏻')
@@ -373,9 +412,9 @@ describe('emoji utils', () => {
         emoji: '👋',
         name: '手を振る',
         keywords: ['挨拶'],
-        shortcodes: [':wave:']
+        shortcodes: [':wave:'],
       }
-      
+
       const variants = getEmojiVariants(emoji)
       expect(variants[0].name).toBe('手を振る (薄い肌色)')
       expect(variants[4].name).toBe('手を振る (濃い肌色)')
@@ -386,9 +425,9 @@ describe('emoji utils', () => {
         emoji: '👋',
         name: '手を振る',
         keywords: ['挨拶', 'こんにちは'],
-        shortcodes: [':wave:']
+        shortcodes: [':wave:'],
       }
-      
+
       const variants = getEmojiVariants(emoji)
       variants.forEach(variant => {
         expect(variant.keywords).toEqual(emoji.keywords)

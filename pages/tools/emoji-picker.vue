@@ -53,12 +53,10 @@
           「{{ searchQuery }}」に一致する絵文字が見つかりませんでした。
         </p>
         <p v-else-if="selectedCategory === 'recent'">
-          まだ使用した絵文字がありません。<br>
+          まだ使用した絵文字がありません。<br />
           絵文字をクリックして使い始めましょう！
         </p>
-        <p v-else>
-          このカテゴリには絵文字がありません。
-        </p>
+        <p v-else>このカテゴリには絵文字がありません。</p>
       </div>
 
       <div v-else class="emoji-grid">
@@ -86,7 +84,10 @@
             <div class="meta-item">
               <strong>文字:</strong>
               <code class="emoji-code">{{ selectedEmoji.emoji }}</code>
-              <button class="copy-button small" @click="copyEmojiChar(selectedEmoji)">
+              <button
+                class="copy-button small"
+                @click="copyEmojiChar(selectedEmoji)"
+              >
                 コピー
               </button>
             </div>
@@ -136,7 +137,11 @@
     </div>
 
     <!-- 通知メッセージ -->
-    <div v-if="copyMessage" class="copy-notification" :class="{ show: showCopyMessage }">
+    <div
+      v-if="copyMessage"
+      class="copy-notification"
+      :class="{ show: showCopyMessage }"
+    >
       {{ copyMessage }}
     </div>
 
@@ -179,11 +184,11 @@ const displayEmojis = computed(() => {
   if (searchQuery.value.trim()) {
     return searchEmojis(searchQuery.value).slice(0, 200) // Limit search results
   }
-  
+
   if (selectedCategory.value === 'recent') {
     return recentEmojis.value
   }
-  
+
   return getEmojisByCategory(selectedCategory.value)
 })
 
@@ -195,7 +200,7 @@ const emojiVariants = computed(() => {
 const selectEmoji = async (emoji: Emoji) => {
   selectedEmoji.value = emoji
   const success = await copyEmojiToClipboard(emoji)
-  
+
   if (success) {
     showCopyNotification(`${emoji.emoji} をコピーしました！`)
     updateRecentEmojis()
@@ -216,7 +221,7 @@ const copyEmojiChar = async (emoji: Emoji) => {
 const showCopyNotification = (message: string) => {
   copyMessage.value = message
   showCopyMessage.value = true
-  
+
   setTimeout(() => {
     showCopyMessage.value = false
   }, 2000)
@@ -231,7 +236,7 @@ const updateRecentEmojis = () => {
 }
 
 // Watchers
-watch(searchQuery, (newQuery) => {
+watch(searchQuery, newQuery => {
   if (newQuery.trim()) {
     selectedCategory.value = ''
   } else if (!selectedCategory.value) {
@@ -242,7 +247,7 @@ watch(searchQuery, (newQuery) => {
 // Lifecycle hooks
 onMounted(() => {
   updateRecentEmojis()
-  
+
   // Set initial selected emoji to first emoji in smileys category
   const smileyEmojis = getEmojisByCategory('smileys')
   if (smileyEmojis.length > 0) {
@@ -256,7 +261,8 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '豊富な絵文字から選択してコピーできます。検索やカテゴリ別の表示、最近使用した絵文字の管理にも対応。',
+      content:
+        '豊富な絵文字から選択してコピーできます。検索やカテゴリ別の表示、最近使用した絵文字の管理にも対応。',
     },
   ],
 })
