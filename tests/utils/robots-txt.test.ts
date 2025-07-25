@@ -1,0 +1,492 @@
+import { describe, it, expect } from 'vitest'
+import {
+  generateRobotsTxt,
+  parseRobotsTxt,
+  validateRobotsTxt,
+  validateUrl,
+  validatePath,
+  validateUserAgent,
+  getDefaultUserAgents,
+  getCommonPaths,
+  getRobotsTxtTemplates,
+  generatePreviewInfo,
+  calculateFileSize,
+  type RobotsTxtConfig,
+} from '~/utils/robots-txt'
+
+describe('robots-txt utils', () => {
+  describe('validation functions', () => {
+    describe('validateUrl', () => {
+      it('should validate valid URLs', () => {
+        expect(validateUrl('https://example.com')).toBe(true)
+        expect(validateUrl('http://example.com')).toBe(true)
+        expect(validateUrl('https://example.com/sitemap.xml')).toBe(true)
+      })
+
+      it('should reject invalid URLs', () => {
+        expect(validateUrl('')).toBe(false)
+        expect(validateUrl('   ')).toBe(false)
+        expect(validateUrl('not-a-url')).toBe(false)
+        expect(validateUrl('ftp://example.com')).toBe(false)
+      })
+    })
+
+    describe('validatePath', () => {
+      it('should validate valid paths', () => {
+        expect(validatePath('/')).toBe(true)
+        expect(validatePath('/admin/')).toBe(true)
+        expect(validatePath('/*.pdf')).toBe(true)
+        expect(validatePath('/search?*')).toBe(true)
+      })
+
+      it('should reject invalid paths', () => {
+        expect(validatePath('')).toBe(false)
+        expect(validatePath('   ')).toBe(false)
+        expect(validatePath('admin')).toBe(false) // doesn't start with /
+      })
+    })
+
+    describe('validateUserAgent', () => {
+      it('should validate valid user agents', () => {
+        expect(validateUserAgent('*')).toBe(true)
+        expect(validateUserAgent('Googlebot')).toBe(true)
+        expect(validateUserAgent('facebookexternalhit')).toBe(true)
+      })
+
+      it('should reject invalid user agents', () => {
+        expect(validateUserAgent('')).toBe(false)
+        expect(validateUserAgent('   ')).toBe(false)
+        expect(validateUserAgent('Bot Name')).toBe(false) // contains space
+        expect(validateUserAgent('Mozilla/5.0 (compatible)')).toBe(false) // contains spaces
+      })
+    })
+  })
+
+  describe('data functions', () => {
+    describe('getDefaultUserAgents', () => {
+      it('should return array of default user agents', () => {
+        const agents = getDefaultUserAgents()
+        expect(Array.isArray(agents)).toBe(true)
+        expect(agents.length).toBeGreaterThan(0)
+        
+        agents.forEach(agent => {
+          expect(agent).toHaveProperty('name')
+          expect(agent).toHaveProperty('description')
+          expect(typeof agent.name).toBe('string')
+          expect(typeof agent.description).toBe('string')
+        })
+      })
+
+      it('should include wildcard user agent', () => {
+        const agents = getDefaultUserAgents()
+        expect(agents.some(agent => agent.name === '*')).toBe(true)
+      })
+    })
+
+    describe('getCommonPaths', () => {
+      it('should return array of common paths', () => {
+        const paths = getCommonPaths()
+        expect(Array.isArray(paths)).toBe(true)
+        expect(paths.length).toBeGreaterThan(0)
+        
+        paths.forEach(path => {
+          expect(path).toHaveProperty('path')
+          expect(path).toHaveProperty('description')
+          expect(path).toHaveProperty('type')
+          expect(['allow', 'disallow']).toContain(path.type)
+        })
+      })
+
+      it('should include both allow and disallow paths', () => {
+        const paths = getCommonPaths()
+        expect(paths.some(path => path.type === 'allow')).toBe(true)
+        expect(paths.some(path => path.type === 'disallow')).toBe(true)
+      })
+    })
+
+    describe('getRobotsTxtTemplates', () => {
+      it('should return array of templates', () => {
+        const templates = getRobotsTxtTemplates()
+        expect(Array.isArray(templates)).toBe(true)
+        expect(templates.length).toBeGreaterThan(0)
+        
+        templates.forEach(template => {
+          expect(template).toHaveProperty('name')
+          expect(template).toHaveProperty('description')
+          expect(template).toHaveProperty('config')
+          expect(template.config).toHaveProperty('userAgentRules')
+          expect(template.config).toHaveProperty('sitemaps')
+          expect(template.config).toHaveProperty('customDirectives')
+        })
+      })
+    })
+  })
+
+  describe('generateRobotsTxt', () => {
+    it('should generate basic robots.txt', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: ['/'],
+            disallow: [],
+          },
+        ],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = generateRobotsTxt(config)
+      expect(result).toContain('User-agent: *')
+      expect(result).toContain('Allow: /')
+      expect(result).toContain('# robots.txt generated by Tools.tomacheese.com')
+    })
+
+    it('should generate robots.txt with multiple rules', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: ['/'],
+            disallow: ['/admin/', '/private/'],
+          },
+          {
+            userAgent: 'Googlebot',
+            allow: ['/'],
+            disallow: ['/search/'],
+            crawlDelay: 10,
+          },
+        ],
+        sitemaps: ['https://example.com/sitemap.xml'],
+        customDirectives: ['Host: example.com'],
+      }
+
+      const result = generateRobotsTxt(config)
+      expect(result).toContain('User-agent: *')
+      expect(result).toContain('Disallow: /admin/')
+      expect(result).toContain('Disallow: /private/')
+      expect(result).toContain('User-agent: Googlebot')
+      expect(result).toContain('Disallow: /search/')
+      expect(result).toContain('Crawl-delay: 10')
+      expect(result).toContain('Sitemap: https://example.com/sitemap.xml')
+      expect(result).toContain('Host: example.com')
+    })
+
+    it('should handle empty arrays gracefully', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: [],
+            disallow: [],
+          },
+        ],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = generateRobotsTxt(config)
+      expect(result).toContain('User-agent: *')
+      expect(result).not.toContain('Allow:')
+      expect(result).not.toContain('Disallow:')
+    })
+  })
+
+  describe('parseRobotsTxt', () => {
+    it('should parse basic robots.txt', () => {
+      const content = `# Comment
+User-agent: *
+Allow: /
+Disallow: /admin/
+Sitemap: https://example.com/sitemap.xml`
+
+      const result = parseRobotsTxt(content)
+      expect(result.userAgentRules).toHaveLength(1)
+      expect(result.userAgentRules[0].userAgent).toBe('*')
+      expect(result.userAgentRules[0].allow).toEqual(['/'])
+      expect(result.userAgentRules[0].disallow).toEqual(['/admin/'])
+      expect(result.sitemaps).toEqual(['https://example.com/sitemap.xml'])
+    })
+
+    it('should parse multiple user agent rules', () => {
+      const content = `User-agent: *
+Disallow: /admin/
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 10`
+
+      const result = parseRobotsTxt(content)
+      expect(result.userAgentRules).toHaveLength(2)
+      expect(result.userAgentRules[0].userAgent).toBe('*')
+      expect(result.userAgentRules[1].userAgent).toBe('Googlebot')
+      expect(result.userAgentRules[1].crawlDelay).toBe(10)
+    })
+
+    it('should handle custom directives', () => {
+      const content = `User-agent: *
+Disallow: /
+Host: example.com
+Unknown-directive: value`
+
+      const result = parseRobotsTxt(content)
+      expect(result.customDirectives).toContain('Host: example.com')
+      expect(result.customDirectives).toContain('Unknown-directive: value')
+    })
+
+    it('should ignore invalid crawl-delay values', () => {
+      const content = `User-agent: *
+Crawl-delay: invalid
+Crawl-delay: -5`
+
+      const result = parseRobotsTxt(content)
+      expect(result.userAgentRules[0].crawlDelay).toBeUndefined()
+    })
+
+    it('should handle decimal crawl-delay values by taking integer part', () => {
+      const content = `User-agent: *
+Crawl-delay: 10.5`
+
+      const result = parseRobotsTxt(content)
+      expect(result.userAgentRules[0].crawlDelay).toBe(10)
+    })
+  })
+
+  describe('validateRobotsTxt', () => {
+    it('should validate correct configuration', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: ['/'],
+            disallow: ['/admin/'],
+          },
+        ],
+        sitemaps: ['https://example.com/sitemap.xml'],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(true)
+      expect(result.errors).toHaveLength(0)
+    })
+
+    it('should detect missing user agent rules', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(false)
+      expect(result.errors).toContain('少なくとも1つのUser-Agentルールが必要です')
+    })
+
+    it('should detect invalid user agents', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: 'Bot Name', // invalid: contains space
+            allow: [],
+            disallow: [],
+          },
+        ],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(false)
+      expect(result.errors.some(error => error.includes('User-Agent「Bot Name」が無効です'))).toBe(true)
+    })
+
+    it('should detect invalid paths', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: ['invalid-path'], // doesn't start with /
+            disallow: [],
+          },
+        ],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(false)
+      expect(result.errors.some(error => error.includes('Allow パス「invalid-path」が無効です'))).toBe(true)
+    })
+
+    it('should detect invalid crawl delay', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: [],
+            disallow: [],
+            crawlDelay: -1, // negative value
+          },
+        ],
+        sitemaps: [],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(false)
+      expect(result.errors.some(error => error.includes('Crawl-delay「-1」が無効です'))).toBe(true)
+    })
+
+    it('should detect invalid sitemap URLs', () => {
+      const config: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: [],
+            disallow: [],
+          },
+        ],
+        sitemaps: ['not-a-url'],
+        customDirectives: [],
+      }
+
+      const result = validateRobotsTxt(config)
+      expect(result.isValid).toBe(false)
+      expect(result.errors.some(error => error.includes('サイトマップURL「not-a-url」が無効です'))).toBe(true)
+    })
+  })
+
+  describe('utility functions', () => {
+    describe('calculateFileSize', () => {
+      it('should calculate file size correctly', () => {
+        const content = 'User-agent: *\nAllow: /'
+        const size = calculateFileSize(content)
+        expect(size).toBeGreaterThan(0)
+        expect(typeof size).toBe('number')
+      })
+
+      it('should handle empty content', () => {
+        const size = calculateFileSize('')
+        expect(size).toBe(0)
+      })
+    })
+
+    describe('generatePreviewInfo', () => {
+      it('should generate preview information', () => {
+        const config: RobotsTxtConfig = {
+          userAgentRules: [
+            {
+              userAgent: '*',
+              allow: ['/'],
+              disallow: ['/admin/'],
+              crawlDelay: 10,
+            },
+            {
+              userAgent: 'Googlebot',
+              allow: [],
+              disallow: [],
+            },
+          ],
+          sitemaps: ['https://example.com/sitemap.xml'],
+          customDirectives: [],
+        }
+
+        const info = generatePreviewInfo(config)
+        expect(info.totalRules).toBe(2)
+        expect(info.totalSitemaps).toBe(1)
+        expect(info.hasWildcardRule).toBe(true)
+        expect(info.restrictiveRules).toBe(1) // only first rule has restrictions
+        expect(typeof info.estimatedSize).toBe('string')
+      })
+
+      it('should detect absence of wildcard rule', () => {
+        const config: RobotsTxtConfig = {
+          userAgentRules: [
+            {
+              userAgent: 'Googlebot',
+              allow: [],
+              disallow: [],
+            },
+          ],
+          sitemaps: [],
+          customDirectives: [],
+        }
+
+        const info = generatePreviewInfo(config)
+        expect(info.hasWildcardRule).toBe(false)
+      })
+
+      it('should count restrictive rules correctly', () => {
+        const config: RobotsTxtConfig = {
+          userAgentRules: [
+            {
+              userAgent: '*',
+              allow: ['/'],
+              disallow: [], // no restrictions
+            },
+            {
+              userAgent: 'Googlebot',
+              allow: [],
+              disallow: ['/admin/'], // has disallow
+            },
+            {
+              userAgent: 'Bingbot',
+              allow: [],
+              disallow: [],
+              crawlDelay: 5, // has crawl delay
+            },
+          ],
+          sitemaps: [],
+          customDirectives: [],
+        }
+
+        const info = generatePreviewInfo(config)
+        expect(info.restrictiveRules).toBe(2) // Googlebot and Bingbot
+      })
+    })
+  })
+
+  describe('integration test', () => {
+    it('should generate and parse robots.txt correctly', () => {
+      const originalConfig: RobotsTxtConfig = {
+        userAgentRules: [
+          {
+            userAgent: '*',
+            allow: ['/'],
+            disallow: ['/admin/', '/private/'],
+            crawlDelay: 10,
+          },
+          {
+            userAgent: 'Googlebot',
+            allow: ['/public/'],
+            disallow: ['/search/'],
+          },
+        ],
+        sitemaps: ['https://example.com/sitemap.xml', 'https://example.com/news-sitemap.xml'],
+        customDirectives: ['Host: example.com'],
+      }
+
+      // Generate robots.txt
+      const content = generateRobotsTxt(originalConfig)
+      expect(content).toBeTruthy()
+
+      // Parse it back
+      const parsedConfig = parseRobotsTxt(content)
+
+      // Verify the parsed config matches the original
+      expect(parsedConfig.userAgentRules).toHaveLength(2)
+      expect(parsedConfig.userAgentRules[0].userAgent).toBe('*')
+      expect(parsedConfig.userAgentRules[0].allow).toEqual(['/'])
+      expect(parsedConfig.userAgentRules[0].disallow).toEqual(['/admin/', '/private/'])
+      expect(parsedConfig.userAgentRules[0].crawlDelay).toBe(10)
+
+      expect(parsedConfig.userAgentRules[1].userAgent).toBe('Googlebot')
+      expect(parsedConfig.userAgentRules[1].allow).toEqual(['/public/'])
+      expect(parsedConfig.userAgentRules[1].disallow).toEqual(['/search/'])
+
+      expect(parsedConfig.sitemaps).toEqual(['https://example.com/sitemap.xml', 'https://example.com/news-sitemap.xml'])
+      expect(parsedConfig.customDirectives).toEqual(['Host: example.com'])
+    })
+  })
+})
