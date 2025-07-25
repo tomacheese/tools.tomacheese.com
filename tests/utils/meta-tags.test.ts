@@ -24,9 +24,13 @@ describe('meta-tags', () => {
       const tags = generateBasicMetaTags(input)
 
       expect(tags).toContain('<meta charset="UTF-8">')
-      expect(tags).toContain('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+      expect(tags).toContain(
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+      )
       expect(tags).toContain('<title>Test Title</title>')
-      expect(tags).toContain('<meta name="description" content="Test Description">')
+      expect(tags).toContain(
+        '<meta name="description" content="Test Description">'
+      )
     })
 
     it('should handle empty input', () => {
@@ -42,8 +46,12 @@ describe('meta-tags', () => {
 
       const tags = generateBasicMetaTags(input)
 
-      expect(tags).toContain('<title>Title with &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</title>')
-      expect(tags).toContain('<meta name="description" content="Description with &quot;quotes&quot; &amp; ampersands">')
+      expect(tags).toContain(
+        '<title>Title with &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;</title>'
+      )
+      expect(tags).toContain(
+        '<meta name="description" content="Description with &quot;quotes&quot; &amp; ampersands">'
+      )
     })
   })
 
@@ -61,10 +69,18 @@ describe('meta-tags', () => {
       const tags = generateOpenGraphTags(input)
 
       expect(tags).toContain('<meta property="og:title" content="OG Title">')
-      expect(tags).toContain('<meta property="og:description" content="OG Description">')
-      expect(tags).toContain('<meta property="og:url" content="https://example.com">')
-      expect(tags).toContain('<meta property="og:image" content="https://example.com/image.jpg">')
-      expect(tags).toContain('<meta property="og:site_name" content="Example Site">')
+      expect(tags).toContain(
+        '<meta property="og:description" content="OG Description">'
+      )
+      expect(tags).toContain(
+        '<meta property="og:url" content="https://example.com">'
+      )
+      expect(tags).toContain(
+        '<meta property="og:image" content="https://example.com/image.jpg">'
+      )
+      expect(tags).toContain(
+        '<meta property="og:site_name" content="Example Site">'
+      )
       expect(tags).toContain('<meta property="og:type" content="website">')
     })
 
@@ -93,10 +109,18 @@ describe('meta-tags', () => {
 
       const tags = generateTwitterTags(input)
 
-      expect(tags).toContain('<meta name="twitter:card" content="summary_large_image">')
-      expect(tags).toContain('<meta name="twitter:title" content="Twitter Title">')
-      expect(tags).toContain('<meta name="twitter:description" content="Twitter Description">')
-      expect(tags).toContain('<meta name="twitter:image" content="https://example.com/twitter.jpg">')
+      expect(tags).toContain(
+        '<meta name="twitter:card" content="summary_large_image">'
+      )
+      expect(tags).toContain(
+        '<meta name="twitter:title" content="Twitter Title">'
+      )
+      expect(tags).toContain(
+        '<meta name="twitter:description" content="Twitter Description">'
+      )
+      expect(tags).toContain(
+        '<meta name="twitter:image" content="https://example.com/twitter.jpg">'
+      )
       expect(tags).toContain('<meta name="twitter:site" content="@example">')
       expect(tags).toContain('<meta name="twitter:creator" content="@creator">')
     })
@@ -117,11 +141,19 @@ describe('meta-tags', () => {
       const result = generateAllMetaTags(input)
 
       expect(result.basic).toContain('<title>Complete Title</title>')
-      expect(result.openGraph).toContain('<meta property="og:title" content="Complete Title">')
-      expect(result.twitter).toContain('<meta name="twitter:title" content="Complete Title">')
+      expect(result.openGraph).toContain(
+        '<meta property="og:title" content="Complete Title">'
+      )
+      expect(result.twitter).toContain(
+        '<meta name="twitter:title" content="Complete Title">'
+      )
       expect(result.combined).toContain('<title>Complete Title</title>')
-      expect(result.combined).toContain('<meta property="og:title" content="Complete Title">')
-      expect(result.combined).toContain('<meta name="twitter:title" content="Complete Title">')
+      expect(result.combined).toContain(
+        '<meta property="og:title" content="Complete Title">'
+      )
+      expect(result.combined).toContain(
+        '<meta name="twitter:title" content="Complete Title">'
+      )
     })
   })
 
@@ -155,24 +187,30 @@ describe('meta-tags', () => {
 
     it('should detect title too long', () => {
       const input = {
-        title: 'This is a very long title that exceeds the recommended 60 character limit for SEO',
+        title:
+          'This is a very long title that exceeds the recommended 60 character limit for SEO',
       }
 
       const result = validateMetaTagsInput(input)
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain('タイトルは60文字以内にすることを推奨します')
+      expect(result.errors).toContain(
+        'タイトルは60文字以内にすることを推奨します'
+      )
     })
 
     it('should detect description too long', () => {
       const input = {
-        description: 'This is a very long description that exceeds the recommended 160 character limit for SEO purposes and should trigger a validation error message with many additional words to make it longer than 160 characters for testing',
+        description:
+          'This is a very long description that exceeds the recommended 160 character limit for SEO purposes and should trigger a validation error message with many additional words to make it longer than 160 characters for testing',
       }
 
       const result = validateMetaTagsInput(input)
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain('説明文は160文字以内にすることを推奨します')
+      expect(result.errors).toContain(
+        '説明文は160文字以内にすることを推奨します'
+      )
     })
 
     it('should detect invalid URLs', () => {

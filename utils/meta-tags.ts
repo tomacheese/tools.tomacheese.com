@@ -46,7 +46,9 @@ export function generateBasicMetaTags(input: Partial<MetaTagsInput>): string[] {
   }
 
   if (input.description) {
-    tags.push(`<meta name="description" content="${escapeHtml(input.description)}">`)
+    tags.push(
+      `<meta name="description" content="${escapeHtml(input.description)}">`
+    )
   }
 
   if (input.keywords) {
@@ -62,11 +64,15 @@ export function generateBasicMetaTags(input: Partial<MetaTagsInput>): string[] {
   }
 
   if (input.generator) {
-    tags.push(`<meta name="generator" content="${escapeHtml(input.generator)}">`)
+    tags.push(
+      `<meta name="generator" content="${escapeHtml(input.generator)}">`
+    )
   }
 
   if (input.language) {
-    tags.push(`<meta http-equiv="content-language" content="${escapeHtml(input.language)}">`)
+    tags.push(
+      `<meta http-equiv="content-language" content="${escapeHtml(input.language)}">`
+    )
   }
 
   if (input.theme) {
@@ -91,7 +97,9 @@ export function generateOpenGraphTags(input: Partial<MetaTagsInput>): string[] {
   }
 
   if (input.description) {
-    tags.push(`<meta property="og:description" content="${escapeHtml(input.description)}">`)
+    tags.push(
+      `<meta property="og:description" content="${escapeHtml(input.description)}">`
+    )
   }
 
   if (input.url) {
@@ -103,7 +111,9 @@ export function generateOpenGraphTags(input: Partial<MetaTagsInput>): string[] {
   }
 
   if (input.siteName) {
-    tags.push(`<meta property="og:site_name" content="${escapeHtml(input.siteName)}">`)
+    tags.push(
+      `<meta property="og:site_name" content="${escapeHtml(input.siteName)}">`
+    )
   }
 
   if (input.type) {
@@ -111,7 +121,9 @@ export function generateOpenGraphTags(input: Partial<MetaTagsInput>): string[] {
   }
 
   if (input.language) {
-    tags.push(`<meta property="og:locale" content="${escapeHtml(input.language)}">`)
+    tags.push(
+      `<meta property="og:locale" content="${escapeHtml(input.language)}">`
+    )
   }
 
   return tags
@@ -124,27 +136,39 @@ export function generateTwitterTags(input: Partial<MetaTagsInput>): string[] {
   const tags: string[] = []
 
   if (input.twitterCard) {
-    tags.push(`<meta name="twitter:card" content="${escapeHtml(input.twitterCard)}">`)
+    tags.push(
+      `<meta name="twitter:card" content="${escapeHtml(input.twitterCard)}">`
+    )
   }
 
   if (input.title) {
-    tags.push(`<meta name="twitter:title" content="${escapeHtml(input.title)}">`)
+    tags.push(
+      `<meta name="twitter:title" content="${escapeHtml(input.title)}">`
+    )
   }
 
   if (input.description) {
-    tags.push(`<meta name="twitter:description" content="${escapeHtml(input.description)}">`)
+    tags.push(
+      `<meta name="twitter:description" content="${escapeHtml(input.description)}">`
+    )
   }
 
   if (input.image) {
-    tags.push(`<meta name="twitter:image" content="${escapeHtml(input.image)}">`)
+    tags.push(
+      `<meta name="twitter:image" content="${escapeHtml(input.image)}">`
+    )
   }
 
   if (input.twitterSite) {
-    tags.push(`<meta name="twitter:site" content="${escapeHtml(input.twitterSite)}">`)
+    tags.push(
+      `<meta name="twitter:site" content="${escapeHtml(input.twitterSite)}">`
+    )
   }
 
   if (input.twitterCreator) {
-    tags.push(`<meta name="twitter:creator" content="${escapeHtml(input.twitterCreator)}">`)
+    tags.push(
+      `<meta name="twitter:creator" content="${escapeHtml(input.twitterCreator)}">`
+    )
   }
 
   return tags
@@ -153,7 +177,9 @@ export function generateTwitterTags(input: Partial<MetaTagsInput>): string[] {
 /**
  * Generate all meta tags
  */
-export function generateAllMetaTags(input: Partial<MetaTagsInput>): GeneratedMetaTags {
+export function generateAllMetaTags(
+  input: Partial<MetaTagsInput>
+): GeneratedMetaTags {
   const basic = generateBasicMetaTags(input)
   const openGraph = generateOpenGraphTags(input)
   const twitter = generateTwitterTags(input)
@@ -161,7 +187,9 @@ export function generateAllMetaTags(input: Partial<MetaTagsInput>): GeneratedMet
 
   // Add additional useful meta tags
   if (input.url) {
-    additional.push(`<link rel="alternate" hreflang="${input.language ?? 'en'}" href="${escapeHtml(input.url)}">`)
+    additional.push(
+      `<link rel="alternate" hreflang="${input.language ?? 'en'}" href="${escapeHtml(input.url)}">`
+    )
   }
 
   const allTags = [...basic, ...openGraph, ...twitter, ...additional]
@@ -203,7 +231,7 @@ function escapeHtml(text: string): string {
     "'": '&#x27;',
   }
 
-  return text.replace(/[&<>"']/g, (m) => map[m])
+  return text.replace(/[&<>"']/g, m => map[m])
 }
 
 /**

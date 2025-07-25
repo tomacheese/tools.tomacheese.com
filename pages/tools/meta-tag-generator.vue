@@ -2,7 +2,8 @@
   <div class="tool-container">
     <h1>メタタグ生成</h1>
     <p>
-      SEO対策のためのHTMLメタタグを簡単に生成できます。Open Graph、Twitter Card、基本的なメタタグに対応。
+      SEO対策のためのHTMLメタタグを簡単に生成できます。Open Graph、Twitter
+      Card、基本的なメタタグに対応。
     </p>
 
     <div class="input-section">
@@ -56,7 +57,9 @@
             maxlength="160"
             rows="3"
           ></textarea>
-          <div class="char-count">{{ metaData.description?.length ?? 0 }}/160文字</div>
+          <div class="char-count">
+            {{ metaData.description?.length ?? 0 }}/160文字
+          </div>
         </div>
 
         <div class="form-group">
@@ -193,10 +196,18 @@
         <div class="form-group">
           <label for="robots">ロボット指示</label>
           <select id="robots" v-model="metaData.robots">
-            <option value="index, follow">インデックス許可・リンク追跡許可</option>
-            <option value="noindex, nofollow">インデックス禁止・リンク追跡禁止</option>
-            <option value="index, nofollow">インデックス許可・リンク追跡禁止</option>
-            <option value="noindex, follow">インデックス禁止・リンク追跡許可</option>
+            <option value="index, follow">
+              インデックス許可・リンク追跡許可
+            </option>
+            <option value="noindex, nofollow">
+              インデックス禁止・リンク追跡禁止
+            </option>
+            <option value="index, nofollow">
+              インデックス許可・リンク追跡禁止
+            </option>
+            <option value="noindex, follow">
+              インデックス禁止・リンク追跡許可
+            </option>
           </select>
         </div>
 
@@ -212,11 +223,7 @@
 
         <div class="form-group">
           <label for="theme">テーマカラー</label>
-          <input
-            id="theme"
-            v-model="metaData.theme"
-            type="color"
-          />
+          <input id="theme" v-model="metaData.theme" type="color" />
         </div>
 
         <div class="form-group">
@@ -290,28 +297,40 @@
 
       <div v-if="activeResultTab === 'combined'" class="code-result">
         <pre><code>{{ generated.combined }}</code></pre>
-        <button class="copy-button" @click="copyToClipboard(generated.combined)">
+        <button
+          class="copy-button"
+          @click="copyToClipboard(generated.combined)"
+        >
           コピー
         </button>
       </div>
 
       <div v-if="activeResultTab === 'basic'" class="code-result">
         <pre><code>{{ generated.basic.join('\n') }}</code></pre>
-        <button class="copy-button" @click="copyToClipboard(generated.basic.join('\n'))">
+        <button
+          class="copy-button"
+          @click="copyToClipboard(generated.basic.join('\n'))"
+        >
           コピー
         </button>
       </div>
 
       <div v-if="activeResultTab === 'og'" class="code-result">
         <pre><code>{{ generated.openGraph.join('\n') }}</code></pre>
-        <button class="copy-button" @click="copyToClipboard(generated.openGraph.join('\n'))">
+        <button
+          class="copy-button"
+          @click="copyToClipboard(generated.openGraph.join('\n'))"
+        >
           コピー
         </button>
       </div>
 
       <div v-if="activeResultTab === 'twitter'" class="code-result">
         <pre><code>{{ generated.twitter.join('\n') }}</code></pre>
-        <button class="copy-button" @click="copyToClipboard(generated.twitter.join('\n'))">
+        <button
+          class="copy-button"
+          @click="copyToClipboard(generated.twitter.join('\n'))"
+        >
           コピー
         </button>
       </div>
@@ -322,7 +341,9 @@
           <div class="google-preview">
             <div class="google-title">{{ preview.google.title }}</div>
             <div class="google-url">{{ preview.google.url }}</div>
-            <div class="google-description">{{ preview.google.description }}</div>
+            <div class="google-description">
+              {{ preview.google.description }}
+            </div>
           </div>
         </div>
 
@@ -334,7 +355,9 @@
             </div>
             <div class="facebook-content">
               <div class="facebook-title">{{ preview.facebook.title }}</div>
-              <div class="facebook-description">{{ preview.facebook.description }}</div>
+              <div class="facebook-description">
+                {{ preview.facebook.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -347,7 +370,9 @@
             </div>
             <div class="twitter-content">
               <div class="twitter-title">{{ preview.twitter.title }}</div>
-              <div class="twitter-description">{{ preview.twitter.description }}</div>
+              <div class="twitter-description">
+                {{ preview.twitter.description }}
+              </div>
             </div>
           </div>
         </div>
@@ -355,7 +380,9 @@
     </div>
 
     <div class="action-buttons">
-      <button class="primary-button" @click="generateTags">メタタグを生成</button>
+      <button class="primary-button" @click="generateTags">
+        メタタグを生成
+      </button>
       <button class="secondary-button" @click="resetForm">リセット</button>
     </div>
   </div>
@@ -374,7 +401,9 @@ import {
 } from '~/utils/meta-tags'
 
 const activeTab = ref<'basic' | 'social' | 'advanced' | 'templates'>('basic')
-const activeResultTab = ref<'combined' | 'basic' | 'og' | 'twitter' | 'preview'>('combined')
+const activeResultTab = ref<
+  'combined' | 'basic' | 'og' | 'twitter' | 'preview'
+>('combined')
 
 const metaData = ref<Partial<MetaTagsInput>>({
   ...getDefaultMetaTags(),
@@ -457,18 +486,23 @@ const copyToClipboard = async (text: string) => {
 }
 
 // Auto-generate on input change
-watch(metaData, () => {
-  if (metaData.value.title || metaData.value.description) {
-    generateTags()
-  }
-}, { deep: true })
+watch(
+  metaData,
+  () => {
+    if (metaData.value.title || metaData.value.description) {
+      generateTags()
+    }
+  },
+  { deep: true }
+)
 
 useHead({
   title: 'メタタグ生成 | Tools',
   meta: [
     {
       name: 'description',
-      content: 'SEO対策のためのHTMLメタタグを簡単に生成。Open Graph、Twitter Card、基本的なメタタグに対応。',
+      content:
+        'SEO対策のためのHTMLメタタグを簡単に生成。Open Graph、Twitter Card、基本的なメタタグに対応。',
     },
   ],
 })
