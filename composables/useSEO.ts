@@ -63,7 +63,7 @@ export const useSEO = () => {
       twitterCard: 'summary',
       twitterTitle: fullTitle,
       twitterDescription: data.description.length > 160 
-        ? data.description.substring(0, 157) + '...' 
+        ? `${data.description.substring(0, 157)}...` 
         : data.description,
     })
 
