@@ -195,11 +195,50 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // レイアウト設定
 definePageMeta({
   layout: 'tool',
 })
+
+// SEO設定
+const { setToolSEO, generateFAQSchema } = useSEO()
+
+setToolSEO({
+  title: 'Base64エンコード・デコード',
+  description:
+    'テキストをBase64形式にエンコード・デコードするオンラインツール。日本語対応、無料で安全にブラウザ上で動作します。メールやWebでのバイナリデータ送信に最適。',
+  category: 'encoder',
+  keywords: [
+    'Base64',
+    'エンコード',
+    'デコード',
+    'バイナリ',
+    'テキスト変換',
+    'エンコーダー',
+    'デコーダー',
+  ],
+  type: 'converter',
+})
+
+// FAQ構造化データ
+generateFAQSchema([
+  {
+    question: 'Base64とは何ですか？',
+    answer:
+      'Base64は、バイナリデータをテキスト形式で表現するためのエンコード方式です。主にメールやWebでバイナリデータを安全に送信するために使用されます。',
+  },
+  {
+    question: 'Base64エンコードの使用方法は？',
+    answer:
+      'プレーンテキストを入力欄に入力すると、自動的にBase64形式に変換されます。結果はコピーボタンでクリップボードにコピーできます。',
+  },
+  {
+    question: 'Base64デコードでエラーが発生する場合は？',
+    answer:
+      '不正なBase64形式の場合はエラーメッセージが表示されます。正しいBase64文字列（A-Z, a-z, 0-9, +, /）のみ使用してください。',
+  },
+])
 
 // リアクティブデータ
 const activeTab = ref('encode')

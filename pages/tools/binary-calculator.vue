@@ -363,7 +363,7 @@ const getPlaceholder = () => {
     10: '255',
     16: 'FF',
   }
-  return placeholders[fromBase.value] || '数値を入力'
+  return placeholders[fromBase.value] ?? '数値を入力'
 }
 
 const validateAndConvert = () => {
