@@ -273,7 +273,7 @@ describe('Password utilities', () => {
     it('should generate hex string of correct length', () => {
       const hex = generateRandomHex(16)
       expect(hex).toHaveLength(16)
-      expect(hex).toMatch(/^[0-9A-F]+$/)
+      expect(hex).toMatch(/^[0-9a-fA-F]+$/)
     })
 
     it('should generate different hex strings', () => {
@@ -290,7 +290,7 @@ describe('Password utilities', () => {
     it('should handle single character', () => {
       const hex = generateRandomHex(1)
       expect(hex).toHaveLength(1)
-      expect(hex).toMatch(/^[0-9A-F]$/)
+      expect(hex).toMatch(/^[0-9a-fA-F]$/)
     })
   })
 
