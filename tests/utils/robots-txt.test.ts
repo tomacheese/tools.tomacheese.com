@@ -68,7 +68,7 @@ describe('robots-txt utils', () => {
         const agents = getDefaultUserAgents()
         expect(Array.isArray(agents)).toBe(true)
         expect(agents.length).toBeGreaterThan(0)
-        
+
         agents.forEach(agent => {
           expect(agent).toHaveProperty('name')
           expect(agent).toHaveProperty('description')
@@ -88,7 +88,7 @@ describe('robots-txt utils', () => {
         const paths = getCommonPaths()
         expect(Array.isArray(paths)).toBe(true)
         expect(paths.length).toBeGreaterThan(0)
-        
+
         paths.forEach(path => {
           expect(path).toHaveProperty('path')
           expect(path).toHaveProperty('description')
@@ -109,7 +109,7 @@ describe('robots-txt utils', () => {
         const templates = getRobotsTxtTemplates()
         expect(Array.isArray(templates)).toBe(true)
         expect(templates.length).toBeGreaterThan(0)
-        
+
         templates.forEach(template => {
           expect(template).toHaveProperty('name')
           expect(template).toHaveProperty('description')
@@ -280,7 +280,9 @@ Crawl-delay: 10.5`
 
       const result = validateRobotsTxt(config)
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain('少なくとも1つのUser-Agentルールが必要です')
+      expect(result.errors).toContain(
+        '少なくとも1つのUser-Agentルールが必要です'
+      )
     })
 
     it('should detect invalid user agents', () => {
@@ -298,7 +300,11 @@ Crawl-delay: 10.5`
 
       const result = validateRobotsTxt(config)
       expect(result.isValid).toBe(false)
-      expect(result.errors.some(error => error.includes('User-Agent「Bot Name」が無効です'))).toBe(true)
+      expect(
+        result.errors.some(error =>
+          error.includes('User-Agent「Bot Name」が無効です')
+        )
+      ).toBe(true)
     })
 
     it('should detect invalid paths', () => {
@@ -316,7 +322,11 @@ Crawl-delay: 10.5`
 
       const result = validateRobotsTxt(config)
       expect(result.isValid).toBe(false)
-      expect(result.errors.some(error => error.includes('Allow パス「invalid-path」が無効です'))).toBe(true)
+      expect(
+        result.errors.some(error =>
+          error.includes('Allow パス「invalid-path」が無効です')
+        )
+      ).toBe(true)
     })
 
     it('should detect invalid crawl delay', () => {
@@ -335,7 +345,11 @@ Crawl-delay: 10.5`
 
       const result = validateRobotsTxt(config)
       expect(result.isValid).toBe(false)
-      expect(result.errors.some(error => error.includes('Crawl-delay「-1」が無効です'))).toBe(true)
+      expect(
+        result.errors.some(error =>
+          error.includes('Crawl-delay「-1」が無効です')
+        )
+      ).toBe(true)
     })
 
     it('should detect invalid sitemap URLs', () => {
@@ -353,7 +367,11 @@ Crawl-delay: 10.5`
 
       const result = validateRobotsTxt(config)
       expect(result.isValid).toBe(false)
-      expect(result.errors.some(error => error.includes('サイトマップURL「not-a-url」が無効です'))).toBe(true)
+      expect(
+        result.errors.some(error =>
+          error.includes('サイトマップURL「not-a-url」が無効です')
+        )
+      ).toBe(true)
     })
   })
 
@@ -463,7 +481,10 @@ Crawl-delay: 10.5`
             disallow: ['/search/'],
           },
         ],
-        sitemaps: ['https://example.com/sitemap.xml', 'https://example.com/news-sitemap.xml'],
+        sitemaps: [
+          'https://example.com/sitemap.xml',
+          'https://example.com/news-sitemap.xml',
+        ],
         customDirectives: ['Host: example.com'],
       }
 
@@ -478,14 +499,20 @@ Crawl-delay: 10.5`
       expect(parsedConfig.userAgentRules).toHaveLength(2)
       expect(parsedConfig.userAgentRules[0].userAgent).toBe('*')
       expect(parsedConfig.userAgentRules[0].allow).toEqual(['/'])
-      expect(parsedConfig.userAgentRules[0].disallow).toEqual(['/admin/', '/private/'])
+      expect(parsedConfig.userAgentRules[0].disallow).toEqual([
+        '/admin/',
+        '/private/',
+      ])
       expect(parsedConfig.userAgentRules[0].crawlDelay).toBe(10)
 
       expect(parsedConfig.userAgentRules[1].userAgent).toBe('Googlebot')
       expect(parsedConfig.userAgentRules[1].allow).toEqual(['/public/'])
       expect(parsedConfig.userAgentRules[1].disallow).toEqual(['/search/'])
 
-      expect(parsedConfig.sitemaps).toEqual(['https://example.com/sitemap.xml', 'https://example.com/news-sitemap.xml'])
+      expect(parsedConfig.sitemaps).toEqual([
+        'https://example.com/sitemap.xml',
+        'https://example.com/news-sitemap.xml',
+      ])
       expect(parsedConfig.customDirectives).toEqual(['Host: example.com'])
     })
   })

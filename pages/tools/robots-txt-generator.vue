@@ -37,7 +37,10 @@
         </div>
 
         <div v-if="config.userAgentRules.length === 0" class="empty-state">
-          <p>ルールがありません。「+ ルール追加」ボタンでルールを追加してください。</p>
+          <p>
+            ルールがありません。「+
+            ルール追加」ボタンでルールを追加してください。
+          </p>
         </div>
 
         <div
@@ -144,7 +147,10 @@
                   ✕
                 </button>
               </div>
-              <button class="add-path-button" @click="addDisallowPath(ruleIndex)">
+              <button
+                class="add-path-button"
+                @click="addDisallowPath(ruleIndex)"
+              >
                 + Disallow パス追加
               </button>
             </div>
@@ -250,7 +256,10 @@
     </div>
 
     <!-- 検証結果 -->
-    <div v-if="validationResult && !validationResult.isValid" class="validation-errors">
+    <div
+      v-if="validationResult && !validationResult.isValid"
+      class="validation-errors"
+    >
       <h4>⚠️ 設定エラー</h4>
       <ul>
         <li v-for="error in validationResult.errors" :key="error">
@@ -260,7 +269,10 @@
     </div>
 
     <!-- プレビュー情報 -->
-    <div v-if="validationResult && validationResult.isValid && previewInfo" class="preview-info">
+    <div
+      v-if="validationResult && validationResult.isValid && previewInfo"
+      class="preview-info"
+    >
       <h4>📊 ファイル情報</h4>
       <div class="info-grid">
         <div class="info-item">
@@ -281,7 +293,9 @@
         </div>
         <div class="info-item">
           <span class="label">全てのクローラー:</span>
-          <span class="value">{{ previewInfo.hasWildcardRule ? '対象' : '未対象' }}</span>
+          <span class="value">{{
+            previewInfo.hasWildcardRule ? '対象' : '未対象'
+          }}</span>
         </div>
       </div>
     </div>
@@ -292,10 +306,18 @@
       <div class="result-container">
         <pre class="result-content">{{ generatedContent }}</pre>
         <div class="result-actions">
-          <button class="copy-button" @click="copyToClipboard" :disabled="!generatedContent">
+          <button
+            class="copy-button"
+            @click="copyToClipboard"
+            :disabled="!generatedContent"
+          >
             📋 クリップボードにコピー
           </button>
-          <button class="download-button" @click="downloadFile" :disabled="!generatedContent">
+          <button
+            class="download-button"
+            @click="downloadFile"
+            :disabled="!generatedContent"
+          >
             💾 ファイルをダウンロード
           </button>
         </div>
@@ -346,7 +368,11 @@
     </div>
 
     <!-- 通知メッセージ -->
-    <div v-if="notification" class="notification" :class="{ show: showNotification }">
+    <div
+      v-if="notification"
+      class="notification"
+      :class="{ show: showNotification }"
+    >
       {{ notification }}
     </div>
   </div>
@@ -381,11 +407,16 @@ const commonPaths = getCommonPaths()
 
 // Computed properties
 const allowPaths = computed(() => commonPaths.filter(p => p.type === 'allow'))
-const disallowPaths = computed(() => commonPaths.filter(p => p.type === 'disallow'))
+const disallowPaths = computed(() =>
+  commonPaths.filter(p => p.type === 'disallow')
+)
 
 const validationResult = computed(() => {
   if (config.value.userAgentRules.length === 0) {
-    return { isValid: false, errors: ['少なくとも1つのUser-Agentルールが必要です'] }
+    return {
+      isValid: false,
+      errors: ['少なくとも1つのUser-Agentルールが必要です'],
+    }
   }
   return validateRobotsTxt(config.value)
 })
@@ -491,7 +522,7 @@ const downloadFile = () => {
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
-  
+
   showSuccessNotification('ファイルをダウンロードしました！')
 }
 
@@ -520,7 +551,8 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: '検索エンジンクローラーの動作を制御するrobots.txtファイルを簡単に生成。テンプレート選択やカスタム設定に対応。',
+      content:
+        '検索エンジンクローラーの動作を制御するrobots.txtファイルを簡単に生成。テンプレート選択やカスタム設定に対応。',
     },
   ],
 })
