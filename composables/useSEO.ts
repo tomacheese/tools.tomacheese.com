@@ -50,7 +50,7 @@ export const useSEO = () => {
       description: data.description,
       keywords: data.keywords?.join(', '),
       robots: 'index, follow',
-      canonical: currentURL,
+      
 
       // Open Graph
       ogTitle: fullTitle,
@@ -101,10 +101,13 @@ export const useSEO = () => {
     }
 
     useHead({
+      link: [
+        { rel: "canonical", href: url }
+      ],
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(structuredData),
+          innerHTML: JSON.stringify(structuredData),
         },
       ],
     })
@@ -142,10 +145,13 @@ export const useSEO = () => {
     }
 
     useHead({
+      link: [
+        { rel: "canonical", href: url }
+      ],
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(websiteSchema),
+          innerHTML: JSON.stringify(websiteSchema),
         },
       ],
     })
@@ -194,10 +200,13 @@ export const useSEO = () => {
     }
 
     useHead({
+      link: [
+        { rel: "canonical", href: url }
+      ],
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(faqSchema),
+          innerHTML: JSON.stringify(faqSchema),
         },
       ],
     })
@@ -226,10 +235,13 @@ export const useSEO = () => {
     }
 
     useHead({
+      link: [
+        { rel: "canonical", href: url }
+      ],
       script: [
         {
           type: 'application/ld+json',
-          children: JSON.stringify(breadcrumbSchema),
+          innerHTML: JSON.stringify(breadcrumbSchema),
         },
       ],
     })
