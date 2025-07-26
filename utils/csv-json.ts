@@ -10,7 +10,7 @@ export interface JSONToCSVOptions {
   delimiter?: string
 }
 
-export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
+export function parseCSV(csv: string, options: CSVParseOptions = {}): (Record<string, string> | string[])[] {
   const {
     delimiter = ',',
     headers = true,
@@ -36,7 +36,7 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
     startIndex = 1
   }
 
-  const finalResult: any[] = []
+  const finalResult: (Record<string, string> | string[])[] = []
 
   // Parse data rows
   for (let i = startIndex; i < result.length; i++) {
@@ -49,7 +49,7 @@ export function parseCSV(csv: string, options: CSVParseOptions = {}): any[] {
 
     if (headers && headerRow.length > 0) {
       // Create object with headers as keys
-      const obj: any = {}
+      const obj: Record<string, string> = {}
       for (let j = 0; j < headerRow.length; j++) {
         obj[headerRow[j]] = j < values.length ? values[j] : ''
       }
@@ -132,7 +132,7 @@ function parseCSVText(
   return rows
 }
 
-export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
+export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options: JSONToCSVOptions = {}): string {
   const { headers = true, delimiter = ',' } = options
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -167,11 +167,14 @@ export function jsonToCSV(data: any[], options: JSONToCSVOptions = {}): string {
     }
 
     data.forEach(obj => {
-      const row = headerKeys.map(key => {
-        const value = obj[key] ?? ''
-        return formatCSVValue(String(value), delimiter)
-      })
-      rows.push(row)
+      if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+        const record = obj as Record<string, unknown>
+        const row = headerKeys.map(key => {
+          const value = record[key] ?? ''
+          return formatCSVValue(String(value), delimiter)
+        })
+        rows.push(row)
+      }
     })
   }
 

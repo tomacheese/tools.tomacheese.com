@@ -3,7 +3,7 @@ export function generateUUID(): string {
   // Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
   // where x is any hexadecimal digit and y is one of 8, 9, A, or B
 
-  const cryptoObj = window.crypto || (window as any).msCrypto
+  const cryptoObj = window.crypto || (window as Window & { msCrypto?: Crypto }).msCrypto
   if (!cryptoObj?.getRandomValues) {
     // Fallback for older browsers
     return generateUUIDFallback()
@@ -87,7 +87,7 @@ export function generateUUIDsWithOptions(
   return uuids.map(uuid => {
     let formatted = uuid
     if (format !== 'standard') {
-      formatted = formatUUID(uuid, format as any)
+      formatted = formatUUID(uuid, format as 'uppercase' | 'lowercase' | 'no-hyphens')
     }
     return prefix + formatted + suffix
   })

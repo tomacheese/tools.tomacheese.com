@@ -45,14 +45,16 @@ describe('imageToBase64 utilities', () => {
       const expectedDataUrl = 'data:text/plain;base64,dGVzdCBjb250ZW50'
 
       // Mock FileReader
-      const mockFileReader: any = {
+      const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null,
-        onerror: null,
+        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
         result: expectedDataUrl,
-      }
+        error: null as DOMException | null,
+        readyState: 0,
+      } as unknown as FileReader
 
-      global.FileReader = vi.fn(() => mockFileReader) as any
+      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
 
       const promise = convertFileToBase64(mockFile)
 
@@ -61,7 +63,7 @@ describe('imageToBase64 utilities', () => {
         target: { result: expectedDataUrl },
       } as ProgressEvent<FileReader>
       if (mockFileReader.onload) {
-        mockFileReader.onload(mockEvent)
+        mockFileReader.onload.call(mockFileReader, mockEvent)
       }
 
       const result = await promise
@@ -73,19 +75,23 @@ describe('imageToBase64 utilities', () => {
       const mockFile = new File(['test'], 'test.txt')
       const mockError = new Error('Read error')
 
-      const mockFileReader: any = {
+      const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null,
-        onerror: null,
-      }
+        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        result: null,
+        error: null as DOMException | null,
+        readyState: 0,
+      } as unknown as FileReader
 
-      global.FileReader = vi.fn(() => mockFileReader) as any
+      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
 
       const promise = convertFileToBase64(mockFile)
 
       // Trigger onerror
       if (mockFileReader.onerror) {
-        mockFileReader.onerror(mockError as any)
+        const errorEvent = new ProgressEvent('error') as ProgressEvent<FileReader>
+        mockFileReader.onerror.call(mockFileReader, errorEvent)
       }
 
       await expect(promise).rejects.toThrow()
@@ -252,21 +258,21 @@ describe('imageToBase64 utilities', () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
       Object.defineProperty(mockFile, 'size', { value: 1024 })
 
-      const mockImage: any = {
-        onload: null,
-        onerror: null,
+      const mockImage = {
+        onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
+        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
         src: '',
         width: 100,
         height: 200,
-      }
+      } as unknown as HTMLImageElement
 
-      global.Image = vi.fn(() => mockImage) as any
+      global.Image = vi.fn(() => mockImage) as unknown as typeof Image
 
       const promise = getImageInfo(mockFile)
 
       // Trigger image load
       if (mockImage.onload) {
-        mockImage.onload(new Event('load'))
+        mockImage.onload.call(mockImage, new Event('load'))
       }
 
       const result = await promise
@@ -283,19 +289,19 @@ describe('imageToBase64 utilities', () => {
     it('should handle image load error', async () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
 
-      const mockImage: any = {
-        onload: null,
-        onerror: null,
+      const mockImage = {
+        onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
+        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
         src: '',
-      }
+      } as unknown as HTMLImageElement
 
-      global.Image = vi.fn(() => mockImage) as any
+      global.Image = vi.fn(() => mockImage) as unknown as typeof Image
 
       const promise = getImageInfo(mockFile)
 
       // Trigger image error
       if (mockImage.onerror) {
-        mockImage.onerror(new Event('error'))
+        mockImage.onerror.call(mockImage, new ErrorEvent('error'))
       }
 
       await expect(promise).rejects.toThrow('Failed to load image')
@@ -307,20 +313,22 @@ describe('imageToBase64 utilities', () => {
     it('should convert image file to base64', async () => {
       const mockFile = new File([''], 'test.png', { type: 'image/png' })
 
-      const mockFileReader: any = {
+      const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null,
-        onerror: null,
+        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
         result: 'data:image/png;base64,iVBORw0KGgo=',
-      }
+        error: null as DOMException | null,
+        readyState: 0,
+      } as unknown as FileReader
 
-      const mockImage: any = {
-        onload: null,
-        onerror: null,
+      const mockImage = {
+        onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
+        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
         src: '',
         width: 100,
         height: 200,
-      }
+      } as unknown as HTMLImageElement
 
       const mockCanvas = {
         width: 0,
@@ -335,8 +343,8 @@ describe('imageToBase64 utilities', () => {
           .mockReturnValue('data:image/png;base64,iVBORw0KGgo='),
       }
 
-      global.FileReader = vi.fn(() => mockFileReader) as any
-      global.Image = vi.fn(() => mockImage) as any
+      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
+      global.Image = vi.fn(() => mockImage) as unknown as typeof Image
       mockCreateElement.mockReturnValue(mockCanvas)
 
       const promise = imageToBase64(mockFile)
@@ -346,12 +354,12 @@ describe('imageToBase64 utilities', () => {
         target: { result: mockFileReader.result },
       } as ProgressEvent<FileReader>
       if (mockFileReader.onload) {
-        mockFileReader.onload(mockEvent)
+        mockFileReader.onload.call(mockFileReader, mockEvent)
       }
 
       // Trigger Image onload
       if (mockImage.onload) {
-        mockImage.onload(new Event('load'))
+        mockImage.onload.call(mockImage, new Event('load'))
       }
 
       const result = await promise

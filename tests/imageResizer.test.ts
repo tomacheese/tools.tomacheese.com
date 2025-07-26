@@ -26,18 +26,18 @@ const mockCanvas = {
 const mockImage = {
   width: 800,
   height: 600,
-  onload: null as any,
-  onerror: null as any,
+  onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
+  onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
   src: '',
 }
 
 // Mock DOM APIs
-global.Image = vi.fn(() => mockImage) as any
-global.document.createElement = vi.fn(tag => {
-  if (tag === 'canvas') return mockCanvas
-  if (tag === 'a') return { click: vi.fn(), href: '', download: '' }
-  return {}
-}) as any
+global.Image = vi.fn(() => mockImage) as unknown as typeof Image
+global.document.createElement = vi.fn((tag: string) => {
+  if (tag === 'canvas') return mockCanvas as unknown as HTMLCanvasElement
+  if (tag === 'a') return { click: vi.fn(), href: '', download: '' } as unknown as HTMLAnchorElement
+  return {} as unknown as Element
+}) as unknown as typeof document.createElement
 global.document.body.appendChild = vi.fn()
 global.document.body.removeChild = vi.fn()
 global.URL.createObjectURL = vi.fn(() => 'blob:mock-url')
@@ -51,7 +51,9 @@ describe('imageResizer', () => {
       const promise = getImageInfo(mockFile)
 
       // Trigger image load
-      mockImage.onload()
+      if (mockImage.onload) {
+        mockImage.onload.call(mockImage as HTMLImageElement, new Event('load'))
+      }
 
       const info = await promise
       expect(info).toEqual({
@@ -68,7 +70,9 @@ describe('imageResizer', () => {
       const promise = getImageInfo(mockFile)
 
       // Trigger image error
-      mockImage.onerror()
+      if (mockImage.onerror) {
+        mockImage.onerror.call(mockImage as HTMLImageElement, new ErrorEvent('error'))
+      }
 
       await expect(promise).rejects.toThrow('Failed to load image')
     })
@@ -88,7 +92,9 @@ describe('imageResizer', () => {
       const promise = resizeImage(mockFile, options)
 
       // Trigger image load
-      mockImage.onload()
+      if (mockImage.onload) {
+        mockImage.onload.call(mockImage as HTMLImageElement, new Event('load'))
+      }
 
       const blob = await promise
       expect(blob).toBeInstanceOf(Blob)
@@ -104,7 +110,9 @@ describe('imageResizer', () => {
       }
 
       const promise = resizeImage(mockFile, options)
-      mockImage.onload()
+      if (mockImage.onload) {
+        mockImage.onload.call(mockImage as HTMLImageElement, new Event('load'))
+      }
 
       await promise
       expect(mockCanvas.width).toBe(400)
@@ -127,7 +135,9 @@ describe('imageResizer', () => {
         })
 
         const promise = resizeImage(mockFile, { format })
-        mockImage.onload()
+        if (mockImage.onload) {
+          mockImage.onload.call(mockImage as HTMLImageElement, new Event('load'))
+        }
 
         const blob = await promise
         expect(blob).toBeInstanceOf(Blob)
