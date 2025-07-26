@@ -73,7 +73,6 @@ describe('imageToBase64 utilities', () => {
 
     it('should reject on FileReader error', async () => {
       const mockFile = new File(['test'], 'test.txt')
-      const mockError = new Error('Read error')
 
       const mockFileReader = {
         readAsDataURL: vi.fn(),
