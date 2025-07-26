@@ -95,6 +95,33 @@ pnpm test:e2e
 pnpm test:coverage
 ```
 
+### コード品質
+
+プロジェクトではコード品質を保つために以下の仕組みを導入しています：
+
+#### Lint enforcement (自動品質チェック)
+
+- **pre-commit**: コミット時に `lint-staged` を使用してESLintとPrettierによるコードチェックを実行
+- **pre-push**: プッシュ時に全ファイルに対してESLintとPrettierチェックを実行
+
+#### 手動実行コマンド
+
+```bash
+# ESLintチェック
+pnpm lint
+
+# ESLintによる自動修正
+pnpm lint:fix
+
+# Prettierフォーマットチェック
+pnpm format:check
+
+# Prettierによる自動フォーマット
+pnpm format
+```
+
+Git hooksにより、ライントエラーがある場合はコミットやプッシュがブロックされます。これにより、リポジトリの品質が保たれます。
+
 ### テスト
 
 プロジェクトには包括的なテストスイートが含まれています：
