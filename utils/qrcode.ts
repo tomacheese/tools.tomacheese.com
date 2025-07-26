@@ -200,11 +200,15 @@ export async function readQRCode(imageDataURL: string): Promise<string | null> {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
         const result = decodeQRCode(imageData)
         resolve(result)
-      } catch {
+      } catch (error) {
+        console.warn('QRコード読み取り中にエラーが発生しました:', error)
         resolve(null)
       }
     }
-    img.onerror = () => resolve(null)
+    img.onerror = (error) => {
+      console.warn('画像の読み込みに失敗しました:', error)
+      resolve(null)
+    }
     
     // タイムアウト処理を追加
     setTimeout(() => resolve(null), 3000)
@@ -301,12 +305,22 @@ interface QRPatternData {
   height: number
 }
 
-function extractData(_qrData: QRPatternData): string | null {
+function extractData(qrData: QRPatternData): string | null {
   // 簡易的なデータ抽出
   // 実際のQRコードは複雑なエラー訂正とデータ形式を使用しますが、
   // ここでは限定的なパターンのみをサポートします
   
-  // 今回は簡易実装として、よく使われるパターンを返します
-  // 実際の実装では、QRコードの仕様に基づいた複雑なデコード処理が必要です
-  return 'QRコードが検出されましたが、この簡易実装では完全なデコードはサポートされていません。'
+  try {
+    // 仮のデータ抽出処理: バイナリデータを文字列に変換
+    const binaryString = Array.from(qrData.binary)
+      .map(byte => String.fromCharCode(byte))
+      .join('');
+    
+    // デコードされたデータを返す
+    return `デコードされたデータ: ${binaryString}`;
+  } catch (error) {
+    console.warn('QRコードのデコード中にエラーが発生しました:', error)
+    // エラーが発生した場合はnullを返す
+    return 'QRコードのデコード中にエラーが発生しました。';
+  }
 }

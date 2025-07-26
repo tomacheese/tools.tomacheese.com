@@ -75,6 +75,9 @@
           <button class="secondary" @click="copyText">
             テキストをコピー
           </button>
+          <div v-if="copyMessage" class="copy-message">
+            {{ copyMessage }}
+          </div>
           <button
             v-if="isValidURL(result.text)"
             class="secondary"
@@ -198,14 +201,17 @@ const analyzeQRCode = async () => {
   }
 }
 
+const copyMessage = ref('')
 const copyText = async () => {
   if (!result.value) return
 
   try {
     await navigator.clipboard.writeText(result.value.text)
-    alert('テキストをクリップボードにコピーしました')
+    copyMessage.value = 'テキストをクリップボードにコピーしました'
+    setTimeout(() => { copyMessage.value = '' }, 3000)
   } catch {
-    alert('コピーに失敗しました')
+    copyMessage.value = 'コピーに失敗しました'
+    setTimeout(() => { copyMessage.value = '' }, 3000)
   }
 }
 
@@ -397,6 +403,17 @@ button.secondary:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  align-items: center;
+}
+
+.copy-message {
+  padding: 8px 16px;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  color: #155724;
+  font-size: 14px;
+  margin-left: 10px;
 }
 
 .error {
