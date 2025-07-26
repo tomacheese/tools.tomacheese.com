@@ -163,8 +163,14 @@ export function parseBorderRadius(cssValue: string): BorderRadiusConfig {
   if (cleanValue.includes('/')) {
     // Complex syntax with different horizontal/vertical values
     const [horizontal, vertical] = cleanValue.split('/')
-    const hValues = horizontal.trim().split(/\s+/).map(Number)
-    const vValues = vertical.trim().split(/\s+/).map(Number)
+    const hValues = horizontal.trim().split(/\s+/).map(value => {
+      const num = Number(value);
+      return isNaN(num) ? 0 : num;
+    });
+    const vValues = vertical.trim().split(/\s+/).map(value => {
+      const num = Number(value);
+      return isNaN(num) ? 0 : num;
+    });
 
     config.topLeft.horizontal = hValues[0] ?? 0
     config.topRight.horizontal = (hValues[1] || hValues[0]) ?? 0
@@ -179,7 +185,10 @@ export function parseBorderRadius(cssValue: string): BorderRadiusConfig {
     config.linked = false
   } else {
     // Simple syntax
-    const values = cleanValue.split(/\s+/).map(Number)
+    const values = cleanValue.split(/\s+/).map(value => {
+      const num = Number(value);
+      return isNaN(num) ? 0 : num;
+    });
 
     if (values.length === 1) {
       // All corners same
