@@ -1,0 +1,20 @@
+#!/bin/sh
+# Enforce linting on push to prevent broken code from being pushed
+
+echo "Running lint checks before push..."
+
+# Run ESLint
+if ! pnpm run lint; then
+  echo "❌ ESLint check failed. Push aborted."
+  echo "Please fix the linting errors and try again."
+  exit 1
+fi
+
+# Run Prettier check
+if ! pnpm run format:check; then
+  echo "❌ Prettier format check failed. Push aborted."
+  echo "Please run 'pnpm run format' to fix formatting issues and try again."
+  exit 1
+fi
+
+echo "✅ All lint checks passed. Proceeding with push..."
