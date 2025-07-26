@@ -166,15 +166,15 @@ export function parseBorderRadius(cssValue: string): BorderRadiusConfig {
     const hValues = horizontal.trim().split(/\s+/).map(Number)
     const vValues = vertical.trim().split(/\s+/).map(Number)
 
-    config.topLeft.horizontal = hValues[0] || 0
-    config.topRight.horizontal = hValues[1] || hValues[0] || 0
-    config.bottomRight.horizontal = hValues[2] || hValues[0] || 0
-    config.bottomLeft.horizontal = hValues[3] || hValues[1] || hValues[0] || 0
+    config.topLeft.horizontal = hValues[0] ?? 0
+    config.topRight.horizontal = (hValues[1] || hValues[0]) ?? 0
+    config.bottomRight.horizontal = (hValues[2] || hValues[0]) ?? 0
+    config.bottomLeft.horizontal = (hValues[3] || hValues[1] || hValues[0]) ?? 0
 
-    config.topLeft.vertical = vValues[0] || 0
-    config.topRight.vertical = vValues[1] || vValues[0] || 0
-    config.bottomRight.vertical = vValues[2] || vValues[0] || 0
-    config.bottomLeft.vertical = vValues[3] || vValues[1] || vValues[0] || 0
+    config.topLeft.vertical = vValues[0] ?? 0
+    config.topRight.vertical = (vValues[1] || vValues[0]) ?? 0
+    config.bottomRight.vertical = (vValues[2] || vValues[0]) ?? 0
+    config.bottomLeft.vertical = (vValues[3] || vValues[1] || vValues[0]) ?? 0
 
     config.linked = false
   } else {
@@ -183,20 +183,20 @@ export function parseBorderRadius(cssValue: string): BorderRadiusConfig {
 
     if (values.length === 1) {
       // All corners same
-      const value = values[0] || 0
+      const value = values[0] ?? 0
       config.topLeft = { horizontal: value, vertical: value }
       config.topRight = { horizontal: value, vertical: value }
       config.bottomRight = { horizontal: value, vertical: value }
       config.bottomLeft = { horizontal: value, vertical: value }
     } else {
       // Different corners
-      config.topLeft.horizontal = config.topLeft.vertical = values[0] || 0
+      config.topLeft.horizontal = config.topLeft.vertical = values[0] ?? 0
       config.topRight.horizontal = config.topRight.vertical =
-        values[1] || values[0] || 0
+        (values[1] || values[0]) ?? 0
       config.bottomRight.horizontal = config.bottomRight.vertical =
-        values[2] || values[0] || 0
+        (values[2] || values[0]) ?? 0
       config.bottomLeft.horizontal = config.bottomLeft.vertical =
-        values[3] || values[1] || values[0] || 0
+        (values[3] || values[1] || values[0]) ?? 0
     }
   }
 

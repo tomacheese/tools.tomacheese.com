@@ -55,9 +55,9 @@ export function imageToBase64(
           ctx.drawImage(img, 0, 0, width, height)
 
           // Determine output format
-          const format = options.format || getFormatFromMimeType(file.type)
+          const format = options.format ?? getFormatFromMimeType(file.type)
           const mimeType = getMimeTypeFromFormat(format)
-          const quality = options.quality || 0.92
+          const quality = options.quality ?? 0.92
 
           // Convert to data URL
           const outputDataUrl = canvas.toDataURL(mimeType, quality)
@@ -200,6 +200,6 @@ export function extractBase64FromDataUrl(dataUrl: string): string {
 
 export function calculateBase64Size(base64: string): number {
   // Remove padding characters and calculate the size
-  const padding = (base64.match(/=/g) || []).length
+  const padding = (base64.match(/=/g) ?? []).length
   return Math.floor((base64.length * 3) / 4) - padding
 }

@@ -106,7 +106,7 @@ export function getTimeZoneOffset(timezone: string): string {
 
     const parts = formatter.formatToParts(now)
     const timeZoneName =
-      parts.find(part => part.type === 'timeZoneName')?.value || ''
+      parts.find(part => part.type === 'timeZoneName')?.value ?? ''
 
     // Extract offset from timezone name (e.g., "GMT+9" -> "+9:00")
     const match = timeZoneName.match(/GMT([+-]\d+)/)

@@ -137,7 +137,7 @@ export function completePhase(state: PomodoroState): PomodoroState {
     type: isWorkPhase ? 'work' : 'break',
     duration: Math.floor(state.totalTime / 60),
     completed: true,
-    startTime: new Date(state.startTime || 0),
+    startTime: new Date(state.startTime ?? 0),
     endTime: new Date(),
   }
 
@@ -191,7 +191,7 @@ export function skipPhase(state: PomodoroState): PomodoroState {
     type: state.currentPhase === 'work' ? 'work' : 'break',
     duration: Math.floor(state.totalTime / 60),
     completed: false,
-    startTime: new Date(state.startTime || 0),
+    startTime: new Date(state.startTime ?? 0),
     endTime: new Date(),
     interrupted: true,
   }

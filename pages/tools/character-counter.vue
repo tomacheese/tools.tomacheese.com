@@ -154,10 +154,10 @@ const stats = computed(() => {
   const bytes = new TextEncoder().encode(text).length
 
   // 文字種別統計
-  const hiragana = (text.match(/[\u3040-\u309F]/g) || []).length
-  const katakana = (text.match(/[\u30A0-\u30FF]/g) || []).length
-  const kanji = (text.match(/[\u4E00-\u9FAF]/g) || []).length
-  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) || []).length
+  const hiragana = (text.match(/[\u3040-\u309F]/g) ?? []).length
+  const katakana = (text.match(/[\u30A0-\u30FF]/g) ?? []).length
+  const kanji = (text.match(/[\u4E00-\u9FAF]/g) ?? []).length
+  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) ?? []).length
   const symbols =
     charactersWithoutSpaces - hiragana - katakana - kanji - alphanumeric
 
