@@ -172,8 +172,9 @@ describe('generateId', () => {
 
     const match = id.match(/^city-(\d+)-/)
     expect(match).toBeTruthy()
+    expect(match).not.toBeNull()
 
-    const timestamp = parseInt(match![1])
+    const timestamp = parseInt(match?.[1] ?? '0')
     expect(timestamp).toBeGreaterThanOrEqual(before)
     expect(timestamp).toBeLessThanOrEqual(after)
   })

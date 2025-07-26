@@ -101,7 +101,9 @@ test.describe('Homepage', () => {
     const secondCardBox = await secondCard.boundingBox()
 
     // On mobile, cards should be stacked vertically
-    expect(firstCardBox!.y).toBeLessThan(secondCardBox!.y)
+    expect(firstCardBox).toBeDefined()
+    expect(secondCardBox).toBeDefined()
+    expect(firstCardBox?.y ?? 0).toBeLessThan(secondCardBox?.y ?? 0)
   })
 
   test('should handle keyboard navigation', async ({ page }) => {

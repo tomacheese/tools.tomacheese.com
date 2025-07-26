@@ -138,12 +138,14 @@ export function exportStopwatchData(state: StopwatchState): string {
       bestLapTime: getBestLap(state.laps)?.lapTime || 0,
       worstLapTime: getWorstLap(state.laps)?.lapTime || 0,
       averageLapTime: getAverageLapTime(state.laps),
-      formattedBestLapTime: getBestLap(state.laps)
-        ? formatTimeToString(getBestLap(state.laps)!.lapTime)
-        : '00:00.00',
-      formattedWorstLapTime: getWorstLap(state.laps)
-        ? formatTimeToString(getWorstLap(state.laps)!.lapTime)
-        : '00:00.00',
+      formattedBestLapTime: (() => {
+        const bestLap = getBestLap(state.laps)
+        return bestLap ? formatTimeToString(bestLap.lapTime) : '00:00.00'
+      })(),
+      formattedWorstLapTime: (() => {
+        const worstLap = getWorstLap(state.laps)
+        return worstLap ? formatTimeToString(worstLap.lapTime) : '00:00.00'
+      })(),
       formattedAverageLapTime: formatTimeToString(
         getAverageLapTime(state.laps)
       ),
