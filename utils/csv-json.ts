@@ -155,8 +155,14 @@ export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options
     // Handle array of objects
     const allKeys = new Set<string>()
     data.forEach(obj => {
-      if (obj && typeof obj === 'object') {
+      if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
         Object.keys(obj).forEach(key => allKeys.add(key))
+      } else if (Array.isArray(obj)) {
+        // Add indexed keys for array elements
+        obj.forEach((_, index) => allKeys.add(`column_${index}`))
+      } else {
+        // Add a default key for primitive values
+        allKeys.add('value')
       }
     })
 
@@ -171,6 +177,24 @@ export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options
         const record = obj as Record<string, unknown>
         const row = headerKeys.map(key => {
           const value = record[key] ?? ''
+          return formatCSVValue(String(value), delimiter)
+        })
+        rows.push(row)
+      } else {
+        // Handle non-object items (arrays, primitives) by converting to object
+        const fallbackRecord: Record<string, unknown> = {}
+        if (Array.isArray(obj)) {
+          // Convert array to indexed object
+          obj.forEach((value, index) => {
+            fallbackRecord[`column_${index}`] = value
+          })
+        } else {
+          // Convert primitive to single-property object  
+          fallbackRecord['value'] = obj
+        }
+        
+        const row = headerKeys.map(key => {
+          const value = fallbackRecord[key] ?? ''
           return formatCSVValue(String(value), delimiter)
         })
         rows.push(row)
