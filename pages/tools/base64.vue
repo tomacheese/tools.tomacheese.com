@@ -118,7 +118,7 @@
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">元テキスト</h4>
           <div style="font-family: 'Courier New', monospace">
             文字数: {{ plainText.length }}<br />
-            バイト数: {{ new TextEncoder().encode(plainText).length }}
+            バイト数: {{ getByteLength(plainText) }}
           </div>
         </div>
         <div class="result-box">
@@ -296,7 +296,15 @@ const encodeIncreaseRate = computed(() => {
 })
 
 // メソッド
-const setSampleText = text => {
+const getByteLength = (text: string): number => {
+  if (typeof TextEncoder !== 'undefined') {
+    return new TextEncoder().encode(text).length
+  }
+  // Fallback for environments without TextEncoder
+  return new Blob([text]).size
+}
+
+const setSampleText = (text: string) => {
   if (activeTab.value === 'encode') {
     plainText.value = text
   } else {
@@ -309,7 +317,7 @@ const setSampleText = text => {
   }
 }
 
-const copyToClipboard = async text => {
+const copyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
     copyMessage.value = 'コピーしました！'
