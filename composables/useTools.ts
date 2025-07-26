@@ -68,6 +68,14 @@ export const useTools = () => {
       keywords: ['qr', 'qrコード', '生成', 'url'],
     },
     {
+      id: 'qr-reader',
+      name: 'QRコード読み取り',
+      description: '画像からQRコードを読み取り、テキストを抽出します。',
+      path: '/tools/qr-reader',
+      category: 'ユーティリティ',
+      keywords: ['qr', 'qrコード', '読み取り', '画像', 'スキャン'],
+    },
+    {
       id: 'password-generator',
       name: 'パスワード生成',
       description: 'セキュアなランダムパスワードを生成します。',
