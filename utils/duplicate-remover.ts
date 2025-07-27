@@ -57,11 +57,11 @@ export function removeDuplicateLines(
   const firstOccurrence = new Map<string, string>() // 正規化済み行 -> 最初の元の行
   const duplicateDetails: DuplicateRemovalResult['duplicateDetails'] = []
   const duplicateCounts = new Map<string, { line: string; indices: number[] }>()
-  
+
   // 第1パス: 重複検出と統計収集
   lines.forEach((line, index) => {
     const normalized = normalizeLine(line, options.compareMode)
-    
+
     if (!seen.has(normalized)) {
       seen.set(normalized, index)
       firstOccurrence.set(normalized, line)
@@ -72,7 +72,7 @@ export function removeDuplicateLines(
   })
 
   // 重複行の詳細を作成
-  for (const [normalized, data] of duplicateCounts.entries()) {
+  for (const [, data] of duplicateCounts.entries()) {
     if (data.indices.length > 1) {
       duplicateDetails.push({
         line: data.line,
@@ -85,11 +85,11 @@ export function removeDuplicateLines(
   // 第2パス: 削除方式に基づいて結果を生成
   const resultLines: string[] = []
   const processedNormalized = new Set<string>()
-  
+
   lines.forEach((line, index) => {
     const normalized = normalizeLine(line, options.compareMode)
     const isDuplicate = duplicateCounts.get(normalized)!.indices.length > 1
-    
+
     if (!isDuplicate) {
       // 重複していない行はそのまま保持
       resultLines.push(line)
@@ -102,13 +102,14 @@ export function removeDuplicateLines(
             processedNormalized.add(normalized)
           }
           break
-        case 'keep-last':
+        case 'keep-last': {
           // 最後の出現時に追加（最後かどうかを判定）
           const indices = duplicateCounts.get(normalized)!.indices
           if (index + 1 === indices[indices.length - 1]) {
             resultLines.push(line)
           }
           break
+        }
         case 'remove-all':
           // 何もしない（削除）
           break
@@ -143,7 +144,10 @@ export function removeDuplicateLines(
 /**
  * 比較方式に基づいて行を正規化する
  */
-function normalizeLine(line: string, compareMode: DuplicateRemovalOptions['compareMode']): string {
+function normalizeLine(
+  line: string,
+  compareMode: DuplicateRemovalOptions['compareMode']
+): string {
   switch (compareMode) {
     case 'exact':
       return line
@@ -166,14 +170,14 @@ export async function removeDuplicateLinesAsync(
   options: DuplicateRemovalOptions,
   onProgress?: (progress: number) => void
 ): Promise<DuplicateRemovalResult> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const lines = text.split(/\r?\n/)
     const chunkSize = 10000 // 1万行ずつ処理
     let currentIndex = 0
 
     const processChunk = () => {
       const endIndex = Math.min(currentIndex + chunkSize, lines.length)
-      
+
       // 処理進行状況を報告
       if (onProgress) {
         onProgress((endIndex / lines.length) * 100)
@@ -201,16 +205,16 @@ export async function removeDuplicateLinesAsync(
 export function readTextFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    
-    reader.onload = (event) => {
+
+    reader.onload = event => {
       const text = event.target?.result as string
       resolve(text || '')
     }
-    
+
     reader.onerror = () => {
       reject(new Error('ファイルの読み込みに失敗しました'))
     }
-    
+
     reader.readAsText(file, 'UTF-8')
   })
 }
@@ -221,13 +225,13 @@ export function readTextFile(file: File): Promise<string> {
 export function downloadTextFile(text: string, filename: string): void {
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
   const url = URL.createObjectURL(blob)
-  
+
   const link = document.createElement('a')
   link.href = url
   link.download = filename
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-  
+
   URL.revokeObjectURL(url)
 }
