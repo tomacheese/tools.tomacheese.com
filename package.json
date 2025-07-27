@@ -71,7 +71,7 @@
     "@types/node": "22.16.5",
     "@typescript-eslint/eslint-plugin": "8.38.0",
     "@typescript-eslint/parser": "8.38.0",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
     "@vue/test-utils": "2.4.6",
     "depcheck": "1.4.7",
