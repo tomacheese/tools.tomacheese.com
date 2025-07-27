@@ -124,8 +124,12 @@ export function getAverageLapTime(laps: Lap[]): number {
 export function exportStopwatchData(state: StopwatchState): string {
   const bestLap = getBestLap(state.laps)
   const worstLap = getWorstLap(state.laps)
-  const formattedBestLapTime = bestLap ? formatTimeToString(bestLap.lapTime) : '00:00.00'
-  const formattedWorstLapTime = worstLap ? formatTimeToString(worstLap.lapTime) : '00:00.00'
+  const formattedBestLapTime = bestLap
+    ? formatTimeToString(bestLap.lapTime)
+    : '00:00.00'
+  const formattedWorstLapTime = worstLap
+    ? formatTimeToString(worstLap.lapTime)
+    : '00:00.00'
 
   const data = {
     totalTime: getCurrentElapsedTime(state),
