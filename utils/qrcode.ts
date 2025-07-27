@@ -185,34 +185,34 @@ export async function readQRCode(imageDataURL: string): Promise<string | null> {
     return null
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const img = new Image()
     img.onload = () => {
       try {
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
         if (!ctx) throw new Error('Cannot get canvas context')
-        
+
         canvas.width = img.width
         canvas.height = img.height
         ctx.drawImage(img, 0, 0)
-        
+
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
         const result = decodeQRCode(imageData)
         resolve(result)
-      } catch (error) {
-        console.warn('QRコード読み取り中にエラーが発生しました:', error)
+      } catch {
+        // QRコード読み取り中にエラーが発生しました
         resolve(null)
       }
     }
-    img.onerror = (error) => {
-      console.warn('画像の読み込みに失敗しました:', error)
+    img.onerror = () => {
+      // 画像の読み込みに失敗しました
       resolve(null)
     }
-    
+
     // タイムアウト処理を追加
     setTimeout(() => resolve(null), 3000)
-    
+
     img.src = imageDataURL
   })
 }
@@ -221,24 +221,26 @@ export async function readQRCode(imageDataURL: string): Promise<string | null> {
 function decodeQRCode(imageData: ImageData): string | null {
   // この実装は簡易版です。実際のQRコードデコーダーは非常に複雑です。
   // ここでは基本的なパターン認識を行い、シンプルなQRコードのみを対象とします。
-  
+
   const { data, width, height } = imageData
-  
+
   // グレースケール変換
   const grayscale = new Uint8Array(width * height)
   for (let i = 0; i < data.length; i += 4) {
-    const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2])
+    const gray = Math.round(
+      0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
+    )
     grayscale[i / 4] = gray
   }
-  
+
   // 二値化（大津の手法の簡易版）
   const threshold = calculateThreshold(grayscale)
-  const binary = grayscale.map(pixel => pixel > threshold ? 255 : 0)
-  
+  const binary = grayscale.map(pixel => (pixel > threshold ? 255 : 0))
+
   // QRコードのパターン検出
   const qrData = findQRPattern(binary, width, height)
   if (!qrData) return null
-  
+
   // データ領域の解析（簡易版）
   return extractData(qrData)
 }
@@ -249,10 +251,14 @@ function calculateThreshold(grayscale: Uint8Array): number {
   return sum / grayscale.length
 }
 
-function findQRPattern(binary: Uint8Array, width: number, height: number): QRPatternData | null {
+function findQRPattern(
+  binary: Uint8Array,
+  width: number,
+  height: number
+): QRPatternData | null {
   // 位置検出パターンを探す
   const patterns = []
-  
+
   for (let y = 0; y < height - 7; y++) {
     for (let x = 0; x < width - 7; x++) {
       if (isPositionPattern(binary, x, y, width)) {
@@ -260,21 +266,26 @@ function findQRPattern(binary: Uint8Array, width: number, height: number): QRPat
       }
     }
   }
-  
+
   // 3つの位置検出パターンが見つかった場合のみ処理
   if (patterns.length >= 3) {
     return {
       patterns,
       binary,
       width,
-      height
+      height,
     }
   }
-  
+
   return null
 }
 
-function isPositionPattern(binary: Uint8Array, x: number, y: number, width: number): boolean {
+function isPositionPattern(
+  binary: Uint8Array,
+  x: number,
+  y: number,
+  width: number
+): boolean {
   // 7x7の位置検出パターンをチェック
   const pattern = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -283,9 +294,9 @@ function isPositionPattern(binary: Uint8Array, x: number, y: number, width: numb
     [0, 255, 0, 255, 0, 255, 0],
     [0, 255, 0, 0, 0, 255, 0],
     [0, 255, 255, 255, 255, 255, 0],
-    [0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0],
   ]
-  
+
   for (let dy = 0; dy < 7; dy++) {
     for (let dx = 0; dx < 7; dx++) {
       const pixelIndex = (y + dy) * width + (x + dx)
@@ -294,7 +305,7 @@ function isPositionPattern(binary: Uint8Array, x: number, y: number, width: numb
       }
     }
   }
-  
+
   return true
 }
 
@@ -309,18 +320,18 @@ function extractData(qrData: QRPatternData): string | null {
   // 簡易的なデータ抽出
   // 実際のQRコードは複雑なエラー訂正とデータ形式を使用しますが、
   // ここでは限定的なパターンのみをサポートします
-  
+
   try {
     // 仮のデータ抽出処理: バイナリデータを文字列に変換
     const binaryString = Array.from(qrData.binary)
       .map(byte => String.fromCharCode(byte))
-      .join('');
-    
+      .join('')
+
     // デコードされたデータを返す
-    return `デコードされたデータ: ${binaryString}`;
-  } catch (error) {
-    console.warn('QRコードのデコード中にエラーが発生しました:', error)
+    return `デコードされたデータ: ${binaryString}`
+  } catch {
+    // QRコードのデコード中にエラーが発生しました
     // エラーが発生した場合はnullを返す
-    return 'QRコードのデコード中にエラーが発生しました。';
+    return 'QRコードのデコード中にエラーが発生しました。'
   }
 }

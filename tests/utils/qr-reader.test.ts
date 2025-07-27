@@ -38,7 +38,8 @@ describe('QRコード読み取り', () => {
 
   it('バリデーションを通過した場合の処理', async () => {
     // 有効なdata:image/ URLの場合はタイムアウトまたはnullが返される
-    const validDataURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
+    const validDataURL =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
     const result = await readQRCode(validDataURL)
     // テスト環境では Image が正常に動作しないため null が返される
     expect(result).toBeNull()

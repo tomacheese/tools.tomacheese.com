@@ -72,9 +72,7 @@
           </div>
         </div>
         <div class="result-actions">
-          <button class="secondary" @click="copyText">
-            テキストをコピー
-          </button>
+          <button class="secondary" @click="copyText">テキストをコピー</button>
           <div v-if="copyMessage" class="copy-message">
             {{ copyMessage }}
           </div>
@@ -97,7 +95,9 @@
     <div class="help-section">
       <h3>使用方法</h3>
       <ul>
-        <li>QRコードが含まれた画像をアップロードするか、カメラで撮影してください</li>
+        <li>
+          QRコードが含まれた画像をアップロードするか、カメラで撮影してください
+        </li>
         <li>画像は明瞭で、QRコードがはっきりと見えるものを使用してください</li>
         <li>対応形式: JPG、PNG、WebP</li>
         <li>すべての処理はブラウザ内で行われ、画像は外部に送信されません</li>
@@ -120,11 +120,11 @@ const isAnalyzing = ref(false)
 const handleFileUpload = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
-  
+
   if (!file) return
 
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     uploadedImage.value = e.target?.result as string
     result.value = null
     error.value = null
@@ -141,9 +141,9 @@ const clearImage = () => {
 const startCamera = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment' } // 背面カメラを優先
+      video: { facingMode: 'environment' }, // 背面カメラを優先
     })
-    
+
     if (videoElement.value) {
       videoElement.value.srcObject = stream
       isCameraActive.value = true
@@ -168,13 +168,13 @@ const captureImage = () => {
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
   if (!context) return
-  
+
   canvas.width = videoElement.value.videoWidth
   canvas.height = videoElement.value.videoHeight
-  
+
   context.drawImage(videoElement.value, 0, 0)
   uploadedImage.value = canvas.toDataURL()
-  
+
   stopCamera()
   result.value = null
   error.value = null
@@ -192,7 +192,8 @@ const analyzeQRCode = async () => {
     if (text) {
       result.value = { text }
     } else {
-      error.value = 'QRコードが見つかりませんでした。画像が明瞭で、QRコードがはっきりと見えることを確認してください。'
+      error.value =
+        'QRコードが見つかりませんでした。画像が明瞭で、QRコードがはっきりと見えることを確認してください。'
     }
   } catch {
     error.value = 'QRコードの解析中にエラーが発生しました。'
@@ -208,10 +209,14 @@ const copyText = async () => {
   try {
     await navigator.clipboard.writeText(result.value.text)
     copyMessage.value = 'テキストをクリップボードにコピーしました'
-    setTimeout(() => { copyMessage.value = '' }, 3000)
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 3000)
   } catch {
     copyMessage.value = 'コピーに失敗しました'
-    setTimeout(() => { copyMessage.value = '' }, 3000)
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 3000)
   }
 }
 
@@ -233,7 +238,10 @@ const openURL = () => {
 useHead({
   title: 'QRコード読み取り - Web Tools',
   meta: [
-    { name: 'description', content: '画像からQRコードを読み取り、テキストを抽出します。' },
+    {
+      name: 'description',
+      content: '画像からQRコードを読み取り、テキストを抽出します。',
+    },
   ],
 })
 </script>
