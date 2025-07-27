@@ -154,7 +154,9 @@ export function exportStopwatchData(state: StopwatchState): string {
   return JSON.stringify(data, null, 2)
 }
 
-export function validateStopwatchState(state: unknown): state is StopwatchState {
+export function validateStopwatchState(
+  state: unknown
+): state is StopwatchState {
   if (typeof state !== 'object' || state === null) {
     return false
   }
@@ -166,19 +168,17 @@ export function validateStopwatchState(state: unknown): state is StopwatchState 
     typeof s.elapsedTime === 'number' &&
     typeof s.isRunning === 'boolean' &&
     Array.isArray(s.laps) &&
-    s.laps.every(
-      (lap: unknown) => {
-        if (typeof lap !== 'object' || lap === null) {
-          return false
-        }
-        const l = lap as Record<string, unknown>
-        return (
-          typeof l.id === 'number' &&
-          typeof l.time === 'number' &&
-          typeof l.lapTime === 'number' &&
-          l.timestamp instanceof Date
-        )
+    s.laps.every((lap: unknown) => {
+      if (typeof lap !== 'object' || lap === null) {
+        return false
       }
-    )
+      const l = lap as Record<string, unknown>
+      return (
+        typeof l.id === 'number' &&
+        typeof l.time === 'number' &&
+        typeof l.lapTime === 'number' &&
+        l.timestamp instanceof Date
+      )
+    })
   )
 }

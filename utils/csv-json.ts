@@ -10,7 +10,10 @@ export interface JSONToCSVOptions {
   delimiter?: string
 }
 
-export function parseCSV(csv: string, options: CSVParseOptions = {}): (Record<string, string> | string[])[] {
+export function parseCSV(
+  csv: string,
+  options: CSVParseOptions = {}
+): (Record<string, string> | string[])[] {
   const {
     delimiter = ',',
     headers = true,
@@ -132,7 +135,10 @@ function parseCSVText(
   return rows
 }
 
-export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options: JSONToCSVOptions = {}): string {
+export function jsonToCSV(
+  data: (Record<string, unknown> | unknown[])[],
+  options: JSONToCSVOptions = {}
+): string {
   const { headers = true, delimiter = ',' } = options
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -174,7 +180,7 @@ export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options
 
     data.forEach(obj => {
       if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
-        const record = obj as Record<string, unknown>
+        const record = obj
         const row = headerKeys.map(key => {
           const value = record[key] ?? ''
           return formatCSVValue(String(value), delimiter)
@@ -189,10 +195,10 @@ export function jsonToCSV(data: (Record<string, unknown> | unknown[])[], options
             fallbackRecord[`column_${index}`] = value
           })
         } else {
-          // Convert primitive to single-property object  
+          // Convert primitive to single-property object
           fallbackRecord['value'] = obj
         }
-        
+
         const row = headerKeys.map(key => {
           const value = fallbackRecord[key] ?? ''
           return formatCSVValue(String(value), delimiter)

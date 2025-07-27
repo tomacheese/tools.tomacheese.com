@@ -35,7 +35,12 @@ const mockImage = {
 global.Image = vi.fn(() => mockImage) as unknown as typeof Image
 global.document.createElement = vi.fn((tag: string) => {
   if (tag === 'canvas') return mockCanvas as unknown as HTMLCanvasElement
-  if (tag === 'a') return { click: vi.fn(), href: '', download: '' } as unknown as HTMLAnchorElement
+  if (tag === 'a')
+    return {
+      click: vi.fn(),
+      href: '',
+      download: '',
+    } as unknown as HTMLAnchorElement
   return {} as unknown as Element
 }) as unknown as typeof document.createElement
 global.document.body.appendChild = vi.fn()
@@ -71,7 +76,10 @@ describe('imageResizer', () => {
 
       // Trigger image error
       if (mockImage.onerror) {
-        mockImage.onerror.call(mockImage as HTMLImageElement, new ErrorEvent('error'))
+        mockImage.onerror.call(
+          mockImage as HTMLImageElement,
+          new ErrorEvent('error')
+        )
       }
 
       await expect(promise).rejects.toThrow('Failed to load image')
@@ -136,7 +144,10 @@ describe('imageResizer', () => {
 
         const promise = resizeImage(mockFile, { format })
         if (mockImage.onload) {
-          mockImage.onload.call(mockImage as HTMLImageElement, new Event('load'))
+          mockImage.onload.call(
+            mockImage as HTMLImageElement,
+            new Event('load')
+          )
         }
 
         const blob = await promise

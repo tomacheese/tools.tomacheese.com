@@ -47,14 +47,20 @@ describe('imageToBase64 utilities', () => {
       // Mock FileReader
       const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
-        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onload: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
+        onerror: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
         result: expectedDataUrl,
         error: null as DOMException | null,
         readyState: 0,
       } as unknown as FileReader
 
-      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
+      global.FileReader = vi.fn(
+        () => mockFileReader
+      ) as unknown as typeof FileReader
 
       const promise = convertFileToBase64(mockFile)
 
@@ -76,20 +82,28 @@ describe('imageToBase64 utilities', () => {
 
       const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
-        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onload: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
+        onerror: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
         result: null,
         error: null as DOMException | null,
         readyState: 0,
       } as unknown as FileReader
 
-      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
+      global.FileReader = vi.fn(
+        () => mockFileReader
+      ) as unknown as typeof FileReader
 
       const promise = convertFileToBase64(mockFile)
 
       // Trigger onerror
       if (mockFileReader.onerror) {
-        const errorEvent = new ProgressEvent('error') as ProgressEvent<FileReader>
+        const errorEvent = new ProgressEvent(
+          'error'
+        ) as ProgressEvent<FileReader>
         mockFileReader.onerror.call(mockFileReader, errorEvent)
       }
 
@@ -259,7 +273,9 @@ describe('imageToBase64 utilities', () => {
 
       const mockImage = {
         onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
-        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
+        onerror: null as
+          | ((this: HTMLImageElement, ev: ErrorEvent) => void)
+          | null,
         src: '',
         width: 100,
         height: 200,
@@ -290,7 +306,9 @@ describe('imageToBase64 utilities', () => {
 
       const mockImage = {
         onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
-        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
+        onerror: null as
+          | ((this: HTMLImageElement, ev: ErrorEvent) => void)
+          | null,
         src: '',
       } as unknown as HTMLImageElement
 
@@ -314,8 +332,12 @@ describe('imageToBase64 utilities', () => {
 
       const mockFileReader = {
         readAsDataURL: vi.fn(),
-        onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
-        onerror: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => void) | null,
+        onload: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
+        onerror: null as
+          | ((this: FileReader, ev: ProgressEvent<FileReader>) => void)
+          | null,
         result: 'data:image/png;base64,iVBORw0KGgo=',
         error: null as DOMException | null,
         readyState: 0,
@@ -323,7 +345,9 @@ describe('imageToBase64 utilities', () => {
 
       const mockImage = {
         onload: null as ((this: HTMLImageElement, ev: Event) => void) | null,
-        onerror: null as ((this: HTMLImageElement, ev: ErrorEvent) => void) | null,
+        onerror: null as
+          | ((this: HTMLImageElement, ev: ErrorEvent) => void)
+          | null,
         src: '',
         width: 100,
         height: 200,
@@ -342,7 +366,9 @@ describe('imageToBase64 utilities', () => {
           .mockReturnValue('data:image/png;base64,iVBORw0KGgo='),
       }
 
-      global.FileReader = vi.fn(() => mockFileReader) as unknown as typeof FileReader
+      global.FileReader = vi.fn(
+        () => mockFileReader
+      ) as unknown as typeof FileReader
       global.Image = vi.fn(() => mockImage) as unknown as typeof Image
       mockCreateElement.mockReturnValue(mockCanvas)
 
