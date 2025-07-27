@@ -23,17 +23,7 @@
             @change="handleFileUpload"
             style="display: none"
           />
-          <button
-            class="secondary"
-            @click="
-              () => {
-                const input = document.getElementById(
-                  'file-input'
-                ) as HTMLInputElement
-                input?.click()
-              }
-            "
-          >
+          <button class="secondary" @click="triggerFileInput">
             ファイルから読み込み
           </button>
           <button v-if="inputText" class="secondary" @click="clearInput">
@@ -206,6 +196,12 @@ const options = reactive<DuplicateRemovalOptions>({
   removalMode: 'keep-first',
   sortResult: false,
 })
+
+// ファイル入力トリガー
+const triggerFileInput = () => {
+  const input = document.getElementById('file-input') as HTMLInputElement
+  input?.click()
+}
 
 // ファイルアップロード処理
 const handleFileUpload = async (event: Event) => {
