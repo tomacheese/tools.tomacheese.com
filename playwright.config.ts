@@ -58,6 +58,7 @@ export default defineConfig({
             '**/js-minifier.spec.ts',
             '**/json-to-csv.spec.ts',
             '**/qr-generator.spec.ts',
+            '**/qr-reader.spec.ts',
             '**/timestamp-converter.spec.ts',
             '**/uuid-generator.spec.ts',
           ],
