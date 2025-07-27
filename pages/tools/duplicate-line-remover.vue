@@ -1,7 +1,9 @@
 <template>
   <div class="tool-container">
     <h1>重複行削除ツール</h1>
-    <p>テキストから重複する行を検出・削除します。大容量テキストにも対応しています。</p>
+    <p>
+      テキストから重複する行を検出・削除します。大容量テキストにも対応しています。
+    </p>
 
     <div class="input-section">
       <div class="input-area">
@@ -12,7 +14,7 @@
           placeholder="重複を削除したいテキストを入力してください..."
           rows="10"
         ></textarea>
-        
+
         <div class="file-input-area">
           <input
             type="file"
@@ -21,7 +23,17 @@
             @change="handleFileUpload"
             style="display: none"
           />
-          <button class="secondary" @click="() => { const input = document.getElementById('file-input') as HTMLInputElement; input?.click(); }">
+          <button
+            class="secondary"
+            @click="
+              () => {
+                const input = document.getElementById(
+                  'file-input'
+                ) as HTMLInputElement
+                input?.click()
+              }
+            "
+          >
             ファイルから読み込み
           </button>
           <button v-if="inputText" class="secondary" @click="clearInput">
@@ -54,10 +66,7 @@
 
         <div class="option-group">
           <label>
-            <input
-              type="checkbox"
-              v-model="options.sortResult"
-            />
+            <input type="checkbox" v-model="options.sortResult" />
             結果をソート
           </label>
         </div>
@@ -70,7 +79,7 @@
       >
         {{ isProcessing ? '処理中...' : '重複削除実行' }}
       </button>
-      
+
       <div v-if="isProcessing" class="progress-bar">
         <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
         <span class="progress-text">{{ Math.round(progress) }}%</span>
@@ -79,7 +88,7 @@
 
     <div v-if="result" class="result-section">
       <h3>処理結果</h3>
-      
+
       <div class="statistics">
         <div class="stat-item">
           <span class="stat-label">元の行数:</span>
@@ -107,11 +116,9 @@
           readonly
           rows="10"
         ></textarea>
-        
+
         <div class="result-actions">
-          <button class="secondary" @click="copyResult">
-            結果をコピー
-          </button>
+          <button class="secondary" @click="copyResult">結果をコピー</button>
           <button class="secondary" @click="downloadResult">
             ファイルダウンロード
           </button>
@@ -128,8 +135,8 @@
           >
             <div class="duplicate-line">{{ detail.line }}</div>
             <div class="duplicate-info">
-              出現回数: {{ detail.count }}回 
-              (行番号: {{ detail.originalLineNumbers.join(', ') }})
+              出現回数: {{ detail.count }}回 (行番号:
+              {{ detail.originalLineNumbers.join(', ') }})
             </div>
           </div>
         </div>
@@ -148,13 +155,15 @@
         <li>大容量テキスト（100万行以下）にも対応</li>
         <li>ファイルからの読み込みと結果のダウンロードが可能</li>
       </ul>
-      
+
       <h4>比較方式の説明</h4>
       <ul>
         <li><strong>完全一致</strong>: 文字列が完全に同じ場合のみ重複と判定</li>
         <li><strong>空白除去後比較</strong>: 前後の空白を除去してから比較</li>
         <li><strong>大文字小文字無視</strong>: 英字の大小を区別しない</li>
-        <li><strong>正規化比較</strong>: 空白除去 + 大小無視 + Unicode正規化</li>
+        <li>
+          <strong>正規化比較</strong>: 空白除去 + 大小無視 + Unicode正規化
+        </li>
       </ul>
     </div>
   </div>
@@ -174,12 +183,14 @@ import {
 // メタデータ設定
 definePageMeta({
   title: '重複行削除ツール',
-  description: 'テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。',
+  description:
+    'テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。',
 })
 
 useSeoMeta({
   title: '重複行削除ツール - Tools.tomacheese.com',
-  description: 'テキストから重複する行を検出・削除するツール。複数の比較方式と削除方式に対応し、大容量ファイルも処理可能です。',
+  description:
+    'テキストから重複する行を検出・削除するツール。複数の比較方式と削除方式に対応し、大容量ファイルも処理可能です。',
   keywords: '重複削除,テキスト処理,行削除,テキストツール,重複行,クリーニング',
 })
 
@@ -200,14 +211,16 @@ const options = reactive<DuplicateRemovalOptions>({
 const handleFileUpload = async (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
-  
+
   if (!file) return
 
   try {
     const text = await readTextFile(file)
     inputText.value = text
   } catch (error) {
-    alert(`ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    alert(
+      `ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   }
 }
 
@@ -228,13 +241,15 @@ const processText = async () => {
 
   try {
     const lines = inputText.value.split(/\r?\n/)
-    
+
     if (lines.length > 50000) {
       // 大容量の場合は非同期処理
       result.value = await removeDuplicateLinesAsync(
         inputText.value,
         options,
-        (p) => { progress.value = p }
+        p => {
+          progress.value = p
+        }
       )
     } else {
       // 通常サイズは同期処理
@@ -242,7 +257,9 @@ const processText = async () => {
       progress.value = 100
     }
   } catch (error) {
-    alert(`処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    alert(
+      `処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   } finally {
     isProcessing.value = false
   }
@@ -255,10 +272,14 @@ const copyResult = async () => {
   try {
     await navigator.clipboard.writeText(result.value.text)
     copyMessage.value = '結果をクリップボードにコピーしました'
-    setTimeout(() => { copyMessage.value = '' }, 3000)
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 3000)
   } catch {
     copyMessage.value = 'コピーに失敗しました'
-    setTimeout(() => { copyMessage.value = '' }, 3000)
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 3000)
   }
 }
 
@@ -340,7 +361,7 @@ const downloadResult = () => {
   font-size: 14px;
 }
 
-.option-group input[type="checkbox"] {
+.option-group input[type='checkbox'] {
   margin-right: 8px;
 }
 
@@ -548,12 +569,12 @@ button.secondary:hover {
   .statistics {
     grid-template-columns: 1fr;
   }
-  
+
   .option-group {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .result-actions,
   .file-input-area {
     flex-direction: column;

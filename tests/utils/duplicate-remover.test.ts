@@ -122,7 +122,7 @@ describe('removeDuplicateLines', () => {
       })
 
       expect(result.duplicateDetails).toHaveLength(2)
-      
+
       const line1Detail = result.duplicateDetails.find(d => d.line === 'line1')
       expect(line1Detail).toBeDefined()
       expect(line1Detail?.count).toBe(3)
@@ -205,16 +205,20 @@ describe('removeDuplicateLinesAsync', () => {
   it('非同期処理で正しい結果を返す', async () => {
     const text = 'line1\nline2\nline1\nline3'
     let progressCalled = false
-    
-    const result = await removeDuplicateLinesAsync(text, {
-      compareMode: 'exact',
-      removalMode: 'keep-first',
-      sortResult: false,
-    }, (progress) => {
-      progressCalled = true
-      expect(progress).toBeGreaterThanOrEqual(0)
-      expect(progress).toBeLessThanOrEqual(100)
-    })
+
+    const result = await removeDuplicateLinesAsync(
+      text,
+      {
+        compareMode: 'exact',
+        removalMode: 'keep-first',
+        sortResult: false,
+      },
+      progress => {
+        progressCalled = true
+        expect(progress).toBeGreaterThanOrEqual(0)
+        expect(progress).toBeLessThanOrEqual(100)
+      }
+    )
 
     expect(result.text).toBe('line1\nline2\nline3')
     expect(progressCalled).toBe(true)

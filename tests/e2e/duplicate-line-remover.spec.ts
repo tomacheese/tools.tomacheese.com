@@ -110,13 +110,17 @@ test.describe('重複行削除ツール', () => {
 
     // 重複行詳細セクションが表示される
     await expect(page.locator('.duplicate-details')).toBeVisible()
-    await expect(page.locator('.duplicate-details h4')).toContainText('重複行詳細')
-    
+    await expect(page.locator('.duplicate-details h4')).toContainText(
+      '重複行詳細'
+    )
+
     // 重複行の情報
     await expect(page.locator('.duplicate-item')).toHaveCount(1)
     await expect(page.locator('.duplicate-line')).toContainText('duplicated')
     await expect(page.locator('.duplicate-info')).toContainText('出現回数: 3回')
-    await expect(page.locator('.duplicate-info')).toContainText('行番号: 1, 3, 4')
+    await expect(page.locator('.duplicate-info')).toContainText(
+      '行番号: 1, 3, 4'
+    )
   })
 
   test('結果をクリップボードにコピー', async ({ page }) => {
@@ -126,15 +130,19 @@ test.describe('重複行削除ツール', () => {
     await page.fill('textarea#input-text', testText)
 
     await page.click('button:has-text("重複削除実行")')
-    
+
     // コピーボタンをクリック
     await page.click('button:has-text("結果をコピー")')
 
     // コピー成功メッセージを確認
-    await expect(page.locator('.copy-message')).toContainText('結果をクリップボードにコピーしました')
-    
+    await expect(page.locator('.copy-message')).toContainText(
+      '結果をクリップボードにコピーしました'
+    )
+
     // メッセージが消える
-    await expect(page.locator('.copy-message')).not.toBeVisible({ timeout: 4000 })
+    await expect(page.locator('.copy-message')).not.toBeVisible({
+      timeout: 4000,
+    })
   })
 
   test('入力クリア機能', async ({ page }) => {
@@ -144,7 +152,7 @@ test.describe('重複行削除ツール', () => {
     await expect(page.locator('button:has-text("クリア")')).toBeVisible()
 
     await page.click('button:has-text("クリア")')
-    
+
     await expect(page.locator('textarea#input-text')).toHaveValue('')
     await expect(page.locator('button:has-text("クリア")')).not.toBeVisible()
   })
@@ -165,12 +173,16 @@ test.describe('重複行削除ツール', () => {
 
     await expect(page.locator('.help-section')).toBeVisible()
     await expect(page.locator('.help-section h3')).toContainText('使用方法')
-    await expect(page.locator('.help-section h4')).toContainText('比較方式の説明')
-    
+    await expect(page.locator('.help-section h4')).toContainText(
+      '比較方式の説明'
+    )
+
     // 各比較方式の説明
     await expect(page.locator('.help-section')).toContainText('完全一致')
     await expect(page.locator('.help-section')).toContainText('空白除去後比較')
-    await expect(page.locator('.help-section')).toContainText('大文字小文字無視')
+    await expect(page.locator('.help-section')).toContainText(
+      '大文字小文字無視'
+    )
     await expect(page.locator('.help-section')).toContainText('正規化比較')
   })
 
@@ -204,9 +216,11 @@ test.describe('重複行削除ツール', () => {
 
     // 進行状況バーが表示される可能性がある
     // （小さいサイズなので表示されない可能性もある）
-    
+
     // 結果を確認
-    await expect(page.locator('.result-section')).toBeVisible({ timeout: 10000 })
+    await expect(page.locator('.result-section')).toBeVisible({
+      timeout: 10000,
+    })
     await expect(page.locator('.stat-value').first()).toContainText('1000') // 元の行数
     await expect(page.locator('.stat-value').nth(1)).toContainText('100') // 処理後行数（100種類）
   })
