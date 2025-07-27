@@ -46,7 +46,7 @@ importers:
         specifier: 8.38.0
         version: 8.38.0(eslint@9.31.0(jiti@2.5.0))(typescript@5.8.3)
       '@vitest/coverage-v8':
-        specifier: ^3.2.4
+        specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       '@vitest/ui':
         specifier: 3.2.4
