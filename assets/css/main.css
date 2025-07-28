@@ -158,7 +158,8 @@ body {
 }
 
 .sidebar-nav a:hover,
-.sidebar-nav a.active {
+.sidebar-nav a.active,
+.sidebar-nav a.router-link-active {
   background-color: #eff6ff;
   color: #2563eb;
 }
