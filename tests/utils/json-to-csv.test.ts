@@ -314,7 +314,10 @@ describe('JSON to CSV conversion workflows', () => {
     })
 
     it('should handle arrays with null values', () => {
-      const data = [null, null]
+      const data = [null, null] as unknown as (
+        | Record<string, unknown>
+        | unknown[]
+      )[]
       const csv = jsonToCSV(data)
       // Should handle gracefully without crashing
       expect(typeof csv).toBe('string')

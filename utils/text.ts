@@ -102,7 +102,7 @@ export const decodeUrl = (encodedText: string): string => {
  */
 export const parseJsonSafely = (
   jsonString: string
-): { success: boolean; data?: any; error?: string } => {
+): { success: boolean; data?: unknown; error?: string } => {
   try {
     const data = JSON.parse(jsonString)
     return { success: true, data }
