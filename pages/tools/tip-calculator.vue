@@ -38,8 +38,9 @@
                   transform: translateY(-50%);
                   color: #64748b;
                 "
-                >¥</span
               >
+                ¥
+              </span>
             </div>
           </div>
 
@@ -318,8 +319,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">レストラン</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            ファミリーレストラン: 10-15%<br />
-            高級レストラン: 18-22%<br />
+            ファミリーレストラン: 10-15%
+            <br />
+            高級レストラン: 18-22%
+            <br />
             バー: 15-20%
           </p>
         </div>
@@ -327,8 +330,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">サービス業</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            タクシー: 10-15%<br />
-            ホテル: 1-2ドル/荷物<br />
+            タクシー: 10-15%
+            <br />
+            ホテル: 1-2ドル/荷物
+            <br />
             ヘアサロン: 15-20%
           </p>
         </div>
@@ -336,8 +341,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">配達サービス</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            フードデリバリー: 15-20%<br />
-            ピザ配達: 2-5ドル<br />
+            フードデリバリー: 15-20%
+            <br />
+            ピザ配達: 2-5ドル
+            <br />
             ルームサービス: 15-20%
           </p>
         </div>
@@ -467,7 +474,7 @@ const applyPreset = preset => {
 
 // SEO
 useHead({
-  title: 'チップ計算 - Tools.tomacheese.com',
+  title: 'チップ計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

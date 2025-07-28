@@ -402,7 +402,7 @@ watch(selectedColor, newValue => {
 
 // SEO
 useHead({
-  title: 'カラーピッカー - Tools.tomacheese.com',
+  title: 'カラーピッカー - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

@@ -117,14 +117,16 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">元テキスト</h4>
           <div style="font-family: 'Courier New', monospace">
-            文字数: {{ plainText.length }}<br />
+            文字数: {{ plainText.length }}
+            <br />
             バイト数: {{ new TextEncoder().encode(plainText).length }}
           </div>
         </div>
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">Base64</h4>
           <div style="font-family: 'Courier New', monospace">
-            文字数: {{ encodedText.length }}<br />
+            文字数: {{ encodedText.length }}
+            <br />
             増加率: {{ encodeIncreaseRate }}%
           </div>
         </div>
@@ -284,7 +286,7 @@ const copyToClipboard = async text => {
 
 // SEO
 useHead({
-  title: 'Base64エンコード・デコード - Tools.tomacheese.com',
+  title: 'Base64エンコード・デコード - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

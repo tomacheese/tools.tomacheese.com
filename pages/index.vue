@@ -111,7 +111,7 @@ const tools = getAllTools()
 
 // SEO
 useHead({
-  title: 'Tools.tomacheese.com - 便利なWebツール集',
+  title: 'tools.tomacheese.com - 便利なWebツール集',
   meta: [
     {
       name: 'description',

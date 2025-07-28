@@ -447,7 +447,7 @@ const useAsInput = conversion => {
 
 // SEO
 useHead({
-  title: '進数変換 - Tools.tomacheese.com',
+  title: '進数変換 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

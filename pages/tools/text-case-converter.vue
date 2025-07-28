@@ -268,7 +268,7 @@ const examples = [
 
 // メタデータ
 useHead({
-  title: 'テキスト形式変換 - Tools.tomacheese.com',
+  title: 'テキスト形式変換 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

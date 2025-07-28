@@ -30,7 +30,8 @@
         </svg>
         <p>画像をドラッグ＆ドロップ</p>
         <p class="drop-zone-text">
-          または<span class="highlight">クリックして選択</span>
+          または
+          <span class="highlight">クリックして選択</span>
         </p>
         <p class="drop-zone-formats">対応形式: JPEG, PNG, GIF, WebP, BMP</p>
       </div>
@@ -50,20 +51,30 @@
         <div class="preview-container">
           <img :src="imageData.dataUrl" alt="Preview" class="preview-image" />
           <div class="image-info">
-            <p><strong>ファイル名:</strong> {{ fileName }}</p>
             <p>
-              <strong>元のサイズ:</strong> {{ formatFileSize(originalSize) }}
+              <strong>ファイル名:</strong>
+              {{ fileName }}
+            </p>
+            <p>
+              <strong>元のサイズ:</strong>
+              {{ formatFileSize(originalSize) }}
             </p>
             <p>
               <strong>Base64サイズ:</strong>
               {{ formatFileSize(imageData.size) }}
             </p>
-            <p><strong>サイズ増加率:</strong> {{ sizeIncrease }}%</p>
             <p>
-              <strong>画像サイズ:</strong> {{ imageData.width }} ×
-              {{ imageData.height }}px
+              <strong>サイズ増加率:</strong>
+              {{ sizeIncrease }}%
             </p>
-            <p><strong>形式:</strong> {{ imageData.mimeType }}</p>
+            <p>
+              <strong>画像サイズ:</strong>
+              {{ imageData.width }} × {{ imageData.height }}px
+            </p>
+            <p>
+              <strong>形式:</strong>
+              {{ imageData.mimeType }}
+            </p>
           </div>
         </div>
       </div>
@@ -217,7 +228,7 @@ const downloadResult = () => {
 }
 
 useHead({
-  title: '画像をBase64変換 - Tools.tomacheese.com',
+  title: '画像をBase64変換 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

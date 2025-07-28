@@ -168,7 +168,9 @@ const diffA = computed(() => {
       if (part.removed) {
         return `<div class="diff-line removed">${escapeHtml(part.value)}</div>`
       } else if (!part.added) {
-        return `<div class="diff-line unchanged">${escapeHtml(part.value)}</div>`
+        return `<div class="diff-line unchanged">${escapeHtml(
+          part.value
+        )}</div>`
       }
       return ''
     })
@@ -183,7 +185,9 @@ const diffB = computed(() => {
       if (part.added) {
         return `<div class="diff-line added">${escapeHtml(part.value)}</div>`
       } else if (!part.removed) {
-        return `<div class="diff-line unchanged">${escapeHtml(part.value)}</div>`
+        return `<div class="diff-line unchanged">${escapeHtml(
+          part.value
+        )}</div>`
       }
       return ''
     })
@@ -210,7 +214,9 @@ const unifiedDiff = computed(() => {
       return lines
         .map(
           line =>
-            `<span class="unified-line ${className}">${prefix} ${escapeHtml(line)}</span>`
+            `<span class="unified-line ${className}">${prefix} ${escapeHtml(
+              line
+            )}</span>`
         )
         .join('\n')
     })
@@ -285,7 +291,7 @@ const loadJsonExample = () => {
 
 // メタデータ
 useHead({
-  title: 'テキスト差分チェッカー - Tools.tomacheese.com',
+  title: 'テキスト差分チェッカー - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

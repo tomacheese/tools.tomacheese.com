@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     baseURL:
       process.env.DEPLOY_ENV === 'GH_PAGES' ? '/tools.tomacheese.com/' : '/',
     head: {
-      title: 'Tools.tomacheese.com - 便利なWebツール集',
+      title: 'tools.tomacheese.com - 便利なWebツール集',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

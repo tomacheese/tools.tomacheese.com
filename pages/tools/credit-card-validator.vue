@@ -267,7 +267,7 @@ const setSampleCard = number => {
 
 // SEO
 useHead({
-  title: 'クレジットカード番号検証 - Tools.tomacheese.com',
+  title: 'クレジットカード番号検証 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

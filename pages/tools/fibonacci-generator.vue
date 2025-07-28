@@ -176,9 +176,9 @@
             @click="copyNumber(number, index)"
           >
             <div>
-              <span style="font-weight: 600; color: #374151"
-                >F({{ index }})</span
-              >
+              <span style="font-weight: 600; color: #374151">
+                F({{ index }})
+              </span>
               <span
                 style="margin-left: 1rem; font-family: 'Courier New', monospace"
               >
@@ -458,7 +458,7 @@ generateSequence()
 
 // SEO
 useHead({
-  title: 'フィボナッチ数列生成 - Tools.tomacheese.com',
+  title: 'フィボナッチ数列生成 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

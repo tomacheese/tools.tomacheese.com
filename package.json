@@ -25,7 +25,11 @@
   "pnpm": {
     "shamefullyHoist": false,
     "strictPeerDependencies": false,
-    "autoInstallPeers": true
+    "autoInstallPeers": true,
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild"
+    ]
   },
   "private": true,
   "type": "module",

@@ -410,7 +410,7 @@ generateText()
 
 // メタデータ
 useHead({
-  title: 'Lorem Ipsum生成 - Tools.tomacheese.com',
+  title: 'Lorem Ipsum生成 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

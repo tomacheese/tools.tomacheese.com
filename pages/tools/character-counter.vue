@@ -6,9 +6,9 @@
     </div>
 
     <div class="form-group">
-      <label for="inputText" class="form-label"
-        >テキストを入力してください</label
-      >
+      <label for="inputText" class="form-label">
+        テキストを入力してください
+      </label>
       <textarea
         id="inputText"
         v-model="inputText"
@@ -188,7 +188,7 @@ const typingTime = computed(() => {
 
 // SEO
 useHead({
-  title: '文字数カウンター - Tools.tomacheese.com',
+  title: '文字数カウンター - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

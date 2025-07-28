@@ -347,7 +347,7 @@ watch(inputNumber, () => {
 
 // SEO
 useHead({
-  title: '素数判定 - Tools.tomacheese.com',
+  title: '素数判定 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

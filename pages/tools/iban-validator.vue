@@ -368,7 +368,7 @@ const setSampleIban = iban => {
 
 // SEO
 useHead({
-  title: 'IBAN検証 - Tools.tomacheese.com',
+  title: 'IBAN検証 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
