@@ -118,8 +118,10 @@ test.describe('Calorie Calculator', () => {
       .textContent()
 
     // Active TDEE should be higher
-    expect(parseInt(activeTDEE!.replace(/[^0-9]/g, ''))).toBeGreaterThan(
-      parseInt(sedentaryTDEE!.replace(/[^0-9]/g, ''))
+    expect(activeTDEE).toBeDefined()
+    expect(sedentaryTDEE).toBeDefined()
+    expect(parseInt((activeTDEE ?? '').replace(/[^0-9]/g, ''))).toBeGreaterThan(
+      parseInt((sedentaryTDEE ?? '').replace(/[^0-9]/g, ''))
     )
   })
 
@@ -150,9 +152,12 @@ test.describe('Calorie Calculator', () => {
     const gainCalories = await page.locator('.highlight .value').textContent()
 
     // Verify the calorie differences
-    const maintain = parseInt(maintainCalories!.replace(/[^0-9]/g, ''))
-    const lose = parseInt(loseCalories!.replace(/[^0-9]/g, ''))
-    const gain = parseInt(gainCalories!.replace(/[^0-9]/g, ''))
+    expect(maintainCalories).toBeDefined()
+    expect(loseCalories).toBeDefined()
+    expect(gainCalories).toBeDefined()
+    const maintain = parseInt((maintainCalories ?? '').replace(/[^0-9]/g, ''))
+    const lose = parseInt((loseCalories ?? '').replace(/[^0-9]/g, ''))
+    const gain = parseInt((gainCalories ?? '').replace(/[^0-9]/g, ''))
 
     expect(lose).toBeLessThan(maintain)
     expect(gain).toBeGreaterThan(maintain)

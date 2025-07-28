@@ -60,7 +60,8 @@ describe('parseTimestamp', () => {
   it('should parse common date formats', () => {
     const date = new Date('2024/01/01 00:00:00')
     const result = parseTimestamp('2024/01/01 00:00:00')
-    expect(Math.abs(result! - date.getTime())).toBeLessThan(1000)
+    expect(result).toBeDefined()
+    expect(Math.abs((result ?? 0) - date.getTime())).toBeLessThan(1000)
   })
 
   it('should return null for invalid input', () => {

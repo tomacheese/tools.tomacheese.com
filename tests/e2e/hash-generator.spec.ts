@@ -141,6 +141,7 @@ test.describe('Hash Generator', () => {
     const historyText = await page.locator('.history-text').textContent()
     expect(historyText).toBeTruthy()
     expect(historyText).toContain('...')
-    expect(historyText!.length).toBeLessThan(longText.length)
+    expect(historyText).toBeDefined()
+    expect((historyText ?? '').length).toBeLessThan(longText.length)
   })
 })
