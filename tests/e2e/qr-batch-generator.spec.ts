@@ -9,29 +9,37 @@ test.describe('QR Code Batch Generator', () => {
     await expect(page.locator('h1')).toHaveText('QR コード バッチ生成')
     await expect(page.locator('.method-buttons')).toBeVisible()
     await expect(page.locator('button:has-text("手動入力")')).toBeVisible()
-    await expect(page.locator('button:has-text("CSV インポート")')).toBeVisible()
+    await expect(
+      page.locator('button:has-text("CSV インポート")')
+    ).toBeVisible()
     await expect(page.locator('button:has-text("連番生成")')).toBeVisible()
   })
 
   test('should switch between input methods', async ({ page }) => {
     // Default: manual input
-    await expect(page.locator('button:has-text("手動入力")')).toHaveClass(/active/)
+    await expect(page.locator('button:has-text("手動入力")')).toHaveClass(
+      /active/
+    )
     await expect(page.locator('#manual-input')).toBeVisible()
 
     // Switch to CSV import
     await page.click('button:has-text("CSV インポート")')
-    await expect(page.locator('button:has-text("CSV インポート")')).toHaveClass(/active/)
+    await expect(page.locator('button:has-text("CSV インポート")')).toHaveClass(
+      /active/
+    )
     await expect(page.locator('#csv-file')).toBeVisible()
 
     // Switch to sequential generation
     await page.click('button:has-text("連番生成")')
-    await expect(page.locator('button:has-text("連番生成")')).toHaveClass(/active/)
+    await expect(page.locator('button:has-text("連番生成")')).toHaveClass(
+      /active/
+    )
     await expect(page.locator('#seq-prefix')).toBeVisible()
   })
 
   test('should generate QR codes from manual input', async ({ page }) => {
     const testTexts = 'https://example.com\nTest Text\n日本語テスト'
-    
+
     await page.fill('#manual-input', testTexts)
     await page.click('button:has-text("QR コード生成")')
 
@@ -44,19 +52,23 @@ test.describe('QR Code Batch Generator', () => {
     await expect(qrImages).toHaveCount(3)
 
     // Check if text content is displayed
-    await expect(page.locator('.qr-text').first()).toHaveText('https://example.com')
+    await expect(page.locator('.qr-text').first()).toHaveText(
+      'https://example.com'
+    )
   })
 
   test('should generate sequential QR codes', async ({ page }) => {
     await page.click('button:has-text("連番生成")')
-    
+
     await page.fill('#seq-prefix', 'ITEM-')
     await page.fill('#seq-start', '1')
     await page.fill('#seq-end', '3')
     await page.fill('#seq-suffix', '.pdf')
 
     // Check preview
-    await expect(page.locator('.sequential-preview code')).toContainText('ITEM-1.pdf, ITEM-2.pdf, ITEM-3.pdf')
+    await expect(page.locator('.sequential-preview code')).toContainText(
+      'ITEM-1.pdf, ITEM-2.pdf, ITEM-3.pdf'
+    )
 
     await page.click('button:has-text("QR コード生成")')
 
@@ -74,7 +86,7 @@ test.describe('QR Code Batch Generator', () => {
     // Generate some QR codes first
     await page.fill('#manual-input', 'Test 1\nTest 2\nTest 3')
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toHaveCount(3)
 
     // Test select all
@@ -92,13 +104,15 @@ test.describe('QR Code Batch Generator', () => {
 
     // Test individual selection
     await checkboxes.first().check()
-    await expect(page.locator('button:has-text("選択をダウンロード (1)")')).toBeVisible()
+    await expect(
+      page.locator('button:has-text("選択をダウンロード (1)")')
+    ).toBeVisible()
   })
 
   test('should download single QR code', async ({ page }) => {
     await page.fill('#manual-input', 'Download Test')
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toBeVisible()
 
     // Test PNG download
@@ -112,7 +126,7 @@ test.describe('QR Code Batch Generator', () => {
   test('should download SVG', async ({ page }) => {
     await page.fill('#manual-input', 'SVG Test')
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toBeVisible()
 
     // Test SVG download
@@ -125,8 +139,11 @@ test.describe('QR Code Batch Generator', () => {
 
   test('should show progress during generation', async ({ page }) => {
     // Generate many QR codes to see progress
-    const manyTexts = Array.from({ length: 20 }, (_, i) => `Item ${i + 1}`).join('\n')
-    
+    const manyTexts = Array.from(
+      { length: 20 },
+      (_, i) => `Item ${i + 1}`
+    ).join('\n')
+
     await page.fill('#manual-input', manyTexts)
     await page.click('button:has-text("QR コード生成")')
 
@@ -141,19 +158,19 @@ test.describe('QR Code Batch Generator', () => {
 
   test('should handle custom options', async ({ page }) => {
     await page.fill('#manual-input', 'Custom Options Test')
-    
+
     // Change size
     await page.selectOption('#batch-size', '512')
-    
+
     // Change margin
     await page.locator('#batch-margin').fill('8')
-    
+
     // Change colors
     await page.locator('#batch-dark-color').fill('#ff0000')
     await page.locator('#batch-light-color').fill('#0000ff')
 
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toBeVisible()
     await expect(page.locator('.qr-image img')).toBeVisible()
   })
@@ -161,7 +178,7 @@ test.describe('QR Code Batch Generator', () => {
   test('should clear all QR codes', async ({ page }) => {
     await page.fill('#manual-input', 'Clear Test')
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toBeVisible()
 
     // Handle confirm dialog
@@ -171,56 +188,66 @@ test.describe('QR Code Batch Generator', () => {
     })
 
     await page.click('button:has-text("すべてクリア")')
-    
+
     await expect(page.locator('.results-section')).not.toBeVisible()
   })
 
   test('should be disabled when no input', async ({ page }) => {
-    await expect(page.locator('button:has-text("QR コード生成")')).toBeDisabled()
-    
+    await expect(
+      page.locator('button:has-text("QR コード生成")')
+    ).toBeDisabled()
+
     // Enable after adding input
     await page.fill('#manual-input', 'Test')
     await expect(page.locator('button:has-text("QR コード生成")')).toBeEnabled()
-    
+
     // Disable when clearing input
     await page.fill('#manual-input', '')
-    await expect(page.locator('button:has-text("QR コード生成")')).toBeDisabled()
+    await expect(
+      page.locator('button:has-text("QR コード生成")')
+    ).toBeDisabled()
   })
 
   test('should handle empty lines in manual input', async ({ page }) => {
     await page.fill('#manual-input', 'Line 1\n\n\nLine 2\n\n')
     await page.click('button:has-text("QR コード生成")')
-    
+
     // Should only generate 2 QR codes (empty lines ignored)
     await expect(page.locator('.qr-item')).toHaveCount(2)
     await expect(page.locator('.qr-text').first()).toHaveText('Line 1')
     await expect(page.locator('.qr-text').nth(1)).toHaveText('Line 2')
   })
 
-  test('should handle sequential generation with invalid range', async ({ page }) => {
+  test('should handle sequential generation with invalid range', async ({
+    page,
+  }) => {
     await page.click('button:has-text("連番生成")')
-    
+
     await page.fill('#seq-start', '10')
     await page.fill('#seq-end', '5')
-    
-    await expect(page.locator('.sequential-preview code')).toContainText('開始番号は終了番号以下である必要があります')
-    await expect(page.locator('button:has-text("QR コード生成")')).toBeDisabled()
+
+    await expect(page.locator('.sequential-preview code')).toContainText(
+      '開始番号は終了番号以下である必要があります'
+    )
+    await expect(
+      page.locator('button:has-text("QR コード生成")')
+    ).toBeDisabled()
   })
 
   test('should be responsive on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
-    
+
     await page.fill('#manual-input', 'Mobile Test')
     await page.click('button:has-text("QR コード生成")')
-    
+
     await expect(page.locator('.qr-item')).toBeVisible()
-    
+
     // Check if method buttons stack vertically
     await expect(page.locator('.method-buttons')).toBeVisible()
-    
+
     // Check if options grid becomes single column
     await expect(page.locator('.options-grid')).toBeVisible()
-    
+
     // Check if batch actions wrap properly
     await expect(page.locator('.batch-actions')).toBeVisible()
   })
