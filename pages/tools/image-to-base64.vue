@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>画像をBase64変換</h1>
-    <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
-    =======
     <div class="tool-header">
       <h1>画像をBase64変換</h1>
       <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
     </div>
-    >>>>>>> origin/master
 
     <!-- 入力セクション -->
     <div class="input-section">
@@ -245,14 +240,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .input-section {
   margin: 2rem 0;
@@ -429,12 +417,7 @@ useHead({
 }
 
 @media (max-width: 768px) {
-  <<<<<<< HEAD .tool-content {
-    padding: 1rem;
-  }
-  =======
   /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
   .preview-container {
     grid-template-columns: 1fr;

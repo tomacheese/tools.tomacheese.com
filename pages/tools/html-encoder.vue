@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>HTMLエンティティエンコーダー</h1>
-    <p>HTMLの特殊文字をエンティティ形式に変換します。</p>
-    =======
     <div class="tool-header">
       <h1>HTMLエンティティエンコーダー</h1>
       <p>HTMLの特殊文字をエンティティ形式に変換します。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="converter-section">
       <div class="input-group">
@@ -203,14 +198,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .converter-section {
   display: grid;

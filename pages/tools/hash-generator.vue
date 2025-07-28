@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>ハッシュ生成</h1>
-    <p>MD5、SHA-1、SHA-256などのハッシュ値を生成します。</p>
-    =======
     <div class="tool-header">
       <h1>ハッシュ生成</h1>
       <p>MD5、SHA-1、SHA-256などのハッシュ値を生成します。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="input-section">
       <label for="input-text">テキスト</label>
@@ -134,14 +129,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .input-section {
   margin: 30px 0;

@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>QRコード読み取り</h1>
-    <p>画像からQRコードを読み取り、テキストを抽出します。</p>
-    =======
     <div class="tool-header">
       <h1>QRコード読み取り</h1>
       <p>画像からQRコードを読み取り、テキストを抽出します。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="input-section">
       <div class="upload-area">
@@ -259,14 +254,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .input-section {
   margin: 30px 0;

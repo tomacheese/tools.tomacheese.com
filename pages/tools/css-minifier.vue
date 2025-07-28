@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>CSS圧縮</h1>
-    <p>CSSコードを圧縮してファイルサイズを削減します。</p>
-    =======
     <div class="tool-header">
       <h1>CSS圧縮</h1>
       <p>CSSコードを圧縮してファイルサイズを削減します。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="minifier-container">
       <div class="input-section">
@@ -367,14 +362,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .minifier-container {
   margin-top: 20px;

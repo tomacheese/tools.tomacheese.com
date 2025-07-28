@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>JavaScript圧縮</h1>
-    <p>JavaScriptコードを圧縮してファイルサイズを削減します。</p>
-    =======
     <div class="tool-header">
       <h1>JavaScript圧縮</h1>
       <p>JavaScriptコードを圧縮してファイルサイズを削減します。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="input-section">
       <div class="options-grid">
@@ -209,14 +204,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .input-section {
   margin-bottom: 2rem;

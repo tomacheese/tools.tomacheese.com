@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>QR コード バッチ生成</h1>
-    <p>複数のQR コードを一括生成・管理できる高機能ツールです。</p>
-    =======
     <div class="tool-header">
       <h1>QR コード バッチ生成</h1>
       <p>複数のQR コードを一括生成・管理できる高機能ツールです。</p>
     </div>
-    >>>>>>> origin/master
 
     <!-- 入力方式選択 -->
     <div class="input-method-selector">
@@ -493,14 +488,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .input-method-selector {
   margin: 30px 0;

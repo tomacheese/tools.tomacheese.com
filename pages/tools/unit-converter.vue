@@ -1,14 +1,9 @@
 <template>
   <div class="tool-content">
-    <<<<<<< HEAD
-    <h1>単位変換</h1>
-    <p>長さ、重さ、温度などの単位を簡単に変換できます。</p>
-    =======
     <div class="tool-header">
       <h1>単位変換</h1>
       <p>長さ、重さ、温度などの単位を簡単に変換できます。</p>
     </div>
-    >>>>>>> origin/master
 
     <div class="converter-section">
       <div class="category-selector">
@@ -279,14 +274,7 @@ useHead({
 </script>
 
 <style scoped>
-<<<<<<< HEAD .tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-=======
 /* tool-content styles moved to global CSS */
->>>>>>> origin/master
 
 .converter-section {
   background: #f5f5f5;
