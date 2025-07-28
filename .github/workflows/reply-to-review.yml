@@ -20,15 +20,17 @@ jobs:
        github.event.requested_reviewer.id == 222856114)
 
     steps:
-      - name: Review
+      - name: Set variables
         run: |
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
-            PR_NUMBER=${{ github.event.issue.number }}
-            MESSAGE="It was reviewed by a request by comment."
+            echo "PR_NUMBER=${{ github.event.issue.number }}" >> $GITHUB_ENV
+            echo "MESSAGE=It was reviewed by a request by comment." >> $GITHUB_ENV
           else
-            PR_NUMBER=${{ github.event.pull_request.number }}
-            MESSAGE="It was reviewed by a reviewer assignment."
+            echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+            echo "MESSAGE=It was reviewed by a reviewer assignment." >> $GITHUB_ENV
           fi
-          gh pr review $PR_NUMBER -R "$GITHUB_REPOSITORY" -a -b "$MESSAGE"
+      - name: Review
+        run: |
+          gh pr review ${{ env.PR_NUMBER }} -R "$GITHUB_REPOSITORY" -a -b "${{ env.MESSAGE }}"
         env:
           GITHUB_TOKEN: ${{ secrets.AKUBIUSA_ACCESS_TOKEN }}
