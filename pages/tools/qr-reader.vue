@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>QRコード読み取り</h1>
     <p>画像からQRコードを読み取り、テキストを抽出します。</p>
+    =======
+    <div class="tool-header">
+      <h1>QRコード読み取り</h1>
+      <p>画像からQRコードを読み取り、テキストを抽出します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="input-section">
       <div class="upload-area">
@@ -109,6 +116,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { readQRCode } from '~/utils/qrcode'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 const uploadedImage = ref<string | null>(null)
 const isCameraActive = ref(false)
@@ -247,11 +259,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .input-section {
   margin: 30px 0;

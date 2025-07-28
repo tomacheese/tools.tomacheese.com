@@ -73,7 +73,8 @@
         v-if="validationError"
         style="color: #dc2626; font-size: 0.875rem; margin-top: 0.5rem"
       >
-        <strong>エラー:</strong> {{ validationError }}
+        <strong>エラー:</strong>
+        {{ validationError }}
       </div>
     </div>
 
@@ -119,8 +120,10 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">基本情報</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            文字数: {{ stats.characters }}<br />
-            行数: {{ stats.lines }}<br />
+            文字数: {{ stats.characters }}
+            <br />
+            行数: {{ stats.lines }}
+            <br />
             サイズ: {{ stats.sizeKB }} KB
           </div>
         </div>
@@ -128,8 +131,10 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">構造</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            オブジェクト: {{ stats.objects }}<br />
-            配列: {{ stats.arrays }}<br />
+            オブジェクト: {{ stats.objects }}
+            <br />
+            配列: {{ stats.arrays }}
+            <br />
             最大深度: {{ stats.maxDepth }}
           </div>
         </div>
@@ -137,9 +142,12 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">データ型</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            文字列: {{ stats.strings }}<br />
-            数値: {{ stats.numbers }}<br />
-            真偽値: {{ stats.booleans }}<br />
+            文字列: {{ stats.strings }}
+            <br />
+            数値: {{ stats.numbers }}
+            <br />
+            真偽値: {{ stats.booleans }}
+            <br />
             null: {{ stats.nulls }}
           </div>
         </div>
@@ -178,7 +186,8 @@
           JSONを読みやすい形式にインデントを付けて整形します
         </li>
         <li>
-          <strong>圧縮:</strong> 不要な空白や改行を削除してサイズを最小化します
+          <strong>圧縮:</strong>
+          不要な空白や改行を削除してサイズを最小化します
         </li>
         <li>
           <strong>検証:</strong>
@@ -382,7 +391,7 @@ watch(inputJson, () => {
 
 // SEO
 useHead({
-  title: 'JSON整形 - Tools.tomacheese.com',
+  title: 'JSON整形 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

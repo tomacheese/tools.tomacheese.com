@@ -28,7 +28,7 @@ test.describe('Homepage', () => {
     expect(cardCount).toBeGreaterThanOrEqual(50)
 
     // Check if navigation is present
-    await expect(page.locator('.logo')).toHaveText('Tools.tomacheese.com')
+    await expect(page.locator('.logo')).toHaveText('tools.tomacheese.com')
     await expect(page.locator('.nav a')).toHaveCount(2) // Home and About links
   })
 

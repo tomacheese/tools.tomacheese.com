@@ -37,8 +37,9 @@
                   transform: translateY(-50%);
                   color: #64748b;
                 "
-                >¥</span
               >
+                ¥
+              </span>
             </div>
           </div>
 
@@ -476,7 +477,7 @@ watch(
 
 // SEO
 useHead({
-  title: '割り勘計算 - Tools.tomacheese.com',
+  title: '割り勘計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

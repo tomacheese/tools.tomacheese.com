@@ -1,9 +1,11 @@
 <template>
-  <div class="diff-checker">
-    <h1>テキスト差分チェッカー</h1>
-    <p>
-      2つのテキストの差分を視覚的に表示します。追加・削除・変更された部分がハイライトされます。
-    </p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>テキスト差分チェッカー</h1>
+      <p>
+        2つのテキストの差分を視覚的に表示します。追加・削除・変更された部分がハイライトされます。
+      </p>
+    </div>
 
     <div class="input-container">
       <div class="input-section">
@@ -99,6 +101,11 @@
 import { ref, computed } from 'vue'
 import { diffLines, diffWords } from 'diff'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const textA = ref('')
 const textB = ref('')
 const ignoreWhitespace = ref(false)
@@ -161,7 +168,9 @@ const diffA = computed(() => {
       if (part.removed) {
         return `<div class="diff-line removed">${escapeHtml(part.value)}</div>`
       } else if (!part.added) {
-        return `<div class="diff-line unchanged">${escapeHtml(part.value)}</div>`
+        return `<div class="diff-line unchanged">${escapeHtml(
+          part.value
+        )}</div>`
       }
       return ''
     })
@@ -176,7 +185,9 @@ const diffB = computed(() => {
       if (part.added) {
         return `<div class="diff-line added">${escapeHtml(part.value)}</div>`
       } else if (!part.removed) {
-        return `<div class="diff-line unchanged">${escapeHtml(part.value)}</div>`
+        return `<div class="diff-line unchanged">${escapeHtml(
+          part.value
+        )}</div>`
       }
       return ''
     })
@@ -203,7 +214,9 @@ const unifiedDiff = computed(() => {
       return lines
         .map(
           line =>
-            `<span class="unified-line ${className}">${prefix} ${escapeHtml(line)}</span>`
+            `<span class="unified-line ${className}">${prefix} ${escapeHtml(
+              line
+            )}</span>`
         )
         .join('\n')
     })
@@ -278,7 +291,7 @@ const loadJsonExample = () => {
 
 // メタデータ
 useHead({
-  title: 'テキスト差分チェッカー - Tools.tomacheese.com',
+  title: 'テキスト差分チェッカー - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
@@ -290,11 +303,7 @@ useHead({
 </script>
 
 <style scoped>
-.diff-checker {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* Component-specific styles - tool-content styling comes from global CSS */
 
 .input-container {
   display: grid;

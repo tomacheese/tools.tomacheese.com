@@ -4,7 +4,7 @@
 
 ## プロジェクト概要
 
-Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
+tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
 
 ### 技術スタック
 
@@ -33,8 +33,10 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 ### コミュニケーション要件
 
+- **Issue タイトル**: 日本語で記述
+- **Issue 本文**: 日本語で記述
 - **PR 本文**: 日本語で記述
-- **PR タイトル**: 英語で記述（Conventional Commits の仕様に従う）
+- **PR タイトル**: 日本語で記述（Conventional Commits の仕様に従う）
 - **コミットメッセージ**: 英語で記述
 - **レビューコメント**: 日本語で記述
 - **コード内コメント**: 日本語で記述
@@ -50,7 +52,7 @@ Tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 ### コミット規約
 
-PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください：
+PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください。
 
 ```
 feat: 新機能追加
@@ -103,7 +105,7 @@ chore: その他の変更
 
 ### ツール実装パターン
 
-新しいツールを実装する場合の手順：
+新しいツールを実装する場合の手順は以下の通りです。
 
 1. `/pages/tools/[tool-name].vue` にツールページを作成
 2. `composables/useTools.ts` にツールメタデータを追加
@@ -133,20 +135,20 @@ tests/                # テストファイル
 <template>
   <div class="max-w-4xl mx-auto p-6">
     <ToolHeader :title="title" :description="description" />
-    
+
     <!-- ツール固有のコンテンツ -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- 入力エリア -->
       <div class="space-y-4">
         <!-- フォームコンポーネント -->
       </div>
-      
+
       <!-- 出力エリア -->
       <div class="space-y-4">
         <!-- 結果表示エリア -->
       </div>
     </div>
-    
+
     <ToolFooter />
   </div>
 </template>
@@ -293,10 +295,10 @@ import { test, expect } from '@playwright/test'
 
 test('ツール名の基本機能', async ({ page }) => {
   await page.goto('/tools/tool-name')
-  
+
   // ページタイトルの確認
   await expect(page).toHaveTitle(/ツール名/)
-  
+
   // 入力と結果の確認
   await page.fill('input[type="text"]', 'test input')
   await page.click('button[type="submit"]')
@@ -305,7 +307,7 @@ test('ツール名の基本機能', async ({ page }) => {
 
 test('エラーハンドリング', async ({ page }) => {
   await page.goto('/tools/tool-name')
-  
+
   // 無効な入力でエラー表示
   await page.fill('input[type="text"]', '')
   await page.click('button[type="submit"]')
@@ -359,7 +361,7 @@ watchEffect(() => {
 
 ## 禁止事項
 
-以下のコードは生成しないでください：
+以下のコードは生成しないでください。
 
 - `fetch()` や `axios` による外部 API 通信
 - サーバーサイドレンダリングの実装
@@ -371,7 +373,7 @@ watchEffect(() => {
 
 ## 品質チェックリスト
 
-コード生成時に以下を確認してください：
+コード生成時に以下を確認してください。
 
 - [ ] TypeScript の型チェックが通る
 - [ ] Vue 3 Composition API を使用している
@@ -398,4 +400,3 @@ pnpm test:e2e       # E2E テスト
 # ビルド
 pnpm generate
 ```
-

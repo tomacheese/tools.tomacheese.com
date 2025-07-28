@@ -1,10 +1,12 @@
 <template>
-  <div class="lorem-generator">
-    <h1>Lorem Ipsum生成</h1>
-    <p>
-      ダミーテキスト（Lorem
-      Ipsum）を生成します。デザインやレイアウトのテスト用にご利用ください。
-    </p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>Lorem Ipsum生成</h1>
+      <p>
+        ダミーテキスト（Lorem
+        Ipsum）を生成します。デザインやレイアウトのテスト用にご利用ください。
+      </p>
+    </div>
 
     <div class="settings">
       <div class="form-group">
@@ -80,6 +82,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 // フォームの状態
 const type = ref<'paragraphs' | 'sentences' | 'words' | 'characters'>(
@@ -403,7 +410,7 @@ generateText()
 
 // メタデータ
 useHead({
-  title: 'Lorem Ipsum生成 - Tools.tomacheese.com',
+  title: 'Lorem Ipsum生成 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
@@ -415,11 +422,7 @@ useHead({
 </script>
 
 <style scoped>
-.lorem-generator {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .settings {
   background-color: #f6f8fa;

@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>QRコード生成</h1>
     <p>テキストやURLからQRコードを生成します。</p>
+    =======
+    <div class="tool-header">
+      <h1>QRコード生成</h1>
+      <p>テキストやURLからQRコードを生成します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="input-section">
       <label for="input-text">テキスト・URL</label>
@@ -77,6 +84,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { generateQRCode } from '~/utils/qrcode'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 const inputText = ref('')
 const size = ref(256)

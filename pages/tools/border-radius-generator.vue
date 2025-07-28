@@ -1,7 +1,9 @@
 <template>
   <div class="tool-content">
-    <h1>Border Radius生成</h1>
-    <p>CSSのborder-radiusプロパティを視覚的に生成します。</p>
+    <div class="tool-header">
+      <h1>Border Radius生成</h1>
+      <p>CSSのborder-radiusプロパティを視覚的に生成します。</p>
+    </div>
 
     <div class="generator-layout">
       <div class="controls-section">
@@ -217,6 +219,11 @@ import {
   type BorderRadiusConfig,
 } from '~/utils/borderRadiusGenerator'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const config = ref<BorderRadiusConfig>({
   topLeft: { horizontal: 20, vertical: 20 },
   topRight: { horizontal: 20, vertical: 20 },
@@ -330,11 +337,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+/* tool-content styles moved to global CSS */
 
 .generator-layout {
   display: grid;

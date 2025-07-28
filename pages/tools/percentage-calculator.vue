@@ -354,7 +354,7 @@ watch(selectedType, () => {
 
 // SEO
 useHead({
-  title: 'パーセント計算 - Tools.tomacheese.com',
+  title: 'パーセント計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

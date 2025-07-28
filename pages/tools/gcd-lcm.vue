@@ -6,9 +6,9 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label"
-        >数値を入力してください（カンマまたはスペース区切り）</label
-      >
+      <label class="form-label">
+        数値を入力してください（カンマまたはスペース区切り）
+      </label>
       <input
         v-model="numbersInput"
         type="text"
@@ -109,7 +109,8 @@
               :key="number"
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              <strong>{{ number }}:</strong> {{ factors.join(' × ') }}
+              <strong>{{ number }}:</strong>
+              {{ factors.join(' × ') }}
             </div>
           </div>
         </div>
@@ -157,9 +158,9 @@
         "
       >
         <strong>エラー:</strong>
-        <span v-if="validNumbers.length === 0"
-          >有効な数値を入力してください。</span
-        >
+        <span v-if="validNumbers.length === 0">
+          有効な数値を入力してください。
+        </span>
         <span v-else>2つ以上の数値を入力してください。</span>
       </div>
     </div>
@@ -192,7 +193,10 @@
           <strong>最小公倍数（LCM）:</strong>
           複数の数の共通な倍数のうち最小のもの
         </li>
-        <li><strong>関係式:</strong> GCD(a,b) × LCM(a,b) = a × b</li>
+        <li>
+          <strong>関係式:</strong>
+          GCD(a,b) × LCM(a,b) = a × b
+        </li>
       </ul>
     </div>
   </div>
@@ -332,7 +336,7 @@ const lcmExplanation = computed(() => {
 
 // SEO
 useHead({
-  title: '最大公約数・最小公倍数計算 - Tools.tomacheese.com',
+  title: '最大公約数・最小公倍数計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

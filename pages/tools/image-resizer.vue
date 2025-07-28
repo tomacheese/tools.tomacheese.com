@@ -1,9 +1,11 @@
 <template>
   <div class="tool-content">
-    <h1>画像リサイズ</h1>
-    <p>
-      画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応しています。
-    </p>
+    <div class="tool-header">
+      <h1>画像リサイズ</h1>
+      <p>
+        画像のサイズを変更・リサイズします。JPEG、PNG、WebP形式に対応しています。
+      </p>
+    </div>
 
     <div class="input-section">
       <div
@@ -171,6 +173,11 @@ import {
   type ImageInfo,
 } from '~/utils/imageResizer'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const fileInput = ref<HTMLInputElement>()
 const originalImage = ref<File | null>(null)
 const originalInfo = ref<ImageInfo>({
@@ -328,11 +335,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+/* tool-content styles moved to global CSS */
 
 .input-section {
   margin-bottom: 2rem;

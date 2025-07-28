@@ -171,9 +171,12 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">基本情報</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            文字数: {{ stats.charCount }}<br />
-            行数: {{ stats.lineCount }}<br />
-            クエリ数: {{ stats.queryCount }}<br />
+            文字数: {{ stats.charCount }}
+            <br />
+            行数: {{ stats.lineCount }}
+            <br />
+            クエリ数: {{ stats.queryCount }}
+            <br />
             推定方言:
             {{ getDialectLabel(detectedDialect) }}
           </div>
@@ -182,8 +185,10 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">構造</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            テーブル数: {{ stats.tableCount }}<br />
-            JOIN数: {{ stats.joinCount }}<br />
+            テーブル数: {{ stats.tableCount }}
+            <br />
+            JOIN数: {{ stats.joinCount }}
+            <br />
             WHERE条件: {{ stats.whereConditions }}
           </div>
         </div>
@@ -191,10 +196,14 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">クエリタイプ</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            SELECT: {{ stats.queryTypes.select }}<br />
-            INSERT: {{ stats.queryTypes.insert }}<br />
-            UPDATE: {{ stats.queryTypes.update }}<br />
-            DELETE: {{ stats.queryTypes.delete }}<br />
+            SELECT: {{ stats.queryTypes.select }}
+            <br />
+            INSERT: {{ stats.queryTypes.insert }}
+            <br />
+            UPDATE: {{ stats.queryTypes.update }}
+            <br />
+            DELETE: {{ stats.queryTypes.delete }}
+            <br />
             DDL: {{ stats.queryTypes.ddl }}
           </div>
         </div>
@@ -233,7 +242,8 @@
           SQLクエリを読みやすい形式にインデントを付けて整形します
         </li>
         <li>
-          <strong>圧縮:</strong> 不要な空白や改行を削除してサイズを最小化します
+          <strong>圧縮:</strong>
+          不要な空白や改行を削除してサイズを最小化します
         </li>
         <li>
           <strong>検証:</strong>
@@ -475,7 +485,7 @@ watch(inputSql, () => {
 
 // SEO
 useHead({
-  title: 'SQLフォーマッター - Tools.tomacheese.com',
+  title: 'SQLフォーマッター - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

@@ -1,9 +1,11 @@
 <template>
   <div class="tool-content">
-    <h1>住宅ローン計算</h1>
-    <p>
-      住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。
-    </p>
+    <div class="tool-header">
+      <h1>住宅ローン計算</h1>
+      <p>
+        住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。
+      </p>
+    </div>
 
     <div class="input-section">
       <div class="form-group">
@@ -152,6 +154,11 @@ import {
   type MortgageResult,
 } from '~/utils/mortgage-calculator'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const loanAmount = ref<number>(30000000)
 const downPayment = ref<number>(3000000)
 const interestRate = ref<number>(1.5)
@@ -196,11 +203,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+/* tool-content styles moved to global CSS */
 
 h1 {
   color: #333;
@@ -398,9 +401,7 @@ tr:last-child td {
 }
 
 @media (max-width: 768px) {
-  .tool-content {
-    padding: 1rem;
-  }
+  /* tool-content styles moved to global CSS */
 
   .input-section,
   .result {

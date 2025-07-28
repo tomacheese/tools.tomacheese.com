@@ -1,9 +1,11 @@
 <template>
   <div class="tool-content">
-    <h1>複利計算</h1>
-    <p>
-      複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額を入力して将来の資産価値を確認できます。
-    </p>
+    <div class="tool-header">
+      <h1>複利計算</h1>
+      <p>
+        複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額を入力して将来の資産価値を確認できます。
+      </p>
+    </div>
 
     <div class="input-section">
       <div class="form-group">
@@ -127,6 +129,11 @@ import { calculateCompoundInterest } from '~/utils/compound-interest'
 import { formatCurrency, formatPercentage } from '~/utils/mortgage-calculator'
 import type { CompoundInterestResult } from '~/utils/compound-interest'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const principal = ref<number>(1000000)
 const annualRate = ref<number>(5)
 const compoundingFrequency = ref<number>(12)
@@ -162,11 +169,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+/* tool-content styles moved to global CSS */
 
 h1 {
   color: #333;
@@ -302,9 +305,7 @@ tr:hover {
 }
 
 @media (max-width: 768px) {
-  .tool-content {
-    padding: 1rem;
-  }
+  /* tool-content styles moved to global CSS */
 
   .input-section,
   .result {

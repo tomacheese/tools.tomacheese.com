@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>画像をBase64変換</h1>
     <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
+    =======
+    <div class="tool-header">
+      <h1>画像をBase64変換</h1>
+      <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <!-- 入力セクション -->
     <div class="input-section">
@@ -28,7 +35,8 @@
         </svg>
         <p>画像をドラッグ＆ドロップ</p>
         <p class="drop-zone-text">
-          または<span class="highlight">クリックして選択</span>
+          または
+          <span class="highlight">クリックして選択</span>
         </p>
         <p class="drop-zone-formats">対応形式: JPEG, PNG, GIF, WebP, BMP</p>
       </div>
@@ -48,20 +56,30 @@
         <div class="preview-container">
           <img :src="imageData.dataUrl" alt="Preview" class="preview-image" />
           <div class="image-info">
-            <p><strong>ファイル名:</strong> {{ fileName }}</p>
             <p>
-              <strong>元のサイズ:</strong> {{ formatFileSize(originalSize) }}
+              <strong>ファイル名:</strong>
+              {{ fileName }}
+            </p>
+            <p>
+              <strong>元のサイズ:</strong>
+              {{ formatFileSize(originalSize) }}
             </p>
             <p>
               <strong>Base64サイズ:</strong>
               {{ formatFileSize(imageData.size) }}
             </p>
-            <p><strong>サイズ増加率:</strong> {{ sizeIncrease }}%</p>
             <p>
-              <strong>画像サイズ:</strong> {{ imageData.width }} ×
-              {{ imageData.height }}px
+              <strong>サイズ増加率:</strong>
+              {{ sizeIncrease }}%
             </p>
-            <p><strong>形式:</strong> {{ imageData.mimeType }}</p>
+            <p>
+              <strong>画像サイズ:</strong>
+              {{ imageData.width }} × {{ imageData.height }}px
+            </p>
+            <p>
+              <strong>形式:</strong>
+              {{ imageData.mimeType }}
+            </p>
           </div>
         </div>
       </div>
@@ -119,6 +137,11 @@ import {
   imageToBase64,
 } from '~/utils/imageToBase64'
 import { formatFileSize } from '~/utils/imageResizer'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement>()
@@ -210,7 +233,7 @@ const downloadResult = () => {
 }
 
 useHead({
-  title: '画像をBase64変換 - Tools.tomacheese.com',
+  title: '画像をBase64変換 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
@@ -222,11 +245,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .input-section {
   margin: 2rem 0;
@@ -403,9 +429,12 @@ useHead({
 }
 
 @media (max-width: 768px) {
-  .tool-content {
+  <<<<<<< HEAD .tool-content {
     padding: 1rem;
   }
+  =======
+  /* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
   .preview-container {
     grid-template-columns: 1fr;

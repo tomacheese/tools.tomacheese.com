@@ -1,7 +1,9 @@
 <template>
-  <div class="regex-tester">
-    <h1>正規表現テスター</h1>
-    <p>正規表現のテストとマッチング結果を確認できます。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>正規表現テスター</h1>
+      <p>正規表現のテストとマッチング結果を確認できます。</p>
+    </div>
 
     <div class="form-group">
       <label for="regex">正規表現パターン</label>
@@ -17,21 +19,22 @@
     <div class="form-group">
       <label for="flags">フラグ</label>
       <div class="flags">
-        <label
-          ><input v-model="flags.global" type="checkbox" /> g
-          (グローバル)</label
-        >
-        <label
-          ><input v-model="flags.ignoreCase" type="checkbox" /> i
-          (大文字小文字を無視)</label
-        >
-        <label
-          ><input v-model="flags.multiline" type="checkbox" /> m (複数行)</label
-        >
-        <label
-          ><input v-model="flags.dotAll" type="checkbox" /> s (.
-          が改行にマッチ)</label
-        >
+        <label>
+          <input v-model="flags.global" type="checkbox" />
+          g (グローバル)
+        </label>
+        <label>
+          <input v-model="flags.ignoreCase" type="checkbox" />
+          i (大文字小文字を無視)
+        </label>
+        <label>
+          <input v-model="flags.multiline" type="checkbox" />
+          m (複数行)
+        </label>
+        <label>
+          <input v-model="flags.dotAll" type="checkbox" />
+          s (. が改行にマッチ)
+        </label>
       </div>
     </div>
 
@@ -46,14 +49,23 @@
       ></textarea>
     </div>
 
-    <div v-if="error" class="error"><strong>エラー:</strong> {{ error }}</div>
+    <div v-if="error" class="error">
+      <strong>エラー:</strong>
+      {{ error }}
+    </div>
 
     <div v-if="!error && pattern && testText" class="results">
       <h3>マッチ結果</h3>
 
       <div class="match-info">
-        <p><strong>パターン:</strong> /{{ pattern }}/{{ flagString }}</p>
-        <p><strong>マッチ数:</strong> {{ matches.length }}個</p>
+        <p>
+          <strong>パターン:</strong>
+          /{{ pattern }}/{{ flagString }}
+        </p>
+        <p>
+          <strong>マッチ数:</strong>
+          {{ matches.length }}個
+        </p>
         <p>
           <strong>テスト結果:</strong>
           <span :class="matches.length > 0 ? 'match-success' : 'match-failure'">
@@ -73,10 +85,10 @@
             <div class="match-header">
               <strong>マッチ {{ index + 1 }}:</strong>
               <span class="match-text">"{{ match.text }}"</span>
-              <span class="match-position"
-                >(位置: {{ match.index }} -
-                {{ match.index + match.text.length - 1 }})</span
-              >
+              <span class="match-position">
+                (位置: {{ match.index }} -
+                {{ match.index + match.text.length - 1 }})
+              </span>
             </div>
             <div
               v-if="match.groups && match.groups.length > 0"
@@ -120,6 +132,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 // フォームの状態
 const pattern = ref('')
@@ -271,7 +288,7 @@ watch([pattern, testText, flags], testRegex, { deep: true })
 
 // メタデータ
 useHead({
-  title: '正規表現テスター - Tools.tomacheese.com',
+  title: '正規表現テスター - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
@@ -283,11 +300,7 @@ useHead({
 </script>
 
 <style scoped>
-.regex-tester {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .form-group {
   margin-bottom: 20px;

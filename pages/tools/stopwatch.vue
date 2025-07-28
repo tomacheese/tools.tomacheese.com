@@ -1,9 +1,18 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>ストップウォッチ</h1>
     <p>
       高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。
     </p>
+    =======
+    <div class="tool-header">
+      <h1>ストップウォッチ</h1>
+      <p>
+        高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。
+      </p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="stopwatch-layout">
       <div class="display-section">
@@ -144,6 +153,11 @@ import {
 } from '~/utils/stopwatch'
 import { formatTimeToString } from '~/utils/time-utils'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const stopwatch = ref<StopwatchState>(createStopwatch())
 const updateInterval = ref<number | null>(null)
 
@@ -275,11 +289,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .stopwatch-layout {
   display: grid;

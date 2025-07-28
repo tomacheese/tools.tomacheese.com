@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>JavaScript圧縮</h1>
     <p>JavaScriptコードを圧縮してファイルサイズを削減します。</p>
+    =======
+    <div class="tool-header">
+      <h1>JavaScript圧縮</h1>
+      <p>JavaScriptコードを圧縮してファイルサイズを削減します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="input-section">
       <div class="options-grid">
@@ -104,6 +111,11 @@ import {
 } from '~/utils/jsMinifier'
 import { formatBytes } from '~/utils/cssMinifier'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const input = ref('')
 const output = ref('')
 const error = ref('')
@@ -197,11 +209,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .input-section {
   margin-bottom: 2rem;

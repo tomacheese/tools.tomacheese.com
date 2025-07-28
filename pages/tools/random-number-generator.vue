@@ -420,7 +420,7 @@ const exportToCSV = () => {
 
 // SEO
 useHead({
-  title: '乱数生成 - Tools.tomacheese.com',
+  title: '乱数生成 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

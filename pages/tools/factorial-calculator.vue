@@ -407,7 +407,7 @@ const selectFactorial = value => {
 
 // SEO
 useHead({
-  title: '階乗計算 - Tools.tomacheese.com',
+  title: '階乗計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

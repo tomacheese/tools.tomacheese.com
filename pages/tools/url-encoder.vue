@@ -66,9 +66,9 @@
     <!-- デコードタブ -->
     <div v-if="activeTab === 'decode'">
       <div class="form-group">
-        <label for="encodedUrlInput" class="form-label"
-          >エンコード済みURL・テキスト</label
-        >
+        <label for="encodedUrlInput" class="form-label">
+          エンコード済みURL・テキスト
+        </label>
         <textarea
           id="encodedUrlInput"
           v-model="encodedUrlInput"
@@ -336,7 +336,7 @@ const copyToClipboard = async text => {
 
 // SEO
 useHead({
-  title: 'URLエンコード・デコード - Tools.tomacheese.com',
+  title: 'URLエンコード・デコード - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

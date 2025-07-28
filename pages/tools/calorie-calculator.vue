@@ -1,9 +1,11 @@
 <template>
   <div class="tool-content">
-    <h1>カロリー計算</h1>
-    <p>
-      基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素の配分を提案します。
-    </p>
+    <div class="tool-header">
+      <h1>カロリー計算</h1>
+      <p>
+        基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素の配分を提案します。
+      </p>
+    </div>
 
     <div class="input-section">
       <div class="form-group">
@@ -200,6 +202,11 @@ import {
 } from '~/utils/calorie-calculator'
 import type { WeightUnit } from '~/utils/water-intake'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const gender = ref<Gender>('male')
 const age = ref<number>(30)
 const weight = ref<number>(70)
@@ -246,11 +253,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+/* tool-content styles moved to global CSS */
 
 h1 {
   color: #333;
@@ -486,9 +489,7 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .tool-content {
-    padding: 1rem;
-  }
+  /* tool-content styles moved to global CSS */
 
   .input-section,
   .result {

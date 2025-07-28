@@ -205,7 +205,7 @@ onUnmounted(() => {
 
 // SEO
 useHead({
-  title: '世界時計 - Tools.tomacheese.com',
+  title: '世界時計 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

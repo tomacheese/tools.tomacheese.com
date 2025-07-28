@@ -166,7 +166,7 @@ const result = computed((): BMIResult | null => {
 })
 
 useHead({
-  title: 'BMI計算 - Tools.tomacheese.com',
+  title: 'BMI計算 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

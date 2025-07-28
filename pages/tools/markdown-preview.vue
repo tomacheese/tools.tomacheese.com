@@ -1,7 +1,9 @@
 <template>
-  <div class="markdown-preview">
-    <h1>Markdownプレビュー</h1>
-    <p>MarkdownテキストをHTMLでリアルタイムプレビューします。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>Markdownプレビュー</h1>
+      <p>MarkdownテキストをHTMLでリアルタイムプレビューします。</p>
+    </div>
 
     <div class="editor-container">
       <div class="editor-section">
@@ -40,23 +42,51 @@
       <div class="syntax-grid">
         <div class="syntax-item">
           <strong>見出し</strong>
-          <code># H1<br />## H2<br />### H3</code>
+          <code>
+            # H1
+            <br />
+            ## H2
+            <br />
+            ### H3
+          </code>
         </div>
         <div class="syntax-item">
           <strong>強調</strong>
-          <code>**太字**<br />*斜体*<br />~~取り消し線~~</code>
+          <code>
+            **太字**
+            <br />
+            *斜体*
+            <br />
+            ~~取り消し線~~
+          </code>
         </div>
         <div class="syntax-item">
           <strong>リスト</strong>
-          <code>- 箇条書き<br />1. 番号付きリスト</code>
+          <code>
+            - 箇条書き
+            <br />
+            1. 番号付きリスト
+          </code>
         </div>
         <div class="syntax-item">
           <strong>リンク</strong>
-          <code>[テキスト](URL)<br />![画像](URL)</code>
+          <code>
+            [テキスト](URL)
+            <br />
+            ![画像](URL)
+          </code>
         </div>
         <div class="syntax-item">
           <strong>コード</strong>
-          <code>`インライン`<br />```<br />ブロック<br />```</code>
+          <code>
+            `インライン`
+            <br />
+            ```
+            <br />
+            ブロック
+            <br />
+            ```
+          </code>
         </div>
         <div class="syntax-item">
           <strong>引用</strong>
@@ -70,6 +100,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 const markdownText = ref('')
 
@@ -185,7 +220,7 @@ const copyMarkdown = async () => {
 
 // メタデータ
 useHead({
-  title: 'Markdownプレビュー - Tools.tomacheese.com',
+  title: 'Markdownプレビュー - tools.tomacheese.com',
   meta: [
     {
       name: 'description',
@@ -197,11 +232,7 @@ useHead({
 </script>
 
 <style scoped>
-.markdown-preview {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .editor-container {
   display: grid;

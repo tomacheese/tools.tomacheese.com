@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>CSS Gradient生成</h1>
     <p>CSSのgradientコードを視覚的に生成します。</p>
+    =======
+    <div class="tool-header">
+      <h1>CSS Gradient生成</h1>
+      <p>CSSのgradientコードを視覚的に生成します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="generator-layout">
       <div class="controls-section">
@@ -164,6 +171,11 @@ import {
   type GradientConfig,
 } from '~/utils/gradientGenerator'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const config = ref<GradientConfig>({
   type: 'linear',
   angle: 90,
@@ -263,11 +275,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .generator-layout {
   display: grid;

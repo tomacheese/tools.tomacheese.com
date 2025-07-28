@@ -1,7 +1,9 @@
 <template>
   <div class="tool-content">
-    <h1>年齢計算</h1>
-    <p>生年月日から現在の年齢を詳細に計算します。</p>
+    <div class="tool-header">
+      <h1>年齢計算</h1>
+      <p>生年月日から現在の年齢を詳細に計算します。</p>
+    </div>
 
     <div class="input-section">
       <div class="date-inputs">
@@ -244,6 +246,11 @@ const setToday = () => {
   }
 }
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 useHead({
   title: '年齢計算 - Tools',
   meta: [
@@ -257,11 +264,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+/* Component-specific styles - tool-content styling comes from global CSS */
 
 .input-section {
   margin-bottom: 2rem;

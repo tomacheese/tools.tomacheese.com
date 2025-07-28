@@ -60,8 +60,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >ABCDEFGHIJKLMNOPQRSTUVWXYZ</span
               >
+                ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              </span>
             </label>
             <label
               style="
@@ -79,8 +80,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >abcdefghijklmnopqrstuvwxyz</span
               >
+                abcdefghijklmnopqrstuvwxyz
+              </span>
             </label>
             <label
               style="
@@ -98,8 +100,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >0123456789</span
               >
+                0123456789
+              </span>
             </label>
             <label
               style="
@@ -117,8 +120,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >!@#$%^&*()_+-=[]{}|;:,.<>?</span
               >
+                !@#$%^&*()_+-=[]{}|;:,.<>?
+              </span>
             </label>
           </div>
         </div>
@@ -216,9 +220,9 @@
                   backgroundColor: getStrengthColor(password),
                 }"
               ></div>
-              <span style="font-size: 0.875rem; color: #64748b">{{
-                getStrengthText(calculateStrength(password))
-              }}</span>
+              <span style="font-size: 0.875rem; color: #64748b">
+                {{ getStrengthText(calculateStrength(password)) }}
+              </span>
             </div>
           </div>
         </div>
@@ -241,7 +245,8 @@
             <div
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              サイズ: {{ characterSetSize }}<br />
+              サイズ: {{ characterSetSize }}
+              <br />
               エントロピー: {{ entropy.toFixed(1) }} bits
             </div>
           </div>
@@ -250,7 +255,8 @@
             <div
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              組み合わせ: {{ totalCombinations }}<br />
+              組み合わせ: {{ totalCombinations }}
+              <br />
               推定解読時間: {{ crackTime }}
             </div>
           </div>
@@ -530,7 +536,7 @@ const copyToClipboard = async text => {
 
 // SEO
 useHead({
-  title: 'パスワード生成 - Tools.tomacheese.com',
+  title: 'パスワード生成 - tools.tomacheese.com',
   meta: [
     {
       name: 'description',

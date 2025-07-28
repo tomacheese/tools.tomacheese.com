@@ -1,7 +1,14 @@
 <template>
   <div class="tool-content">
+    <<<<<<< HEAD
     <h1>JSON to CSV変換</h1>
     <p>JSONデータをCSV形式に変換します。</p>
+    =======
+    <div class="tool-header">
+      <h1>JSON to CSV変換</h1>
+      <p>JSONデータをCSV形式に変換します。</p>
+    </div>
+    >>>>>>> origin/master
 
     <div class="converter-section">
       <div class="input-section">
@@ -145,6 +152,11 @@
 import { ref } from 'vue'
 import { jsonToCSV, validateJSON } from '~/utils/csv-json'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const jsonInput = ref('')
 const csvOutput = ref('')
 const delimiter = ref(',')
@@ -263,11 +275,14 @@ useHead({
 </script>
 
 <style scoped>
-.tool-content {
+<<<<<<< HEAD .tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
+=======
+/* tool-content styles moved to global CSS */
+>>>>>>> origin/master
 
 .converter-section {
   display: grid;
