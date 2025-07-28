@@ -61,6 +61,7 @@ export default defineConfig({
             '**/qr-reader.spec.ts',
             '**/timestamp-converter.spec.ts',
             '**/uuid-generator.spec.ts',
+            '**/duplicate-line-remover.spec.ts',
           ],
         },
       ]

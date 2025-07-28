@@ -24,10 +24,10 @@ export const analyzeText = (text: string): TextStats => {
   const bytes = new TextEncoder().encode(text).length
 
   // 文字種別統計
-  const hiragana = (text.match(/[\u3040-\u309F]/g) || []).length
-  const katakana = (text.match(/[\u30A0-\u30FF]/g) || []).length
-  const kanji = (text.match(/[\u4E00-\u9FAF]/g) || []).length
-  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) || []).length
+  const hiragana = (text.match(/[\u3040-\u309F]/g) ?? []).length
+  const katakana = (text.match(/[\u30A0-\u30FF]/g) ?? []).length
+  const kanji = (text.match(/[\u4E00-\u9FAF]/g) ?? []).length
+  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) ?? []).length
   const symbols = Math.max(
     0,
     charactersWithoutSpaces - hiragana - katakana - kanji - alphanumeric
@@ -102,7 +102,7 @@ export const decodeUrl = (encodedText: string): string => {
  */
 export const parseJsonSafely = (
   jsonString: string
-): { success: boolean; data?: any; error?: string } => {
+): { success: boolean; data?: unknown; error?: string } => {
   try {
     const data = JSON.parse(jsonString)
     return { success: true, data }

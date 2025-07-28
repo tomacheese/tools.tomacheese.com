@@ -283,13 +283,11 @@ const gcdExplanation = computed(() => {
   Object.values(primeFactorizations.value).forEach(factors => {
     const counted = {}
     factors.forEach(f => {
-      counted[f] = (counted[f] || 0) + 1
+      counted[f] = (counted[f] ?? 0) + 1
     })
 
     Object.entries(counted).forEach(([prime, count]) => {
-      if (!allFactors[prime]) {
-        allFactors[prime] = []
-      }
+      allFactors[prime] ??= []
       allFactors[prime].push(count)
     })
   })
@@ -314,13 +312,11 @@ const lcmExplanation = computed(() => {
   Object.values(primeFactorizations.value).forEach(factors => {
     const counted = {}
     factors.forEach(f => {
-      counted[f] = (counted[f] || 0) + 1
+      counted[f] = (counted[f] ?? 0) + 1
     })
 
     Object.entries(counted).forEach(([prime, count]) => {
-      if (!allFactors[prime]) {
-        allFactors[prime] = []
-      }
+      allFactors[prime] ??= []
       allFactors[prime].push(count)
     })
   })

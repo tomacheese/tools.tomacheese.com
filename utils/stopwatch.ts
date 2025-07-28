@@ -122,6 +122,15 @@ export function getAverageLapTime(laps: Lap[]): number {
 }
 
 export function exportStopwatchData(state: StopwatchState): string {
+  const bestLap = getBestLap(state.laps)
+  const worstLap = getWorstLap(state.laps)
+  const formattedBestLapTime = bestLap
+    ? formatTimeToString(bestLap.lapTime)
+    : '00:00.00'
+  const formattedWorstLapTime = worstLap
+    ? formatTimeToString(worstLap.lapTime)
+    : '00:00.00'
+
   const data = {
     totalTime: getCurrentElapsedTime(state),
     formattedTotalTime: formatTimeToString(getCurrentElapsedTime(state)),
@@ -135,15 +144,11 @@ export function exportStopwatchData(state: StopwatchState): string {
       timestamp: lap.timestamp.toISOString(),
     })),
     statistics: {
-      bestLapTime: getBestLap(state.laps)?.lapTime || 0,
-      worstLapTime: getWorstLap(state.laps)?.lapTime || 0,
+      bestLapTime: getBestLap(state.laps)?.lapTime ?? 0,
+      worstLapTime: getWorstLap(state.laps)?.lapTime ?? 0,
       averageLapTime: getAverageLapTime(state.laps),
-      formattedBestLapTime: getBestLap(state.laps)
-        ? formatTimeToString(getBestLap(state.laps)!.lapTime)
-        : '00:00.00',
-      formattedWorstLapTime: getWorstLap(state.laps)
-        ? formatTimeToString(getWorstLap(state.laps)!.lapTime)
-        : '00:00.00',
+      formattedBestLapTime,
+      formattedWorstLapTime,
       formattedAverageLapTime: formatTimeToString(
         getAverageLapTime(state.laps)
       ),
@@ -154,21 +159,31 @@ export function exportStopwatchData(state: StopwatchState): string {
   return JSON.stringify(data, null, 2)
 }
 
-export function validateStopwatchState(state: any): state is StopwatchState {
+export function validateStopwatchState(
+  state: unknown
+): state is StopwatchState {
+  if (typeof state !== 'object' || state === null) {
+    return false
+  }
+
+  const s = state as Record<string, unknown>
+
   return (
-    typeof state === 'object' &&
-    state !== null &&
-    (state.startTime === null || typeof state.startTime === 'number') &&
-    typeof state.elapsedTime === 'number' &&
-    typeof state.isRunning === 'boolean' &&
-    Array.isArray(state.laps) &&
-    state.laps.every(
-      (lap: any) =>
-        typeof lap === 'object' &&
-        typeof lap.id === 'number' &&
-        typeof lap.time === 'number' &&
-        typeof lap.lapTime === 'number' &&
-        lap.timestamp instanceof Date
-    )
+    (s.startTime === null || typeof s.startTime === 'number') &&
+    typeof s.elapsedTime === 'number' &&
+    typeof s.isRunning === 'boolean' &&
+    Array.isArray(s.laps) &&
+    s.laps.every((lap: unknown) => {
+      if (typeof lap !== 'object' || lap === null) {
+        return false
+      }
+      const l = lap as Record<string, unknown>
+      return (
+        typeof l.id === 'number' &&
+        typeof l.time === 'number' &&
+        typeof l.lapTime === 'number' &&
+        l.timestamp instanceof Date
+      )
+    })
   )
 }

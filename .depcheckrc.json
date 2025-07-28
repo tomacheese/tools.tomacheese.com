@@ -8,6 +8,8 @@
     "vue-tsc",
     "@eslint/js",
     "vue-eslint-parser",
+    "@vitest/coverage-v8",
+    "husky",
     "~"
   ],
   "ignorePatterns": [
