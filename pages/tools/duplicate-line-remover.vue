@@ -174,6 +174,7 @@ import {
 
 // メタデータ設定
 definePageMeta({
+  layout: 'tool',
   title: '重複行削除ツール',
   description:
     'テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。',
