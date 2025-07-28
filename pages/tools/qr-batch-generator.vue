@@ -292,14 +292,14 @@ const progress = computed(() => {
 // メソッド
 const onFileSelect = (event: Event) => {
   const target = event.target as HTMLInputElement
-  if (target.files && target.files[0]) {
+  if (target.files?.[0]) {
     processCSVFile(target.files[0])
   }
 }
 
 const onFileDrop = (event: DragEvent) => {
   event.preventDefault()
-  if (event.dataTransfer?.files && event.dataTransfer.files[0]) {
+  if (event.dataTransfer?.files?.[0]) {
     processCSVFile(event.dataTransfer.files[0])
   }
 }
@@ -347,14 +347,15 @@ const generateBatch = async () => {
           .filter(line => line.length > 0)
         break
       case 'csv':
-        textList = csvPreview.value.map(row => row[0] || '').filter(text => text.length > 0)
+        textList = csvPreview.value.map(row => row[0] ?? '').filter(text => text.length > 0)
         break
-      case 'sequential':
+      case 'sequential': {
         const { prefix, start, end, suffix } = sequentialOptions.value
         for (let i = start; i <= end; i++) {
           textList.push(`${prefix}${i}${suffix}`)
         }
         break
+      }
     }
 
     totalItems.value = textList.length
@@ -382,7 +383,8 @@ const generateBatch = async () => {
           svg: qrResult.svg
         })
       } catch (error) {
-        console.error(`Failed to generate QR code for: ${textList[i]}`, error)
+        // QR code generation failed - silently skip this item
+        // Error details: textList[i], error
       }
 
       // 重い処理を避けるため、少し待機
