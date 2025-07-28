@@ -186,10 +186,18 @@ test.describe('World Clock Tool', () => {
     const searchInput = page.locator('#citySearch')
 
     await searchInput.fill('バンコク')
+    await page.waitForSelector('.suggestion-item:has-text("バンコク")', {
+      state: 'visible',
+    })
     await page.locator('.suggestion-item:has-text("バンコク")').click()
+    await page.waitForTimeout(100) // DOM 更新の安定化を待つ
 
     await searchInput.fill('ドバイ')
+    await page.waitForSelector('.suggestion-item:has-text("ドバイ")', {
+      state: 'visible',
+    })
     await page.locator('.suggestion-item:has-text("ドバイ")').click()
+    await page.waitForTimeout(100) // DOM 更新の安定化を待つ
 
     // Should have 13 cities (11 default + 2 custom)
     await expect(page.locator('.city-card')).toHaveCount(13)
@@ -202,6 +210,7 @@ test.describe('World Clock Tool', () => {
 
     // Click reset
     await resetButton.click()
+    await page.waitForTimeout(200) // リセット処理の完了を待つ
 
     // Should be back to 12 default cities
     await expect(page.locator('.city-card')).toHaveCount(12)

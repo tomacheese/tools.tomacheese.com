@@ -137,11 +137,12 @@ test.describe('ストップウォッチツール', () => {
   test('リセット機能', async ({ page }) => {
     // ストップウォッチを開始してラップを追加
     await page.click('.control-button.primary')
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(200)
     await page.click('.control-button.secondary')
 
     // 停止してリセット
     await page.click('.control-button.primary')
+    await page.waitForTimeout(100) // 停止状態の安定化を待つ
     await page.click('.control-button.secondary')
 
     // 初期状態に戻る
