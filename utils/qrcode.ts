@@ -44,8 +44,10 @@ export async function generateQRCode(
 
     return { dataURL, svg }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('QRコード生成エラー:', error)
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.error('QRコード生成エラー:', error)
+    }
     throw new Error('QRコードの生成に失敗しました')
   }
 }
@@ -90,8 +92,10 @@ export async function readQRCode(imageDataURL: string): Promise<string | null> {
           resolve(null)
         }
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('QRコード読み取りエラー:', error)
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.error('QRコード読み取りエラー:', error)
+        }
         resolve(null)
       }
     }
@@ -140,8 +144,10 @@ export async function validateQRCode(
       originalText: text,
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('QRコード検証エラー:', error)
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.error('QRコード検証エラー:', error)
+    }
     return {
       success: false,
       generated: false,

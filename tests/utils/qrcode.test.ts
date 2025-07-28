@@ -151,8 +151,7 @@ describe('readQRCode', () => {
   })
 
   it('should return null for non-string input', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await readQRCode(null as any)
+    const result = await readQRCode(undefined)
     expect(result).toBeNull()
   })
 })
