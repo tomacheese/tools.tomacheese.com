@@ -67,6 +67,29 @@
         <button class="secondary" @click="copyDataURL">
           データURLをコピー
         </button>
+        <button class="verify" @click="verifyGeneratedQR" :disabled="isVerifying">
+          {{ isVerifying ? '検証中...' : 'QRコードを検証' }}
+        </button>
+      </div>
+      
+      <div v-if="verificationResult" class="verification-result">
+        <h4>検証結果:</h4>
+        <div :class="['status', verificationResult.isValid ? 'valid' : 'invalid']">
+          <span class="icon">{{ verificationResult.isValid ? '✅' : '❌' }}</span>
+          <span class="text">
+            {{ verificationResult.isValid ? 'QRコードは正常に読み取れます' : 'QRコードの読み取りに失敗しました' }}
+          </span>
+        </div>
+        <div v-if="verificationResult.readData" class="read-data">
+          <strong>読み取ったデータ:</strong>
+          <code>{{ verificationResult.readData }}</code>
+        </div>
+        <div v-if="verificationResult.isValid" class="match-status">
+          <span class="icon">{{ verificationResult.readData === inputText ? '✅' : '⚠️' }}</span>
+          <span class="text">
+            {{ verificationResult.readData === inputText ? '入力したテキストと一致しています' : '入力したテキストと異なります' }}
+          </span>
+        </div>
       </div>
       <div class="preview-text">
         <h4>エンコードされたテキスト:</h4>
@@ -78,7 +101,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { generateQRCode } from '~/utils/qrcode'
+import { generateQRCode, verifyQRCode } from '~/utils/qrcode'
 
 // レイアウト設定
 definePageMeta({
@@ -91,15 +114,17 @@ const margin = ref(4)
 const darkColor = ref('#000000')
 const lightColor = ref('#FFFFFF')
 const qrCode = ref<{ dataURL: string; svg: string } | null>(null)
+const verificationResult = ref<{ isValid: boolean; readData: string | null } | null>(null)
+const isVerifying = ref(false)
 
-const generateQR = () => {
+const generateQR = async () => {
   if (!inputText.value) {
     alert('テキストを入力してください')
     return
   }
 
   try {
-    qrCode.value = generateQRCode(inputText.value, {
+    qrCode.value = await generateQRCode(inputText.value, {
       width: size.value,
       margin: margin.value,
       color: {
@@ -107,9 +132,41 @@ const generateQR = () => {
         light: lightColor.value,
       },
     })
-  } catch {
-    // QR code generation failed
+    // QRコード生成後に検証結果をリセット
+    verificationResult.value = null
+  } catch (error) {
+    console.error('QRコード生成エラー:', error)
     alert('QRコードの生成中にエラーが発生しました。')
+  }
+}
+
+const verifyGeneratedQR = async () => {
+  if (!inputText.value || !qrCode.value) {
+    return
+  }
+
+  isVerifying.value = true
+  try {
+    const result = await verifyQRCode(inputText.value, {
+      width: size.value,
+      margin: margin.value,
+      color: {
+        dark: darkColor.value,
+        light: lightColor.value,
+      },
+    })
+    verificationResult.value = {
+      isValid: result.isValid,
+      readData: result.readData,
+    }
+  } catch (error) {
+    console.error('QRコード検証エラー:', error)
+    verificationResult.value = {
+      isValid: false,
+      readData: null,
+    }
+  } finally {
+    isVerifying.value = false
   }
 }
 
@@ -248,6 +305,88 @@ button.secondary {
 
 button.secondary:hover {
   background-color: #545b62;
+}
+
+button.verify {
+  background-color: #28a745;
+  color: white;
+  margin: 5px;
+}
+
+button.verify:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+button.verify:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.verification-result {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.verification-result h4 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.status.valid {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status.invalid {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.status .icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.read-data {
+  margin: 10px 0;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+}
+
+.read-data code {
+  word-break: break-all;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.match-status {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+}
+
+.match-status .icon {
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 .result {

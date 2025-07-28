@@ -1,5 +1,24 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { readQRCode } from '~/utils/qrcode'
+
+// Image のモック
+class MockImage {
+  onload: (() => void) | null = null
+  onerror: (() => void) | null = null
+  width = 100
+  height = 100
+  
+  set src(_: string) {
+    // テスト環境では即座にエラーを発生させる
+    setTimeout(() => {
+      if (this.onerror) {
+        this.onerror()
+      }
+    }, 0)
+  }
+}
+
+vi.stubGlobal('Image', MockImage)
 
 describe('QRコード読み取り', () => {
   it('無効な画像データURLでnullを返す', async () => {
@@ -36,12 +55,12 @@ describe('QRコード読み取り', () => {
     expect(result).toBeInstanceOf(Promise)
   })
 
-  it('バリデーションを通過した場合の処理', async () => {
-    // 有効なdata:image/ URLの場合はタイムアウトまたはnullが返される
+  it('画像読み込みエラーの場合nullを返す', async () => {
+    // 有効なdata:image/ URLでも、モックされた Image でエラーが発生する場合は null が返される
     const validDataURL =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
     const result = await readQRCode(validDataURL)
-    // テスト環境では Image が正常に動作しないため null が返される
+    // テスト環境では Image が onerror を呼び出すため null が返される
     expect(result).toBeNull()
   })
 })

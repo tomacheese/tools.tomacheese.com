@@ -151,6 +151,23 @@ test.describe('QR Code Generator', () => {
     await expect(page.locator('.preview-text code')).toHaveText(longText)
   })
 
+  test('should verify QR code successfully', async ({ page }) => {
+    await page.fill('textarea', 'Verification Test')
+    await page.click('button:has-text("QRコード生成")')
+
+    await expect(page.locator('.result')).toBeVisible()
+    
+    // Click verify button
+    await page.click('button:has-text("QRコードを検証")')
+    
+    // Wait for verification result
+    await expect(page.locator('.verification-result')).toBeVisible()
+    await expect(page.locator('.status.valid')).toBeVisible()
+    await expect(page.locator('.status.valid .text')).toHaveText('QRコードは正常に読み取れます')
+    await expect(page.locator('.read-data code')).toHaveText('Verification Test')
+    await expect(page.locator('.match-status .text')).toHaveText('入力したテキストと一致しています')
+  })
+
   test('should be responsive on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 })
 
@@ -162,6 +179,6 @@ test.describe('QR Code Generator', () => {
 
     // Check if buttons are stacked vertically on mobile
     const buttons = page.locator('.actions button')
-    await expect(buttons).toHaveCount(3)
+    await expect(buttons).toHaveCount(4) // Updated to 4 buttons (PNG, SVG, Copy, Verify)
   })
 })

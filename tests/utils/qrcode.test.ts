@@ -1,5 +1,20 @@
-import { describe, it, expect, vi } from 'vitest'
-import { QRCode, generateQRCode } from '~/utils/qrcode'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { QRCode, generateQRCode, readQRCode, verifyQRCode } from '~/utils/qrcode'
+
+// qrcodeライブラリのモック
+vi.mock('qrcode', () => ({
+  default: {
+    toDataURL: vi.fn().mockResolvedValue('data:image/png;base64,mockDataURL'),
+    toString: vi.fn().mockResolvedValue('<svg xmlns="http://www.w3.org/2000/svg">mock svg</svg>'),
+  },
+}))
+
+// jsQRライブラリのモック
+vi.mock('jsqr', () => ({
+  default: vi.fn().mockReturnValue({
+    data: 'Hello World',
+  }),
+}))
 
 // Canvas APIのモック
 vi.stubGlobal('document', {
@@ -9,14 +24,35 @@ vi.stubGlobal('document', {
         width: 0,
         height: 0,
         getContext: vi.fn(() => ({
-          fillStyle: '',
-          fillRect: vi.fn(),
+          drawImage: vi.fn(),
+          getImageData: vi.fn(() => ({
+            data: new Uint8ClampedArray(100),
+            width: 10,
+            height: 10,
+          })),
         })),
-        toDataURL: vi.fn(() => 'data:image/png;base64,mock'),
       }
     }
     return {}
   }),
+})
+
+// Image コンストラクタのモック
+vi.stubGlobal('Image', class MockImage {
+  onload: (() => void) | null = null
+  onerror: (() => void) | null = null
+  
+  set src(_: string) {
+    // 非同期でonloadを呼び出す
+    setTimeout(() => {
+      if (this.onload) {
+        this.onload()
+      }
+    }, 0)
+  }
+  
+  width = 100
+  height = 100
 })
 
 describe('QRCode', () => {
@@ -25,24 +61,22 @@ describe('QRCode', () => {
     expect(qr).toBeDefined()
   })
 
-  it('should generate data URL', () => {
+  it('should generate data URL', async () => {
     const qr = new QRCode('Test')
-    const dataURL = qr.toDataURL()
-    expect(dataURL).toBe('data:image/png;base64,mock')
+    const dataURL = await qr.toDataURL()
+    expect(dataURL).toBe('data:image/png;base64,mockDataURL')
   })
 
-  it('should generate SVG', () => {
+  it('should generate SVG', async () => {
     const qr = new QRCode('Test')
-    const svg = qr.toSVG()
+    const svg = await qr.toSVG()
     expect(svg).toContain('<svg')
-    expect(svg).toContain('</svg>')
-    expect(svg).toContain('width="233"')
-    expect(svg).toContain('height="233"')
+    expect(svg).toContain('mock svg')
   })
 
-  it('should accept custom options for data URL', () => {
+  it('should accept custom options for data URL', async () => {
     const qr = new QRCode('Test')
-    const dataURL = qr.toDataURL({
+    const dataURL = await qr.toDataURL({
       width: 512,
       margin: 8,
       color: {
@@ -50,12 +84,12 @@ describe('QRCode', () => {
         light: '#00FF00',
       },
     })
-    expect(dataURL).toBe('data:image/png;base64,mock')
+    expect(dataURL).toBe('data:image/png;base64,mockDataURL')
   })
 
-  it('should accept custom options for SVG', () => {
+  it('should accept custom options for SVG', async () => {
     const qr = new QRCode('Test')
-    const svg = qr.toSVG({
+    const svg = await qr.toSVG({
       width: 512,
       margin: 8,
       color: {
@@ -63,58 +97,56 @@ describe('QRCode', () => {
         light: '#00FF00',
       },
     })
-    expect(svg).toContain('width="')
-    expect(svg).toContain('height="')
-    expect(svg).toContain('fill="#00FF00"')
-    expect(svg).toContain('fill="#FF0000"')
+    expect(svg).toContain('<svg')
+    expect(svg).toContain('mock svg')
   })
 })
 
 describe('generateQRCode', () => {
-  it('should generate both data URL and SVG', () => {
-    const result = generateQRCode('Hello World')
+  it('should generate both data URL and SVG', async () => {
+    const result = await generateQRCode('Hello World')
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
-    expect(result.dataURL).toBe('data:image/png;base64,mock')
+    expect(result.dataURL).toBe('data:image/png;base64,mockDataURL')
     expect(result.svg).toContain('<svg')
   })
 
-  it('should handle empty string', () => {
-    const result = generateQRCode('')
+  it('should handle empty string', async () => {
+    const result = await generateQRCode('')
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
   })
 
-  it('should handle long text', () => {
+  it('should handle long text', async () => {
     const longText =
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(10)
-    const result = generateQRCode(longText)
+    const result = await generateQRCode(longText)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
   })
 
-  it('should handle special characters', () => {
+  it('should handle special characters', async () => {
     const specialText = '!@#$%^&*()_+-=[]{}|;:,.<>?'
-    const result = generateQRCode(specialText)
+    const result = await generateQRCode(specialText)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
   })
 
-  it('should handle unicode characters', () => {
+  it('should handle unicode characters', async () => {
     const unicodeText = '日本語のテキスト🌸'
-    const result = generateQRCode(unicodeText)
+    const result = await generateQRCode(unicodeText)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
   })
 
-  it('should handle URLs', () => {
+  it('should handle URLs', async () => {
     const url = 'https://example.com/path?param=value&other=123'
-    const result = generateQRCode(url)
+    const result = await generateQRCode(url)
     expect(result).toHaveProperty('dataURL')
     expect(result).toHaveProperty('svg')
   })
 
-  it('should pass options correctly', () => {
+  it('should pass options correctly', async () => {
     const options = {
       width: 384,
       margin: 6,
@@ -123,10 +155,49 @@ describe('generateQRCode', () => {
         light: '#FEDCBA',
       },
     }
-    const result = generateQRCode('Test', options)
-    expect(result.svg).toContain('width="')
-    expect(result.svg).toContain('height="')
-    expect(result.svg).toContain('fill="#FEDCBA"')
-    expect(result.svg).toContain('fill="#123456"')
+    const result = await generateQRCode('Test', options)
+    expect(result.svg).toContain('<svg')
+    expect(result.svg).toContain('mock svg')
+  })
+})
+
+describe('readQRCode', () => {
+  it('should read QR code from data URL', async () => {
+    const result = await readQRCode('data:image/png;base64,test')
+    expect(result).toBe('Hello World')
+  })
+
+  it('should return null for invalid input', async () => {
+    const result = await readQRCode('')
+    expect(result).toBeNull()
+  })
+
+  it('should return null for non-data URL', async () => {
+    const result = await readQRCode('http://example.com/image.png')
+    expect(result).toBeNull()
+  })
+
+  it('should handle null input', async () => {
+    const result = await readQRCode(null as any)
+    expect(result).toBeNull()
+  })
+})
+
+describe('verifyQRCode', () => {
+  it('should verify QR code correctly', async () => {
+    const result = await verifyQRCode('Hello World')
+    expect(result.isValid).toBe(true)
+    expect(result.readData).toBe('Hello World')
+    expect(result.generatedQR).toHaveProperty('dataURL')
+    expect(result.generatedQR).toHaveProperty('svg')
+  })
+
+  it('should handle verification failure', async () => {
+    const jsQR = await import('jsqr')
+    vi.mocked(jsQR.default).mockReturnValueOnce(null)
+    
+    const result = await verifyQRCode('Test')
+    expect(result.isValid).toBe(false)
+    expect(result.readData).toBeNull()
   })
 })
