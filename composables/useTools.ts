@@ -76,6 +76,14 @@ export const useTools = () => {
       keywords: ['qr', 'qrコード', '読み取り', '画像', 'スキャン'],
     },
     {
+      id: 'qr-batch-generator',
+      name: 'QRコードバッチ生成',
+      description: '複数のQRコードを一括生成・管理できる高機能ツール。CSV インポート、連番生成、バッチダウンロードに対応。',
+      path: '/tools/qr-batch-generator',
+      category: 'ユーティリティ',
+      keywords: ['qr', 'qrコード', 'バッチ', '一括生成', 'csv', '連番', '管理'],
+    },
+    {
       id: 'password-generator',
       name: 'パスワード生成',
       description: 'セキュアなランダムパスワードを生成します。',
