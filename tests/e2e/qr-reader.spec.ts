@@ -69,7 +69,7 @@ test.describe('QRコード読み取りツール', () => {
     // モバイルサイズに変更
     await page.setViewportSize({ width: 375, height: 667 })
 
-    await expect(page.locator('.tool-container')).toBeVisible()
+    await expect(page.locator('.tool-content')).toBeVisible()
     await expect(page.locator('.upload-area')).toBeVisible()
     await expect(page.locator('.camera-section')).toBeVisible()
   })
