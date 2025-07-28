@@ -92,14 +92,14 @@ const darkColor = ref('#000000')
 const lightColor = ref('#FFFFFF')
 const qrCode = ref<{ dataURL: string; svg: string } | null>(null)
 
-const generateQR = () => {
+const generateQR = async () => {
   if (!inputText.value) {
     alert('テキストを入力してください')
     return
   }
 
   try {
-    qrCode.value = generateQRCode(inputText.value, {
+    qrCode.value = await generateQRCode(inputText.value, {
       width: size.value,
       margin: margin.value,
       color: {
