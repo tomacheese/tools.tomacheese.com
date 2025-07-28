@@ -1,7 +1,9 @@
 <template>
-  <div class="regex-tester">
-    <h1>正規表現テスター</h1>
-    <p>正規表現のテストとマッチング結果を確認できます。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>正規表現テスター</h1>
+      <p>正規表現のテストとマッチング結果を確認できます。</p>
+    </div>
 
     <div class="form-group">
       <label for="regex">正規表現パターン</label>
@@ -120,6 +122,11 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 // フォームの状態
 const pattern = ref('')
@@ -283,11 +290,7 @@ useHead({
 </script>
 
 <style scoped>
-.regex-tester {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .form-group {
   margin-bottom: 20px;

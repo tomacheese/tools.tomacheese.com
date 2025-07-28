@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>CSS圧縮</h1>
-    <p>CSSコードを圧縮してファイルサイズを削減します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>CSS圧縮</h1>
+      <p>CSSコードを圧縮してファイルサイズを削減します。</p>
+    </div>
 
     <div class="minifier-container">
       <div class="input-section">
@@ -144,6 +146,11 @@ import {
   formatBytes,
   beautifyCss,
 } from '~/utils/cssMinifier'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 // State
 const inputCss = ref('')
@@ -355,11 +362,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .minifier-container {
   margin-top: 20px;

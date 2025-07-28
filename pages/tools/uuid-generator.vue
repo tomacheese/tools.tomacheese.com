@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>UUID生成</h1>
-    <p>ランダムなUUID (v4) を生成します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>UUID生成</h1>
+      <p>ランダムなUUID (v4) を生成します。</p>
+    </div>
 
     <div class="options-section">
       <h3>オプション</h3>
@@ -116,6 +118,11 @@
 import { ref } from 'vue'
 import { generateUUIDsWithOptions, isValidUUID } from '~/utils/uuid'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const count = ref(1)
 const format = ref<'standard' | 'uppercase' | 'lowercase' | 'no-hyphens'>(
   'standard'
@@ -187,11 +194,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .options-section {
   margin: 30px 0;
