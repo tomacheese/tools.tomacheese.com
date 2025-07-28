@@ -37,7 +37,7 @@
               :class="{ copied: copiedItems[conversion.id] }"
               @click="copyToClipboard(conversion.result)"
             >
-              {{ copiedItems[conversion.id] ? "コピー済み" : "コピー" }}
+              {{ copiedItems[conversion.id] ? 'コピー済み' : 'コピー' }}
             </button>
           </div>
 
@@ -71,212 +71,212 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // フォームの状態
-const inputText = ref("");
-const copiedItems = ref<Record<string, boolean>>({});
+const inputText = ref('')
+const copiedItems = ref<Record<string, boolean>>({})
 
 // 変換関数
 const conversions = computed(() => {
-  if (!inputText.value) return [];
+  if (!inputText.value) return []
 
-  const text = inputText.value;
+  const text = inputText.value
 
   return [
     {
-      id: "lowercase",
-      name: "小文字 (lowercase)",
+      id: 'lowercase',
+      name: '小文字 (lowercase)',
       result: text.toLowerCase(),
-      description: "全ての文字を小文字に変換",
+      description: '全ての文字を小文字に変換',
     },
     {
-      id: "uppercase",
-      name: "大文字 (UPPERCASE)",
+      id: 'uppercase',
+      name: '大文字 (UPPERCASE)',
       result: text.toUpperCase(),
-      description: "全ての文字を大文字に変換",
+      description: '全ての文字を大文字に変換',
     },
     {
-      id: "capitalize",
-      name: "頭文字大文字 (Capitalize)",
-      result: text.replace(/\b\w/g, (char) => char.toUpperCase()),
-      description: "各単語の最初の文字を大文字に変換",
+      id: 'capitalize',
+      name: '頭文字大文字 (Capitalize)',
+      result: text.replace(/\b\w/g, char => char.toUpperCase()),
+      description: '各単語の最初の文字を大文字に変換',
     },
     {
-      id: "camelcase",
-      name: "キャメルケース (camelCase)",
+      id: 'camelcase',
+      name: 'キャメルケース (camelCase)',
       result: toCamelCase(text),
-      description: "最初の単語は小文字、後の単語の最初は大文字",
+      description: '最初の単語は小文字、後の単語の最初は大文字',
     },
     {
-      id: "pascalcase",
-      name: "パスカルケース (PascalCase)",
+      id: 'pascalcase',
+      name: 'パスカルケース (PascalCase)',
       result: toPascalCase(text),
-      description: "全ての単語の最初の文字を大文字に",
+      description: '全ての単語の最初の文字を大文字に',
     },
     {
-      id: "snakecase",
-      name: "スネークケース (snake_case)",
+      id: 'snakecase',
+      name: 'スネークケース (snake_case)',
       result: toSnakeCase(text),
-      description: "単語をアンダースコアで区切り、小文字に変換",
+      description: '単語をアンダースコアで区切り、小文字に変換',
     },
     {
-      id: "kebabcase",
-      name: "ケバブケース (kebab-case)",
+      id: 'kebabcase',
+      name: 'ケバブケース (kebab-case)',
       result: toKebabCase(text),
-      description: "単語をハイフンで区切り、小文字に変換",
+      description: '単語をハイフンで区切り、小文字に変換',
     },
     {
-      id: "constantcase",
-      name: "定数ケース (CONSTANT_CASE)",
+      id: 'constantcase',
+      name: '定数ケース (CONSTANT_CASE)',
       result: toConstantCase(text),
-      description: "単語をアンダースコアで区切り、大文字に変換",
+      description: '単語をアンダースコアで区切り、大文字に変換',
     },
     {
-      id: "sentence",
-      name: "文型 (Sentence case)",
+      id: 'sentence',
+      name: '文型 (Sentence case)',
       result: toSentenceCase(text),
-      description: "最初の文字のみ大文字、残りは小文字",
+      description: '最初の文字のみ大文字、残りは小文字',
     },
     {
-      id: "alternating",
-      name: "交互大小文字 (AlTeRnAtInG cAsE)",
+      id: 'alternating',
+      name: '交互大小文字 (AlTeRnAtInG cAsE)',
       result: toAlternatingCase(text),
-      description: "文字を交互に大文字・小文字で表示",
+      description: '文字を交互に大文字・小文字で表示',
     },
     {
-      id: "reverse",
-      name: "逆順 (reverse)",
-      result: text.split("").reverse().join(""),
-      description: "文字列を逆順に並び替え",
+      id: 'reverse',
+      name: '逆順 (reverse)',
+      result: text.split('').reverse().join(''),
+      description: '文字列を逆順に並び替え',
     },
-  ];
-});
+  ]
+})
 
 // キャメルケース変換
 const toCamelCase = (text: string): string => {
   return text
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
-      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+      return index === 0 ? word.toLowerCase() : word.toUpperCase()
     })
-    .replace(/\s+/g, "")
-    .replace(/[^a-zA-Z0-9]/g, "");
-};
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+}
 
 // パスカルケース変換
 const toPascalCase = (text: string): string => {
   return text
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word) => word.toUpperCase())
-    .replace(/\s+/g, "")
-    .replace(/[^a-zA-Z0-9]/g, "");
-};
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, word => word.toUpperCase())
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+}
 
 // スネークケース変換
 const toSnakeCase = (text: string): string => {
   return text
-    .replace(/\W+/g, " ")
+    .replace(/\W+/g, ' ')
     .split(/ |\B(?=[A-Z])/)
-    .map((word) => word.toLowerCase())
-    .join("_");
-};
+    .map(word => word.toLowerCase())
+    .join('_')
+}
 
 // ケバブケース変換
 const toKebabCase = (text: string): string => {
   return text
-    .replace(/\W+/g, " ")
+    .replace(/\W+/g, ' ')
     .split(/ |\B(?=[A-Z])/)
-    .map((word) => word.toLowerCase())
-    .join("-");
-};
+    .map(word => word.toLowerCase())
+    .join('-')
+}
 
 // 定数ケース変換
 const toConstantCase = (text: string): string => {
-  return toSnakeCase(text).toUpperCase();
-};
+  return toSnakeCase(text).toUpperCase()
+}
 
 // 文型変換
 const toSentenceCase = (text: string): string => {
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-};
+  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase()
+}
 
 // 交互大小文字変換
 const toAlternatingCase = (text: string): string => {
   return text
-    .split("")
+    .split('')
     .map((char, index) => {
       if (char.match(/[a-zA-Z]/)) {
-        return index % 2 === 0 ? char.toLowerCase() : char.toUpperCase();
+        return index % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
       }
-      return char;
+      return char
     })
-    .join("");
-};
+    .join('')
+}
 
 // クリップボードにコピー
 const copyToClipboard = async (text: string) => {
   try {
-    await navigator.clipboard.writeText(text);
+    await navigator.clipboard.writeText(text)
 
     // 対応するアイテムのコピー状態を更新
-    const conversion = conversions.value.find((c) => c.result === text);
+    const conversion = conversions.value.find(c => c.result === text)
     if (conversion) {
-      copiedItems.value[conversion.id] = true;
+      copiedItems.value[conversion.id] = true
       setTimeout(() => {
-        copiedItems.value[conversion.id] = false;
-      }, 2000);
+        copiedItems.value[conversion.id] = false
+      }, 2000)
     }
   } catch {
     // Copy failed silently
   }
-};
+}
 
 // テキストをクリア
 const clearText = () => {
-  inputText.value = "";
-  copiedItems.value = {};
-};
+  inputText.value = ''
+  copiedItems.value = {}
+}
 
 // クリップボードから貼り付け
 const pasteFromClipboard = async () => {
   try {
-    const text = await navigator.clipboard.readText();
-    inputText.value = text;
+    const text = await navigator.clipboard.readText()
+    inputText.value = text
   } catch {
     // Clipboard read failed silently
   }
-};
+}
 
 // 例のテキストを読み込み
 const loadExample = (text: string) => {
-  inputText.value = text;
-  copiedItems.value = {};
-};
+  inputText.value = text
+  copiedItems.value = {}
+}
 
 // 例の定義
 const examples = [
-  { name: "英語フレーズ", text: "hello world example text" },
-  { name: "プログラミング変数", text: "user_name firstName lastName" },
-  { name: "API エンドポイント", text: "get-user-profile" },
-  { name: "日本語混在", text: "こんにちは World テスト Text" },
-  { name: "記号混在", text: "test-case_example@domain.com" },
-];
+  { name: '英語フレーズ', text: 'hello world example text' },
+  { name: 'プログラミング変数', text: 'user_name firstName lastName' },
+  { name: 'API エンドポイント', text: 'get-user-profile' },
+  { name: '日本語混在', text: 'こんにちは World テスト Text' },
+  { name: '記号混在', text: 'test-case_example@domain.com' },
+]
 
 // メタデータ
 useHead({
-  title: "テキスト形式変換 - tools.tomacheese.com",
+  title: 'テキスト形式変換 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "テキストを大文字・小文字・キャメルケース・スネークケースなど様々な形式に変換するツールです。",
+        'テキストを大文字・小文字・キャメルケース・スネークケースなど様々な形式に変換するツールです。',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

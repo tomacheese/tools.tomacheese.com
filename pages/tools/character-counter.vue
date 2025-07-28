@@ -135,31 +135,31 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const inputText = ref("");
+const inputText = ref('')
 
 // 計算プロパティ
 const stats = computed(() => {
-  const text = inputText.value;
+  const text = inputText.value
 
   // 基本統計
-  const charactersWithSpaces = text.length;
-  const charactersWithoutSpaces = text.replace(/\s/g, "").length;
-  const lines = text ? text.split("\n").length : 0;
-  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-  const paragraphs = text.trim() ? text.trim().split(/\n\s*\n/).length : 0;
-  const bytes = new TextEncoder().encode(text).length;
+  const charactersWithSpaces = text.length
+  const charactersWithoutSpaces = text.replace(/\s/g, '').length
+  const lines = text ? text.split('\n').length : 0
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0
+  const paragraphs = text.trim() ? text.trim().split(/\n\s*\n/).length : 0
+  const bytes = new TextEncoder().encode(text).length
 
   // 文字種別統計
-  const hiragana = (text.match(/[\u3040-\u309F]/g) ?? []).length;
-  const katakana = (text.match(/[\u30A0-\u30FF]/g) ?? []).length;
-  const kanji = (text.match(/[\u4E00-\u9FAF]/g) ?? []).length;
-  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) ?? []).length;
+  const hiragana = (text.match(/[\u3040-\u309F]/g) ?? []).length
+  const katakana = (text.match(/[\u30A0-\u30FF]/g) ?? []).length
+  const kanji = (text.match(/[\u4E00-\u9FAF]/g) ?? []).length
+  const alphanumeric = (text.match(/[a-zA-Z0-9]/g) ?? []).length
   const symbols =
-    charactersWithoutSpaces - hiragana - katakana - kanji - alphanumeric;
+    charactersWithoutSpaces - hiragana - katakana - kanji - alphanumeric
 
   return {
     charactersWithSpaces,
@@ -173,33 +173,33 @@ const stats = computed(() => {
     kanji,
     alphanumeric,
     symbols: Math.max(0, symbols),
-  };
-});
+  }
+})
 
 const readingTime = computed(() => {
-  const chars = stats.value.charactersWithoutSpaces;
-  return chars > 0 ? Math.ceil(chars / 400) : 0;
-});
+  const chars = stats.value.charactersWithoutSpaces
+  return chars > 0 ? Math.ceil(chars / 400) : 0
+})
 
 const typingTime = computed(() => {
-  const chars = stats.value.charactersWithoutSpaces;
-  return chars > 0 ? Math.ceil(chars / 200) : 0;
-});
+  const chars = stats.value.charactersWithoutSpaces
+  return chars > 0 ? Math.ceil(chars / 200) : 0
+})
 
 // SEO
 useHead({
-  title: "文字数カウンター - tools.tomacheese.com",
+  title: '文字数カウンター - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "テキストの文字数、行数、バイト数を瞬時にカウントします。日本語の文字種別分析や読み取り時間の計算も可能です。",
+        'テキストの文字数、行数、バイト数を瞬時にカウントします。日本語の文字種別分析や読み取り時間の計算も可能です。',
     },
     {
-      name: "keywords",
+      name: 'keywords',
       content:
-        "文字数, カウント, テキスト, 行数, バイト, 文字種別, 読み取り時間",
+        '文字数, カウント, テキスト, 行数, バイト, 文字種別, 読み取り時間',
     },
   ],
-});
+})
 </script>

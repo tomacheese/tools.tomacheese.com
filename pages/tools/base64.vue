@@ -200,105 +200,105 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const activeTab = ref("encode");
-const plainText = ref("");
-const base64Text = ref("");
-const copyMessage = ref("");
-const decodeError = ref("");
+const activeTab = ref('encode')
+const plainText = ref('')
+const base64Text = ref('')
+const copyMessage = ref('')
+const decodeError = ref('')
 
 // サンプルテキスト
 const sampleTexts = [
-  { label: "Hello World", text: "Hello, World!" },
-  { label: "日本語テキスト", text: "こんにちは、世界！" },
-  { label: "JSON", text: '{"name": "sample", "value": 123}' },
-  { label: "URL", text: "https://example.com/path?param=value" },
-  { label: "HTML", text: '<div class="sample">サンプル</div>' },
-];
+  { label: 'Hello World', text: 'Hello, World!' },
+  { label: '日本語テキスト', text: 'こんにちは、世界！' },
+  { label: 'JSON', text: '{"name": "sample", "value": 123}' },
+  { label: 'URL', text: 'https://example.com/path?param=value' },
+  { label: 'HTML', text: '<div class="sample">サンプル</div>' },
+]
 
 // 計算プロパティ
 const encodedText = computed(() => {
-  if (!plainText.value) return "";
+  if (!plainText.value) return ''
   try {
-    return btoa(unescape(encodeURIComponent(plainText.value)));
+    return btoa(unescape(encodeURIComponent(plainText.value)))
   } catch {
-    return "エンコードエラー";
+    return 'エンコードエラー'
   }
-});
+})
 
 const decodedText = computed(() => {
   if (!base64Text.value) {
-    decodeError.value = "";
-    return "";
+    decodeError.value = ''
+    return ''
   }
 
   try {
     // Base64の妥当性チェック
     if (!/^[A-Za-z0-9+/]*={0,2}$/.test(base64Text.value)) {
-      decodeError.value = "無効なBase64形式です";
-      return "";
+      decodeError.value = '無効なBase64形式です'
+      return ''
     }
 
-    const decoded = decodeURIComponent(escape(atob(base64Text.value)));
-    decodeError.value = "";
-    return decoded;
+    const decoded = decodeURIComponent(escape(atob(base64Text.value)))
+    decodeError.value = ''
+    return decoded
   } catch {
-    decodeError.value = "デコードエラー: 無効なBase64形式です";
-    return "";
+    decodeError.value = 'デコードエラー: 無効なBase64形式です'
+    return ''
   }
-});
+})
 
 const encodeIncreaseRate = computed(() => {
-  if (!plainText.value || !encodedText.value) return 0;
-  const originalLength = new TextEncoder().encode(plainText.value).length;
-  const encodedLength = encodedText.value.length;
-  return Math.round(((encodedLength - originalLength) / originalLength) * 100);
-});
+  if (!plainText.value || !encodedText.value) return 0
+  const originalLength = new TextEncoder().encode(plainText.value).length
+  const encodedLength = encodedText.value.length
+  return Math.round(((encodedLength - originalLength) / originalLength) * 100)
+})
 
 // メソッド
-const setSampleText = (text) => {
-  if (activeTab.value === "encode") {
-    plainText.value = text;
+const setSampleText = text => {
+  if (activeTab.value === 'encode') {
+    plainText.value = text
   } else {
     // エンコードしてからセット
     try {
-      base64Text.value = btoa(unescape(encodeURIComponent(text)));
+      base64Text.value = btoa(unescape(encodeURIComponent(text)))
     } catch {
-      base64Text.value = "エンコードエラー";
+      base64Text.value = 'エンコードエラー'
     }
   }
-};
+}
 
-const copyToClipboard = async (text) => {
+const copyToClipboard = async text => {
   try {
-    await navigator.clipboard.writeText(text);
-    copyMessage.value = "コピーしました！";
+    await navigator.clipboard.writeText(text)
+    copyMessage.value = 'コピーしました！'
     setTimeout(() => {
-      copyMessage.value = "";
-    }, 2000);
+      copyMessage.value = ''
+    }, 2000)
   } catch {
     // Copy failed silently
   }
-};
+}
 
 // SEO
 useHead({
-  title: "Base64エンコード・デコード - tools.tomacheese.com",
+  title: 'Base64エンコード・デコード - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "テキストをBase64形式にエンコード・デコードするオンラインツールです。統計情報やサンプルテキストも提供します。",
+        'テキストをBase64形式にエンコード・デコードするオンラインツールです。統計情報やサンプルテキストも提供します。',
     },
     {
-      name: "keywords",
-      content: "Base64, エンコード, デコード, 変換, テキスト, バイナリ",
+      name: 'keywords',
+      content: 'Base64, エンコード, デコード, 変換, テキスト, バイナリ',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

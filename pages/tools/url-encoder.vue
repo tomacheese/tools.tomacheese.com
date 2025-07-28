@@ -243,113 +243,113 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const activeTab = ref("encode");
-const plainUrl = ref("");
-const encodedUrlInput = ref("");
-const copyMessage = ref("");
-const decodeError = ref("");
+const activeTab = ref('encode')
+const plainUrl = ref('')
+const encodedUrlInput = ref('')
+const copyMessage = ref('')
+const decodeError = ref('')
 
 // サンプルURL・テキスト
 const sampleUrls = [
-  { label: "日本語検索", text: "https://example.com/search?q=プログラミング" },
-  { label: "スペース含む", text: "Hello World! How are you?" },
-  { label: "特殊文字", text: "データ: 100% (完了)" },
-  { label: "フォームデータ", text: "name=田中太郎&email=tanaka@example.com" },
-  { label: "JSON", text: '{"message": "こんにちは！", "status": "OK"}' },
-];
+  { label: '日本語検索', text: 'https://example.com/search?q=プログラミング' },
+  { label: 'スペース含む', text: 'Hello World! How are you?' },
+  { label: '特殊文字', text: 'データ: 100% (完了)' },
+  { label: 'フォームデータ', text: 'name=田中太郎&email=tanaka@example.com' },
+  { label: 'JSON', text: '{"message": "こんにちは！", "status": "OK"}' },
+]
 
 // よくエンコードされる文字
 const commonChars = [
-  { char: " ", encoded: "%20" },
-  { char: "!", encoded: "%21" },
-  { char: '"', encoded: "%22" },
-  { char: "#", encoded: "%23" },
-  { char: "$", encoded: "%24" },
-  { char: "%", encoded: "%25" },
-  { char: "&", encoded: "%26" },
-  { char: "'", encoded: "%27" },
-  { char: "(", encoded: "%28" },
-  { char: ")", encoded: "%29" },
-  { char: "+", encoded: "%2B" },
-  { char: ",", encoded: "%2C" },
-  { char: "/", encoded: "%2F" },
-  { char: ":", encoded: "%3A" },
-  { char: ";", encoded: "%3B" },
-  { char: "=", encoded: "%3D" },
-];
+  { char: ' ', encoded: '%20' },
+  { char: '!', encoded: '%21' },
+  { char: '"', encoded: '%22' },
+  { char: '#', encoded: '%23' },
+  { char: '$', encoded: '%24' },
+  { char: '%', encoded: '%25' },
+  { char: '&', encoded: '%26' },
+  { char: "'", encoded: '%27' },
+  { char: '(', encoded: '%28' },
+  { char: ')', encoded: '%29' },
+  { char: '+', encoded: '%2B' },
+  { char: ',', encoded: '%2C' },
+  { char: '/', encoded: '%2F' },
+  { char: ':', encoded: '%3A' },
+  { char: ';', encoded: '%3B' },
+  { char: '=', encoded: '%3D' },
+]
 
 // 計算プロパティ
 const encodedUrl = computed(() => {
-  if (!plainUrl.value) return "";
+  if (!plainUrl.value) return ''
   try {
-    return encodeURIComponent(plainUrl.value);
+    return encodeURIComponent(plainUrl.value)
   } catch {
-    return "エンコードエラー";
+    return 'エンコードエラー'
   }
-});
+})
 
 const decodedUrl = computed(() => {
   if (!encodedUrlInput.value) {
-    decodeError.value = "";
-    return "";
+    decodeError.value = ''
+    return ''
   }
 
   try {
-    const decoded = decodeURIComponent(encodedUrlInput.value);
-    decodeError.value = "";
-    return decoded;
+    const decoded = decodeURIComponent(encodedUrlInput.value)
+    decodeError.value = ''
+    return decoded
   } catch {
-    decodeError.value = "デコードエラー: 無効なエンコード形式です";
-    return "";
+    decodeError.value = 'デコードエラー: 無効なエンコード形式です'
+    return ''
   }
-});
+})
 
 // メソッド
-const setSampleUrl = (text) => {
-  if (activeTab.value === "encode") {
-    plainUrl.value = text;
+const setSampleUrl = text => {
+  if (activeTab.value === 'encode') {
+    plainUrl.value = text
   } else {
     // エンコードしてからセット
     try {
-      encodedUrlInput.value = encodeURIComponent(text);
+      encodedUrlInput.value = encodeURIComponent(text)
     } catch {
-      encodedUrlInput.value = "エンコードエラー";
+      encodedUrlInput.value = 'エンコードエラー'
     }
   }
-};
+}
 
-const copyToClipboard = async (text) => {
+const copyToClipboard = async text => {
   try {
-    await navigator.clipboard.writeText(text);
-    copyMessage.value = "コピーしました！";
+    await navigator.clipboard.writeText(text)
+    copyMessage.value = 'コピーしました！'
     setTimeout(() => {
-      copyMessage.value = "";
-    }, 2000);
+      copyMessage.value = ''
+    }, 2000)
   } catch {
     // Copy failed silently
   }
-};
+}
 
 // SEO
 useHead({
-  title: "URLエンコード・デコード - tools.tomacheese.com",
+  title: 'URLエンコード・デコード - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "URLの特殊文字をエンコード・デコードするオンラインツールです。日本語やスペースを含むURLを安全な形式に変換します。",
+        'URLの特殊文字をエンコード・デコードするオンラインツールです。日本語やスペースを含むURLを安全な形式に変換します。',
     },
     {
-      name: "keywords",
+      name: 'keywords',
       content:
-        "URL, エンコード, デコード, パーセントエンコーディング, 特殊文字, 日本語URL",
+        'URL, エンコード, デコード, パーセントエンコーディング, 特殊文字, 日本語URL',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

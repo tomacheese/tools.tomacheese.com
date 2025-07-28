@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import {
   DEFAULT_CITIES,
   getCityTime,
@@ -114,110 +114,110 @@ import {
   getTimeZoneOffset,
   type CityTime,
   type TimeFormat,
-} from "~/utils/world-clock";
+} from '~/utils/world-clock'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const use12HourFormat = ref(false);
-const searchQuery = ref("");
-const showSuggestions = ref(false);
-const searchResults = ref<Array<{ name: string; timezone: string }>>([]);
+const use12HourFormat = ref(false)
+const searchQuery = ref('')
+const showSuggestions = ref(false)
+const searchResults = ref<Array<{ name: string; timezone: string }>>([])
 const customCities = ref<Array<{ id: string; name: string; timezone: string }>>(
   []
-);
-const cityTimes = ref<CityTime[]>([]);
-let updateInterval: NodeJS.Timeout | null = null;
+)
+const cityTimes = ref<CityTime[]>([])
+let updateInterval: NodeJS.Timeout | null = null
 
 // 計算プロパティ
 const timeFormat = computed<TimeFormat>(() => ({
   hour12: use12HourFormat.value,
-  hour: use12HourFormat.value ? "numeric" : "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-}));
+  hour: use12HourFormat.value ? 'numeric' : '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+}))
 
-const allCities = computed(() => [...DEFAULT_CITIES, ...customCities.value]);
+const allCities = computed(() => [...DEFAULT_CITIES, ...customCities.value])
 
 // メソッド
 const updateCityTimes = () => {
-  cityTimes.value = allCities.value.map((city) =>
+  cityTimes.value = allCities.value.map(city =>
     getCityTime(city.name, city.timezone, timeFormat.value)
-  );
-};
+  )
+}
 
 const onSearchInput = () => {
-  searchResults.value = searchCities(searchQuery.value);
-};
+  searchResults.value = searchCities(searchQuery.value)
+}
 
 const hideSuggestions = () => {
   setTimeout(() => {
-    showSuggestions.value = false;
-  }, 200);
-};
+    showSuggestions.value = false
+  }, 200)
+}
 
 const addCity = (name: string, timezone: string) => {
   // Check if city already exists
-  const exists = allCities.value.some((city) => city.timezone === timezone);
+  const exists = allCities.value.some(city => city.timezone === timezone)
 
   if (!exists) {
     customCities.value.push({
       id: `custom-${Date.now()}`,
       name,
       timezone,
-    });
+    })
   }
 
-  searchQuery.value = "";
-  searchResults.value = [];
-  showSuggestions.value = false;
-  updateCityTimes();
-};
+  searchQuery.value = ''
+  searchResults.value = []
+  showSuggestions.value = false
+  updateCityTimes()
+}
 
 const removeCity = (cityId: string) => {
-  customCities.value = customCities.value.filter((city) => city.id !== cityId);
-  updateCityTimes();
-};
+  customCities.value = customCities.value.filter(city => city.id !== cityId)
+  updateCityTimes()
+}
 
 const isDefaultCity = (cityId: string) => {
-  return DEFAULT_CITIES.some((city) => city.id === cityId);
-};
+  return DEFAULT_CITIES.some(city => city.id === cityId)
+}
 
 const resetToDefaults = () => {
-  customCities.value = [];
-  updateCityTimes();
-};
+  customCities.value = []
+  updateCityTimes()
+}
 
 // ライフサイクル
 onMounted(() => {
-  updateCityTimes();
-  updateInterval = setInterval(updateCityTimes, 1000);
-});
+  updateCityTimes()
+  updateInterval = setInterval(updateCityTimes, 1000)
+})
 
 onUnmounted(() => {
   if (updateInterval) {
-    clearInterval(updateInterval);
+    clearInterval(updateInterval)
   }
-});
+})
 
 // SEO
 useHead({
-  title: "世界時計 - tools.tomacheese.com",
+  title: '世界時計 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "世界各地の現在時刻を表示する世界時計。複数の都市の時刻を同時に確認でき、カスタム都市の追加・削除も可能です。",
+        '世界各地の現在時刻を表示する世界時計。複数の都市の時刻を同時に確認でき、カスタム都市の追加・削除も可能です。',
     },
     {
-      name: "keywords",
-      content: "世界時計, 時刻, タイムゾーン, 時差, GMT, UTC, DST, 夏時間",
+      name: 'keywords',
+      content: '世界時計, 時刻, タイムゾーン, 時差, GMT, UTC, DST, 夏時間',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

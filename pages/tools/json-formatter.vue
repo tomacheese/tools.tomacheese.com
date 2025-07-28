@@ -227,109 +227,109 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const inputJson = ref("");
-const outputJson = ref("");
-const validationError = ref("");
-const copyMessage = ref("");
-const indentSize = ref("2");
-const stats = ref(null);
+const inputJson = ref('')
+const outputJson = ref('')
+const validationError = ref('')
+const copyMessage = ref('')
+const indentSize = ref('2')
+const stats = ref(null)
 
 // サンプルJSON
 const sampleJsons = [
   {
-    label: "シンプル",
+    label: 'シンプル',
     json: '{"name":"田中太郎","age":30,"city":"東京"}',
   },
   {
-    label: "配列",
+    label: '配列',
     json: '[{"id":1,"name":"商品A","price":1000},{"id":2,"name":"商品B","price":2000}]',
   },
   {
-    label: "ネスト",
+    label: 'ネスト',
     json: '{"user":{"id":123,"profile":{"name":"田中太郎","contact":{"email":"tanaka@example.com","phone":"090-1234-5678"}}}}',
   },
   {
-    label: "API レスポンス",
+    label: 'API レスポンス',
     json: '{"status":"success","data":{"users":[{"id":1,"name":"Alice","active":true},{"id":2,"name":"Bob","active":false}],"total":2},"timestamp":"2024-01-01T00:00:00Z"}',
   },
   {
-    label: "設定ファイル",
+    label: '設定ファイル',
     json: '{"database":{"host":"localhost","port":5432,"name":"myapp","ssl":true},"cache":{"enabled":true,"ttl":3600},"features":["auth","logging","metrics"]}',
   },
-];
+]
 
 // メソッド
-const parseJsonSafely = (jsonString) => {
+const parseJsonSafely = jsonString => {
   try {
-    return { success: true, data: JSON.parse(jsonString) };
+    return { success: true, data: JSON.parse(jsonString) }
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: error.message }
   }
-};
+}
 
 const formatJson = () => {
-  const result = parseJsonSafely(inputJson.value);
+  const result = parseJsonSafely(inputJson.value)
   if (result.success) {
     const indent =
-      indentSize.value === "tab" ? "\t" : parseInt(indentSize.value);
-    outputJson.value = JSON.stringify(result.data, null, indent);
-    validationError.value = "";
-    calculateStats(result.data);
+      indentSize.value === 'tab' ? '\t' : parseInt(indentSize.value)
+    outputJson.value = JSON.stringify(result.data, null, indent)
+    validationError.value = ''
+    calculateStats(result.data)
   } else {
-    validationError.value = result.error;
-    outputJson.value = "";
-    stats.value = null;
+    validationError.value = result.error
+    outputJson.value = ''
+    stats.value = null
   }
-};
+}
 
 const minifyJson = () => {
-  const result = parseJsonSafely(inputJson.value);
+  const result = parseJsonSafely(inputJson.value)
   if (result.success) {
-    outputJson.value = JSON.stringify(result.data);
-    validationError.value = "";
-    calculateStats(result.data);
+    outputJson.value = JSON.stringify(result.data)
+    validationError.value = ''
+    calculateStats(result.data)
   } else {
-    validationError.value = result.error;
-    outputJson.value = "";
-    stats.value = null;
+    validationError.value = result.error
+    outputJson.value = ''
+    stats.value = null
   }
-};
+}
 
 const validateJson = () => {
-  const result = parseJsonSafely(inputJson.value);
+  const result = parseJsonSafely(inputJson.value)
   if (result.success) {
-    validationError.value = "";
-    outputJson.value = "✓ 有効なJSONです";
-    calculateStats(result.data);
+    validationError.value = ''
+    outputJson.value = '✓ 有効なJSONです'
+    calculateStats(result.data)
   } else {
-    validationError.value = result.error;
-    outputJson.value = "";
-    stats.value = null;
+    validationError.value = result.error
+    outputJson.value = ''
+    stats.value = null
   }
-};
+}
 
 const clearAll = () => {
-  inputJson.value = "";
-  outputJson.value = "";
-  validationError.value = "";
-  stats.value = null;
-};
+  inputJson.value = ''
+  outputJson.value = ''
+  validationError.value = ''
+  stats.value = null
+}
 
-const loadSample = (json) => {
-  inputJson.value = json;
-  formatJson();
-};
+const loadSample = json => {
+  inputJson.value = json
+  formatJson()
+}
 
-const calculateStats = (data) => {
-  const jsonString = JSON.stringify(data);
+const calculateStats = data => {
+  const jsonString = JSON.stringify(data)
 
   const statsData = {
     characters: jsonString.length,
-    lines: JSON.stringify(data, null, 2).split("\n").length,
+    lines: JSON.stringify(data, null, 2).split('\n').length,
     sizeKB: (new TextEncoder().encode(jsonString).length / 1024).toFixed(2),
     objects: 0,
     arrays: 0,
@@ -338,72 +338,72 @@ const calculateStats = (data) => {
     booleans: 0,
     nulls: 0,
     maxDepth: 0,
-  };
+  }
 
   const countTypes = (obj, depth = 0) => {
-    statsData.maxDepth = Math.max(statsData.maxDepth, depth);
+    statsData.maxDepth = Math.max(statsData.maxDepth, depth)
 
     if (Array.isArray(obj)) {
-      statsData.arrays++;
-      obj.forEach((item) => countTypes(item, depth + 1));
-    } else if (obj !== null && typeof obj === "object") {
-      statsData.objects++;
-      Object.values(obj).forEach((value) => countTypes(value, depth + 1));
-    } else if (typeof obj === "string") {
-      statsData.strings++;
-    } else if (typeof obj === "number") {
-      statsData.numbers++;
-    } else if (typeof obj === "boolean") {
-      statsData.booleans++;
+      statsData.arrays++
+      obj.forEach(item => countTypes(item, depth + 1))
+    } else if (obj !== null && typeof obj === 'object') {
+      statsData.objects++
+      Object.values(obj).forEach(value => countTypes(value, depth + 1))
+    } else if (typeof obj === 'string') {
+      statsData.strings++
+    } else if (typeof obj === 'number') {
+      statsData.numbers++
+    } else if (typeof obj === 'boolean') {
+      statsData.booleans++
     } else if (obj === null) {
-      statsData.nulls++;
+      statsData.nulls++
     }
-  };
-
-  countTypes(data);
-  stats.value = statsData;
-};
-
-const copyToClipboard = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    copyMessage.value = "コピーしました！";
-    setTimeout(() => {
-      copyMessage.value = "";
-    }, 2000);
-  } catch {
-    copyMessage.value = "コピーに失敗しました";
-    setTimeout(() => {
-      copyMessage.value = "";
-    }, 2000);
   }
-};
+
+  countTypes(data)
+  stats.value = statsData
+}
+
+const copyToClipboard = async text => {
+  try {
+    await navigator.clipboard.writeText(text)
+    copyMessage.value = 'コピーしました！'
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 2000)
+  } catch {
+    copyMessage.value = 'コピーに失敗しました'
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 2000)
+  }
+}
 
 // ウォッチャー
 watch(inputJson, () => {
   if (validationError.value) {
-    const result = parseJsonSafely(inputJson.value);
+    const result = parseJsonSafely(inputJson.value)
     if (result.success) {
-      validationError.value = "";
+      validationError.value = ''
     }
   }
-});
+})
 
 // SEO
 useHead({
-  title: "JSON整形 - tools.tomacheese.com",
+  title: 'JSON整形 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "JSONデータを見やすく整形・バリデーションするオンラインツールです。統計情報の表示やエラー検出も可能です。",
+        'JSONデータを見やすく整形・バリデーションするオンラインツールです。統計情報の表示やエラー検出も可能です。',
     },
     {
-      name: "keywords",
-      content: "JSON, 整形, フォーマット, バリデーション, 検証, 圧縮, 統計",
+      name: 'keywords',
+      content: 'JSON, 整形, フォーマット, バリデーション, 検証, 圧縮, 統計',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

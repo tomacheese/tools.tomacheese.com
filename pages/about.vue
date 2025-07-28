@@ -128,13 +128,13 @@
 <script setup>
 // SEO
 useHead({
-  title: "サイトについて - tools.tomacheese.com",
+  title: 'サイトについて - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "tools.tomacheese.comについて。プライバシーを重視した無料のWebツール集です。",
+        'tools.tomacheese.comについて。プライバシーを重視した無料のWebツール集です。',
     },
   ],
-});
+})
 </script>

@@ -39,13 +39,13 @@
 
 <script setup>
 // ツール一覧の取得
-const { getAllTools } = useTools();
-const tools = getAllTools();
+const { getAllTools } = useTools()
+const tools = getAllTools()
 
 // SEO and Meta
 useHead({
   htmlAttrs: {
-    lang: "ja",
+    lang: 'ja',
   },
-});
+})
 </script>

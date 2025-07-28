@@ -56,7 +56,7 @@
             }"
           ></div>
           <span style="font-size: 1.125rem; font-weight: 600">
-            {{ validationResult.isValid ? "有効" : "無効" }}
+            {{ validationResult.isValid ? '有効' : '無効' }}
           </span>
         </div>
 
@@ -71,7 +71,7 @@
             <h4 style="color: #2563eb; margin-bottom: 0.5rem">カード情報</h4>
             <div style="font-size: 0.9rem">
               <div>番号: {{ formatCardNumber(cardNumber) }}</div>
-              <div>桁数: {{ cardNumber.replace(/\D/g, "").length }}桁</div>
+              <div>桁数: {{ cardNumber.replace(/\D/g, '').length }}桁</div>
               <div v-if="validationResult.cardType">
                 発行会社: {{ validationResult.cardType.name }}
               </div>
@@ -83,13 +83,13 @@
             <h4 style="color: #2563eb; margin-bottom: 0.5rem">検証詳細</h4>
             <div style="font-size: 0.9rem">
               <div>
-                Luhnチェック: {{ validationResult.luhnValid ? "✓" : "✗" }}
+                Luhnチェック: {{ validationResult.luhnValid ? '✓' : '✗' }}
               </div>
               <div>
-                長さチェック: {{ validationResult.lengthValid ? "✓" : "✗" }}
+                長さチェック: {{ validationResult.lengthValid ? '✓' : '✗' }}
               </div>
               <div>
-                形式チェック: {{ validationResult.formatValid ? "✓" : "✗" }}
+                形式チェック: {{ validationResult.formatValid ? '✓' : '✗' }}
               </div>
             </div>
           </div>
@@ -187,64 +187,64 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
 import {
   validateCardNumber,
   getCardType,
   formatCardNumber as formatCard,
-} from "~/utils/security";
+} from '~/utils/security'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const cardNumber = ref("");
-const validationResult = ref(null);
-const copyMessage = ref("");
+const cardNumber = ref('')
+const validationResult = ref(null)
+const copyMessage = ref('')
 
 // サンプルカード番号（テスト用）
 const sampleCards = [
-  { type: "Visa", number: "4111111111111111" },
-  { type: "Visa", number: "4012888888881881" },
-  { type: "Mastercard", number: "5555555555554444" },
-  { type: "Mastercard", number: "5105105105105100" },
-  { type: "American Express", number: "378282246310005" },
-  { type: "American Express", number: "371449635398431" },
-  { type: "Discover", number: "6011111111111117" },
-  { type: "JCB", number: "3530111333300000" },
-];
+  { type: 'Visa', number: '4111111111111111' },
+  { type: 'Visa', number: '4012888888881881' },
+  { type: 'Mastercard', number: '5555555555554444' },
+  { type: 'Mastercard', number: '5105105105105100' },
+  { type: 'American Express', number: '378282246310005' },
+  { type: 'American Express', number: '371449635398431' },
+  { type: 'Discover', number: '6011111111111117' },
+  { type: 'JCB', number: '3530111333300000' },
+]
 
 // メソッド
-const formatCardInput = (event) => {
+const formatCardInput = event => {
   // 数字以外を除去し、4桁区切りで表示
-  let value = event.target.value.replace(/\D/g, "");
-  value = value.substring(0, 19); // 最大19桁
-  cardNumber.value = value;
-};
+  let value = event.target.value.replace(/\D/g, '')
+  value = value.substring(0, 19) // 最大19桁
+  cardNumber.value = value
+}
 
-const formatCardNumber = (number) => {
-  return formatCard(number);
-};
+const formatCardNumber = number => {
+  return formatCard(number)
+}
 
 const validateCard = () => {
-  if (!cardNumber.value.trim()) return;
+  if (!cardNumber.value.trim()) return
 
-  const cleanNumber = cardNumber.value.replace(/\D/g, "");
-  const luhnValid = validateCardNumber(cleanNumber);
-  const cardType = getCardType(cleanNumber);
+  const cleanNumber = cardNumber.value.replace(/\D/g, '')
+  const luhnValid = validateCardNumber(cleanNumber)
+  const cardType = getCardType(cleanNumber)
 
   // 長さ検証
-  let lengthValid = false;
+  let lengthValid = false
   if (cardType) {
-    lengthValid = cardType.length.includes(cleanNumber.length);
+    lengthValid = cardType.length.includes(cleanNumber.length)
   } else {
-    lengthValid = cleanNumber.length >= 13 && cleanNumber.length <= 19;
+    lengthValid = cleanNumber.length >= 13 && cleanNumber.length <= 19
   }
 
   // 形式検証（基本的な数字チェック）
-  const formatValid = /^\d+$/.test(cleanNumber) && cleanNumber.length >= 13;
+  const formatValid = /^\d+$/.test(cleanNumber) && cleanNumber.length >= 13
 
   validationResult.value = {
     isValid: luhnValid && lengthValid && formatValid,
@@ -252,33 +252,33 @@ const validateCard = () => {
     lengthValid,
     formatValid,
     cardType,
-  };
-};
+  }
+}
 
-const setSampleCard = (number) => {
-  cardNumber.value = number;
-  validateCard();
+const setSampleCard = number => {
+  cardNumber.value = number
+  validateCard()
 
-  copyMessage.value = "サンプル番号が設定されました";
+  copyMessage.value = 'サンプル番号が設定されました'
   setTimeout(() => {
-    copyMessage.value = "";
-  }, 2000);
-};
+    copyMessage.value = ''
+  }, 2000)
+}
 
 // SEO
 useHead({
-  title: "クレジットカード番号検証 - tools.tomacheese.com",
+  title: 'クレジットカード番号検証 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "クレジットカード番号の妥当性をLuhnアルゴリズムで検証します。発行会社の識別も行います。",
+        'クレジットカード番号の妥当性をLuhnアルゴリズムで検証します。発行会社の識別も行います。',
     },
     {
-      name: "keywords",
+      name: 'keywords',
       content:
-        "クレジットカード検証, Luhnアルゴリズム, カード番号チェック, セキュリティ",
+        'クレジットカード検証, Luhnアルゴリズム, カード番号チェック, セキュリティ',
     },
   ],
-});
+})
 </script>

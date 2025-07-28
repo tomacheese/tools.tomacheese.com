@@ -106,23 +106,23 @@
 
 <script setup>
 // ツール一覧の取得
-const { getAllTools } = useTools();
-const tools = getAllTools();
+const { getAllTools } = useTools()
+const tools = getAllTools()
 
 // SEO
 useHead({
-  title: "tools.tomacheese.com - 便利なWebツール集",
+  title: 'tools.tomacheese.com - 便利なWebツール集',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。すべてクライアントサイドで動作し、プライバシーも安心です。",
+        'カラーピッカー、文字数カウンター、数学計算など、日常的に使える便利なWebツールを無料で提供しています。すべてクライアントサイドで動作し、プライバシーも安心です。',
     },
     {
-      name: "keywords",
+      name: 'keywords',
       content:
-        "ツール, カラーピッカー, 文字数カウンター, Base64, URL エンコード, ハッシュ, QRコード, パスワード生成",
+        'ツール, カラーピッカー, 文字数カウンター, Base64, URL エンコード, ハッシュ, QRコード, パスワード生成',
     },
   ],
-});
+})
 </script>

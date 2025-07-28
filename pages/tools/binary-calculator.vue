@@ -293,171 +293,171 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const inputValue = ref("");
-const fromBase = ref(10);
-const copyMessage = ref("");
+const inputValue = ref('')
+const fromBase = ref(10)
+const copyMessage = ref('')
 
 // プリセット例
 const presets = [
-  { name: "8ビット最大値", value: "11111111", base: 2 },
-  { name: "16進色コード", value: "FF0000", base: 16 },
-  { name: "ファイル権限", value: "755", base: 8 },
-  { name: "年号", value: "2024", base: 10 },
-  { name: "IPv4アドレス", value: "C0A80001", base: 16 },
-  { name: "1024", value: "1024", base: 10 },
-];
+  { name: '8ビット最大値', value: '11111111', base: 2 },
+  { name: '16進色コード', value: 'FF0000', base: 16 },
+  { name: 'ファイル権限', value: '755', base: 8 },
+  { name: '年号', value: '2024', base: 10 },
+  { name: 'IPv4アドレス', value: 'C0A80001', base: 16 },
+  { name: '1024', value: '1024', base: 10 },
+]
 
 // 計算プロパティ
 const isValidInput = computed(() => {
-  if (!inputValue.value) return false;
+  if (!inputValue.value) return false
 
   try {
-    const cleanValue = inputValue.value.trim().toUpperCase();
-    parseInt(cleanValue, fromBase.value);
-    return true;
+    const cleanValue = inputValue.value.trim().toUpperCase()
+    parseInt(cleanValue, fromBase.value)
+    return true
   } catch {
-    return false;
+    return false
   }
-});
+})
 
 const decimalValue = computed(() => {
-  if (!isValidInput.value) return null;
+  if (!isValidInput.value) return null
 
   try {
-    const cleanValue = inputValue.value.trim().toUpperCase();
-    return parseInt(cleanValue, fromBase.value);
+    const cleanValue = inputValue.value.trim().toUpperCase()
+    return parseInt(cleanValue, fromBase.value)
   } catch {
-    return null;
+    return null
   }
-});
+})
 
 const conversions = computed(() => {
-  if (!isValidInput.value || decimalValue.value === null) return null;
+  if (!isValidInput.value || decimalValue.value === null) return null
 
   const bases = [
-    { base: 2, name: "2進数（Binary）" },
-    { base: 8, name: "8進数（Octal）" },
-    { base: 10, name: "10進数（Decimal）" },
-    { base: 16, name: "16進数（Hexadecimal）" },
-  ];
+    { base: 2, name: '2進数（Binary）' },
+    { base: 8, name: '8進数（Octal）' },
+    { base: 10, name: '10進数（Decimal）' },
+    { base: 16, name: '16進数（Hexadecimal）' },
+  ]
 
-  return bases.map((baseInfo) => ({
+  return bases.map(baseInfo => ({
     ...baseInfo,
     value: decimalValue.value.toString(baseInfo.base).toUpperCase(),
-  }));
-});
+  }))
+})
 
 // メソッド
 const getPlaceholder = () => {
   const placeholders = {
-    2: "1010101",
-    8: "377",
-    10: "255",
-    16: "FF",
-  };
-  return placeholders[fromBase.value] ?? "数値を入力";
-};
+    2: '1010101',
+    8: '377',
+    10: '255',
+    16: 'FF',
+  }
+  return placeholders[fromBase.value] ?? '数値を入力'
+}
 
 const validateAndConvert = () => {
   // リアクティブに変換が実行される
-};
+}
 
 const getMaxValue = () => {
-  const length = inputValue.value.length || 1;
+  const length = inputValue.value.length || 1
   return (Math.pow(fromBase.value, length) - 1)
     .toString(fromBase.value)
-    .toUpperCase();
-};
+    .toUpperCase()
+}
 
 const getUsedHexChars = () => {
-  if (fromBase.value !== 16) return "";
+  if (fromBase.value !== 16) return ''
 
-  const uniqueChars = [...new Set(inputValue.value.toUpperCase())].sort();
-  return uniqueChars.join(", ");
-};
+  const uniqueChars = [...new Set(inputValue.value.toUpperCase())].sort()
+  return uniqueChars.join(', ')
+}
 
 const getUniqueCharCount = () => {
-  return new Set(inputValue.value.toUpperCase()).size;
-};
+  return new Set(inputValue.value.toUpperCase()).size
+}
 
 const getConversionFormula = () => {
-  if (!inputValue.value || decimalValue.value === null) return "";
+  if (!inputValue.value || decimalValue.value === null) return ''
 
-  const cleanValue = inputValue.value.trim().toUpperCase();
-  const base = parseInt(fromBase.value);
+  const cleanValue = inputValue.value.trim().toUpperCase()
+  const base = parseInt(fromBase.value)
 
   if (cleanValue.length <= 4) {
-    const digits = cleanValue.split("").reverse();
+    const digits = cleanValue.split('').reverse()
     const terms = digits
       .map((digit, index) => {
-        const coefficient = parseInt(digit, base);
+        const coefficient = parseInt(digit, base)
         if (index === 0) {
-          return `${coefficient}`;
+          return `${coefficient}`
         } else {
-          return `${coefficient}×${base}^${index}`;
+          return `${coefficient}×${base}^${index}`
         }
       })
-      .reverse();
+      .reverse()
 
-    return `${terms.join(" + ")} = ${decimalValue.value}`;
+    return `${terms.join(' + ')} = ${decimalValue.value}`
   } else {
-    return `${cleanValue}(${base}) = ${decimalValue.value}(10)`;
+    return `${cleanValue}(${base}) = ${decimalValue.value}(10)`
   }
-};
+}
 
-const applyPreset = (preset) => {
-  inputValue.value = preset.value;
-  fromBase.value = preset.base;
+const applyPreset = preset => {
+  inputValue.value = preset.value
+  fromBase.value = preset.base
 
-  copyMessage.value = `プリセット「${preset.name}」を適用しました`;
+  copyMessage.value = `プリセット「${preset.name}」を適用しました`
   setTimeout(() => {
-    copyMessage.value = "";
-  }, 2000);
-};
+    copyMessage.value = ''
+  }, 2000)
+}
 
-const copyConversion = async (conversion) => {
+const copyConversion = async conversion => {
   try {
-    await navigator.clipboard.writeText(conversion.value);
-    copyMessage.value = `${conversion.name} ${conversion.value} をコピーしました`;
+    await navigator.clipboard.writeText(conversion.value)
+    copyMessage.value = `${conversion.name} ${conversion.value} をコピーしました`
     setTimeout(() => {
-      copyMessage.value = "";
-    }, 2000);
+      copyMessage.value = ''
+    }, 2000)
   } catch {
     // Copy failed silently
   }
-};
+}
 
-const useAsInput = (conversion) => {
-  inputValue.value = conversion.value;
-  fromBase.value = conversion.base;
+const useAsInput = conversion => {
+  inputValue.value = conversion.value
+  fromBase.value = conversion.base
 
-  copyMessage.value = `${conversion.name} を入力として設定しました`;
+  copyMessage.value = `${conversion.name} を入力として設定しました`
   setTimeout(() => {
-    copyMessage.value = "";
-  }, 2000);
-};
+    copyMessage.value = ''
+  }, 2000)
+}
 
 // SEO
 useHead({
-  title: "進数変換 - tools.tomacheese.com",
+  title: '進数変換 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "10進数、2進数、8進数、16進数を相互変換します。プログラミングや数学の学習に便利。",
+        '10進数、2進数、8進数、16進数を相互変換します。プログラミングや数学の学習に便利。',
     },
     {
-      name: "keywords",
-      content: "進数変換, 2進数, 16進数, 8進数, プログラミング, 数値変換",
+      name: 'keywords',
+      content: '進数変換, 2進数, 16進数, 8進数, プログラミング, 数値変換',
     },
   ],
-});
+})
 </script>

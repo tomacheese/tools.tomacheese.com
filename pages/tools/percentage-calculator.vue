@@ -144,11 +144,11 @@
         <div style="font-size: 1.5rem; font-weight: 600; color: #1e293b">
           {{ changeCalc.oldValue }} から {{ changeCalc.newValue }} への変化率は
           <span :style="{ color: changeResult >= 0 ? '#10b981' : '#ef4444' }">
-            {{ changeResult >= 0 ? "+" : "" }}{{ changeResult.toFixed(2) }}%
+            {{ changeResult >= 0 ? '+' : '' }}{{ changeResult.toFixed(2) }}%
           </span>
         </div>
         <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b">
-          {{ changeResult >= 0 ? "増加" : "減少" }}
+          {{ changeResult >= 0 ? '増加' : '減少' }}
         </div>
       </div>
     </div>
@@ -190,11 +190,11 @@
         <h4 style="color: #2563eb; margin-bottom: 0.5rem">結果</h4>
         <div style="font-size: 1.5rem; font-weight: 600; color: #1e293b">
           {{ increaseCalc.value }} を {{ increaseCalc.percentage }}%
-          {{ increaseCalc.percentage >= 0 ? "増加" : "減少" }}すると
+          {{ increaseCalc.percentage >= 0 ? '増加' : '減少' }}すると
           <span style="color: #10b981">{{ increaseResult.toFixed(2) }}</span>
         </div>
         <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b">
-          変化量: {{ increaseCalc.percentage >= 0 ? "+" : ""
+          変化量: {{ increaseCalc.percentage >= 0 ? '+' : ''
           }}{{ (increaseResult - increaseCalc.value).toFixed(2) }}
         </div>
       </div>
@@ -245,53 +245,53 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue'
 import {
   calculatePercentage,
   calculateValueFromPercentage,
   calculatePercentageChange,
   calculatePercentageIncrease,
-} from "~/utils/math";
+} from '~/utils/math'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // 計算タイプ
 const calculationTypes = [
-  { id: "percentage", name: "パーセント計算" },
-  { id: "value", name: "値計算" },
-  { id: "change", name: "増減率" },
-  { id: "increase", name: "増加・減少" },
-];
+  { id: 'percentage', name: 'パーセント計算' },
+  { id: 'value', name: '値計算' },
+  { id: 'change', name: '増減率' },
+  { id: 'increase', name: '増加・減少' },
+]
 
 // リアクティブデータ
-const selectedType = ref("percentage");
+const selectedType = ref('percentage')
 
 // パーセント計算
 const percentageCalc = ref({
   value: null,
   total: null,
-});
+})
 
 // 値計算
 const valueCalc = ref({
   total: null,
   percentage: null,
-});
+})
 
 // 増減率計算
 const changeCalc = ref({
   oldValue: null,
   newValue: null,
-});
+})
 
 // パーセント増加・減少計算
 const increaseCalc = ref({
   value: null,
   percentage: null,
-});
+})
 
 // 計算結果
 const percentageResult = computed(() => {
@@ -303,20 +303,20 @@ const percentageResult = computed(() => {
     return calculatePercentage(
       percentageCalc.value.value,
       percentageCalc.value.total
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 const valueResult = computed(() => {
   if (valueCalc.value.total !== null && valueCalc.value.percentage !== null) {
     return calculateValueFromPercentage(
       valueCalc.value.percentage,
       valueCalc.value.total
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 const changeResult = computed(() => {
   if (
@@ -326,10 +326,10 @@ const changeResult = computed(() => {
     return calculatePercentageChange(
       changeCalc.value.oldValue,
       changeCalc.value.newValue
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 const increaseResult = computed(() => {
   if (
@@ -339,34 +339,34 @@ const increaseResult = computed(() => {
     return calculatePercentageIncrease(
       increaseCalc.value.value,
       increaseCalc.value.percentage
-    );
+    )
   }
-  return null;
-});
+  return null
+})
 
 // 初期値をクリア
 watch(selectedType, () => {
-  percentageCalc.value = { value: null, total: null };
-  valueCalc.value = { total: null, percentage: null };
-  changeCalc.value = { oldValue: null, newValue: null };
-  increaseCalc.value = { value: null, percentage: null };
-});
+  percentageCalc.value = { value: null, total: null }
+  valueCalc.value = { total: null, percentage: null }
+  changeCalc.value = { oldValue: null, newValue: null }
+  increaseCalc.value = { value: null, percentage: null }
+})
 
 // SEO
 useHead({
-  title: "パーセント計算 - tools.tomacheese.com",
+  title: 'パーセント計算 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "割合、増減率、パーセンテージを簡単に計算します。パーセント計算、値計算、増減率計算などに対応。",
+        '割合、増減率、パーセンテージを簡単に計算します。パーセント計算、値計算、増減率計算などに対応。',
     },
     {
-      name: "keywords",
-      content: "パーセント計算, 割合計算, 増減率, パーセンテージ, 数学",
+      name: 'keywords',
+      content: 'パーセント計算, 割合計算, 増減率, パーセンテージ, 数学',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

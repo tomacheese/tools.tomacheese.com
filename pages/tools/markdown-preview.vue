@@ -98,30 +98,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { marked } from "marked";
+import { ref, computed } from 'vue'
+import { marked } from 'marked'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
-const markdownText = ref("");
+const markdownText = ref('')
 
 // マークダウンをHTMLに変換
 const htmlOutput = computed(() => {
   if (!markdownText.value) {
-    return '<p class="placeholder">Markdownテキストを入力するとここにプレビューが表示されます</p>';
+    return '<p class="placeholder">Markdownテキストを入力するとここにプレビューが表示されます</p>'
   }
 
   try {
-    const result = marked(markdownText.value);
+    const result = marked(markdownText.value)
     // Handle both sync and async cases
-    return typeof result === "string" ? result : String(result);
+    return typeof result === 'string' ? result : String(result)
   } catch (error) {
-    return `<p class="error">Markdown変換エラー: ${error}</p>`;
+    return `<p class="error">Markdown変換エラー: ${error}</p>`
   }
-});
+})
 
 // サンプルテキストを挿入
 const insertExample = () => {
@@ -190,45 +190,45 @@ function greet(name) {
 
 - [x] 完了済みタスク
 - [ ] 未完了タスク
-- [ ] もう一つのタスク`;
-};
+- [ ] もう一つのタスク`
+}
 
 // 入力をクリア
 const clearInput = () => {
-  markdownText.value = "";
-};
+  markdownText.value = ''
+}
 
 // HTMLをクリップボードにコピー
 const copyHtml = async () => {
   try {
-    await navigator.clipboard.writeText(htmlOutput.value);
-    alert("HTMLがクリップボードにコピーされました");
+    await navigator.clipboard.writeText(htmlOutput.value)
+    alert('HTMLがクリップボードにコピーされました')
   } catch {
-    alert("コピーに失敗しました");
+    alert('コピーに失敗しました')
   }
-};
+}
 
 // Markdownをクリップボードにコピー
 const copyMarkdown = async () => {
   try {
-    await navigator.clipboard.writeText(markdownText.value);
-    alert("Markdownがクリップボードにコピーされました");
+    await navigator.clipboard.writeText(markdownText.value)
+    alert('Markdownがクリップボードにコピーされました')
   } catch {
-    alert("コピーに失敗しました");
+    alert('コピーに失敗しました')
   }
-};
+}
 
 // メタデータ
 useHead({
-  title: "Markdownプレビュー - tools.tomacheese.com",
+  title: 'Markdownプレビュー - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "MarkdownテキストをHTMLでリアルタイムプレビューできるツールです。",
+        'MarkdownテキストをHTMLでリアルタイムプレビューできるツールです。',
     },
   ],
-});
+})
 </script>
 
 <style scoped>

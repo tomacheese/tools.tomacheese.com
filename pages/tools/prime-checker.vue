@@ -59,7 +59,7 @@
               fontWeight: 'bold',
             }"
           >
-            {{ result.isPrime ? "✓" : "○" }}
+            {{ result.isPrime ? '✓' : '○' }}
           </div>
           <div>
             <div style="font-size: 1.5rem; font-weight: 600; color: #1e293b">
@@ -72,7 +72,7 @@
                   fontWeight: '600',
                 }"
               >
-                {{ result.isPrime ? "素数です" : "素数ではありません" }}
+                {{ result.isPrime ? '素数です' : '素数ではありません' }}
               </span>
             </div>
           </div>
@@ -116,7 +116,7 @@
               <div>値: {{ inputNumber.toLocaleString() }}</div>
               <div>桁数: {{ inputNumber.toString().length }}桁</div>
               <div>
-                偶数・奇数: {{ inputNumber % 2 === 0 ? "偶数" : "奇数" }}
+                偶数・奇数: {{ inputNumber % 2 === 0 ? '偶数' : '奇数' }}
               </div>
               <div v-if="!result.isPrime">
                 約数の個数: {{ result.divisorCount }}個
@@ -241,19 +241,19 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
-import { isPrime, primeFactorize } from "~/utils/math";
+import { ref, computed, watch } from 'vue'
+import { isPrime, primeFactorize } from '~/utils/math'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
 // リアクティブデータ
-const inputNumber = ref(null);
-const result = ref(null);
-const primeRange = ref(100);
-const copyMessage = ref("");
+const inputNumber = ref(null)
+const result = ref(null)
+const primeRange = ref(100)
+const copyMessage = ref('')
 
 // 計算プロパティ
 const isValidInput = computed(() => {
@@ -262,41 +262,41 @@ const isValidInput = computed(() => {
     inputNumber.value >= 1 &&
     Number.isInteger(inputNumber.value) &&
     inputNumber.value <= Number.MAX_SAFE_INTEGER
-  );
-});
+  )
+})
 
 const primeList = computed(() => {
-  const primes = [];
+  const primes = []
   for (let i = 2; i <= primeRange.value; i++) {
     if (isPrime(i)) {
-      primes.push(i);
+      primes.push(i)
     }
   }
-  return primes;
-});
+  return primes
+})
 
 // メソッド
 const checkPrime = () => {
-  if (!isValidInput.value) return;
+  if (!isValidInput.value) return
 
-  const startTime = performance.now();
-  const primeResult = isPrime(inputNumber.value);
-  const endTime = performance.now();
+  const startTime = performance.now()
+  const primeResult = isPrime(inputNumber.value)
+  const endTime = performance.now()
 
-  let factors = [];
-  let divisorCount = 0;
+  let factors = []
+  let divisorCount = 0
 
   if (!primeResult) {
-    factors = primeFactorize(inputNumber.value);
+    factors = primeFactorize(inputNumber.value)
     // 約数の個数を計算
-    const factorCounts = {};
-    factors.forEach((factor) => {
-      factorCounts[factor] = (factorCounts[factor] ?? 0) + 1;
-    });
+    const factorCounts = {}
+    factors.forEach(factor => {
+      factorCounts[factor] = (factorCounts[factor] ?? 0) + 1
+    })
     divisorCount = Object.values(factorCounts).reduce(
       (acc, count) => acc * (count + 1),
       1
-    );
+    )
   }
 
   result.value = {
@@ -304,60 +304,60 @@ const checkPrime = () => {
     factors,
     divisorCount,
     timeMs: Math.round((endTime - startTime) * 100) / 100,
-  };
-};
+  }
+}
 
-const formatFactorization = (factors) => {
-  if (factors.length === 0) return "";
+const formatFactorization = factors => {
+  if (factors.length === 0) return ''
 
   // 素因数をグループ化
-  const factorCounts = {};
-  factors.forEach((factor) => {
-    factorCounts[factor] = (factorCounts[factor] ?? 0) + 1;
-  });
+  const factorCounts = {}
+  factors.forEach(factor => {
+    factorCounts[factor] = (factorCounts[factor] ?? 0) + 1
+  })
 
   // フォーマット
   return Object.entries(factorCounts)
     .map(([factor, count]) => {
       if (count === 1) {
-        return factor;
+        return factor
       } else {
-        return `${factor}^${count}`;
+        return `${factor}^${count}`
       }
     })
-    .join(" × ");
-};
+    .join(' × ')
+}
 
-const selectPrime = (prime) => {
-  inputNumber.value = prime;
-  checkPrime();
+const selectPrime = prime => {
+  inputNumber.value = prime
+  checkPrime()
 
-  copyMessage.value = `素数 ${prime} が選択されました`;
+  copyMessage.value = `素数 ${prime} が選択されました`
   setTimeout(() => {
-    copyMessage.value = "";
-  }, 2000);
-};
+    copyMessage.value = ''
+  }, 2000)
+}
 
 // 初期設定
 watch(inputNumber, () => {
   if (result.value) {
-    result.value = null;
+    result.value = null
   }
-});
+})
 
 // SEO
 useHead({
-  title: "素数判定 - tools.tomacheese.com",
+  title: '素数判定 - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "入力した数値が素数かどうかを判定します。素因数分解機能と素数一覧表示も利用できます。",
+        '入力した数値が素数かどうかを判定します。素因数分解機能と素数一覧表示も利用できます。',
     },
     {
-      name: "keywords",
-      content: "素数判定, 素因数分解, 数学, アルゴリズム, 暗号学",
+      name: 'keywords',
+      content: '素数判定, 素因数分解, 数学, アルゴリズム, 暗号学',
     },
   ],
-});
+})
 </script>

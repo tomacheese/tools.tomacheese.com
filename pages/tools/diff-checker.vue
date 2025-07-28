@@ -98,46 +98,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { diffLines, diffWords } from "diff";
+import { ref, computed } from 'vue'
+import { diffLines, diffWords } from 'diff'
 
 // レイアウト設定
 definePageMeta({
-  layout: "tool",
-});
+  layout: 'tool',
+})
 
-const textA = ref("");
-const textB = ref("");
-const ignoreWhitespace = ref(false);
-const ignoreCase = ref(false);
-const wordLevel = ref(false);
+const textA = ref('')
+const textB = ref('')
+const ignoreWhitespace = ref(false)
+const ignoreCase = ref(false)
+const wordLevel = ref(false)
 
 // テキスト前処理
 const preprocessText = (text: string): string => {
-  let result = text;
+  let result = text
 
   if (ignoreCase.value) {
-    result = result.toLowerCase();
+    result = result.toLowerCase()
   }
 
   if (ignoreWhitespace.value) {
-    result = result.replace(/\s+/g, " ").trim();
+    result = result.replace(/\s+/g, ' ').trim()
   }
 
-  return result;
-};
+  return result
+}
 
 // 差分計算
 const diffResult = computed(() => {
-  const processedA = preprocessText(textA.value);
-  const processedB = preprocessText(textB.value);
+  const processedA = preprocessText(textA.value)
+  const processedB = preprocessText(textB.value)
 
   if (wordLevel.value) {
-    return diffWords(processedA, processedB);
+    return diffWords(processedA, processedB)
   } else {
-    return diffLines(processedA, processedB);
+    return diffLines(processedA, processedB)
   }
-});
+})
 
 // 統計情報
 const stats = computed(() => {
@@ -146,98 +146,98 @@ const stats = computed(() => {
     removed: 0,
     modified: 0,
     unchanged: 0,
-  };
+  }
 
-  diffResult.value.forEach((part) => {
+  diffResult.value.forEach(part => {
     if (part.added) {
-      result.added++;
+      result.added++
     } else if (part.removed) {
-      result.removed++;
+      result.removed++
     } else {
-      result.unchanged++;
+      result.unchanged++
     }
-  });
+  })
 
-  return result;
-});
+  return result
+})
 
 // 差分表示用HTML生成（テキストA）
 const diffA = computed(() => {
   return diffResult.value
-    .map((part) => {
+    .map(part => {
       if (part.removed) {
-        return `<div class="diff-line removed">${escapeHtml(part.value)}</div>`;
+        return `<div class="diff-line removed">${escapeHtml(part.value)}</div>`
       } else if (!part.added) {
         return `<div class="diff-line unchanged">${escapeHtml(
           part.value
-        )}</div>`;
+        )}</div>`
       }
-      return "";
+      return ''
     })
     .filter(Boolean)
-    .join("");
-});
+    .join('')
+})
 
 // 差分表示用HTML生成（テキストB）
 const diffB = computed(() => {
   return diffResult.value
-    .map((part) => {
+    .map(part => {
       if (part.added) {
-        return `<div class="diff-line added">${escapeHtml(part.value)}</div>`;
+        return `<div class="diff-line added">${escapeHtml(part.value)}</div>`
       } else if (!part.removed) {
         return `<div class="diff-line unchanged">${escapeHtml(
           part.value
-        )}</div>`;
+        )}</div>`
       }
-      return "";
+      return ''
     })
     .filter(Boolean)
-    .join("");
-});
+    .join('')
+})
 
 // 統合差分表示
 const unifiedDiff = computed(() => {
   return diffResult.value
-    .map((part) => {
-      let prefix = " ";
-      let className = "unchanged";
+    .map(part => {
+      let prefix = ' '
+      let className = 'unchanged'
 
       if (part.added) {
-        prefix = "+";
-        className = "added";
+        prefix = '+'
+        className = 'added'
       } else if (part.removed) {
-        prefix = "-";
-        className = "removed";
+        prefix = '-'
+        className = 'removed'
       }
 
-      const lines = part.value.split("\n").filter((line) => line !== "");
+      const lines = part.value.split('\n').filter(line => line !== '')
       return lines
         .map(
-          (line) =>
+          line =>
             `<span class="unified-line ${className}">${prefix} ${escapeHtml(
               line
             )}</span>`
         )
-        .join("\n");
+        .join('\n')
     })
-    .join("\n");
-});
+    .join('\n')
+})
 
 // HTMLエスケープ
 const escapeHtml = (text: string): string => {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML.replace(/\n/g, "<br>");
-};
+  const div = document.createElement('div')
+  div.textContent = text
+  return div.innerHTML.replace(/\n/g, '<br>')
+}
 
 // テキストクリア
 const clearTextA = () => {
-  textA.value = "";
-};
+  textA.value = ''
+}
 
 const clearTextB = () => {
-  textB.value = "";
-};
+  textB.value = ''
+}
 
 // サンプル読み込み
 const loadCodeExample = () => {
@@ -247,7 +247,7 @@ const loadCodeExample = () => {
     total += items[i].price;
   }
   return total;
-}`;
+}`
 
   textB.value = `function calculateTotal(items) {
   let total = 0;
@@ -255,22 +255,22 @@ const loadCodeExample = () => {
     total += item.price * item.quantity;
   }
   return total;
-}`;
-};
+}`
+}
 
 const loadTextExample = () => {
   textA.value = `これは元のテキストです。
 いくつかの行があります。
 この行は変更されます。
 この行は削除されます。
-最後の行です。`;
+最後の行です。`
 
   textB.value = `これは元のテキストです。
 いくつかの行があります。
 この行は変更されました。
 新しい行が追加されました。
-最後の行です。`;
-};
+最後の行です。`
+}
 
 const loadJsonExample = () => {
   textA.value = `{
@@ -278,7 +278,7 @@ const loadJsonExample = () => {
   "age": 30,
   "city": "Tokyo",
   "hobbies": ["reading", "swimming"]
-}`;
+}`
 
   textB.value = `{
   "name": "John Doe",
@@ -286,20 +286,20 @@ const loadJsonExample = () => {
   "city": "Osaka",
   "hobbies": ["reading", "swimming", "coding"],
   "married": true
-}`;
-};
+}`
+}
 
 // メタデータ
 useHead({
-  title: "テキスト差分チェッカー - tools.tomacheese.com",
+  title: 'テキスト差分チェッカー - tools.tomacheese.com',
   meta: [
     {
-      name: "description",
+      name: 'description',
       content:
-        "2つのテキストの差分を視覚的に表示するツールです。追加・削除・変更された部分がハイライトされます。",
+        '2つのテキストの差分を視覚的に表示するツールです。追加・削除・変更された部分がハイライトされます。',
     },
   ],
-});
+})
 </script>
 
 <style scoped>
