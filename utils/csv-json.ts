@@ -243,7 +243,7 @@ export function detectDelimiter(csv: string): string {
   for (const delimiter of delimiters) {
     // Escape special regex characters
     const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const count = (sampleLines.match(new RegExp(escapedDelimiter, 'g')) || [])
+    const count = (sampleLines.match(new RegExp(escapedDelimiter, 'g')) ?? [])
       .length
     if (count > maxCount) {
       maxCount = count

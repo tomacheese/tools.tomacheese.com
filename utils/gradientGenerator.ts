@@ -34,8 +34,8 @@ export function generateGradientCSS(config: GradientConfig): string {
     }
 
     case 'radial': {
-      const shape = config.shape || 'ellipse'
-      const size = config.size || 'farthest-corner'
+      const shape = config.shape ?? 'ellipse'
+      const size = config.size ?? 'farthest-corner'
       const position = config.position
         ? `at ${config.position.x}% ${config.position.y}%`
         : 'at center'

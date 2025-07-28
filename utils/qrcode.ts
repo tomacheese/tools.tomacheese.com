@@ -100,10 +100,10 @@ export class QRCode {
   }
 
   public toDataURL(options: QRCodeOptions = {}): string {
-    const width = options.width || 256
-    const margin = options.margin || 4
-    const darkColor = options.color?.dark || '#000000'
-    const lightColor = options.color?.light || '#FFFFFF'
+    const width = options.width ?? 256
+    const margin = options.margin ?? 4
+    const darkColor = options.color?.dark ?? '#000000'
+    const lightColor = options.color?.light ?? '#FFFFFF'
 
     const cellSize = Math.floor((width - 2 * margin) / this.size)
     const canvasSize = cellSize * this.size + 2 * margin
@@ -140,10 +140,10 @@ export class QRCode {
   }
 
   public toSVG(options: QRCodeOptions = {}): string {
-    const width = options.width || 256
-    const margin = options.margin || 4
-    const darkColor = options.color?.dark || '#000000'
-    const lightColor = options.color?.light || '#FFFFFF'
+    const width = options.width ?? 256
+    const margin = options.margin ?? 4
+    const darkColor = options.color?.dark ?? '#000000'
+    const lightColor = options.color?.light ?? '#FFFFFF'
 
     const cellSize = Math.floor((width - 2 * margin) / this.size)
     const svgSize = cellSize * this.size + 2 * margin

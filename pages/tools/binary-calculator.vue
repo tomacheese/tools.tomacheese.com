@@ -181,8 +181,8 @@
             <h4 style="color: #2563eb; margin-bottom: 0.5rem">2進数情報</h4>
             <div style="font-size: 0.9rem">
               <div>ビット数: {{ inputValue.length }}bit</div>
-              <div>1の個数: {{ (inputValue.match(/1/g) || []).length }}</div>
-              <div>0の個数: {{ (inputValue.match(/0/g) || []).length }}</div>
+              <div>1の個数: {{ (inputValue.match(/1/g) ?? []).length }}</div>
+              <div>0の個数: {{ (inputValue.match(/0/g) ?? []).length }}</div>
               <div>値の範囲: 0 ～ {{ Math.pow(2, inputValue.length) - 1 }}</div>
             </div>
           </div>
@@ -363,7 +363,7 @@ const getPlaceholder = () => {
     10: '255',
     16: 'FF',
   }
-  return placeholders[fromBase.value] || '数値を入力'
+  return placeholders[fromBase.value] ?? '数値を入力'
 }
 
 const validateAndConvert = () => {

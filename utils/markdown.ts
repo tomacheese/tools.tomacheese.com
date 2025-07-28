@@ -29,10 +29,10 @@ export function parseMarkdownMeta(markdown: string) {
       .trim()
       .split(/\s+/)
       .filter(word => word.length > 0).length,
-    headings: (markdown.match(/^#{1,6}\s+/gm) || []).length,
-    codeBlocks: (markdown.match(/```[\s\S]*?```/g) || []).length,
-    links: (markdown.match(/\[.*?\]\(.*?\)/g) || []).length,
-    images: (markdown.match(/!\[.*?\]\(.*?\)/g) || []).length,
+    headings: (markdown.match(/^#{1,6}\s+/gm) ?? []).length,
+    codeBlocks: (markdown.match(/```[\s\S]*?```/g) ?? []).length,
+    links: (markdown.match(/\[.*?\]\(.*?\)/g) ?? []).length,
+    images: (markdown.match(/!\[.*?\]\(.*?\)/g) ?? []).length,
   }
 
   return stats

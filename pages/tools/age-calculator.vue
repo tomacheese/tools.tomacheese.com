@@ -202,7 +202,7 @@ const result = ref<AgeResult | null>(null)
 const error = ref('')
 
 const birthDate = computed(() => new Date(birthDateString.value))
-const targetDate = computed(() => new Date(targetDateString.value || ''))
+const targetDate = computed(() => new Date(targetDateString.value ?? ''))
 const maxDate = computed(() => new Date().toISOString().split('T')[0])
 
 const ageInUnits = computed(() => {
