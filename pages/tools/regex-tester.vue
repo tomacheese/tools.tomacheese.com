@@ -19,21 +19,22 @@
     <div class="form-group">
       <label for="flags">フラグ</label>
       <div class="flags">
-        <label
-          ><input v-model="flags.global" type="checkbox" /> g
-          (グローバル)</label
-        >
-        <label
-          ><input v-model="flags.ignoreCase" type="checkbox" /> i
-          (大文字小文字を無視)</label
-        >
-        <label
-          ><input v-model="flags.multiline" type="checkbox" /> m (複数行)</label
-        >
-        <label
-          ><input v-model="flags.dotAll" type="checkbox" /> s (.
-          が改行にマッチ)</label
-        >
+        <label>
+          <input v-model="flags.global" type="checkbox" />
+          g (グローバル)
+        </label>
+        <label>
+          <input v-model="flags.ignoreCase" type="checkbox" />
+          i (大文字小文字を無視)
+        </label>
+        <label>
+          <input v-model="flags.multiline" type="checkbox" />
+          m (複数行)
+        </label>
+        <label>
+          <input v-model="flags.dotAll" type="checkbox" />
+          s (. が改行にマッチ)
+        </label>
       </div>
     </div>
 
@@ -48,18 +49,27 @@
       ></textarea>
     </div>
 
-    <div v-if="error" class="error"><strong>エラー:</strong> {{ error }}</div>
+    <div v-if="error" class="error">
+      <strong>エラー:</strong>
+      {{ error }}
+    </div>
 
     <div v-if="!error && pattern && testText" class="results">
       <h3>マッチ結果</h3>
 
       <div class="match-info">
-        <p><strong>パターン:</strong> /{{ pattern }}/{{ flagString }}</p>
-        <p><strong>マッチ数:</strong> {{ matches.length }}個</p>
+        <p>
+          <strong>パターン:</strong>
+          /{{ pattern }}/{{ flagString }}
+        </p>
+        <p>
+          <strong>マッチ数:</strong>
+          {{ matches.length }}個
+        </p>
         <p>
           <strong>テスト結果:</strong>
           <span :class="matches.length > 0 ? 'match-success' : 'match-failure'">
-            {{ matches.length > 0 ? 'マッチしました' : 'マッチしませんでした' }}
+            {{ matches.length > 0 ? "マッチしました" : "マッチしませんでした" }}
           </span>
         </p>
       </div>
@@ -75,10 +85,10 @@
             <div class="match-header">
               <strong>マッチ {{ index + 1 }}:</strong>
               <span class="match-text">"{{ match.text }}"</span>
-              <span class="match-position"
-                >(位置: {{ match.index }} -
-                {{ match.index + match.text.length - 1 }})</span
-              >
+              <span class="match-position">
+                (位置: {{ match.index }} -
+                {{ match.index + match.text.length - 1 }})
+              </span>
             </div>
             <div
               v-if="match.groups && match.groups.length > 0"
@@ -121,89 +131,89 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from "vue";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // フォームの状態
-const pattern = ref('')
-const testText = ref('')
+const pattern = ref("");
+const testText = ref("");
 const flags = ref({
   global: true,
   ignoreCase: false,
   multiline: false,
   dotAll: false,
-})
+});
 
 // エラー状態
-const error = ref('')
+const error = ref("");
 
 // フラグ文字列
 const flagString = computed(() => {
-  let result = ''
-  if (flags.value.global) result += 'g'
-  if (flags.value.ignoreCase) result += 'i'
-  if (flags.value.multiline) result += 'm'
-  if (flags.value.dotAll) result += 's'
-  return result
-})
+  let result = "";
+  if (flags.value.global) result += "g";
+  if (flags.value.ignoreCase) result += "i";
+  if (flags.value.multiline) result += "m";
+  if (flags.value.dotAll) result += "s";
+  return result;
+});
 
 // マッチ結果
 const matches = ref<
   Array<{
-    text: string
-    index: number
-    groups?: string[]
+    text: string;
+    index: number;
+    groups?: string[];
   }>
->([])
+>([]);
 
 // 正規表現のテスト実行
 const testRegex = () => {
-  error.value = ''
-  matches.value = []
+  error.value = "";
+  matches.value = [];
 
   if (!pattern.value || !testText.value) {
-    return
+    return;
   }
 
   try {
-    const regex = new RegExp(pattern.value, flagString.value)
-    const text = testText.value
-    const foundMatches = []
+    const regex = new RegExp(pattern.value, flagString.value);
+    const text = testText.value;
+    const foundMatches = [];
 
     if (flags.value.global) {
-      let match
+      let match;
       while ((match = regex.exec(text)) !== null) {
         foundMatches.push({
           text: match[0],
           index: match.index,
           groups: match.slice(1),
-        })
+        });
         // 無限ループを防ぐ
         if (match.index === regex.lastIndex) {
-          break
+          break;
         }
       }
     } else {
-      const match = regex.exec(text)
+      const match = regex.exec(text);
       if (match) {
         foundMatches.push({
           text: match[0],
           index: match.index,
           groups: match.slice(1),
-        })
+        });
       }
     }
 
-    matches.value = foundMatches
+    matches.value = foundMatches;
   } catch (e) {
     error.value =
-      e instanceof Error ? e.message : '正規表現に構文エラーがあります'
+      e instanceof Error ? e.message : "正規表現に構文エラーがあります";
   }
-}
+};
 
 // ハイライト表示
 const highlightedText = computed(() => {
@@ -213,80 +223,80 @@ const highlightedText = computed(() => {
     error.value ||
     matches.value.length === 0
   ) {
-    return testText.value.replace(/\n/g, '<br>')
+    return testText.value.replace(/\n/g, "<br>");
   }
 
-  let result = testText.value
-  const sortedMatches = [...matches.value].sort((a, b) => b.index - a.index)
+  let result = testText.value;
+  const sortedMatches = [...matches.value].sort((a, b) => b.index - a.index);
 
   for (const match of sortedMatches) {
-    const before = result.substring(0, match.index)
+    const before = result.substring(0, match.index);
     const matchText = result.substring(
       match.index,
       match.index + match.text.length
-    )
-    const after = result.substring(match.index + match.text.length)
-    result = `${before}<mark class="regex-match">${matchText}</mark>${after}`
+    );
+    const after = result.substring(match.index + match.text.length);
+    result = `${before}<mark class="regex-match">${matchText}</mark>${after}`;
   }
 
-  return result.replace(/\n/g, '<br>')
-})
+  return result.replace(/\n/g, "<br>");
+});
 
 // 例の定義
 const examples = [
   {
-    name: 'メールアドレス',
-    pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}',
-    text: 'お問い合わせ: info@example.com または support@test.co.jp まで',
+    name: "メールアドレス",
+    pattern: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+    text: "お問い合わせ: info@example.com または support@test.co.jp まで",
   },
   {
-    name: 'URL',
+    name: "URL",
     pattern: "https?://[\\w\\-._~:/?#[\\]@!$&'()*+,;=%]+",
-    text: 'サイトURL: https://www.example.com/path?param=value#section',
+    text: "サイトURL: https://www.example.com/path?param=value#section",
   },
   {
-    name: '電話番号',
-    pattern: '\\d{2,4}-\\d{2,4}-\\d{4}',
-    text: '連絡先: 03-1234-5678, 090-1234-5678, 0120-123-456',
+    name: "電話番号",
+    pattern: "\\d{2,4}-\\d{2,4}-\\d{4}",
+    text: "連絡先: 03-1234-5678, 090-1234-5678, 0120-123-456",
   },
   {
-    name: '日付 (YYYY-MM-DD)',
-    pattern: '\\d{4}-\\d{2}-\\d{2}',
-    text: '開始日: 2025-01-01, 終了日: 2025-12-31',
+    name: "日付 (YYYY-MM-DD)",
+    pattern: "\\d{4}-\\d{2}-\\d{2}",
+    text: "開始日: 2025-01-01, 終了日: 2025-12-31",
   },
   {
-    name: '日本語（ひらがな・カタカナ・漢字）',
-    pattern: '[ひ-ゖァ-ヾ一-龠々〆〤]+',
-    text: 'Hello こんにちは World カタカナ 漢字 123',
+    name: "日本語（ひらがな・カタカナ・漢字）",
+    pattern: "[ひ-ゖァ-ヾ一-龠々〆〤]+",
+    text: "Hello こんにちは World カタカナ 漢字 123",
   },
-]
+];
 
 // 例を読み込む
 const loadExample = (example: (typeof examples)[0]) => {
-  pattern.value = example.pattern
-  testText.value = example.text
+  pattern.value = example.pattern;
+  testText.value = example.text;
   flags.value = {
     global: true,
     ignoreCase: false,
     multiline: false,
     dotAll: false,
-  }
-}
+  };
+};
 
 // 入力値の変更を監視
-watch([pattern, testText, flags], testRegex, { deep: true })
+watch([pattern, testText, flags], testRegex, { deep: true });
 
 // メタデータ
 useHead({
-  title: '正規表現テスター - Tools.tomacheese.com',
+  title: "正規表現テスター - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '正規表現のテストとマッチング結果を確認できるツールです。パターンの検証やデバッグに便利です。',
+        "正規表現のテストとマッチング結果を確認できるツールです。パターンの検証やデバッグに便利です。",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

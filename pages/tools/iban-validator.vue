@@ -57,7 +57,7 @@
             }"
           ></div>
           <span style="font-size: 1.125rem; font-weight: 600">
-            {{ validationResult.isValid ? '有効なIBAN' : '無効なIBAN' }}
+            {{ validationResult.isValid ? "有効なIBAN" : "無効なIBAN" }}
           </span>
         </div>
 
@@ -72,7 +72,7 @@
             <h4 style="color: #2563eb; margin-bottom: 0.5rem">IBAN情報</h4>
             <div style="font-size: 0.9rem">
               <div>番号: {{ formatIBAN(ibanNumber) }}</div>
-              <div>長さ: {{ ibanNumber.replace(/\s/g, '').length }}文字</div>
+              <div>長さ: {{ ibanNumber.replace(/\s/g, "").length }}文字</div>
               <div v-if="validationResult.countryCode">
                 国コード: {{ validationResult.countryCode }}
               </div>
@@ -86,16 +86,16 @@
             <h4 style="color: #2563eb; margin-bottom: 0.5rem">検証詳細</h4>
             <div style="font-size: 0.9rem">
               <div>
-                長さチェック: {{ validationResult.lengthValid ? '✓' : '✗' }}
+                長さチェック: {{ validationResult.lengthValid ? "✓" : "✗" }}
               </div>
               <div>
-                形式チェック: {{ validationResult.formatValid ? '✓' : '✗' }}
+                形式チェック: {{ validationResult.formatValid ? "✓" : "✗" }}
               </div>
               <div>
-                MOD-97チェック: {{ validationResult.mod97Valid ? '✓' : '✗' }}
+                MOD-97チェック: {{ validationResult.mod97Valid ? "✓" : "✗" }}
               </div>
               <div>
-                国コード: {{ validationResult.countryValid ? '✓' : '✗' }}
+                国コード: {{ validationResult.countryValid ? "✓" : "✗" }}
               </div>
             </div>
           </div>
@@ -197,152 +197,152 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 import {
   validateIBAN,
   getIBANCountryCode,
   formatIBAN as formatIban,
-} from '~/utils/security'
+} from "~/utils/security";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const ibanNumber = ref('')
-const validationResult = ref(null)
-const copyMessage = ref('')
+const ibanNumber = ref("");
+const validationResult = ref(null);
+const copyMessage = ref("");
 
 // 国コードと国名のマッピング
 const countryNames = {
-  AD: 'アンドラ',
-  AE: 'アラブ首長国連邦',
-  AL: 'アルバニア',
-  AT: 'オーストリア',
-  AZ: 'アゼルバイジャン',
-  BA: 'ボスニア・ヘルツェゴビナ',
-  BE: 'ベルギー',
-  BG: 'ブルガリア',
-  BH: 'バーレーン',
-  BR: 'ブラジル',
-  BY: 'ベラルーシ',
-  CH: 'スイス',
-  CR: 'コスタリカ',
-  CY: 'キプロス',
-  CZ: 'チェコ',
-  DE: 'ドイツ',
-  DK: 'デンマーク',
-  DO: 'ドミニカ共和国',
-  EE: 'エストニア',
-  EG: 'エジプト',
-  ES: 'スペイン',
-  FI: 'フィンランド',
-  FO: 'フェロー諸島',
-  FR: 'フランス',
-  GB: 'イギリス',
-  GE: 'ジョージア',
-  GI: 'ジブラルタル',
-  GL: 'グリーンランド',
-  GR: 'ギリシャ',
-  GT: 'グアテマラ',
-  HR: 'クロアチア',
-  HU: 'ハンガリー',
-  IE: 'アイルランド',
-  IL: 'イスラエル',
-  IS: 'アイスランド',
-  IT: 'イタリア',
-  JO: 'ヨルダン',
-  KW: 'クウェート',
-  KZ: 'カザフスタン',
-  LB: 'レバノン',
-  LC: 'セントルシア',
-  LI: 'リヒテンシュタイン',
-  LT: 'リトアニア',
-  LU: 'ルクセンブルク',
-  LV: 'ラトビア',
-  MC: 'モナコ',
-  MD: 'モルドバ',
-  ME: 'モンテネグロ',
-  MK: '北マケドニア',
-  MR: 'モーリタニア',
-  MT: 'マルタ',
-  MU: 'モーリシャス',
-  NL: 'オランダ',
-  NO: 'ノルウェー',
-  PK: 'パキスタン',
-  PL: 'ポーランド',
-  PS: 'パレスチナ',
-  PT: 'ポルトガル',
-  QA: 'カタール',
-  RO: 'ルーマニア',
-  RS: 'セルビア',
-  SA: 'サウジアラビア',
-  SE: 'スウェーデン',
-  SI: 'スロベニア',
-  SK: 'スロバキア',
-  SM: 'サンマリノ',
-  TN: 'チュニジア',
-  TR: 'トルコ',
-  UA: 'ウクライナ',
-  VG: 'イギリス領ヴァージン諸島',
-  XK: 'コソボ',
-}
+  AD: "アンドラ",
+  AE: "アラブ首長国連邦",
+  AL: "アルバニア",
+  AT: "オーストリア",
+  AZ: "アゼルバイジャン",
+  BA: "ボスニア・ヘルツェゴビナ",
+  BE: "ベルギー",
+  BG: "ブルガリア",
+  BH: "バーレーン",
+  BR: "ブラジル",
+  BY: "ベラルーシ",
+  CH: "スイス",
+  CR: "コスタリカ",
+  CY: "キプロス",
+  CZ: "チェコ",
+  DE: "ドイツ",
+  DK: "デンマーク",
+  DO: "ドミニカ共和国",
+  EE: "エストニア",
+  EG: "エジプト",
+  ES: "スペイン",
+  FI: "フィンランド",
+  FO: "フェロー諸島",
+  FR: "フランス",
+  GB: "イギリス",
+  GE: "ジョージア",
+  GI: "ジブラルタル",
+  GL: "グリーンランド",
+  GR: "ギリシャ",
+  GT: "グアテマラ",
+  HR: "クロアチア",
+  HU: "ハンガリー",
+  IE: "アイルランド",
+  IL: "イスラエル",
+  IS: "アイスランド",
+  IT: "イタリア",
+  JO: "ヨルダン",
+  KW: "クウェート",
+  KZ: "カザフスタン",
+  LB: "レバノン",
+  LC: "セントルシア",
+  LI: "リヒテンシュタイン",
+  LT: "リトアニア",
+  LU: "ルクセンブルク",
+  LV: "ラトビア",
+  MC: "モナコ",
+  MD: "モルドバ",
+  ME: "モンテネグロ",
+  MK: "北マケドニア",
+  MR: "モーリタニア",
+  MT: "マルタ",
+  MU: "モーリシャス",
+  NL: "オランダ",
+  NO: "ノルウェー",
+  PK: "パキスタン",
+  PL: "ポーランド",
+  PS: "パレスチナ",
+  PT: "ポルトガル",
+  QA: "カタール",
+  RO: "ルーマニア",
+  RS: "セルビア",
+  SA: "サウジアラビア",
+  SE: "スウェーデン",
+  SI: "スロベニア",
+  SK: "スロバキア",
+  SM: "サンマリノ",
+  TN: "チュニジア",
+  TR: "トルコ",
+  UA: "ウクライナ",
+  VG: "イギリス領ヴァージン諸島",
+  XK: "コソボ",
+};
 
 // サンプルIBAN番号（テスト用）
 const sampleIbans = [
-  { country: 'ドイツ', iban: 'DE89370400440532013000' },
-  { country: 'イギリス', iban: 'GB29NWBK60161331926819' },
-  { country: 'フランス', iban: 'FR1420041010050500013M02606' },
-  { country: 'イタリア', iban: 'IT60X0542811101000000123456' },
-  { country: 'スペイン', iban: 'ES9121000418450200051332' },
-  { country: 'オランダ', iban: 'NL91ABNA0417164300' },
-  { country: 'ベルギー', iban: 'BE68539007547034' },
-  { country: 'スイス', iban: 'CH9300762011623852957' },
-]
+  { country: "ドイツ", iban: "DE89370400440532013000" },
+  { country: "イギリス", iban: "GB29NWBK60161331926819" },
+  { country: "フランス", iban: "FR1420041010050500013M02606" },
+  { country: "イタリア", iban: "IT60X0542811101000000123456" },
+  { country: "スペイン", iban: "ES9121000418450200051332" },
+  { country: "オランダ", iban: "NL91ABNA0417164300" },
+  { country: "ベルギー", iban: "BE68539007547034" },
+  { country: "スイス", iban: "CH9300762011623852957" },
+];
 
 // メソッド
-const formatIbanInput = event => {
+const formatIbanInput = (event) => {
   // 大文字に変換し、不要な文字を除去
-  let value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '')
-  value = value.substring(0, 34) // 最大34文字
-  ibanNumber.value = value
-}
+  let value = event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  value = value.substring(0, 34); // 最大34文字
+  ibanNumber.value = value;
+};
 
-const formatIBAN = iban => {
-  return formatIban(iban)
-}
+const formatIBAN = (iban) => {
+  return formatIban(iban);
+};
 
 const validateIban = () => {
-  if (!ibanNumber.value.trim()) return
+  if (!ibanNumber.value.trim()) return;
 
-  const cleanIban = ibanNumber.value.replace(/\s/g, '').toUpperCase()
-  const isValid = validateIBAN(cleanIban)
-  const countryCode = getIBANCountryCode(cleanIban)
+  const cleanIban = ibanNumber.value.replace(/\s/g, "").toUpperCase();
+  const isValid = validateIBAN(cleanIban);
+  const countryCode = getIBANCountryCode(cleanIban);
 
   // 個別検証
-  const lengthValid = cleanIban.length >= 15 && cleanIban.length <= 34
-  const formatValid = /^[A-Z]{2}[0-9]{2}[A-Z0-9]+$/.test(cleanIban)
-  const countryValid = countryCode && countryNames[countryCode] !== undefined
+  const lengthValid = cleanIban.length >= 15 && cleanIban.length <= 34;
+  const formatValid = /^[A-Z]{2}[0-9]{2}[A-Z0-9]+$/.test(cleanIban);
+  const countryValid = countryCode && countryNames[countryCode] !== undefined;
 
   // MOD-97検証（validateIBANの内部実装と同じロジック）
-  let mod97Valid = false
+  let mod97Valid = false;
   if (formatValid && lengthValid) {
-    const rearranged = cleanIban.slice(4) + cleanIban.slice(0, 4)
-    let numericString = ''
+    const rearranged = cleanIban.slice(4) + cleanIban.slice(0, 4);
+    let numericString = "";
     for (const char of rearranged) {
-      if (char >= 'A' && char <= 'Z') {
-        numericString += (char.charCodeAt(0) - 55).toString()
+      if (char >= "A" && char <= "Z") {
+        numericString += (char.charCodeAt(0) - 55).toString();
       } else {
-        numericString += char
+        numericString += char;
       }
     }
 
-    let remainder = 0
+    let remainder = 0;
     for (const digit of numericString) {
-      remainder = (remainder * 10 + parseInt(digit)) % 97
+      remainder = (remainder * 10 + parseInt(digit)) % 97;
     }
-    mod97Valid = remainder === 1
+    mod97Valid = remainder === 1;
   }
 
   validationResult.value = {
@@ -353,32 +353,32 @@ const validateIban = () => {
     countryValid,
     countryCode,
     countryName: countryCode ? countryNames[countryCode] : null,
-  }
-}
+  };
+};
 
-const setSampleIban = iban => {
-  ibanNumber.value = iban
-  validateIban()
+const setSampleIban = (iban) => {
+  ibanNumber.value = iban;
+  validateIban();
 
-  copyMessage.value = 'サンプルIBANが設定されました'
+  copyMessage.value = "サンプルIBANが設定されました";
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 // SEO
 useHead({
-  title: 'IBAN検証 - Tools.tomacheese.com',
+  title: "IBAN検証 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '国際銀行口座番号（IBAN）の妥当性をMOD-97アルゴリズムで検証します。',
+        "国際銀行口座番号（IBAN）の妥当性をMOD-97アルゴリズムで検証します。",
     },
     {
-      name: 'keywords',
-      content: 'IBAN検証, 国際銀行口座番号, MOD-97, 銀行口座検証',
+      name: "keywords",
+      content: "IBAN検証, 国際銀行口座番号, MOD-97, 銀行口座検証",
     },
   ],
-})
+});
 </script>

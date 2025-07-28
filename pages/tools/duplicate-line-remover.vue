@@ -69,7 +69,7 @@
         @click="processText"
         :disabled="!inputText || isProcessing"
       >
-        {{ isProcessing ? '処理中...' : '重複削除実行' }}
+        {{ isProcessing ? "処理中..." : "重複削除実行" }}
       </button>
 
       <div v-if="isProcessing" class="progress-bar">
@@ -128,7 +128,7 @@
             <div class="duplicate-line">{{ detail.line }}</div>
             <div class="duplicate-info">
               出現回数: {{ detail.count }}回 (行番号:
-              {{ detail.originalLineNumbers.join(', ') }})
+              {{ detail.originalLineNumbers.join(", ") }})
             </div>
           </div>
         </div>
@@ -142,19 +142,35 @@
     <div class="help-section">
       <h3>使用方法</h3>
       <ul>
-        <li><strong>比較方式</strong>を選択して重複判定の基準を設定</li>
-        <li><strong>削除方式</strong>で重複行をどう処理するかを選択</li>
+        <li>
+          <strong>比較方式</strong>
+          を選択して重複判定の基準を設定
+        </li>
+        <li>
+          <strong>削除方式</strong>
+          で重複行をどう処理するかを選択
+        </li>
         <li>大容量テキスト（100万行以下）にも対応</li>
         <li>ファイルからの読み込みと結果のダウンロードが可能</li>
       </ul>
 
       <h4>比較方式の説明</h4>
       <ul>
-        <li><strong>完全一致</strong>: 文字列が完全に同じ場合のみ重複と判定</li>
-        <li><strong>空白除去後比較</strong>: 前後の空白を除去してから比較</li>
-        <li><strong>大文字小文字無視</strong>: 英字の大小を区別しない</li>
         <li>
-          <strong>正規化比較</strong>: 空白除去 + 大小無視 + Unicode正規化
+          <strong>完全一致</strong>
+          : 文字列が完全に同じ場合のみ重複と判定
+        </li>
+        <li>
+          <strong>空白除去後比較</strong>
+          : 前後の空白を除去してから比較
+        </li>
+        <li>
+          <strong>大文字小文字無視</strong>
+          : 英字の大小を区別しない
+        </li>
+        <li>
+          <strong>正規化比較</strong>
+          : 空白除去 + 大小無視 + Unicode正規化
         </li>
       </ul>
     </div>
@@ -162,7 +178,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive } from "vue";
 import {
   removeDuplicateLines,
   removeDuplicateLinesAsync,
@@ -170,126 +186,130 @@ import {
   downloadTextFile,
   type DuplicateRemovalOptions,
   type DuplicateRemovalResult,
-} from '~/utils/duplicate-remover'
+} from "~/utils/duplicate-remover";
 
 // メタデータ設定
 definePageMeta({
-  layout: 'tool',
-  title: '重複行削除ツール',
+  layout: "tool",
+  title: "重複行削除ツール",
   description:
-    'テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。',
-})
+    "テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。",
+});
 
 useSeoMeta({
-  title: '重複行削除ツール - Tools.tomacheese.com',
+  title: "重複行削除ツール - tools.tomacheese.com",
   description:
-    'テキストから重複する行を検出・削除するツール。複数の比較方式と削除方式に対応し、大容量ファイルも処理可能です。',
-  keywords: '重複削除,テキスト処理,行削除,テキストツール,重複行,クリーニング',
-})
+    "テキストから重複する行を検出・削除するツール。複数の比較方式と削除方式に対応し、大容量ファイルも処理可能です。",
+  keywords: "重複削除,テキスト処理,行削除,テキストツール,重複行,クリーニング",
+});
 
 // リアクティブデータ
-const inputText = ref('')
-const result = ref<DuplicateRemovalResult | null>(null)
-const isProcessing = ref(false)
-const progress = ref(0)
-const copyMessage = ref('')
+const inputText = ref("");
+const result = ref<DuplicateRemovalResult | null>(null);
+const isProcessing = ref(false);
+const progress = ref(0);
+const copyMessage = ref("");
 
 const options = reactive<DuplicateRemovalOptions>({
-  compareMode: 'exact',
-  removalMode: 'keep-first',
+  compareMode: "exact",
+  removalMode: "keep-first",
   sortResult: false,
-})
+});
 
 // ファイル入力トリガー
 const triggerFileInput = () => {
-  const input = document.getElementById('file-input') as HTMLInputElement
-  input?.click()
-}
+  const input = document.getElementById("file-input") as HTMLInputElement;
+  input?.click();
+};
 
 // ファイルアップロード処理
 const handleFileUpload = async (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
 
-  if (!file) return
+  if (!file) return;
 
   try {
-    const text = await readTextFile(file)
-    inputText.value = text
+    const text = await readTextFile(file);
+    inputText.value = text;
   } catch (error) {
     alert(
-      `ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+      `ファイルの読み込みに失敗しました: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
   }
-}
+};
 
 // 入力クリア
 const clearInput = () => {
-  inputText.value = ''
-  result.value = null
-  progress.value = 0
-}
+  inputText.value = "";
+  result.value = null;
+  progress.value = 0;
+};
 
 // テキスト処理
 const processText = async () => {
-  if (!inputText.value.trim()) return
+  if (!inputText.value.trim()) return;
 
-  isProcessing.value = true
-  progress.value = 0
-  result.value = null
+  isProcessing.value = true;
+  progress.value = 0;
+  result.value = null;
 
   try {
-    const lines = inputText.value.split(/\r?\n/)
+    const lines = inputText.value.split(/\r?\n/);
 
     if (lines.length > 50000) {
       // 大容量の場合は非同期処理
       result.value = await removeDuplicateLinesAsync(
         inputText.value,
         options,
-        p => {
-          progress.value = p
+        (p) => {
+          progress.value = p;
         }
-      )
+      );
     } else {
       // 通常サイズは同期処理
-      result.value = removeDuplicateLines(inputText.value, options)
-      progress.value = 100
+      result.value = removeDuplicateLines(inputText.value, options);
+      progress.value = 100;
     }
   } catch (error) {
     alert(
-      `処理中にエラーが発生しました: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+      `処理中にエラーが発生しました: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
   } finally {
-    isProcessing.value = false
+    isProcessing.value = false;
   }
-}
+};
 
 // 結果をクリップボードにコピー
 const copyResult = async () => {
-  if (!result.value?.text) return
+  if (!result.value?.text) return;
 
   try {
-    await navigator.clipboard.writeText(result.value.text)
-    copyMessage.value = '結果をクリップボードにコピーしました'
+    await navigator.clipboard.writeText(result.value.text);
+    copyMessage.value = "結果をクリップボードにコピーしました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 3000)
+      copyMessage.value = "";
+    }, 3000);
   } catch {
-    copyMessage.value = 'コピーに失敗しました'
+    copyMessage.value = "コピーに失敗しました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 3000)
+      copyMessage.value = "";
+    }, 3000);
   }
-}
+};
 
 // 結果をファイルダウンロード
 const downloadResult = () => {
-  if (!result.value?.text) return
+  if (!result.value?.text) return;
 
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
-  const filename = `duplicate-removed-${timestamp}.txt`
-  downloadTextFile(result.value.text, filename)
-}
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, -5);
+  const filename = `duplicate-removed-${timestamp}.txt`;
+  downloadTextFile(result.value.text, filename);
+};
 </script>
 
 <style scoped>

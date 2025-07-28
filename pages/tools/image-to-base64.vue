@@ -30,7 +30,8 @@
         </svg>
         <p>画像をドラッグ＆ドロップ</p>
         <p class="drop-zone-text">
-          または<span class="highlight">クリックして選択</span>
+          または
+          <span class="highlight">クリックして選択</span>
         </p>
         <p class="drop-zone-formats">対応形式: JPEG, PNG, GIF, WebP, BMP</p>
       </div>
@@ -50,20 +51,30 @@
         <div class="preview-container">
           <img :src="imageData.dataUrl" alt="Preview" class="preview-image" />
           <div class="image-info">
-            <p><strong>ファイル名:</strong> {{ fileName }}</p>
             <p>
-              <strong>元のサイズ:</strong> {{ formatFileSize(originalSize) }}
+              <strong>ファイル名:</strong>
+              {{ fileName }}
+            </p>
+            <p>
+              <strong>元のサイズ:</strong>
+              {{ formatFileSize(originalSize) }}
             </p>
             <p>
               <strong>Base64サイズ:</strong>
               {{ formatFileSize(imageData.size) }}
             </p>
-            <p><strong>サイズ増加率:</strong> {{ sizeIncrease }}%</p>
             <p>
-              <strong>画像サイズ:</strong> {{ imageData.width }} ×
-              {{ imageData.height }}px
+              <strong>サイズ増加率:</strong>
+              {{ sizeIncrease }}%
             </p>
-            <p><strong>形式:</strong> {{ imageData.mimeType }}</p>
+            <p>
+              <strong>画像サイズ:</strong>
+              {{ imageData.width }} × {{ imageData.height }}px
+            </p>
+            <p>
+              <strong>形式:</strong>
+              {{ imageData.mimeType }}
+            </p>
           </div>
         </div>
       </div>
@@ -113,119 +124,119 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed } from "vue";
 import {
   copyToClipboard,
   downloadAsText,
   type Base64Result,
   imageToBase64,
-} from '~/utils/imageToBase64'
-import { formatFileSize } from '~/utils/imageResizer'
+} from "~/utils/imageToBase64";
+import { formatFileSize } from "~/utils/imageResizer";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
-const isDragging = ref(false)
-const fileInput = ref<HTMLInputElement>()
-const imageData = ref<Base64Result | null>(null)
-const fileName = ref('')
-const originalSize = ref(0)
-const outputFormat = ref<'dataUrl' | 'base64'>('dataUrl')
-const error = ref('')
-const copyButtonText = ref('コピー')
+const isDragging = ref(false);
+const fileInput = ref<HTMLInputElement>();
+const imageData = ref<Base64Result | null>(null);
+const fileName = ref("");
+const originalSize = ref(0);
+const outputFormat = ref<"dataUrl" | "base64">("dataUrl");
+const error = ref("");
+const copyButtonText = ref("コピー");
 
 const outputText = computed(() => {
-  if (!imageData.value) return ''
-  return outputFormat.value === 'dataUrl'
+  if (!imageData.value) return "";
+  return outputFormat.value === "dataUrl"
     ? imageData.value.dataUrl
-    : imageData.value.base64
-})
+    : imageData.value.base64;
+});
 
 const sizeIncrease = computed(() => {
-  if (!imageData.value || originalSize.value === 0) return 0
+  if (!imageData.value || originalSize.value === 0) return 0;
   return Math.round(
     ((imageData.value.size - originalSize.value) / originalSize.value) * 100
-  )
-})
+  );
+});
 
 const triggerFileInput = () => {
-  fileInput.value?.click()
-}
+  fileInput.value?.click();
+};
 
 const handleDrop = (e: DragEvent) => {
-  e.preventDefault()
-  isDragging.value = false
+  e.preventDefault();
+  isDragging.value = false;
 
-  const files = e.dataTransfer?.files
+  const files = e.dataTransfer?.files;
   if (files && files.length > 0 && files[0]) {
-    processFile(files[0])
+    processFile(files[0]);
   }
-}
+};
 
 const handleFileSelect = (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const files = target.files
+  const target = e.target as HTMLInputElement;
+  const files = target.files;
   if (files && files.length > 0 && files[0]) {
-    processFile(files[0])
+    processFile(files[0]);
   }
-}
+};
 
 const processFile = async (file: File) => {
-  error.value = ''
+  error.value = "";
 
   // Check if file is an image
-  if (!file.type.startsWith('image/')) {
-    error.value = '画像ファイルを選択してください。'
-    return
+  if (!file.type.startsWith("image/")) {
+    error.value = "画像ファイルを選択してください。";
+    return;
   }
 
   // Check file size (limit to 10MB)
   if (file.size > 10 * 1024 * 1024) {
-    error.value = 'ファイルサイズは10MB以下にしてください。'
-    return
+    error.value = "ファイルサイズは10MB以下にしてください。";
+    return;
   }
 
-  fileName.value = file.name
-  originalSize.value = file.size
+  fileName.value = file.name;
+  originalSize.value = file.size;
 
   try {
-    const result = await imageToBase64(file)
-    imageData.value = result
+    const result = await imageToBase64(file);
+    imageData.value = result;
   } catch {
-    error.value = '画像の変換中にエラーが発生しました。'
+    error.value = "画像の変換中にエラーが発生しました。";
   }
-}
+};
 
 const copyResult = async () => {
   try {
-    await copyToClipboard(outputText.value)
-    copyButtonText.value = 'コピーしました！'
+    await copyToClipboard(outputText.value);
+    copyButtonText.value = "コピーしました！";
     setTimeout(() => {
-      copyButtonText.value = 'コピー'
-    }, 2000)
+      copyButtonText.value = "コピー";
+    }, 2000);
   } catch {
-    error.value = 'クリップボードへのコピーに失敗しました。'
+    error.value = "クリップボードへのコピーに失敗しました。";
   }
-}
+};
 
 const downloadResult = () => {
-  const extension = outputFormat.value === 'dataUrl' ? 'txt' : 'base64'
-  const filename = `${fileName.value.replace(/\.[^/.]+$/, '')}.${extension}`
-  downloadAsText(outputText.value, filename)
-}
+  const extension = outputFormat.value === "dataUrl" ? "txt" : "base64";
+  const filename = `${fileName.value.replace(/\.[^/.]+$/, "")}.${extension}`;
+  downloadAsText(outputText.value, filename);
+};
 
 useHead({
-  title: '画像をBase64変換 - Tools.tomacheese.com',
+  title: "画像をBase64変換 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '画像ファイルをBase64エンコードされた文字列に変換します。ドラッグ＆ドロップ対応、プレビュー表示、Data URL形式とBase64文字列の切り替えが可能です。',
+        "画像ファイルをBase64エンコードされた文字列に変換します。ドラッグ＆ドロップ対応、プレビュー表示、Data URL形式とBase64文字列の切り替えが可能です。",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

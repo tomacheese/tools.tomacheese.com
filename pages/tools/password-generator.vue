@@ -60,8 +60,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >ABCDEFGHIJKLMNOPQRSTUVWXYZ</span
               >
+                ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              </span>
             </label>
             <label
               style="
@@ -79,8 +80,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >abcdefghijklmnopqrstuvwxyz</span
               >
+                abcdefghijklmnopqrstuvwxyz
+              </span>
             </label>
             <label
               style="
@@ -98,8 +100,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >0123456789</span
               >
+                0123456789
+              </span>
             </label>
             <label
               style="
@@ -117,8 +120,9 @@
                   color: #64748b;
                   font-size: 0.875rem;
                 "
-                >!@#$%^&*()_+-=[]{}|;:,.<>?</span
               >
+                !@#$%^&*()_+-=[]{}|;:,.<>?
+              </span>
             </label>
           </div>
         </div>
@@ -216,9 +220,9 @@
                   backgroundColor: getStrengthColor(password),
                 }"
               ></div>
-              <span style="font-size: 0.875rem; color: #64748b">{{
-                getStrengthText(calculateStrength(password))
-              }}</span>
+              <span style="font-size: 0.875rem; color: #64748b">
+                {{ getStrengthText(calculateStrength(password)) }}
+              </span>
             </div>
           </div>
         </div>
@@ -241,7 +245,8 @@
             <div
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              サイズ: {{ characterSetSize }}<br />
+              サイズ: {{ characterSetSize }}
+              <br />
               エントロピー: {{ entropy.toFixed(1) }} bits
             </div>
           </div>
@@ -250,7 +255,8 @@
             <div
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              組み合わせ: {{ totalCombinations }}<br />
+              組み合わせ: {{ totalCombinations }}
+              <br />
               推定解読時間: {{ crackTime }}
             </div>
           </div>
@@ -310,25 +316,25 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const passwordLength = ref(16)
-const includeUppercase = ref(true)
-const includeLowercase = ref(true)
-const includeNumbers = ref(true)
-const includeSymbols = ref(true)
-const excludeSimilar = ref(false)
-const generateCount = ref(1)
-const generatedPasswords = ref([])
-const copyMessage = ref('')
+const passwordLength = ref(16);
+const includeUppercase = ref(true);
+const includeLowercase = ref(true);
+const includeNumbers = ref(true);
+const includeSymbols = ref(true);
+const excludeSimilar = ref(false);
+const generateCount = ref(1);
+const generatedPasswords = ref([]);
+const copyMessage = ref("");
 
 // プリセット設定
 const presets = [
   {
-    name: '高セキュリティ',
-    description: '32文字、全文字種類',
+    name: "高セキュリティ",
+    description: "32文字、全文字種類",
     settings: {
       length: 32,
       upper: true,
@@ -339,8 +345,8 @@ const presets = [
     },
   },
   {
-    name: '標準',
-    description: '16文字、大小文字・数字',
+    name: "標準",
+    description: "16文字、大小文字・数字",
     settings: {
       length: 16,
       upper: true,
@@ -351,8 +357,8 @@ const presets = [
     },
   },
   {
-    name: 'シンプル',
-    description: '12文字、英数字のみ',
+    name: "シンプル",
+    description: "12文字、英数字のみ",
     settings: {
       length: 12,
       upper: true,
@@ -363,8 +369,8 @@ const presets = [
     },
   },
   {
-    name: 'PIN',
-    description: '6文字、数字のみ',
+    name: "PIN",
+    description: "6文字、数字のみ",
     settings: {
       length: 6,
       upper: false,
@@ -374,16 +380,16 @@ const presets = [
       excludeSimilar: false,
     },
   },
-]
+];
 
 // 文字セット定義
 const characterSets = {
-  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-  lowercase: 'abcdefghijklmnopqrstuvwxyz',
-  numbers: '0123456789',
-  symbols: '!@#$%^&*()_+-=[]{}|;:,.<>?',
-  similar: '0O1lI|',
-}
+  uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  lowercase: "abcdefghijklmnopqrstuvwxyz",
+  numbers: "0123456789",
+  symbols: "!@#$%^&*()_+-=[]{}|;:,.<>?",
+  similar: "0O1lI|",
+};
 
 // 計算プロパティ
 const hasValidCharacterSet = computed(() => {
@@ -392,158 +398,158 @@ const hasValidCharacterSet = computed(() => {
     includeLowercase.value ||
     includeNumbers.value ||
     includeSymbols.value
-  )
-})
+  );
+});
 
 const characterSet = computed(() => {
-  let chars = ''
-  if (includeUppercase.value) chars += characterSets.uppercase
-  if (includeLowercase.value) chars += characterSets.lowercase
-  if (includeNumbers.value) chars += characterSets.numbers
-  if (includeSymbols.value) chars += characterSets.symbols
+  let chars = "";
+  if (includeUppercase.value) chars += characterSets.uppercase;
+  if (includeLowercase.value) chars += characterSets.lowercase;
+  if (includeNumbers.value) chars += characterSets.numbers;
+  if (includeSymbols.value) chars += characterSets.symbols;
 
   if (excludeSimilar.value) {
     chars = chars
-      .split('')
-      .filter(char => !characterSets.similar.includes(char))
-      .join('')
+      .split("")
+      .filter((char) => !characterSets.similar.includes(char))
+      .join("");
   }
 
-  return chars
-})
+  return chars;
+});
 
-const characterSetSize = computed(() => characterSet.value.length)
+const characterSetSize = computed(() => characterSet.value.length);
 
 const entropy = computed(() => {
-  return passwordLength.value * Math.log2(characterSetSize.value)
-})
+  return passwordLength.value * Math.log2(characterSetSize.value);
+});
 
 const totalCombinations = computed(() => {
-  const combinations = Math.pow(characterSetSize.value, passwordLength.value)
+  const combinations = Math.pow(characterSetSize.value, passwordLength.value);
   if (combinations > 1e15) {
-    return `${(combinations / 1e15).toFixed(1)}×10¹⁵`
+    return `${(combinations / 1e15).toFixed(1)}×10¹⁵`;
   } else if (combinations > 1e12) {
-    return `${(combinations / 1e12).toFixed(1)}×10¹²`
+    return `${(combinations / 1e12).toFixed(1)}×10¹²`;
   } else if (combinations > 1e9) {
-    return `${(combinations / 1e9).toFixed(1)}×10⁹`
+    return `${(combinations / 1e9).toFixed(1)}×10⁹`;
   } else {
-    return combinations.toLocaleString()
+    return combinations.toLocaleString();
   }
-})
+});
 
 const crackTime = computed(() => {
-  const combinations = Math.pow(characterSetSize.value, passwordLength.value)
-  const attemptsPerSecond = 1e9 // 10億回/秒と仮定
-  const secondsToCrack = combinations / (2 * attemptsPerSecond) // 平均で半分の時間
+  const combinations = Math.pow(characterSetSize.value, passwordLength.value);
+  const attemptsPerSecond = 1e9; // 10億回/秒と仮定
+  const secondsToCrack = combinations / (2 * attemptsPerSecond); // 平均で半分の時間
 
   if (secondsToCrack > 31536000000) {
     // 1000年以上
-    return `${Math.floor(secondsToCrack / 31536000000)}千年以上`
+    return `${Math.floor(secondsToCrack / 31536000000)}千年以上`;
   } else if (secondsToCrack > 31536000) {
     // 1年以上
-    return `${Math.floor(secondsToCrack / 31536000)}年`
+    return `${Math.floor(secondsToCrack / 31536000)}年`;
   } else if (secondsToCrack > 86400) {
     // 1日以上
-    return `${Math.floor(secondsToCrack / 86400)}日`
+    return `${Math.floor(secondsToCrack / 86400)}日`;
   } else if (secondsToCrack > 3600) {
     // 1時間以上
-    return `${Math.floor(secondsToCrack / 3600)}時間`
+    return `${Math.floor(secondsToCrack / 3600)}時間`;
   } else if (secondsToCrack > 60) {
     // 1分以上
-    return `${Math.floor(secondsToCrack / 60)}分`
+    return `${Math.floor(secondsToCrack / 60)}分`;
   } else {
-    return `${Math.floor(secondsToCrack)}秒`
+    return `${Math.floor(secondsToCrack)}秒`;
   }
-})
+});
 
 // メソッド
 const generatePasswords = () => {
-  if (!hasValidCharacterSet.value) return
+  if (!hasValidCharacterSet.value) return;
 
-  const passwords = []
-  const chars = characterSet.value
+  const passwords = [];
+  const chars = characterSet.value;
 
   for (let i = 0; i < parseInt(generateCount.value); i++) {
-    let password = ''
+    let password = "";
     for (let j = 0; j < passwordLength.value; j++) {
-      const randomIndex = Math.floor(Math.random() * chars.length)
-      password += chars[randomIndex]
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      password += chars[randomIndex];
     }
-    passwords.push(password)
+    passwords.push(password);
   }
 
-  generatedPasswords.value = passwords
-}
+  generatedPasswords.value = passwords;
+};
 
-const applyPreset = preset => {
-  passwordLength.value = preset.settings.length
-  includeUppercase.value = preset.settings.upper
-  includeLowercase.value = preset.settings.lower
-  includeNumbers.value = preset.settings.numbers
-  includeSymbols.value = preset.settings.symbols
-  excludeSimilar.value = preset.settings.excludeSimilar
-}
+const applyPreset = (preset) => {
+  passwordLength.value = preset.settings.length;
+  includeUppercase.value = preset.settings.upper;
+  includeLowercase.value = preset.settings.lower;
+  includeNumbers.value = preset.settings.numbers;
+  includeSymbols.value = preset.settings.symbols;
+  excludeSimilar.value = preset.settings.excludeSimilar;
+};
 
-const calculateStrength = password => {
-  let score = 0
+const calculateStrength = (password) => {
+  let score = 0;
 
   // 長さによるスコア
-  if (password.length >= 8) score += 1
-  if (password.length >= 12) score += 1
-  if (password.length >= 16) score += 1
+  if (password.length >= 8) score += 1;
+  if (password.length >= 12) score += 1;
+  if (password.length >= 16) score += 1;
 
   // 文字種類によるスコア
-  if (/[a-z]/.test(password)) score += 1
-  if (/[A-Z]/.test(password)) score += 1
-  if (/[0-9]/.test(password)) score += 1
-  if (/[^a-zA-Z0-9]/.test(password)) score += 1
+  if (/[a-z]/.test(password)) score += 1;
+  if (/[A-Z]/.test(password)) score += 1;
+  if (/[0-9]/.test(password)) score += 1;
+  if (/[^a-zA-Z0-9]/.test(password)) score += 1;
 
-  return score
-}
+  return score;
+};
 
-const getStrengthText = score => {
-  if (score <= 2) return '弱い'
-  if (score <= 4) return '普通'
-  if (score <= 6) return '強い'
-  return '非常に強い'
-}
+const getStrengthText = (score) => {
+  if (score <= 2) return "弱い";
+  if (score <= 4) return "普通";
+  if (score <= 6) return "強い";
+  return "非常に強い";
+};
 
-const getStrengthColor = password => {
-  const score = calculateStrength(password)
-  if (score <= 2) return '#dc2626'
-  if (score <= 4) return '#f59e0b'
-  if (score <= 6) return '#10b981'
-  return '#059669'
-}
+const getStrengthColor = (password) => {
+  const score = calculateStrength(password);
+  if (score <= 2) return "#dc2626";
+  if (score <= 4) return "#f59e0b";
+  if (score <= 6) return "#10b981";
+  return "#059669";
+};
 
-const copyToClipboard = async text => {
+const copyToClipboard = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
-    copyMessage.value = 'コピーしました！'
+    await navigator.clipboard.writeText(text);
+    copyMessage.value = "コピーしました！";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
     // Copy failed silently
   }
-}
+};
 
 // SEO
 useHead({
-  title: 'パスワード生成 - Tools.tomacheese.com',
+  title: "パスワード生成 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'セキュアなランダムパスワードを生成します。文字種類や長さを自由に設定でき、パスワード強度も分析します。',
+        "セキュアなランダムパスワードを生成します。文字種類や長さを自由に設定でき、パスワード強度も分析します。",
     },
     {
-      name: 'keywords',
+      name: "keywords",
       content:
-        'パスワード生成, ランダムパスワード, セキュリティ, パスワード強度, 暗号化',
+        "パスワード生成, ランダムパスワード, セキュリティ, パスワード強度, 暗号化",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

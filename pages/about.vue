@@ -31,10 +31,10 @@
             margin-bottom: 1rem;
           "
         >
-          Tools.tomacheese.com とは
+          tools.tomacheese.com とは
         </h2>
         <p style="color: #64748b; line-height: 1.8; margin-bottom: 1rem">
-          Tools.tomacheese.com
+          tools.tomacheese.com
           は、日常的に使える実用的なWebツールを無料で提供するサイトです。
           すべてのツールはクライアントサイドのJavaScriptで動作するため、データがサーバーに送信されることはありません。
           プライバシーを重視した安全な環境でご利用いただけます。
@@ -128,13 +128,13 @@
 <script setup>
 // SEO
 useHead({
-  title: 'サイトについて - Tools.tomacheese.com',
+  title: "サイトについて - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'Tools.tomacheese.comについて。プライバシーを重視した無料のWebツール集です。',
+        "tools.tomacheese.comについて。プライバシーを重視した無料のWebツール集です。",
     },
   ],
-})
+});
 </script>

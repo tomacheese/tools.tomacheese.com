@@ -6,9 +6,9 @@
     </div>
 
     <div class="form-group">
-      <label class="form-label"
-        >数値を入力してください（カンマまたはスペース区切り）</label
-      >
+      <label class="form-label">
+        数値を入力してください（カンマまたはスペース区切り）
+      </label>
       <input
         v-model="numbersInput"
         type="text"
@@ -53,7 +53,7 @@
           <div
             style="font-family: 'Courier New', monospace; font-size: 1.125rem"
           >
-            {{ validNumbers.join(', ') }}
+            {{ validNumbers.join(", ") }}
           </div>
         </div>
 
@@ -109,7 +109,8 @@
               :key="number"
               style="font-family: 'Courier New', monospace; font-size: 0.9rem"
             >
-              <strong>{{ number }}:</strong> {{ factors.join(' × ') }}
+              <strong>{{ number }}:</strong>
+              {{ factors.join(" × ") }}
             </div>
           </div>
         </div>
@@ -157,9 +158,9 @@
         "
       >
         <strong>エラー:</strong>
-        <span v-if="validNumbers.length === 0"
-          >有効な数値を入力してください。</span
-        >
+        <span v-if="validNumbers.length === 0">
+          有効な数値を入力してください。
+        </span>
         <span v-else>2つ以上の数値を入力してください。</span>
       </div>
     </div>
@@ -192,7 +193,10 @@
           <strong>最小公倍数（LCM）:</strong>
           複数の数の共通な倍数のうち最小のもの
         </li>
-        <li><strong>関係式:</strong> GCD(a,b) × LCM(a,b) = a × b</li>
+        <li>
+          <strong>関係式:</strong>
+          GCD(a,b) × LCM(a,b) = a × b
+        </li>
       </ul>
     </div>
   </div>
@@ -201,148 +205,148 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const numbersInput = ref('')
+const numbersInput = ref("");
 
 // サンプル数値
 const sampleNumbers = [
-  { label: '12, 18, 24', numbers: '12, 18, 24' },
-  { label: '15, 25, 35', numbers: '15, 25, 35' },
-  { label: '8, 12, 16, 20', numbers: '8, 12, 16, 20' },
-  { label: '42, 56, 70', numbers: '42, 56, 70' },
-  { label: '9, 15, 21, 27', numbers: '9, 15, 21, 27' },
-]
+  { label: "12, 18, 24", numbers: "12, 18, 24" },
+  { label: "15, 25, 35", numbers: "15, 25, 35" },
+  { label: "8, 12, 16, 20", numbers: "8, 12, 16, 20" },
+  { label: "42, 56, 70", numbers: "42, 56, 70" },
+  { label: "9, 15, 21, 27", numbers: "9, 15, 21, 27" },
+];
 
 // ユーティリティ関数
 const gcd = (a, b) => {
-  return b === 0 ? a : gcd(b, a % b)
-}
+  return b === 0 ? a : gcd(b, a % b);
+};
 
 const lcm = (a, b) => {
-  return Math.abs(a * b) / gcd(a, b)
-}
+  return Math.abs(a * b) / gcd(a, b);
+};
 
-const gcdMultiple = numbers => {
-  return numbers.reduce((acc, num) => gcd(acc, num))
-}
+const gcdMultiple = (numbers) => {
+  return numbers.reduce((acc, num) => gcd(acc, num));
+};
 
-const lcmMultiple = numbers => {
-  return numbers.reduce((acc, num) => lcm(acc, num))
-}
+const lcmMultiple = (numbers) => {
+  return numbers.reduce((acc, num) => lcm(acc, num));
+};
 
-const primeFactorize = n => {
-  const factors = []
-  let d = 2
+const primeFactorize = (n) => {
+  const factors = [];
+  let d = 2;
   while (d * d <= n) {
     while (n % d === 0) {
-      factors.push(d)
-      n /= d
+      factors.push(d);
+      n /= d;
     }
-    d++
+    d++;
   }
-  if (n > 1) factors.push(n)
-  return factors
-}
+  if (n > 1) factors.push(n);
+  return factors;
+};
 // 計算プロパティ
 const validNumbers = computed(() => {
-  const input = numbersInput.value.trim()
-  if (!input) return []
+  const input = numbersInput.value.trim();
+  if (!input) return [];
 
   return input
     .split(/[,\s]+/)
-    .map(str => parseInt(str.trim()))
-    .filter(num => !isNaN(num) && num > 0 && Number.isInteger(num))
-    .sort((a, b) => a - b)
-})
+    .map((str) => parseInt(str.trim()))
+    .filter((num) => !isNaN(num) && num > 0 && Number.isInteger(num))
+    .sort((a, b) => a - b);
+});
 
 const gcdResult = computed(() => {
-  if (validNumbers.value.length < 2) return null
-  return gcdMultiple(validNumbers.value)
-})
+  if (validNumbers.value.length < 2) return null;
+  return gcdMultiple(validNumbers.value);
+});
 
 const lcmResult = computed(() => {
-  if (validNumbers.value.length < 2) return null
-  return lcmMultiple(validNumbers.value)
-})
+  if (validNumbers.value.length < 2) return null;
+  return lcmMultiple(validNumbers.value);
+});
 
 const primeFactorizations = computed(() => {
-  const result = {}
-  validNumbers.value.forEach(num => {
-    result[num] = primeFactorize(num)
-  })
-  return result
-})
+  const result = {};
+  validNumbers.value.forEach((num) => {
+    result[num] = primeFactorize(num);
+  });
+  return result;
+});
 
 const gcdExplanation = computed(() => {
-  if (!gcdResult.value) return ''
+  if (!gcdResult.value) return "";
 
-  const allFactors = {}
-  Object.values(primeFactorizations.value).forEach(factors => {
-    const counted = {}
-    factors.forEach(f => {
-      counted[f] = (counted[f] ?? 0) + 1
-    })
+  const allFactors = {};
+  Object.values(primeFactorizations.value).forEach((factors) => {
+    const counted = {};
+    factors.forEach((f) => {
+      counted[f] = (counted[f] ?? 0) + 1;
+    });
 
     Object.entries(counted).forEach(([prime, count]) => {
-      allFactors[prime] ??= []
-      allFactors[prime].push(count)
-    })
-  })
+      allFactors[prime] ??= [];
+      allFactors[prime].push(count);
+    });
+  });
 
-  const gcdFactors = []
+  const gcdFactors = [];
   Object.entries(allFactors).forEach(([prime, counts]) => {
     if (counts.length === validNumbers.value.length) {
-      const minCount = Math.min(...counts)
+      const minCount = Math.min(...counts);
       if (minCount > 0) {
-        gcdFactors.push(minCount === 1 ? prime : `${prime}^${minCount}`)
+        gcdFactors.push(minCount === 1 ? prime : `${prime}^${minCount}`);
       }
     }
-  })
+  });
 
-  return gcdFactors.length > 0 ? gcdFactors.join(' × ') : '1'
-})
+  return gcdFactors.length > 0 ? gcdFactors.join(" × ") : "1";
+});
 
 const lcmExplanation = computed(() => {
-  if (!lcmResult.value) return ''
+  if (!lcmResult.value) return "";
 
-  const allFactors = {}
-  Object.values(primeFactorizations.value).forEach(factors => {
-    const counted = {}
-    factors.forEach(f => {
-      counted[f] = (counted[f] ?? 0) + 1
-    })
+  const allFactors = {};
+  Object.values(primeFactorizations.value).forEach((factors) => {
+    const counted = {};
+    factors.forEach((f) => {
+      counted[f] = (counted[f] ?? 0) + 1;
+    });
 
     Object.entries(counted).forEach(([prime, count]) => {
-      allFactors[prime] ??= []
-      allFactors[prime].push(count)
-    })
-  })
+      allFactors[prime] ??= [];
+      allFactors[prime].push(count);
+    });
+  });
 
-  const lcmFactors = []
+  const lcmFactors = [];
   Object.entries(allFactors).forEach(([prime, counts]) => {
-    const maxCount = Math.max(...counts)
-    lcmFactors.push(maxCount === 1 ? prime : `${prime}^${maxCount}`)
-  })
+    const maxCount = Math.max(...counts);
+    lcmFactors.push(maxCount === 1 ? prime : `${prime}^${maxCount}`);
+  });
 
-  return lcmFactors.join(' × ')
-})
+  return lcmFactors.join(" × ");
+});
 
 // SEO
 useHead({
-  title: '最大公約数・最小公倍数計算 - Tools.tomacheese.com',
+  title: "最大公約数・最小公倍数計算 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '複数の数値の最大公約数（GCD）と最小公倍数（LCM）を計算します。素因数分解と計算過程も表示します。',
+        "複数の数値の最大公約数（GCD）と最小公倍数（LCM）を計算します。素因数分解と計算過程も表示します。",
     },
     {
-      name: 'keywords',
-      content: '最大公約数, 最小公倍数, GCD, LCM, 素因数分解, 数学, 計算',
+      name: "keywords",
+      content: "最大公約数, 最小公倍数, GCD, LCM, 素因数分解, 数学, 計算",
     },
   ],
-})
+});
 </script>

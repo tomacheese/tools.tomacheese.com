@@ -237,55 +237,55 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { randomInt } from '~/utils/math'
+import { ref, computed } from "vue";
+import { randomInt } from "~/utils/math";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const minValue = ref(1)
-const maxValue = ref(100)
-const generateCount = ref(10)
-const allowDuplicates = ref(true)
-const generatedNumbers = ref([])
-const copyMessage = ref('')
+const minValue = ref(1);
+const maxValue = ref(100);
+const generateCount = ref(10);
+const allowDuplicates = ref(true);
+const generatedNumbers = ref([]);
+const copyMessage = ref("");
 
 // プリセット設定
 const presets = [
   {
-    name: 'サイコロ',
-    description: '1-6の数値',
+    name: "サイコロ",
+    description: "1-6の数値",
     settings: { min: 1, max: 6, count: 1, duplicates: true },
   },
   {
-    name: '宝くじ',
-    description: '1-43の数値7個',
+    name: "宝くじ",
+    description: "1-43の数値7個",
     settings: { min: 1, max: 43, count: 7, duplicates: false },
   },
   {
-    name: 'パーセント',
-    description: '0-100%',
+    name: "パーセント",
+    description: "0-100%",
     settings: { min: 0, max: 100, count: 10, duplicates: true },
   },
   {
-    name: '成績',
-    description: '0-100点',
+    name: "成績",
+    description: "0-100点",
     settings: { min: 0, max: 100, count: 20, duplicates: true },
   },
   {
-    name: '年度',
-    description: '2000-2030年',
+    name: "年度",
+    description: "2000-2030年",
     settings: { min: 2000, max: 2030, count: 5, duplicates: true },
   },
   {
-    name: 'ID番号',
-    description: '1000-9999',
+    name: "ID番号",
+    description: "1000-9999",
     settings: { min: 1000, max: 9999, count: 10, duplicates: false },
   },
-]
+];
 
 // 計算プロパティ
 const isValidRange = computed(() => {
@@ -293,144 +293,144 @@ const isValidRange = computed(() => {
     minValue.value !== null &&
     maxValue.value !== null &&
     minValue.value <= maxValue.value
-  )
-})
+  );
+});
 
 const sum = computed(() => {
-  return generatedNumbers.value.reduce((total, num) => total + num, 0)
-})
+  return generatedNumbers.value.reduce((total, num) => total + num, 0);
+});
 
 const average = computed(() => {
   return generatedNumbers.value.length > 0
     ? sum.value / generatedNumbers.value.length
-    : 0
-})
+    : 0;
+});
 
 const median = computed(() => {
-  if (generatedNumbers.value.length === 0) return 0
-  const sorted = [...generatedNumbers.value].sort((a, b) => a - b)
-  const mid = Math.floor(sorted.length / 2)
+  if (generatedNumbers.value.length === 0) return 0;
+  const sorted = [...generatedNumbers.value].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
   return sorted.length % 2 !== 0
     ? sorted[mid]
-    : (sorted[mid - 1] + sorted[mid]) / 2
-})
+    : (sorted[mid - 1] + sorted[mid]) / 2;
+});
 
 const uniqueCount = computed(() => {
-  return new Set(generatedNumbers.value).size
-})
+  return new Set(generatedNumbers.value).size;
+});
 
 const duplicateCount = computed(() => {
-  return generatedNumbers.value.length - uniqueCount.value
-})
+  return generatedNumbers.value.length - uniqueCount.value;
+});
 
 // メソッド
 const generateNumbers = () => {
-  if (!isValidRange.value) return
+  if (!isValidRange.value) return;
 
-  const numbers = []
-  const range = maxValue.value - minValue.value + 1
+  const numbers = [];
+  const range = maxValue.value - minValue.value + 1;
   const maxPossible = allowDuplicates.value
     ? parseInt(generateCount.value)
-    : Math.min(parseInt(generateCount.value), range)
+    : Math.min(parseInt(generateCount.value), range);
 
   if (allowDuplicates.value) {
     // 重複を許可する場合
     for (let i = 0; i < maxPossible; i++) {
-      numbers.push(randomInt(minValue.value, maxValue.value))
+      numbers.push(randomInt(minValue.value, maxValue.value));
     }
   } else {
     // 重複を許可しない場合
-    const availableNumbers = []
+    const availableNumbers = [];
     for (let i = minValue.value; i <= maxValue.value; i++) {
-      availableNumbers.push(i)
+      availableNumbers.push(i);
     }
 
     for (let i = 0; i < maxPossible; i++) {
-      const randomIndex = Math.floor(Math.random() * availableNumbers.length)
-      numbers.push(availableNumbers.splice(randomIndex, 1)[0])
+      const randomIndex = Math.floor(Math.random() * availableNumbers.length);
+      numbers.push(availableNumbers.splice(randomIndex, 1)[0]);
     }
   }
 
-  generatedNumbers.value = numbers
-}
+  generatedNumbers.value = numbers;
+};
 
-const applyPreset = preset => {
-  minValue.value = preset.settings.min
-  maxValue.value = preset.settings.max
-  generateCount.value = preset.settings.count
-  allowDuplicates.value = preset.settings.duplicates
+const applyPreset = (preset) => {
+  minValue.value = preset.settings.min;
+  maxValue.value = preset.settings.max;
+  generateCount.value = preset.settings.count;
+  allowDuplicates.value = preset.settings.duplicates;
 
-  copyMessage.value = `プリセット「${preset.name}」を適用しました`
+  copyMessage.value = `プリセット「${preset.name}」を適用しました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
-const copyNumber = async number => {
+const copyNumber = async (number) => {
   try {
-    await navigator.clipboard.writeText(number.toString())
-    copyMessage.value = `${number} をコピーしました`
+    await navigator.clipboard.writeText(number.toString());
+    copyMessage.value = `${number} をコピーしました`;
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
-    copyMessage.value = 'コピーに失敗しました'
+    copyMessage.value = "コピーに失敗しました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   }
-}
+};
 
 const copyAllNumbers = async () => {
   try {
-    const text = generatedNumbers.value.join(', ')
-    await navigator.clipboard.writeText(text)
-    copyMessage.value = '全ての数値をコピーしました'
+    const text = generatedNumbers.value.join(", ");
+    await navigator.clipboard.writeText(text);
+    copyMessage.value = "全ての数値をコピーしました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
-    copyMessage.value = 'コピーに失敗しました'
+    copyMessage.value = "コピーに失敗しました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   }
-}
+};
 
 const exportToCSV = () => {
-  const csvContent = generatedNumbers.value.join('\n')
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-  const link = document.createElement('a')
+  const csvContent = generatedNumbers.value.join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
 
   if (link.download !== undefined) {
-    const url = URL.createObjectURL(blob)
-    link.setAttribute('href', url)
-    link.setAttribute('download', 'random_numbers.csv')
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "random_numbers.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-    copyMessage.value = 'CSVファイルをダウンロードしました'
+    copyMessage.value = "CSVファイルをダウンロードしました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   }
-}
+};
 
 // SEO
 useHead({
-  title: '乱数生成 - Tools.tomacheese.com',
+  title: "乱数生成 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '指定した範囲内でランダムな数値を生成します。重複制御、統計情報、CSV出力機能付き。',
+        "指定した範囲内でランダムな数値を生成します。重複制御、統計情報、CSV出力機能付き。",
     },
     {
-      name: 'keywords',
-      content: '乱数生成, ランダム数値, 抽選, くじ引き, 統計',
+      name: "keywords",
+      content: "乱数生成, ランダム数値, 抽選, くじ引き, 統計",
     },
   ],
-})
+});
 </script>

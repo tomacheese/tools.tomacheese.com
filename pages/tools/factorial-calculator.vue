@@ -292,19 +292,19 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { factorial } from '~/utils/math'
+import { ref, computed } from "vue";
+import { factorial } from "~/utils/math";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const inputNumber = ref(null)
-const result = ref(null)
-const calculationTime = ref(0)
-const copyMessage = ref('')
+const inputNumber = ref(null);
+const result = ref(null);
+const calculationTime = ref(0);
+const copyMessage = ref("");
 
 // 計算プロパティ
 const isValidInput = computed(() => {
@@ -313,111 +313,111 @@ const isValidInput = computed(() => {
     inputNumber.value >= 0 &&
     inputNumber.value <= 170 &&
     Number.isInteger(inputNumber.value)
-  )
-})
+  );
+});
 
 const smallFactorials = computed(() => {
-  const factorials = []
+  const factorials = [];
   for (let i = 0; i <= 20; i++) {
     factorials.push({
       value: i,
       factorial: factorial(i),
-    })
+    });
   }
-  return factorials
-})
+  return factorials;
+});
 
 const largeFactorials = computed(() => {
-  const factorials = []
+  const factorials = [];
   for (let i = 25; i <= 170; i += 5) {
     factorials.push({
       value: i,
       factorial: factorial(i),
-    })
+    });
   }
-  return factorials
-})
+  return factorials;
+});
 
 // メソッド
 const calculateFactorial = () => {
-  if (!isValidInput.value) return
+  if (!isValidInput.value) return;
 
-  const startTime = performance.now()
-  result.value = factorial(inputNumber.value)
-  const endTime = performance.now()
+  const startTime = performance.now();
+  result.value = factorial(inputNumber.value);
+  const endTime = performance.now();
 
-  calculationTime.value = Math.round((endTime - startTime) * 100) / 100
-}
+  calculationTime.value = Math.round((endTime - startTime) * 100) / 100;
+};
 
-const formatResult = value => {
+const formatResult = (value) => {
   if (value === Infinity) {
-    return 'Infinity (オーバーフロー)'
+    return "Infinity (オーバーフロー)";
   }
 
   if (inputNumber.value <= 20) {
-    return value.toLocaleString()
+    return value.toLocaleString();
   } else {
-    return value.toExponential(10)
+    return value.toExponential(10);
   }
-}
+};
 
 const getCalculationFormula = () => {
   if (inputNumber.value === 0) {
-    return '0! = 1 (定義)'
+    return "0! = 1 (定義)";
   } else if (inputNumber.value <= 10) {
-    const factors = []
+    const factors = [];
     for (let i = 1; i <= inputNumber.value; i++) {
-      factors.push(i)
+      factors.push(i);
     }
-    return `${inputNumber.value}! = ${factors.join(' × ')}`
+    return `${inputNumber.value}! = ${factors.join(" × ")}`;
   } else {
-    return `${inputNumber.value}! = 1 × 2 × 3 × ... × ${inputNumber.value}`
+    return `${inputNumber.value}! = 1 × 2 × 3 × ... × ${inputNumber.value}`;
   }
-}
+};
 
 const getStepByStepCalculation = () => {
   if (inputNumber.value === 0) {
-    return '0! = 1 (定義により)'
+    return "0! = 1 (定義により)";
   }
 
-  const steps = []
-  let currentProduct = 1
+  const steps = [];
+  let currentProduct = 1;
 
   for (let i = 1; i <= inputNumber.value; i++) {
-    currentProduct *= i
+    currentProduct *= i;
     if (i === 1) {
-      steps.push(`${i}! = ${currentProduct}`)
+      steps.push(`${i}! = ${currentProduct}`);
     } else {
-      steps.push(`${i}! = ${i - 1}! × ${i} = ${currentProduct}`)
+      steps.push(`${i}! = ${i - 1}! × ${i} = ${currentProduct}`);
     }
   }
 
-  return steps.join('\n')
-}
+  return steps.join("\n");
+};
 
-const selectFactorial = value => {
-  inputNumber.value = value
-  calculateFactorial()
+const selectFactorial = (value) => {
+  inputNumber.value = value;
+  calculateFactorial();
 
-  copyMessage.value = `${value}! が選択されました`
+  copyMessage.value = `${value}! が選択されました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 // SEO
 useHead({
-  title: '階乗計算 - Tools.tomacheese.com',
+  title: "階乗計算 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '指定した数値の階乗を計算します。計算過程の表示や階乗表の確認も可能です。',
+        "指定した数値の階乗を計算します。計算過程の表示や階乗表の確認も可能です。",
     },
     {
-      name: 'keywords',
-      content: '階乗計算, factorial, 数学, 組み合わせ, 順列',
+      name: "keywords",
+      content: "階乗計算, factorial, 数学, 組み合わせ, 順列",
     },
   ],
-})
+});
 </script>

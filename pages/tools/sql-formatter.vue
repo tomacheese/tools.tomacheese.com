@@ -171,9 +171,12 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">基本情報</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            文字数: {{ stats.charCount }}<br />
-            行数: {{ stats.lineCount }}<br />
-            クエリ数: {{ stats.queryCount }}<br />
+            文字数: {{ stats.charCount }}
+            <br />
+            行数: {{ stats.lineCount }}
+            <br />
+            クエリ数: {{ stats.queryCount }}
+            <br />
             推定方言:
             {{ getDialectLabel(detectedDialect) }}
           </div>
@@ -182,8 +185,10 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">構造</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            テーブル数: {{ stats.tableCount }}<br />
-            JOIN数: {{ stats.joinCount }}<br />
+            テーブル数: {{ stats.tableCount }}
+            <br />
+            JOIN数: {{ stats.joinCount }}
+            <br />
             WHERE条件: {{ stats.whereConditions }}
           </div>
         </div>
@@ -191,10 +196,14 @@
         <div class="result-box">
           <h4 style="color: #2563eb; margin-bottom: 0.5rem">クエリタイプ</h4>
           <div style="font-family: 'Courier New', monospace; font-size: 0.9rem">
-            SELECT: {{ stats.queryTypes.select }}<br />
-            INSERT: {{ stats.queryTypes.insert }}<br />
-            UPDATE: {{ stats.queryTypes.update }}<br />
-            DELETE: {{ stats.queryTypes.delete }}<br />
+            SELECT: {{ stats.queryTypes.select }}
+            <br />
+            INSERT: {{ stats.queryTypes.insert }}
+            <br />
+            UPDATE: {{ stats.queryTypes.update }}
+            <br />
+            DELETE: {{ stats.queryTypes.delete }}
+            <br />
             DDL: {{ stats.queryTypes.ddl }}
           </div>
         </div>
@@ -233,7 +242,8 @@
           SQLクエリを読みやすい形式にインデントを付けて整形します
         </li>
         <li>
-          <strong>圧縮:</strong> 不要な空白や改行を削除してサイズを最小化します
+          <strong>圧縮:</strong>
+          不要な空白や改行を削除してサイズを最小化します
         </li>
         <li>
           <strong>検証:</strong>
@@ -282,146 +292,146 @@ import {
   detectSqlDialect,
   type SqlFormatOptions,
   type SqlStatistics,
-} from '~/utils/sqlFormatter'
+} from "~/utils/sqlFormatter";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const inputSql = ref('')
-const outputSql = ref('')
-const validationErrors = ref<string[]>([])
-const copyMessage = ref('')
+const inputSql = ref("");
+const outputSql = ref("");
+const validationErrors = ref<string[]>([]);
+const copyMessage = ref("");
 const dialect = ref<
-  'standard' | 'mysql' | 'postgresql' | 'sqlserver' | 'oracle' | 'sqlite'
->('standard')
-const indentSize = ref<2 | 4 | 'tab'>(2)
-const keywordCase = ref<'upper' | 'lower' | 'preserve'>('upper')
-const stats = ref<SqlStatistics | null>(null)
-const detectedDialect = ref<keyof typeof dialectLabels | ''>('')
+  "standard" | "mysql" | "postgresql" | "sqlserver" | "oracle" | "sqlite"
+>("standard");
+const indentSize = ref<2 | 4 | "tab">(2);
+const keywordCase = ref<"upper" | "lower" | "preserve">("upper");
+const stats = ref<SqlStatistics | null>(null);
+const detectedDialect = ref<keyof typeof dialectLabels | "">("");
 
 // 方言ラベル
 const dialectLabels = {
-  standard: 'Standard SQL',
-  mysql: 'MySQL',
-  postgresql: 'PostgreSQL',
-  sqlserver: 'SQL Server',
-  oracle: 'Oracle',
-  sqlite: 'SQLite',
-}
+  standard: "Standard SQL",
+  mysql: "MySQL",
+  postgresql: "PostgreSQL",
+  sqlserver: "SQL Server",
+  oracle: "Oracle",
+  sqlite: "SQLite",
+};
 
 // 方言ラベルを取得するヘルパー
 const getDialectLabel = (dialect: string): string => {
   if (dialect && dialect in dialectLabels) {
-    return dialectLabels[dialect as keyof typeof dialectLabels]
+    return dialectLabels[dialect as keyof typeof dialectLabels];
   }
-  return 'なし'
-}
+  return "なし";
+};
 
 // サンプルSQL
 const sampleSqls = [
   {
-    label: '基本SELECT',
-    sql: 'SELECT id, name, email FROM users WHERE active = 1 ORDER BY name;',
+    label: "基本SELECT",
+    sql: "SELECT id, name, email FROM users WHERE active = 1 ORDER BY name;",
   },
   {
-    label: 'JOIN',
-    sql: 'SELECT u.name, p.title FROM users u INNER JOIN posts p ON u.id = p.user_id WHERE u.active = 1 AND p.published = 1;',
+    label: "JOIN",
+    sql: "SELECT u.name, p.title FROM users u INNER JOIN posts p ON u.id = p.user_id WHERE u.active = 1 AND p.published = 1;",
   },
   {
-    label: 'サブクエリ',
-    sql: 'SELECT * FROM products WHERE price > (SELECT AVG(price) FROM products WHERE category_id = 1) ORDER BY price DESC;',
+    label: "サブクエリ",
+    sql: "SELECT * FROM products WHERE price > (SELECT AVG(price) FROM products WHERE category_id = 1) ORDER BY price DESC;",
   },
   {
-    label: 'INSERT',
+    label: "INSERT",
     sql: "INSERT INTO users (name, email, created_at) VALUES ('John Doe', 'john@example.com', CURRENT_TIMESTAMP);",
   },
   {
-    label: 'UPDATE',
+    label: "UPDATE",
     sql: "UPDATE users SET last_login = CURRENT_TIMESTAMP, login_count = login_count + 1 WHERE email = 'john@example.com';",
   },
   {
-    label: '複雑なクエリ',
+    label: "複雑なクエリ",
     sql: "WITH monthly_sales AS (SELECT DATE_TRUNC('month', order_date) as month, SUM(total_amount) as total FROM orders WHERE order_date >= '2024-01-01' GROUP BY DATE_TRUNC('month', order_date)) SELECT month, total, LAG(total) OVER (ORDER BY month) as prev_month_total FROM monthly_sales ORDER BY month;",
   },
-]
+];
 
 // メソッド
 const formatSqlMethod = () => {
-  if (!inputSql.value.trim()) return
+  if (!inputSql.value.trim()) return;
 
   const options: SqlFormatOptions = {
     dialect: dialect.value,
     indentSize: indentSize.value,
     keywordCase: keywordCase.value,
     linesBetweenQueries: 1,
-  }
+  };
 
   try {
-    outputSql.value = formatSql(inputSql.value, options)
-    validationErrors.value = []
-    calculateStats()
+    outputSql.value = formatSql(inputSql.value, options);
+    validationErrors.value = [];
+    calculateStats();
   } catch (error) {
     validationErrors.value = [
       `整形中にエラーが発生しました: ${(error as Error).message}`,
-    ]
-    outputSql.value = ''
-    stats.value = null
+    ];
+    outputSql.value = "";
+    stats.value = null;
   }
-}
+};
 
 const minifyMethod = () => {
-  if (!inputSql.value.trim()) return
+  if (!inputSql.value.trim()) return;
 
   try {
-    outputSql.value = minifySql(inputSql.value)
-    validationErrors.value = []
-    calculateStats()
+    outputSql.value = minifySql(inputSql.value);
+    validationErrors.value = [];
+    calculateStats();
   } catch (error) {
     validationErrors.value = [
       `圧縮中にエラーが発生しました: ${(error as Error).message}`,
-    ]
-    outputSql.value = ''
-    stats.value = null
+    ];
+    outputSql.value = "";
+    stats.value = null;
   }
-}
+};
 
 const validateMethod = () => {
-  if (!inputSql.value.trim()) return
+  if (!inputSql.value.trim()) return;
 
-  const validation = validateSql(inputSql.value)
+  const validation = validateSql(inputSql.value);
   if (validation.isValid) {
-    validationErrors.value = []
-    outputSql.value = inputSql.value
+    validationErrors.value = [];
+    outputSql.value = inputSql.value;
   } else {
-    validationErrors.value = validation.errors
-    outputSql.value = ''
+    validationErrors.value = validation.errors;
+    outputSql.value = "";
   }
-  calculateStats()
-}
+  calculateStats();
+};
 const clearAll = () => {
-  inputSql.value = ''
-  outputSql.value = ''
-  validationErrors.value = []
-  stats.value = null
-  detectedDialect.value = ''
-}
+  inputSql.value = "";
+  outputSql.value = "";
+  validationErrors.value = [];
+  stats.value = null;
+  detectedDialect.value = "";
+};
 
 const loadSample = (sql: string) => {
-  inputSql.value = sql
-  formatSqlMethod()
-}
+  inputSql.value = sql;
+  formatSqlMethod();
+};
 
 const calculateStats = () => {
   if (!inputSql.value.trim()) {
-    stats.value = null
-    return
+    stats.value = null;
+    return;
   }
 
-  stats.value = extractSqlStatistics(inputSql.value)
-}
+  stats.value = extractSqlStatistics(inputSql.value);
+};
 
 const onSettingsChange = () => {
   if (
@@ -429,66 +439,66 @@ const onSettingsChange = () => {
     outputSql.value &&
     validationErrors.value.length === 0
   ) {
-    formatSqlMethod()
+    formatSqlMethod();
   }
-}
+};
 
 const copyToClipboard = async (text: string) => {
   try {
-    await navigator.clipboard.writeText(text)
-    copyMessage.value = 'コピーしました！'
+    await navigator.clipboard.writeText(text);
+    copyMessage.value = "コピーしました！";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
     // Copy failed silently
   }
-}
+};
 
 // ウォッチャー
 watch(inputSql, () => {
   if (inputSql.value.trim()) {
     // 方言の自動検出
-    const detected = detectSqlDialect(inputSql.value)
+    const detected = detectSqlDialect(inputSql.value);
     if (detected in dialectLabels) {
-      detectedDialect.value = detected as keyof typeof dialectLabels
+      detectedDialect.value = detected as keyof typeof dialectLabels;
     } else {
-      detectedDialect.value = ''
+      detectedDialect.value = "";
     }
 
     // リアルタイム検証
     if (validationErrors.value.length > 0) {
-      const validation = validateSql(inputSql.value)
+      const validation = validateSql(inputSql.value);
       if (validation.isValid) {
-        validationErrors.value = []
+        validationErrors.value = [];
       }
     }
 
     // 統計情報の更新
-    calculateStats()
+    calculateStats();
   } else {
-    detectedDialect.value = ''
-    stats.value = null
-    validationErrors.value = []
+    detectedDialect.value = "";
+    stats.value = null;
+    validationErrors.value = [];
   }
-})
+});
 
 // SEO
 useHead({
-  title: 'SQLフォーマッター - Tools.tomacheese.com',
+  title: "SQLフォーマッター - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'SQLクエリを見やすく整形・圧縮・検証するオンラインツールです。MySQL、PostgreSQL、SQL Server、Oracle、SQLiteに対応。統計情報の表示やエラー検出も可能です。',
+        "SQLクエリを見やすく整形・圧縮・検証するオンラインツールです。MySQL、PostgreSQL、SQL Server、Oracle、SQLiteに対応。統計情報の表示やエラー検出も可能です。",
     },
     {
-      name: 'keywords',
+      name: "keywords",
       content:
-        'SQL, フォーマッター, 整形, 圧縮, 検証, MySQL, PostgreSQL, Oracle, SQL Server, SQLite',
+        "SQL, フォーマッター, 整形, 圧縮, 検証, MySQL, PostgreSQL, Oracle, SQL Server, SQLite",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

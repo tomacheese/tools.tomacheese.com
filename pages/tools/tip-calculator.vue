@@ -38,8 +38,9 @@
                   transform: translateY(-50%);
                   color: #64748b;
                 "
-                >¥</span
               >
+                ¥
+              </span>
             </div>
           </div>
 
@@ -318,8 +319,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">レストラン</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            ファミリーレストラン: 10-15%<br />
-            高級レストラン: 18-22%<br />
+            ファミリーレストラン: 10-15%
+            <br />
+            高級レストラン: 18-22%
+            <br />
             バー: 15-20%
           </p>
         </div>
@@ -327,8 +330,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">サービス業</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            タクシー: 10-15%<br />
-            ホテル: 1-2ドル/荷物<br />
+            タクシー: 10-15%
+            <br />
+            ホテル: 1-2ドル/荷物
+            <br />
             ヘアサロン: 15-20%
           </p>
         </div>
@@ -336,8 +341,10 @@
         <div>
           <h5 style="color: #2563eb; margin-bottom: 0.25rem">配達サービス</h5>
           <p style="color: #64748b; font-size: 0.875rem">
-            フードデリバリー: 15-20%<br />
-            ピザ配達: 2-5ドル<br />
+            フードデリバリー: 15-20%
+            <br />
+            ピザ配達: 2-5ドル
+            <br />
             ルームサービス: 15-20%
           </p>
         </div>
@@ -373,41 +380,41 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { calculateTip } from '~/utils/math'
+import { ref, computed } from "vue";
+import { calculateTip } from "~/utils/math";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const billAmount = ref(null)
-const tipPercentage = ref(18)
-const numberOfPeople = ref(2)
-const serviceQuality = ref('good')
-const copyMessage = ref('')
+const billAmount = ref(null);
+const tipPercentage = ref(18);
+const numberOfPeople = ref(2);
+const serviceQuality = ref("good");
+const copyMessage = ref("");
 
 // クイックチップ
 const quickTips = [
-  { rate: 10, label: '普通' },
-  { rate: 15, label: '標準' },
-  { rate: 18, label: '良い' },
-  { rate: 20, label: '最高' },
-]
+  { rate: 10, label: "普通" },
+  { rate: 15, label: "標準" },
+  { rate: 18, label: "良い" },
+  { rate: 20, label: "最高" },
+];
 
 // プリセット
 const presets = [
-  { name: 'ランチ (¥2,000, 2人)', billAmount: 2000, people: 2, tip: 15 },
-  { name: 'ディナー (¥8,000, 4人)', billAmount: 8000, people: 4, tip: 18 },
-  { name: 'バー (¥3,500, 3人)', billAmount: 3500, people: 3, tip: 20 },
+  { name: "ランチ (¥2,000, 2人)", billAmount: 2000, people: 2, tip: 15 },
+  { name: "ディナー (¥8,000, 4人)", billAmount: 8000, people: 4, tip: 18 },
+  { name: "バー (¥3,500, 3人)", billAmount: 3500, people: 3, tip: 20 },
   {
-    name: '高級レストラン (¥15,000, 2人)',
+    name: "高級レストラン (¥15,000, 2人)",
     billAmount: 15000,
     people: 2,
     tip: 22,
   },
-]
+];
 
 // 計算プロパティ
 const isValidInput = computed(() => {
@@ -416,29 +423,29 @@ const isValidInput = computed(() => {
     billAmount.value > 0 &&
     numberOfPeople.value > 0 &&
     tipPercentage.value >= 0
-  )
-})
+  );
+});
 
 const result = computed(() => {
-  if (!isValidInput.value) return null
+  if (!isValidInput.value) return null;
 
   return calculateTip(
     billAmount.value,
     tipPercentage.value,
     numberOfPeople.value
-  )
-})
+  );
+});
 
 // メソッド
-const setQuickTip = rate => {
-  tipPercentage.value = rate
-  serviceQuality.value = 'custom'
+const setQuickTip = (rate) => {
+  tipPercentage.value = rate;
+  serviceQuality.value = "custom";
 
-  copyMessage.value = `チップ率を${rate}%に設定しました`
+  copyMessage.value = `チップ率を${rate}%に設定しました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 const applyServiceQuality = () => {
   const qualityRates = {
@@ -446,40 +453,40 @@ const applyServiceQuality = () => {
     fair: 13.5,
     good: 19,
     excellent: 23.5,
+  };
+
+  if (serviceQuality.value !== "custom") {
+    tipPercentage.value = qualityRates[serviceQuality.value];
   }
+};
 
-  if (serviceQuality.value !== 'custom') {
-    tipPercentage.value = qualityRates[serviceQuality.value]
-  }
-}
+const applyPreset = (preset) => {
+  billAmount.value = preset.billAmount;
+  numberOfPeople.value = preset.people;
+  tipPercentage.value = preset.tip;
+  serviceQuality.value = "custom";
 
-const applyPreset = preset => {
-  billAmount.value = preset.billAmount
-  numberOfPeople.value = preset.people
-  tipPercentage.value = preset.tip
-  serviceQuality.value = 'custom'
-
-  copyMessage.value = `プリセット「${preset.name}」を適用しました`
+  copyMessage.value = `プリセット「${preset.name}」を適用しました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 // SEO
 useHead({
-  title: 'チップ計算 - Tools.tomacheese.com',
+  title: "チップ計算 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'レストランなどでのチップ額を簡単に計算します。サービス品質別の目安も提供。',
+        "レストランなどでのチップ額を簡単に計算します。サービス品質別の目安も提供。",
     },
     {
-      name: 'keywords',
-      content: 'チップ計算, レストラン, サービス料, 海外旅行, マナー',
+      name: "keywords",
+      content: "チップ計算, レストラン, サービス料, 海外旅行, マナー",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

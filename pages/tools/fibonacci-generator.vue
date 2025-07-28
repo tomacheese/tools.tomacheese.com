@@ -176,9 +176,9 @@
             @click="copyNumber(number, index)"
           >
             <div>
-              <span style="font-weight: 600; color: #374151"
-                >F({{ index }})</span
-              >
+              <span style="font-weight: 600; color: #374151">
+                F({{ index }})
+              </span>
               <span
                 style="margin-left: 1rem; font-family: 'Courier New', monospace"
               >
@@ -204,7 +204,7 @@
           {{
             sequence
               .map((num, i) => `F(${i}) = ${num.toLocaleString()}`)
-              .join('\n')
+              .join("\n")
           }}
         </div>
       </div>
@@ -317,158 +317,158 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { generateFibonacci } from '~/utils/math'
+import { ref, computed } from "vue";
+import { generateFibonacci } from "~/utils/math";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const termCount = ref(10)
-const displayFormat = ref('grid')
-const sequence = ref([])
-const copyMessage = ref('')
+const termCount = ref(10);
+const displayFormat = ref("grid");
+const sequence = ref([]);
+const copyMessage = ref("");
 
 // プリセット設定
 const presets = [
   {
-    name: '基本',
-    description: '最初の10項',
-    settings: { count: 10, format: 'grid' },
+    name: "基本",
+    description: "最初の10項",
+    settings: { count: 10, format: "grid" },
   },
   {
-    name: '黄金比確認',
-    description: '20項で黄金比を確認',
-    settings: { count: 20, format: 'list' },
+    name: "黄金比確認",
+    description: "20項で黄金比を確認",
+    settings: { count: 20, format: "list" },
   },
   {
-    name: '大きな数',
-    description: '50項まで生成',
-    settings: { count: 50, format: 'list' },
+    name: "大きな数",
+    description: "50項まで生成",
+    settings: { count: 50, format: "list" },
   },
   {
-    name: '詳細分析',
-    description: '100項で統計分析',
-    settings: { count: 100, format: 'formula' },
+    name: "詳細分析",
+    description: "100項で統計分析",
+    settings: { count: 100, format: "formula" },
   },
-]
+];
 
 // 計算プロパティ
 const isValidInput = computed(() => {
   return (
     termCount.value !== null && termCount.value >= 1 && termCount.value <= 1000
-  )
-})
+  );
+});
 
 const goldenRatio = computed(() => {
-  if (sequence.value.length < 3) return null
-  const lastIndex = sequence.value.length - 1
-  if (sequence.value[lastIndex - 1] === 0) return null
-  return sequence.value[lastIndex] / sequence.value[lastIndex - 1]
-})
+  if (sequence.value.length < 3) return null;
+  const lastIndex = sequence.value.length - 1;
+  if (sequence.value[lastIndex - 1] === 0) return null;
+  return sequence.value[lastIndex] / sequence.value[lastIndex - 1];
+});
 
 const evenCount = computed(() => {
-  return sequence.value.filter(num => num % 2 === 0).length
-})
+  return sequence.value.filter((num) => num % 2 === 0).length;
+});
 
 const oddCount = computed(() => {
-  return sequence.value.filter(num => num % 2 !== 0).length
-})
+  return sequence.value.filter((num) => num % 2 !== 0).length;
+});
 
 const divisibleBy3Count = computed(() => {
-  return sequence.value.filter(num => num % 3 === 0).length
-})
+  return sequence.value.filter((num) => num % 3 === 0).length;
+});
 
 const divisibleBy5Count = computed(() => {
-  return sequence.value.filter(num => num % 5 === 0).length
-})
+  return sequence.value.filter((num) => num % 5 === 0).length;
+});
 
 // メソッド
 const generateSequence = () => {
-  if (!isValidInput.value) return
+  if (!isValidInput.value) return;
 
-  sequence.value = generateFibonacci(termCount.value)
-}
+  sequence.value = generateFibonacci(termCount.value);
+};
 
-const applyPreset = preset => {
-  termCount.value = preset.settings.count
-  displayFormat.value = preset.settings.format
-  generateSequence()
+const applyPreset = (preset) => {
+  termCount.value = preset.settings.count;
+  displayFormat.value = preset.settings.format;
+  generateSequence();
 
-  copyMessage.value = `プリセット「${preset.name}」を適用しました`
+  copyMessage.value = `プリセット「${preset.name}」を適用しました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 const copyNumber = async (number, index) => {
   try {
-    await navigator.clipboard.writeText(number.toString())
-    copyMessage.value = `F(${index}) = ${number.toLocaleString()} をコピーしました`
+    await navigator.clipboard.writeText(number.toString());
+    copyMessage.value = `F(${index}) = ${number.toLocaleString()} をコピーしました`;
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
     // Copy failed silently
   }
-}
+};
 
 const copySequence = async () => {
   try {
-    const text = sequence.value.map((num, i) => `F(${i}) = ${num}`).join('\n')
-    await navigator.clipboard.writeText(text)
-    copyMessage.value = 'フィボナッチ数列をコピーしました'
+    const text = sequence.value.map((num, i) => `F(${i}) = ${num}`).join("\n");
+    await navigator.clipboard.writeText(text);
+    copyMessage.value = "フィボナッチ数列をコピーしました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
     // Copy failed silently
   }
-}
+};
 
 const exportToCSV = () => {
   const csvContent = [
-    'Index,Fibonacci Number',
+    "Index,Fibonacci Number",
     ...sequence.value.map((num, i) => `${i},${num}`),
-  ].join('\n')
+  ].join("\n");
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-  const link = document.createElement('a')
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
 
   if (link.download !== undefined) {
-    const url = URL.createObjectURL(blob)
-    link.setAttribute('href', url)
-    link.setAttribute('download', 'fibonacci_sequence.csv')
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", "fibonacci_sequence.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-    copyMessage.value = 'CSVファイルをダウンロードしました'
+    copyMessage.value = "CSVファイルをダウンロードしました";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   }
-}
+};
 
 // 初期表示
-generateSequence()
+generateSequence();
 
 // SEO
 useHead({
-  title: 'フィボナッチ数列生成 - Tools.tomacheese.com',
+  title: "フィボナッチ数列生成 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'フィボナッチ数列を指定した項数まで生成します。黄金比の確認や統計分析機能付き。',
+        "フィボナッチ数列を指定した項数まで生成します。黄金比の確認や統計分析機能付き。",
     },
     {
-      name: 'keywords',
-      content: 'フィボナッチ数列, 黄金比, 数学, 数列生成, 統計分析',
+      name: "keywords",
+      content: "フィボナッチ数列, 黄金比, 数学, 数列生成, 統計分析",
     },
   ],
-})
+});
 </script>

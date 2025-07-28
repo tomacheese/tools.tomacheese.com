@@ -37,8 +37,9 @@
                   transform: translateY(-50%);
                   color: #64748b;
                 "
-                >¥</span
               >
+                ¥
+              </span>
             </div>
           </div>
 
@@ -296,7 +297,7 @@
                   >
                     {{
                       paidCount === numberOfPeople
-                        ? '✓'
+                        ? "✓"
                         : `${paidCount}/${numberOfPeople}`
                     }}
                   </td>
@@ -357,50 +358,50 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { calculateExpenseSplit } from '~/utils/math'
+import { ref, computed, watch } from "vue";
+import { calculateExpenseSplit } from "~/utils/math";
 
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const totalAmount = ref(null)
-const numberOfPeople = ref(4)
-const tipPercentage = ref(0)
-const includeTax = ref(true)
-const paymentTable = ref([])
-const copyMessage = ref('')
+const totalAmount = ref(null);
+const numberOfPeople = ref(4);
+const tipPercentage = ref(0);
+const includeTax = ref(true);
+const paymentTable = ref([]);
+const copyMessage = ref("");
 
 // プリセット設定
 const presets = [
   {
-    name: '飲み会',
-    description: '4人、チップなし',
+    name: "飲み会",
+    description: "4人、チップなし",
     settings: { amount: 12000, people: 4, tip: 0, tax: true },
   },
   {
-    name: 'レストラン',
-    description: '6人、サービス料10%',
+    name: "レストラン",
+    description: "6人、サービス料10%",
     settings: { amount: 18000, people: 6, tip: 10, tax: true },
   },
   {
-    name: '旅行宿泊',
-    description: '8人、税込み',
+    name: "旅行宿泊",
+    description: "8人、税込み",
     settings: { amount: 48000, people: 8, tip: 0, tax: true },
   },
   {
-    name: 'カフェ',
-    description: '3人、チップ15%',
+    name: "カフェ",
+    description: "3人、チップ15%",
     settings: { amount: 2500, people: 3, tip: 15, tax: true },
   },
   {
-    name: 'プレゼント',
-    description: '5人で共同購入',
+    name: "プレゼント",
+    description: "5人で共同購入",
     settings: { amount: 10000, people: 5, tip: 0, tax: true },
   },
-]
+];
 
 // 計算プロパティ
 const isValidInput = computed(() => {
@@ -409,35 +410,35 @@ const isValidInput = computed(() => {
     totalAmount.value > 0 &&
     numberOfPeople.value > 0 &&
     numberOfPeople.value <= 100
-  )
-})
+  );
+});
 
 const result = computed(() => {
-  if (!isValidInput.value) return null
+  if (!isValidInput.value) return null;
 
   return calculateExpenseSplit(
     totalAmount.value,
     numberOfPeople.value,
     tipPercentage.value
-  )
-})
+  );
+});
 
 const paidCount = computed(() => {
-  return paymentTable.value.filter(person => person.paid).length
-})
+  return paymentTable.value.filter((person) => person.paid).length;
+});
 
 const totalCollected = computed(() => {
   return paymentTable.value
-    .filter(person => person.paid)
-    .reduce((total, person) => total + person.amount, 0)
-})
+    .filter((person) => person.paid)
+    .reduce((total, person) => total + person.amount, 0);
+});
 
 // メソッド
 const generatePaymentTable = () => {
-  if (!isValidInput.value || !result.value) return
+  if (!isValidInput.value || !result.value) return;
 
-  const table = []
-  const amountPerPerson = Math.ceil(result.value.amountPerPerson)
+  const table = [];
+  const amountPerPerson = Math.ceil(result.value.amountPerPerson);
 
   for (let i = 1; i <= numberOfPeople.value; i++) {
     table.push({
@@ -445,48 +446,48 @@ const generatePaymentTable = () => {
       name: `参加者${i}`,
       amount: amountPerPerson,
       paid: false,
-    })
+    });
   }
 
-  paymentTable.value = table
-}
+  paymentTable.value = table;
+};
 
-const applyPreset = preset => {
-  totalAmount.value = preset.settings.amount
-  numberOfPeople.value = preset.settings.people
-  tipPercentage.value = preset.settings.tip
-  includeTax.value = preset.settings.tax
+const applyPreset = (preset) => {
+  totalAmount.value = preset.settings.amount;
+  numberOfPeople.value = preset.settings.people;
+  tipPercentage.value = preset.settings.tip;
+  includeTax.value = preset.settings.tax;
 
-  copyMessage.value = `プリセット「${preset.name}」を適用しました`
+  copyMessage.value = `プリセット「${preset.name}」を適用しました`;
   setTimeout(() => {
-    copyMessage.value = ''
-  }, 2000)
-}
+    copyMessage.value = "";
+  }, 2000);
+};
 
 // 監視
 watch(
   [totalAmount, numberOfPeople, tipPercentage],
   () => {
     if (isValidInput.value) {
-      generatePaymentTable()
+      generatePaymentTable();
     }
   },
   { immediate: true }
-)
+);
 
 // SEO
 useHead({
-  title: '割り勘計算 - Tools.tomacheese.com',
+  title: "割り勘計算 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '複数人での飲み会などの費用を簡単に割り勘計算します。チップやサービス料にも対応。',
+        "複数人での飲み会などの費用を簡単に割り勘計算します。チップやサービス料にも対応。",
     },
     {
-      name: 'keywords',
-      content: '割り勘計算, 会計, 飲み会, レストラン, 費用分割',
+      name: "keywords",
+      content: "割り勘計算, 会計, 飲み会, レストラン, 費用分割",
     },
   ],
-})
+});
 </script>

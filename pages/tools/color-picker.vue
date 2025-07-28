@@ -255,166 +255,166 @@
 <script setup>
 // レイアウト設定
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
 // リアクティブデータ
-const selectedColor = ref('#3b82f6')
-const hexInput = ref('#3b82f6')
-const copyMessage = ref('')
+const selectedColor = ref("#3b82f6");
+const hexInput = ref("#3b82f6");
+const copyMessage = ref("");
 
 // よく使われる色のパレット
 const commonColors = [
-  '#000000',
-  '#FFFFFF',
-  '#FF0000',
-  '#00FF00',
-  '#0000FF',
-  '#FFFF00',
-  '#FF00FF',
-  '#00FFFF',
-  '#808080',
-  '#C0C0C0',
-  '#800000',
-  '#808000',
-  '#008000',
-  '#800080',
-  '#008080',
-  '#000080',
-  '#FFA500',
-  '#FFC0CB',
-  '#FFD700',
-  '#ADFF2F',
-  '#FF6347',
-  '#40E0D0',
-  '#EE82EE',
-  '#87CEEB',
-  '#F0F8FF',
-  '#FAEBD7',
-  '#F5F5DC',
-  '#FFE4E1',
-  '#DCDCDC',
-  '#D3D3D3',
-  '#A9A9A9',
-  '#696969',
-]
+  "#000000",
+  "#FFFFFF",
+  "#FF0000",
+  "#00FF00",
+  "#0000FF",
+  "#FFFF00",
+  "#FF00FF",
+  "#00FFFF",
+  "#808080",
+  "#C0C0C0",
+  "#800000",
+  "#808000",
+  "#008000",
+  "#800080",
+  "#008080",
+  "#000080",
+  "#FFA500",
+  "#FFC0CB",
+  "#FFD700",
+  "#ADFF2F",
+  "#FF6347",
+  "#40E0D0",
+  "#EE82EE",
+  "#87CEEB",
+  "#F0F8FF",
+  "#FAEBD7",
+  "#F5F5DC",
+  "#FFE4E1",
+  "#DCDCDC",
+  "#D3D3D3",
+  "#A9A9A9",
+  "#696969",
+];
 
 // ユーティリティ関数
-const hexToRgb = hex => {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16),
       }
-    : null
-}
+    : null;
+};
 
 const rgbToHsl = (r, g, b) => {
-  r /= 255
-  g /= 255
-  b /= 255
+  r /= 255;
+  g /= 255;
+  b /= 255;
 
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h, s
-  const l = (max + min) / 2
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s;
+  const l = (max + min) / 2;
 
   if (max === min) {
-    h = s = 0
+    h = s = 0;
   } else {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
       case r:
-        h = (g - b) / d + (g < b ? 6 : 0)
-        break
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
       case g:
-        h = (b - r) / d + 2
-        break
+        h = (b - r) / d + 2;
+        break;
       case b:
-        h = (r - g) / d + 4
-        break
+        h = (r - g) / d + 4;
+        break;
     }
-    h /= 6
+    h /= 6;
   }
 
   return {
     h: Math.round(h * 360),
     s: Math.round(s * 100),
     l: Math.round(l * 100),
-  }
-}
+  };
+};
 
 // 計算プロパティ
 const rgbValue = computed(() => {
-  const rgb = hexToRgb(selectedColor.value)
-  return rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : 'Invalid'
-})
+  const rgb = hexToRgb(selectedColor.value);
+  return rgb ? `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})` : "Invalid";
+});
 
 const rgbaValue = computed(() => {
-  const rgb = hexToRgb(selectedColor.value)
-  return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)` : 'Invalid'
-})
+  const rgb = hexToRgb(selectedColor.value);
+  return rgb ? `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.5)` : "Invalid";
+});
 
 const hslValue = computed(() => {
-  const rgb = hexToRgb(selectedColor.value)
-  if (!rgb) return 'Invalid'
-  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b)
-  return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
-})
+  const rgb = hexToRgb(selectedColor.value);
+  if (!rgb) return "Invalid";
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  return `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+});
 
 // メソッド
 const updateFromHex = () => {
-  const hex = hexInput.value
+  const hex = hexInput.value;
   if (/^#[0-9A-F]{6}$/i.test(hex)) {
-    selectedColor.value = hex
+    selectedColor.value = hex;
   }
-}
+};
 
-const selectColor = color => {
-  selectedColor.value = color
-  hexInput.value = color
-}
+const selectColor = (color) => {
+  selectedColor.value = color;
+  hexInput.value = color;
+};
 
-const onColorChange = event => {
-  selectedColor.value = event.target.value
-  hexInput.value = event.target.value
-}
+const onColorChange = (event) => {
+  selectedColor.value = event.target.value;
+  hexInput.value = event.target.value;
+};
 
-const copyToClipboard = async text => {
+const copyToClipboard = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
-    copyMessage.value = 'コピーしました！'
+    await navigator.clipboard.writeText(text);
+    copyMessage.value = "コピーしました！";
     setTimeout(() => {
-      copyMessage.value = ''
-    }, 2000)
+      copyMessage.value = "";
+    }, 2000);
   } catch {
     // Copy failed silently
   }
-}
+};
 
 // ウォッチャー
-watch(selectedColor, newValue => {
-  hexInput.value = newValue
-})
+watch(selectedColor, (newValue) => {
+  hexInput.value = newValue;
+});
 
 // SEO
 useHead({
-  title: 'カラーピッカー - Tools.tomacheese.com',
+  title: "カラーピッカー - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        'HEX、RGB、HSLなど様々な形式でカラーコードを取得・変換できるカラーピッカーツールです。',
+        "HEX、RGB、HSLなど様々な形式でカラーコードを取得・変換できるカラーピッカーツールです。",
     },
     {
-      name: 'keywords',
-      content: 'カラーピッカー, 色, HEX, RGB, HSL, カラーコード, 色選択',
+      name: "keywords",
+      content: "カラーピッカー, 色, HEX, RGB, HSL, カラーコード, 色選択",
     },
   ],
-})
+});
 </script>
 
 <style scoped>

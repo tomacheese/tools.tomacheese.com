@@ -132,53 +132,53 @@
 </template>
 
 <script setup lang="ts">
-import { calculateBMI, type BMIResult } from '~/utils/health'
+import { calculateBMI, type BMIResult } from "~/utils/health";
 
 definePageMeta({
-  layout: 'tool',
-})
+  layout: "tool",
+});
 
-const height = ref<number>()
-const weight = ref<number>()
-const error = ref('')
+const height = ref<number>();
+const weight = ref<number>();
+const error = ref("");
 
 const result = computed((): BMIResult | null => {
-  error.value = ''
+  error.value = "";
 
   // ゼロ値チェック（入力があるがゼロの場合）
   if (height.value === 0 || weight.value === 0) {
     if (height.value === 0 || weight.value === 0) {
-      error.value = '身長と体重は正の数である必要があります'
-      return null
+      error.value = "身長と体重は正の数である必要があります";
+      return null;
     }
   }
 
   if (!height.value || !weight.value) {
-    return null
+    return null;
   }
 
   try {
-    return calculateBMI(weight.value, height.value)
+    return calculateBMI(weight.value, height.value);
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '計算エラーが発生しました'
-    return null
+    error.value = e instanceof Error ? e.message : "計算エラーが発生しました";
+    return null;
   }
-})
+});
 
 useHead({
-  title: 'BMI計算 - Tools.tomacheese.com',
+  title: "BMI計算 - tools.tomacheese.com",
   meta: [
     {
-      name: 'description',
+      name: "description",
       content:
-        '身長と体重からBMI値を計算し、健康状態を判定します。日本肥満学会基準に基づく正確なBMI計算ツール。',
+        "身長と体重からBMI値を計算し、健康状態を判定します。日本肥満学会基準に基づく正確なBMI計算ツール。",
     },
     {
-      name: 'keywords',
-      content: 'BMI, 計算, 肥満度, 健康, 体重, 身長, ボディマス指数',
+      name: "keywords",
+      content: "BMI, 計算, 肥満度, 健康, 体重, 身長, ボディマス指数",
     },
   ],
-})
+});
 </script>
 
 <style scoped>
