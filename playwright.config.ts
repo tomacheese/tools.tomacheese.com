@@ -4,8 +4,7 @@ import { cpus } from 'os'
 /**
  * ワーカー数を決定する関数
  * 環境変数 PLAYWRIGHT_WORKERS が設定されている場合はその値を使用
- * 未設定の場合は CPU コア数を使用
- * CI 環境では明示的に設定されていない限り 1 を使用
+ * 未設定の場合は CPU コア数を使用（CI環境・ローカル環境問わず）
  */
 function getWorkerCount(): number {
   const envWorkers = process.env.PLAYWRIGHT_WORKERS
@@ -16,12 +15,7 @@ function getWorkerCount(): number {
     }
   }
 
-  // CI環境では明示的に環境変数が設定されていない限り1を使用
-  if (process.env.CI) {
-    return 1
-  }
-
-  // ローカル環境では CPU コア数を使用
+  // CI環境・ローカル環境問わず CPU コア数を使用
   return cpus().length
 }
 
