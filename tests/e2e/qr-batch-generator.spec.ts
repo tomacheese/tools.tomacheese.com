@@ -147,9 +147,10 @@ test.describe('QR Code Batch Generator', () => {
     await page.fill('#manual-input', manyTexts)
     await page.click('button:has-text("QR コード生成")')
 
-    // Check if progress bar appears
-    await expect(page.locator('.progress-bar')).toBeVisible()
-    await expect(page.locator('.progress-text')).toBeVisible()
+    // Check if generating state appears (button text change)
+    await expect(page.locator('button:has-text("生成中...")')).toBeVisible({
+      timeout: 5000,
+    })
 
     // Wait for completion
     await expect(page.locator('.results-section')).toBeVisible()

@@ -104,8 +104,8 @@ test.describe('JSON to CSV Converter', () => {
     const hasTabData = csvText?.includes('田中太郎\t30')
     const hasCommaData = csvText?.includes('田中太郎,30')
 
-    expect(hasTabHeaders ?? hasCommaHeaders).toBe(true)
-    expect(hasTabData ?? hasCommaData).toBe(true)
+    expect(hasTabHeaders || hasCommaHeaders).toBe(true)
+    expect(hasTabData || hasCommaData).toBe(true)
   })
 
   test('should disable headers when unchecked', async ({ page }) => {
