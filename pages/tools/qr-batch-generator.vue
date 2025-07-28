@@ -45,7 +45,12 @@
     <!-- CSV インポート -->
     <div v-if="inputMethod === 'csv'" class="input-section">
       <label for="csv-file">CSV ファイル選択</label>
-      <div class="file-input-area" @drop="onFileDrop" @dragover.prevent @dragenter.prevent>
+      <div
+        class="file-input-area"
+        @drop="onFileDrop"
+        @dragover.prevent
+        @dragenter.prevent
+      >
         <input
           id="csv-file"
           ref="csvFileInput"
@@ -63,7 +68,9 @@
         <table>
           <tbody>
             <tr v-for="(row, index) in csvPreview.slice(0, 5)" :key="index">
-              <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+              <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+                {{ cell }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -143,11 +150,19 @@
         </div>
         <div class="option-group">
           <label for="batch-dark-color">前景色</label>
-          <input id="batch-dark-color" v-model="batchOptions.darkColor" type="color" />
+          <input
+            id="batch-dark-color"
+            v-model="batchOptions.darkColor"
+            type="color"
+          />
         </div>
         <div class="option-group">
           <label for="batch-light-color">背景色</label>
-          <input id="batch-light-color" v-model="batchOptions.lightColor" type="color" />
+          <input
+            id="batch-light-color"
+            v-model="batchOptions.lightColor"
+            type="color"
+          />
         </div>
       </div>
     </div>
@@ -163,7 +178,9 @@
       </button>
       <div v-if="isGenerating" class="progress-bar">
         <div class="progress" :style="{ width: progress + '%' }"></div>
-        <span class="progress-text">{{ currentIndex + 1 }} / {{ totalItems }}</span>
+        <span class="progress-text"
+          >{{ currentIndex + 1 }} / {{ totalItems }}</span
+        >
       </div>
     </div>
 
@@ -210,8 +227,12 @@
           <div class="qr-info">
             <div class="qr-text">{{ qr.text }}</div>
             <div class="qr-actions">
-              <button class="small" @click="downloadSingle(qr, index)">PNG</button>
-              <button class="small" @click="downloadSingleSVG(qr, index)">SVG</button>
+              <button class="small" @click="downloadSingle(qr, index)">
+                PNG
+              </button>
+              <button class="small" @click="downloadSingleSVG(qr, index)">
+                SVG
+              </button>
             </div>
           </div>
         </div>
@@ -254,14 +275,14 @@ const sequentialOptions = ref<SequentialOptions>({
   prefix: '',
   start: 1,
   end: 10,
-  suffix: ''
+  suffix: '',
 })
 
 const batchOptions = ref<BatchOptions>({
   size: 256,
   margin: 4,
   darkColor: '#000000',
-  lightColor: '#FFFFFF'
+  lightColor: '#FFFFFF',
 })
 
 const generatedQRCodes = ref<QRCodeData[]>([])
@@ -306,10 +327,12 @@ const onFileDrop = (event: DragEvent) => {
 
 const processCSVFile = (file: File) => {
   const reader = new FileReader()
-  reader.onload = (e) => {
+  reader.onload = e => {
     const csv = e.target?.result as string
     const lines = csv.split('\n').filter(line => line.trim())
-    csvPreview.value = lines.map(line => line.split(',').map(cell => cell.trim()))
+    csvPreview.value = lines.map(line =>
+      line.split(',').map(cell => cell.trim())
+    )
   }
   reader.readAsText(file)
 }
@@ -317,7 +340,7 @@ const processCSVFile = (file: File) => {
 const getSequentialPreview = (): string => {
   const { prefix, start, end, suffix } = sequentialOptions.value
   if (start > end) return '開始番号は終了番号以下である必要があります'
-  
+
   const examples = []
   for (let i = start; i <= Math.min(start + 2, end); i++) {
     examples.push(`${prefix}${i}${suffix}`)
@@ -347,7 +370,9 @@ const generateBatch = async () => {
           .filter(line => line.length > 0)
         break
       case 'csv':
-        textList = csvPreview.value.map(row => row[0] ?? '').filter(text => text.length > 0)
+        textList = csvPreview.value
+          .map(row => row[0] ?? '')
+          .filter(text => text.length > 0)
         break
       case 'sequential': {
         const { prefix, start, end, suffix } = sequentialOptions.value
@@ -363,28 +388,27 @@ const generateBatch = async () => {
     // バッチ生成処理
     for (let i = 0; i < textList.length; i++) {
       currentIndex.value = i
-      
+
       // UIの更新を待つ
       await nextTick()
-      
+
       try {
         const qrResult = generateQRCode(textList[i], {
           width: batchOptions.value.size,
           margin: batchOptions.value.margin,
           color: {
             dark: batchOptions.value.darkColor,
-            light: batchOptions.value.lightColor
-          }
+            light: batchOptions.value.lightColor,
+          },
         })
 
         generatedQRCodes.value.push({
           text: textList[i],
           dataURL: qrResult.dataURL,
-          svg: qrResult.svg
+          svg: qrResult.svg,
         })
-      } catch (error) {
+      } catch {
         // QR code generation failed - silently skip this item
-        // Error details: textList[i], error
       }
 
       // 重い処理を避けるため、少し待機
@@ -447,9 +471,10 @@ const clearAll = () => {
 useHead({
   title: 'QR コード バッチ生成 - Web Tools',
   meta: [
-    { 
-      name: 'description', 
-      content: '複数のQR コードを一括生成・管理できる高機能ツール。CSV インポート、連番生成、バッチダウンロードに対応。' 
+    {
+      name: 'description',
+      content:
+        '複数のQR コードを一括生成・管理できる高機能ツール。CSV インポート、連番生成、バッチダウンロードに対応。',
     },
   ],
 })
@@ -511,7 +536,7 @@ textarea {
   position: relative;
 }
 
-.file-input-area input[type="file"] {
+.file-input-area input[type='file'] {
   position: absolute;
   opacity: 0;
   width: 100%;
@@ -568,11 +593,11 @@ textarea {
   border-radius: 4px;
 }
 
-.option-group input[type="range"] {
+.option-group input[type='range'] {
   width: 100%;
 }
 
-.option-group input[type="color"] {
+.option-group input[type='color'] {
   width: 100%;
   height: 40px;
   cursor: pointer;
@@ -736,7 +761,7 @@ textarea {
   margin-bottom: 10px;
 }
 
-.qr-checkbox input[type="checkbox"] {
+.qr-checkbox input[type='checkbox'] {
   margin-right: 8px;
 }
 

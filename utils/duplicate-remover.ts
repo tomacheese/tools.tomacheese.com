@@ -67,7 +67,10 @@ export function removeDuplicateLines(
       firstOccurrence.set(normalized, line)
       duplicateCounts.set(normalized, { line, indices: [index + 1] })
     } else {
-      duplicateCounts.get(normalized)!.indices.push(index + 1)
+      const count = duplicateCounts.get(normalized)
+      if (count) {
+        count.indices.push(index + 1)
+      }
     }
   })
 
@@ -88,7 +91,8 @@ export function removeDuplicateLines(
 
   lines.forEach((line, index) => {
     const normalized = normalizeLine(line, options.compareMode)
-    const isDuplicate = duplicateCounts.get(normalized)!.indices.length > 1
+    const count = duplicateCounts.get(normalized)
+    const isDuplicate = count ? count.indices.length > 1 : false
 
     if (!isDuplicate) {
       // 重複していない行はそのまま保持
@@ -104,8 +108,8 @@ export function removeDuplicateLines(
           break
         case 'keep-last': {
           // 最後の出現時に追加（最後かどうかを判定）
-          const indices = duplicateCounts.get(normalized)!.indices
-          if (index + 1 === indices[indices.length - 1]) {
+          const count = duplicateCounts.get(normalized)
+          if (count && index + 1 === count.indices[count.indices.length - 1]) {
             resultLines.push(line)
           }
           break
