@@ -1,4 +1,29 @@
 import { defineConfig, devices } from '@playwright/test'
+import { cpus } from 'os'
+
+/**
+ * ワーカー数を決定する関数
+ * 環境変数 PLAYWRIGHT_WORKERS が設定されている場合はその値を使用
+ * 未設定の場合は CPU コア数を使用
+ * CI 環境では明示的に設定されていない限り 1 を使用
+ */
+function getWorkerCount(): number {
+  const envWorkers = process.env.PLAYWRIGHT_WORKERS
+  if (envWorkers) {
+    const parsed = parseInt(envWorkers, 10)
+    if (!isNaN(parsed) && parsed > 0) {
+      return parsed
+    }
+  }
+
+  // CI環境では明示的に環境変数が設定されていない限り1を使用
+  if (process.env.CI) {
+    return 1
+  }
+
+  // ローカル環境では CPU コア数を使用
+  return cpus().length
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -11,8 +36,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only (少なくして高速化) */
   retries: process.env.CI ? 1 : 0,
-  /* CI環境では並列実行数を適切に設定 (GitHub Actionsは2コア) */
-  workers: process.env.CI ? 1 : 2,
+  /* CI環境では並列実行数を適切に設定 */
+  workers: getWorkerCount(),
   /* Global timeout for each test (5分 = 300000ms) */
   timeout: process.env.CI ? 300000 : 120000,
   /* Expect timeout for assertions */
