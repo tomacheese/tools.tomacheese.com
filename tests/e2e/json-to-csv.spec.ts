@@ -104,7 +104,9 @@ test.describe('JSON to CSV Converter', () => {
     const hasTabData = csvText?.includes('田中太郎\t30')
     const hasCommaData = csvText?.includes('田中太郎,30')
 
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     expect(hasTabHeaders || hasCommaHeaders).toBe(true)
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     expect(hasTabData || hasCommaData).toBe(true)
   })
 
