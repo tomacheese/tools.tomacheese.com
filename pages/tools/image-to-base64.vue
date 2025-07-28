@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>画像をBase64変換</h1>
-    <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>画像をBase64変換</h1>
+      <p>画像ファイルをBase64エンコードされた文字列に変換します。</p>
+    </div>
 
     <!-- 入力セクション -->
     <div class="input-section">
@@ -120,6 +122,11 @@ import {
 } from '~/utils/imageToBase64'
 import { formatFileSize } from '~/utils/imageResizer'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement>()
 const imageData = ref<Base64Result | null>(null)
@@ -222,11 +229,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+/* tool-content styles moved to global CSS */
 
 .input-section {
   margin: 2rem 0;
@@ -403,9 +406,7 @@ useHead({
 }
 
 @media (max-width: 768px) {
-  .tool-container {
-    padding: 1rem;
-  }
+  /* tool-content styles moved to global CSS */
 
   .preview-container {
     grid-template-columns: 1fr;

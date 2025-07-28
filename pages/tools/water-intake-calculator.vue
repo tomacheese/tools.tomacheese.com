@@ -1,9 +1,11 @@
 <template>
-  <div class="tool-container">
-    <h1>水分摂取量計算</h1>
-    <p>
-      体重や活動レベル、環境などから、1日に必要な水分摂取量を計算します。適切な水分補給は健康維持に重要です。
-    </p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>水分摂取量計算</h1>
+      <p>
+        体重や活動レベル、環境などから、1日に必要な水分摂取量を計算します。適切な水分補給は健康維持に重要です。
+      </p>
+    </div>
 
     <div class="input-section">
       <div class="form-group">
@@ -155,6 +157,11 @@ import {
   type WaterIntakeResult,
 } from '~/utils/water-intake'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const weight = ref<number>(60)
 const weightUnit = ref<WeightUnit>('kg')
 const activityLevel = ref<WaterActivityLevel>('moderate')
@@ -197,11 +204,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+/* tool-content styles moved to global CSS */
 
 h1 {
   color: #333;
@@ -417,9 +420,7 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .tool-container {
-    padding: 1rem;
-  }
+  /* tool-content styles moved to global CSS */
 
   .input-section,
   .result {

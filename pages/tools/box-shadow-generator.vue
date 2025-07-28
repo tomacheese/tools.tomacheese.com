@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>Box Shadow生成</h1>
-    <p>CSSのbox-shadowプロパティを視覚的に生成します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>Box Shadow生成</h1>
+      <p>CSSのbox-shadowプロパティを視覚的に生成します。</p>
+    </div>
 
     <div class="generator-layout">
       <div class="controls-section">
@@ -182,6 +184,11 @@ import {
   type BoxShadowConfig,
 } from '~/utils/boxShadowGenerator'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const shadows = ref<BoxShadow[]>([
   {
     offsetX: 10,
@@ -283,11 +290,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1rem;
-}
+/* tool-content styles moved to global CSS */
 
 .generator-layout {
   display: grid;

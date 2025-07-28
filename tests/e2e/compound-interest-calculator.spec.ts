@@ -107,7 +107,7 @@ test.describe('Compound Interest Calculator', () => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
 
-    await expect(page.locator('.tool-container')).toBeVisible()
+    await expect(page.locator('.tool-content')).toBeVisible()
 
     // Fill form and calculate
     await page.fill('#principal', '500000')

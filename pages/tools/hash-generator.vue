@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>ハッシュ生成</h1>
-    <p>MD5、SHA-1、SHA-256などのハッシュ値を生成します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>ハッシュ生成</h1>
+      <p>MD5、SHA-1、SHA-256などのハッシュ値を生成します。</p>
+    </div>
 
     <div class="input-section">
       <label for="input-text">テキスト</label>
@@ -55,6 +57,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { generateHash } from '~/utils/hash'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 interface HashHistoryItem {
   text: string
@@ -122,11 +129,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .input-section {
   margin: 30px 0;

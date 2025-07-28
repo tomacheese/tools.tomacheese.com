@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>HTMLエンティティエンコーダー</h1>
-    <p>HTMLの特殊文字をエンティティ形式に変換します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>HTMLエンティティエンコーダー</h1>
+      <p>HTMLの特殊文字をエンティティ形式に変換します。</p>
+    </div>
 
     <div class="converter-section">
       <div class="input-group">
@@ -130,6 +132,11 @@ import {
   getCommonEntities,
 } from '~/utils/html-entities'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const encodeInput = ref('')
 const encodeOutput = ref('')
 const decodeInput = ref('')
@@ -191,11 +198,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .converter-section {
   display: grid;

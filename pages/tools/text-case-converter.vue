@@ -1,7 +1,11 @@
 <template>
-  <div class="text-case-converter">
-    <h1>テキスト形式変換</h1>
-    <p>テキストを大文字・小文字・キャメルケースなど様々な形式に変換します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>テキスト形式変換</h1>
+      <p>
+        テキストを大文字・小文字・キャメルケースなど様々な形式に変換します。
+      </p>
+    </div>
 
     <div class="input-section">
       <label for="input-text">変換したいテキストを入力してください</label>
@@ -68,6 +72,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 // フォームの状態
 const inputText = ref('')
@@ -271,11 +280,7 @@ useHead({
 </script>
 
 <style scoped>
-.text-case-converter {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .input-section {
   margin-bottom: 30px;

@@ -1,9 +1,11 @@
 <template>
-  <div class="tool-container">
-    <h1>重複行削除ツール</h1>
-    <p>
-      テキストから重複する行を検出・削除します。大容量テキストにも対応しています。
-    </p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>重複行削除ツール</h1>
+      <p>
+        テキストから重複する行を検出・削除します。大容量テキストにも対応しています。
+      </p>
+    </div>
 
     <div class="input-section">
       <div class="input-area">
@@ -172,6 +174,7 @@ import {
 
 // メタデータ設定
 definePageMeta({
+  layout: 'tool',
   title: '重複行削除ツール',
   description:
     'テキストから重複する行を検出・削除するツール。大容量ファイルにも対応。',
@@ -290,11 +293,7 @@ const downloadResult = () => {
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .input-section {
   margin: 30px 0;

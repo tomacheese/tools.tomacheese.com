@@ -1,7 +1,9 @@
 <template>
-  <div class="markdown-preview">
-    <h1>Markdownプレビュー</h1>
-    <p>MarkdownテキストをHTMLでリアルタイムプレビューします。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>Markdownプレビュー</h1>
+      <p>MarkdownテキストをHTMLでリアルタイムプレビューします。</p>
+    </div>
 
     <div class="editor-container">
       <div class="editor-section">
@@ -70,6 +72,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { marked } from 'marked'
+
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
 
 const markdownText = ref('')
 
@@ -197,11 +204,7 @@ useHead({
 </script>
 
 <style scoped>
-.markdown-preview {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .editor-container {
   display: grid;

@@ -1,7 +1,9 @@
 <template>
-  <div class="tool-container">
-    <h1>タイムスタンプ変換</h1>
-    <p>Unix タイムスタンプと日時を相互変換します。</p>
+  <div class="tool-content">
+    <div class="tool-header">
+      <h1>タイムスタンプ変換</h1>
+      <p>Unix タイムスタンプと日時を相互変換します。</p>
+    </div>
 
     <div class="section">
       <h2>現在時刻</h2>
@@ -169,6 +171,11 @@ import {
   type TimestampInfo,
 } from '~/utils/timestamp'
 
+// レイアウト設定
+definePageMeta({
+  layout: 'tool',
+})
+
 const currentTime = ref<TimestampInfo>(getCurrentTimestamp())
 const inputValue = ref('')
 const convertedTime = ref<TimestampInfo | null>(null)
@@ -248,11 +255,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* tool-content styles moved to global CSS */
 
 .section {
   margin: 40px 0;
