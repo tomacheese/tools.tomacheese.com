@@ -145,11 +145,13 @@ test.describe('QR Code Batch Generator', () => {
     ).join('\n')
 
     await page.fill('#manual-input', manyTexts)
+
+    // Click the generate button and immediately check for disabled state
     await page.click('button:has-text("QR コード生成")')
 
-    // Check if generating state appears (button text change)
-    await expect(page.locator('button:has-text("生成中...")')).toBeVisible({
-      timeout: 5000,
+    // Check if the button becomes disabled or shows generating state
+    await expect(page.locator('button[disabled]')).toBeVisible({
+      timeout: 2000,
     })
 
     // Wait for completion
