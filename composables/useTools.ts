@@ -76,6 +76,14 @@ export const useTools = () => {
       keywords: ['パスワード', '生成', 'ランダム', 'セキュリティ'],
     },
     {
+      id: 'duplicate-line-remover',
+      name: '重複行削除',
+      description: 'テキストから重複する行を検出・削除します。',
+      path: '/tools/duplicate-line-remover',
+      category: 'テキスト',
+      keywords: ['重複削除', 'テキスト処理', '行削除', 'クリーニング'],
+    },
+    {
       id: 'timestamp-converter',
       name: 'タイムスタンプ変換',
       description: 'Unix タイムスタンプと日時を相互変換します。',
