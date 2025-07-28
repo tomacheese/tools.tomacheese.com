@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>ストップウォッチ</h1>
     <p>
       高精度なストップウォッチツールです。ラップタイムの記録や統計表示が可能。
@@ -275,7 +275,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;

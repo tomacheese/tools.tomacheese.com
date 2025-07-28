@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>QR コード バッチ生成</h1>
     <p>複数のQR コードを一括生成・管理できる高機能ツールです。</p>
 
@@ -481,7 +481,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;

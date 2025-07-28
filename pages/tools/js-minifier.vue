@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>JavaScript圧縮</h1>
     <p>JavaScriptコードを圧縮してファイルサイズを削減します。</p>
 
@@ -197,7 +197,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;

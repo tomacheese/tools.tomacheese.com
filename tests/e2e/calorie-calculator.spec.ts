@@ -192,7 +192,7 @@ test.describe('Calorie Calculator', () => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 })
 
-    await expect(page.locator('.tool-container')).toBeVisible()
+    await expect(page.locator('.tool-content')).toBeVisible()
 
     // Fill form on mobile
     await page.check('input[value="female"]')

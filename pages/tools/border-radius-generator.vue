@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>Border Radius生成</h1>
     <p>CSSのborder-radiusプロパティを視覚的に生成します。</p>
 
@@ -330,7 +330,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;

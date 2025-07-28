@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>カロリー計算</h1>
     <p>
       基礎代謝量（BMR）と1日の消費カロリー（TDEE）を計算し、目的に応じた推奨摂取カロリーと栄養素の配分を提案します。
@@ -246,7 +246,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
@@ -486,7 +486,7 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .tool-container {
+  .tool-content {
     padding: 1rem;
   }
 

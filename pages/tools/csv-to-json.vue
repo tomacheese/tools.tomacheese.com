@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>CSV to JSON変換</h1>
     <p>CSVデータをJSON形式に変換します。</p>
 
@@ -227,7 +227,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;

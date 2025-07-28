@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>年齢計算</h1>
     <p>生年月日から現在の年齢を詳細に計算します。</p>
 
@@ -257,7 +257,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;

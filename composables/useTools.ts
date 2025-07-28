@@ -27,6 +27,23 @@ export const useTools = () => {
       keywords: ['文字数', 'カウント', 'テキスト', '行数', 'バイト'],
     },
     {
+      id: 'text-statistics',
+      name: 'テキスト統計・分析ツール',
+      description:
+        'テキストの詳細な統計情報を分析・表示します。可読性、複雑度、頻出単語など多角的に文章を評価できます。',
+      path: '/tools/text-statistics',
+      category: 'テキスト',
+      keywords: [
+        'テキスト分析',
+        '統計',
+        '可読性',
+        '複雑度',
+        '頻出単語',
+        '文章評価',
+        '日本語解析',
+      ],
+    },
+    {
       id: 'gcd-lcm',
       name: '最大公約数・最小公倍数',
       description:

@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>複利計算</h1>
     <p>
       複利での投資収益や貯蓄額を計算します。元本、利率、期間、積立額を入力して将来の資産価値を確認できます。
@@ -162,7 +162,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
@@ -302,7 +302,7 @@ tr:hover {
 }
 
 @media (max-width: 768px) {
-  .tool-container {
+  .tool-content {
     padding: 1rem;
   }
 

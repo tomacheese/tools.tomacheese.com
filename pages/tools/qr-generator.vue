@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>QRコード生成</h1>
     <p>テキストやURLからQRコードを生成します。</p>
 
@@ -148,7 +148,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;

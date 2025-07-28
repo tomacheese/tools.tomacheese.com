@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>住宅ローン計算</h1>
     <p>
       住宅ローンの月額返済額、総返済額、利息総額を計算します。年次の返済内訳も確認できます。
@@ -196,7 +196,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
@@ -398,7 +398,7 @@ tr:last-child td {
 }
 
 @media (max-width: 768px) {
-  .tool-container {
+  .tool-content {
     padding: 1rem;
   }
 

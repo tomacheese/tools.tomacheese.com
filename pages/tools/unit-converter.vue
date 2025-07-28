@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>単位変換</h1>
     <p>長さ、重さ、温度などの単位を簡単に変換できます。</p>
 
@@ -267,7 +267,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;

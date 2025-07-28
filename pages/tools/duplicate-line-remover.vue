@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>重複行削除ツール</h1>
     <p>
       テキストから重複する行を検出・削除します。大容量テキストにも対応しています。
@@ -290,7 +290,7 @@ const downloadResult = () => {
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;

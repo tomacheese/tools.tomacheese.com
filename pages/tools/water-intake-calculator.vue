@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>水分摂取量計算</h1>
     <p>
       体重や活動レベル、環境などから、1日に必要な水分摂取量を計算します。適切な水分補給は健康維持に重要です。
@@ -197,7 +197,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
@@ -417,7 +417,7 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  .tool-container {
+  .tool-content {
     padding: 1rem;
   }
 

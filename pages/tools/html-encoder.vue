@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>HTMLエンティティエンコーダー</h1>
     <p>HTMLの特殊文字をエンティティ形式に変換します。</p>
 
@@ -191,7 +191,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;

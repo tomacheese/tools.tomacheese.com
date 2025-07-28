@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>UUID生成</h1>
     <p>ランダムなUUID (v4) を生成します。</p>
 
@@ -187,7 +187,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;

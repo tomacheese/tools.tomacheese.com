@@ -1,5 +1,5 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-content">
     <h1>Box Shadow生成</h1>
     <p>CSSのbox-shadowプロパティを視覚的に生成します。</p>
 
@@ -283,7 +283,7 @@ useHead({
 </script>
 
 <style scoped>
-.tool-container {
+.tool-content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
