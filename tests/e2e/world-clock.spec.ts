@@ -7,7 +7,7 @@ test.describe('World Clock Tool', () => {
 
   test('should display world clock tool correctly', async ({ page }) => {
     // Check page title
-    await expect(page).toHaveTitle(/世界時計.*Tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/世界時計.*tools\.tomacheese\.com/)
 
     // Check tool header
     await expect(page.locator('h1')).toHaveText('世界時計')
