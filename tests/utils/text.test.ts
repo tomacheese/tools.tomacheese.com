@@ -13,6 +13,7 @@ import {
   encodeHtmlEntities,
   decodeHtmlEntities,
   calculateTextDiff,
+  getTextByteLength,
 } from '~/utils/text'
 
 describe('Text utilities', () => {
@@ -351,6 +352,32 @@ describe('Text utilities', () => {
       // Empty strings create mixed diff results
       expect(diff1.some(item => item.type === 'added')).toBe(true)
       expect(diff2.some(item => item.type === 'removed')).toBe(true)
+    })
+  })
+
+  describe('getTextByteLength', () => {
+    it('should calculate byte length for ASCII text', () => {
+      const text = 'Hello World'
+      const byteLength = getTextByteLength(text)
+      expect(byteLength).toBe(11)
+    })
+
+    it('should calculate byte length for UTF-8 text with special characters', () => {
+      const text = 'こんにちは' // Japanese characters
+      const byteLength = getTextByteLength(text)
+      // Japanese characters are 3 bytes each in UTF-8
+      expect(byteLength).toBe(15)
+    })
+
+    it('should handle empty string', () => {
+      const byteLength = getTextByteLength('')
+      expect(byteLength).toBe(0)
+    })
+
+    it('should handle mixed content with emoji', () => {
+      const text = 'Hello 🌍 世界'
+      const byteLength = getTextByteLength(text)
+      expect(byteLength).toBeGreaterThan(text.length) // Bytes > character count for UTF-8
     })
   })
 })
