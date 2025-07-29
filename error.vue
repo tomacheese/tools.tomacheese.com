@@ -47,9 +47,12 @@ const props = defineProps<{
   error: NuxtError
 }>()
 
+// Nuxt.js のコンポーザブルを使用
+const route = useRoute()
+
 // 再試行ハンドラー
-const handleRetry = () => {
-  window.location.reload()
+const handleRetry = async () => {
+  await navigateTo(route.fullPath, { replace: true })
 }
 
 // SEO設定
