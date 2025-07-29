@@ -29,22 +29,6 @@
           <NuxtLink to="/" class="btn btn-primary"> ホームに戻る </NuxtLink>
           <button @click="handleRetry" class="btn btn-secondary">再試行</button>
         </div>
-
-        <!-- 推奨ツール -->
-        <div v-if="error.statusCode === 404" class="recommended-tools">
-          <h2>人気のツール</h2>
-          <div class="tool-grid-small">
-            <NuxtLink
-              v-for="tool in popularTools"
-              :key="tool.id"
-              :to="tool.path"
-              class="tool-card-small"
-            >
-              <h3>{{ tool.name }}</h3>
-              <p>{{ tool.description }}</p>
-            </NuxtLink>
-          </div>
-        </div>
       </div>
     </div>
   </NuxtLayout>
@@ -62,13 +46,6 @@ interface NuxtError {
 const props = defineProps<{
   error: NuxtError
 }>()
-
-// ツール一覧から人気ツールを取得
-const { getAllTools } = useTools()
-const allTools = getAllTools()
-
-// 人気ツール（最初の6つを表示）
-const popularTools = allTools.slice(0, 6)
 
 // 再試行ハンドラー
 const handleRetry = () => {
@@ -135,57 +112,6 @@ useHead({
   flex-wrap: wrap;
 }
 
-.recommended-tools {
-  text-align: left;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.recommended-tools h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.tool-grid-small {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.tool-card-small {
-  background: #f8fafc;
-  border-radius: 6px;
-  border: 1px solid #e2e8f0;
-  padding: 1.25rem;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.tool-card-small:hover {
-  background: #eff6ff;
-  border-color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.tool-card-small h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-}
-
-.tool-card-small p {
-  font-size: 0.875rem;
-  color: #64748b;
-  line-height: 1.4;
-}
-
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
   .error-code {
@@ -204,14 +130,6 @@ useHead({
     flex-direction: column;
     align-items: center;
   }
-
-  .recommended-tools {
-    padding: 1.5rem;
-  }
-
-  .tool-grid-small {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {
@@ -229,10 +147,6 @@ useHead({
 
   .error-title {
     font-size: 1.25rem;
-  }
-
-  .recommended-tools {
-    padding: 1rem;
   }
 }
 </style>
