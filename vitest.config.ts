@@ -18,8 +18,6 @@ export default defineConfig({
       '**/*.spec.ts',
       'node_modules/**',
       '**/node_modules/**',
-      'tests/utils/qrcode.test.ts',
-      'tests/utils/qr-reader.test.ts',
     ],
     coverage: {
       provider: 'v8',

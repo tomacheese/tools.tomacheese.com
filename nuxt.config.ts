@@ -16,6 +16,13 @@ export default defineNuxtConfig({
   // CSS Framework
   css: ['~/assets/css/main.css'],
 
+  // Vite Configuration
+  vite: {
+    optimizeDeps: {
+      include: ['qrcode', 'jsqr'],
+    },
+  },
+
   // SEO
   app: {
     baseURL:

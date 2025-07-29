@@ -151,7 +151,7 @@ describe('readQRCode', () => {
   })
 
   it('should return null for non-string input', async () => {
-    const result = await readQRCode(undefined)
+    const result = await readQRCode(undefined as any)
     expect(result).toBeNull()
   })
 })

@@ -400,7 +400,7 @@ const generateBatch = async () => {
       await nextTick()
 
       try {
-        const qrResult = generateQRCode(textList[i], {
+        const qrResult = await generateQRCode(textList[i], {
           width: batchOptions.value.size,
           margin: batchOptions.value.margin,
           color: {
