@@ -202,9 +202,11 @@ test.describe('Color Picker Tool', () => {
     await page.waitForTimeout(500)
 
     // Should display error message
-    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+    await expect(page.locator('.error-message')).toBeVisible()
     await expect(
-      page.locator('div:has-text("有効なHEXカラーコードを入力してください")')
+      page.locator(
+        '.error-message:has-text("有効なHEXカラーコードを入力してください")'
+      )
     ).toBeVisible()
 
     // Input should have error styling
@@ -223,7 +225,7 @@ test.describe('Color Picker Tool', () => {
     await hexInput.blur()
     await page.waitForTimeout(500)
 
-    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
+    await expect(page.locator('.error-message')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
     await expect(
       page
@@ -255,9 +257,11 @@ test.describe('Color Picker Tool', () => {
       await page.waitForTimeout(500)
 
       // Should show error message
-      await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+      await expect(page.locator('.error-message')).toBeVisible()
       await expect(
-        page.locator('div:has-text("有効なHEXカラーコードを入力してください")')
+        page.locator(
+          '.error-message:has-text("有効なHEXカラーコードを入力してください")'
+        )
       ).toBeVisible()
 
       // Should have error styling
@@ -268,7 +272,7 @@ test.describe('Color Picker Tool', () => {
     await hexInput.fill('')
     await hexInput.blur()
     await page.waitForTimeout(500)
-    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
+    await expect(page.locator('.error-message')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
   })
 
@@ -361,21 +365,21 @@ test.describe('Color Picker Tool', () => {
     await hexInput.fill('invalid-color')
     await hexInput.blur()
     await page.waitForTimeout(500)
-    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+    await expect(page.locator('.error-message')).toBeVisible()
 
     // Select color from palette - should clear error
     const firstPaletteColor = page.locator('.palette-color').first()
     await firstPaletteColor.click()
     await page.waitForTimeout(500)
 
-    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
+    await expect(page.locator('.error-message')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
 
     // Create error again
     await hexInput.fill('#INVALID')
     await hexInput.blur()
     await page.waitForTimeout(500)
-    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+    await expect(page.locator('.error-message')).toBeVisible()
 
     // Use color picker - should clear error
     await colorPicker.evaluate((el: HTMLInputElement) => {
@@ -384,7 +388,7 @@ test.describe('Color Picker Tool', () => {
     })
     await page.waitForTimeout(500)
 
-    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
+    await expect(page.locator('.error-message')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
   })
 
