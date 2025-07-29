@@ -160,9 +160,9 @@ chore: その他の変更
 <template>
   <div class="max-w-4xl mx-auto p-6">
     <ToolHeader :title="title" :description="description" />
-    
+
     <!-- ツール固有のコンテンツ -->
-    
+
     <ToolFooter />
   </div>
 </template>

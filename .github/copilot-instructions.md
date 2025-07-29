@@ -180,9 +180,9 @@ export function calculateBMI(weight: number, height: number): BMIResult {
 <template>
   <div class="max-w-4xl mx-auto p-6">
     <ToolHeader :title="title" :description="description" />
-    
+
     <!-- ツール固有のコンテンツ -->
-    
+
     <ToolFooter />
   </div>
 </template>
@@ -279,11 +279,11 @@ import { test, expect } from '@playwright/test'
 
 test('ツール名の基本機能テスト', async ({ page }) => {
   await page.goto('/tools/tool-name')
-  
+
   // テストステップ
   await page.fill('input[type="text"]', 'test input')
   await page.click('button[type="submit"]')
-  
+
   // 結果の検証
   await expect(page.locator('.result')).toHaveText('expected result')
 })

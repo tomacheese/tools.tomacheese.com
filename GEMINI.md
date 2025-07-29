@@ -135,20 +135,20 @@ tests/                # テストファイル
 <template>
   <div class="max-w-4xl mx-auto p-6">
     <ToolHeader :title="title" :description="description" />
-    
+
     <!-- ツール固有のコンテンツ -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- 入力エリア -->
       <div class="space-y-4">
         <!-- フォームコンポーネント -->
       </div>
-      
+
       <!-- 出力エリア -->
       <div class="space-y-4">
         <!-- 結果表示エリア -->
       </div>
     </div>
-    
+
     <ToolFooter />
   </div>
 </template>
@@ -295,10 +295,10 @@ import { test, expect } from '@playwright/test'
 
 test('ツール名の基本機能', async ({ page }) => {
   await page.goto('/tools/tool-name')
-  
+
   // ページタイトルの確認
   await expect(page).toHaveTitle(/ツール名/)
-  
+
   // 入力と結果の確認
   await page.fill('input[type="text"]', 'test input')
   await page.click('button[type="submit"]')
@@ -307,7 +307,7 @@ test('ツール名の基本機能', async ({ page }) => {
 
 test('エラーハンドリング', async ({ page }) => {
   await page.goto('/tools/tool-name')
-  
+
   // 無効な入力でエラー表示
   await page.fill('input[type="text"]', '')
   await page.click('button[type="submit"]')
@@ -400,4 +400,3 @@ pnpm test:e2e       # E2E テスト
 # ビルド
 pnpm generate
 ```
-
