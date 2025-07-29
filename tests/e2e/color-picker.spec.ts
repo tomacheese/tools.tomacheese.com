@@ -7,7 +7,7 @@ test.describe('Color Picker Tool', () => {
 
   test('should display color picker tool correctly', async ({ page }) => {
     // Check page title
-    await expect(page).toHaveTitle(/カラーピッカー.*Tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/カラーピッカー.*tools\.tomacheese\.com/)
 
     // Check tool header
     await expect(page.locator('h1')).toHaveText('カラーピッカー')
