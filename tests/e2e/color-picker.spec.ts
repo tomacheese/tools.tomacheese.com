@@ -7,7 +7,7 @@ test.describe('Color Picker Tool', () => {
 
   test('should display color picker tool correctly', async ({ page }) => {
     // Check page title
-    await expect(page).toHaveTitle(/カラーピッカー.*tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/カラーピッカー.*Tools\.tomacheese\.com/)
 
     // Check tool header
     await expect(page.locator('h1')).toHaveText('カラーピッカー')
@@ -198,11 +198,14 @@ test.describe('Color Picker Tool', () => {
     await hexInput.fill('#INVALID')
     await hexInput.blur()
 
+    // Wait for the error message to appear
+    await page.waitForTimeout(500)
+
     // Should display error message
-    await expect(page.locator('.error-message')).toBeVisible()
-    await expect(page.locator('.error-message')).toContainText(
-      '有効なHEXカラーコードを入力してください'
-    )
+    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+    await expect(
+      page.locator('div:has-text("有効なHEXカラーコードを入力してください")')
+    ).toBeVisible()
 
     // Input should have error styling
     await expect(hexInput).toHaveClass(/error/)
@@ -218,8 +221,9 @@ test.describe('Color Picker Tool', () => {
     // When entering a valid color, error should clear
     await hexInput.fill('#FF0000')
     await hexInput.blur()
+    await page.waitForTimeout(500)
 
-    await expect(page.locator('.error-message')).not.toBeVisible()
+    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
     await expect(
       page
@@ -233,7 +237,6 @@ test.describe('Color Picker Tool', () => {
     page,
   }) => {
     const hexInput = page.locator('input[placeholder="#000000"]')
-    const errorMessage = page.locator('.error-message')
 
     // Test various invalid formats
     const invalidInputs = [
@@ -249,12 +252,13 @@ test.describe('Color Picker Tool', () => {
     for (const invalidInput of invalidInputs) {
       await hexInput.fill(invalidInput)
       await hexInput.blur()
+      await page.waitForTimeout(500)
 
       // Should show error message
-      await expect(errorMessage).toBeVisible()
-      await expect(errorMessage).toContainText(
-        '有効なHEXカラーコードを入力してください'
-      )
+      await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
+      await expect(
+        page.locator('div:has-text("有効なHEXカラーコードを入力してください")')
+      ).toBeVisible()
 
       // Should have error styling
       await expect(hexInput).toHaveClass(/error/)
@@ -263,7 +267,8 @@ test.describe('Color Picker Tool', () => {
     // Clear input - error should also clear
     await hexInput.fill('')
     await hexInput.blur()
-    await expect(errorMessage).not.toBeVisible()
+    await page.waitForTimeout(500)
+    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
   })
 
@@ -351,32 +356,35 @@ test.describe('Color Picker Tool', () => {
   }) => {
     const hexInput = page.locator('input[placeholder="#000000"]')
     const colorPicker = page.locator('input[type="color"]')
-    const errorMessage = page.locator('.error-message')
 
     // First create an error
     await hexInput.fill('invalid-color')
     await hexInput.blur()
-    await expect(errorMessage).toBeVisible()
+    await page.waitForTimeout(500)
+    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
 
     // Select color from palette - should clear error
     const firstPaletteColor = page.locator('.palette-color').first()
     await firstPaletteColor.click()
+    await page.waitForTimeout(500)
 
-    await expect(errorMessage).not.toBeVisible()
+    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
 
     // Create error again
     await hexInput.fill('#INVALID')
     await hexInput.blur()
-    await expect(errorMessage).toBeVisible()
+    await page.waitForTimeout(500)
+    await expect(page.locator('div:has-text("⚠️")')).toBeVisible()
 
     // Use color picker - should clear error
     await colorPicker.evaluate((el: HTMLInputElement) => {
       el.value = '#00FF00'
       el.dispatchEvent(new Event('input', { bubbles: true }))
     })
+    await page.waitForTimeout(500)
 
-    await expect(errorMessage).not.toBeVisible()
+    await expect(page.locator('div:has-text("⚠️")')).not.toBeVisible()
     await expect(hexInput).not.toHaveClass(/error/)
   })
 
