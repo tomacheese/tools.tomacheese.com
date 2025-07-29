@@ -41,7 +41,7 @@ test.describe('QRコード読み取りツール', () => {
   })
 
   test('ページタイトルとメタデータが正しく設定される', async ({ page }) => {
-    await expect(page).toHaveTitle(/QRコード読み取り - Web Tools/)
+    await expect(page).toHaveTitle(/QRコード読み取り.*tools\.tomacheese\.com/)
   })
 
   test.skip('アップロード後に画像プレビューが表示される', async ({

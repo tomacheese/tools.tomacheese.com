@@ -7,7 +7,7 @@ test.describe('Character Counter Tool', () => {
 
   test('should display character counter tool correctly', async ({ page }) => {
     // Check page title
-    await expect(page).toHaveTitle(/文字数カウンター.*Tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/文字数カウンター.*tools\.tomacheese\.com/)
 
     // Check tool header
     await expect(page.locator('h1')).toHaveText('文字数カウンター')

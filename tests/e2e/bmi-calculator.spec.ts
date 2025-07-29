@@ -6,7 +6,7 @@ test.describe('BMI Calculator', () => {
   })
 
   test('should display BMI calculator correctly', async ({ page }) => {
-    await expect(page).toHaveTitle(/BMI計算.*Tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/BMI計算.*tools\.tomacheese\.com/)
     await expect(page.locator('h1')).toHaveText('BMI計算')
     await expect(page.locator('input[id="height"]')).toBeVisible()
     await expect(page.locator('input[id="weight"]')).toBeVisible()

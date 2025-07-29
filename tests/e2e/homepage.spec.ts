@@ -5,7 +5,7 @@ test.describe('Homepage', () => {
     await page.goto('/')
 
     // Check title
-    await expect(page).toHaveTitle(/Tools\.tomacheese\.com/)
+    await expect(page).toHaveTitle(/tools\.tomacheese\.com.*便利なWebツール集/)
 
     // Check main heading
     await expect(page.locator('h1')).toHaveText('便利なWebツール集')

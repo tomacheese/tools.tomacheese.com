@@ -8,7 +8,7 @@ test.describe('Text Statistics Tool', () => {
   test('should display text statistics tool correctly', async ({ page }) => {
     // Check page title
     await expect(page).toHaveTitle(
-      /テキスト統計・分析ツール.*Tools\.tomacheese\.com/
+      /テキスト統計・分析ツール.*tools\.tomacheese\.com/
     )
 
     // Check tool header
