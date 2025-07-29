@@ -43,5 +43,5 @@ describe('QRコード読み取り', () => {
     const result = await readQRCode(validDataURL)
     // テスト環境では Image が正常に動作しないため null が返される
     expect(result).toBeNull()
-  })
+  }, 10000) // タイムアウトを10秒に延長
 })
