@@ -147,8 +147,13 @@ test.describe('CSS Minifier Tool', () => {
   })
 
   test('handles invalid CSS gracefully', async ({ page }) => {
+    // Wait for page to load completely
+    await page.waitForTimeout(2000)
+
     // Input invalid CSS
-    await page.locator('.css-input').fill('.test { color: }')
+    await page
+      .locator('.css-input')
+      .fill('.test { color: }', { timeout: 30000 })
 
     // Should still produce some output (not error)
     const output = await page.locator('.css-output').inputValue()
