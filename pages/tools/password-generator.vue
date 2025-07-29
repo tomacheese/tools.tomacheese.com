@@ -488,6 +488,9 @@ const applyPreset = preset => {
   includeNumbers.value = preset.settings.numbers
   includeSymbols.value = preset.settings.symbols
   excludeSimilar.value = preset.settings.excludeSimilar
+
+  // プリセット適用後に自動でパスワードを生成
+  generatePasswords()
 }
 
 const calculateStrength = password => {
