@@ -142,8 +142,11 @@ test.describe('ストップウォッチツール', () => {
 
     // 停止してリセット
     await page.click('.control-button.primary')
-    await page.waitForTimeout(100) // 停止状態の安定化を待つ
+    await page.waitForTimeout(500) // 停止状態の安定化を待つ
     await page.click('.control-button.secondary')
+
+    // リセット後の状態安定化を待つ
+    await page.waitForTimeout(1000)
 
     // 初期状態に戻る
     await expect(page.locator('.main-time')).toHaveText('00:00.00')
