@@ -198,13 +198,73 @@ test.describe('Color Picker Tool', () => {
     await hexInput.fill('#INVALID')
     await hexInput.blur()
 
-    // Should not crash and should maintain previous valid color
+    // Should display error message
+    await expect(page.locator('.error-message')).toBeVisible()
+    await expect(page.locator('.error-message')).toContainText(
+      '有効なHEXカラーコードを入力してください'
+    )
+
+    // Input should have error styling
+    await expect(hexInput).toHaveClass(/error/)
+
+    // Should not update the color codes
     await expect(
       page
         .locator('.result-box:has(h3:has-text("HEX"))')
         .locator('.color-code')
         .first()
     ).not.toContainText('#INVALID')
+
+    // When entering a valid color, error should clear
+    await hexInput.fill('#FF0000')
+    await hexInput.blur()
+
+    await expect(page.locator('.error-message')).not.toBeVisible()
+    await expect(hexInput).not.toHaveClass(/error/)
+    await expect(
+      page
+        .locator('.result-box:has(h3:has-text("HEX"))')
+        .locator('.color-code')
+        .first()
+    ).toContainText('#FF0000')
+  })
+
+  test('should show error for various invalid color formats', async ({
+    page,
+  }) => {
+    const hexInput = page.locator('input[placeholder="#000000"]')
+    const errorMessage = page.locator('.error-message')
+
+    // Test various invalid formats
+    const invalidInputs = [
+      'invalid-color',
+      'red',
+      'rgb(255,0,0)',
+      '#FFF', // too short
+      '#FFFFFFF', // too long
+      '000000', // no hash
+      '#GG0000', // invalid characters
+    ]
+
+    for (const invalidInput of invalidInputs) {
+      await hexInput.fill(invalidInput)
+      await hexInput.blur()
+
+      // Should show error message
+      await expect(errorMessage).toBeVisible()
+      await expect(errorMessage).toContainText(
+        '有効なHEXカラーコードを入力してください'
+      )
+
+      // Should have error styling
+      await expect(hexInput).toHaveClass(/error/)
+    }
+
+    // Clear input - error should also clear
+    await hexInput.fill('')
+    await hexInput.blur()
+    await expect(errorMessage).not.toBeVisible()
+    await expect(hexInput).not.toHaveClass(/error/)
   })
 
   test('should display RGBA with transparency correctly', async ({ page }) => {
@@ -284,6 +344,40 @@ test.describe('Color Picker Tool', () => {
     expect(hexValue).toContain('#FF6B35')
     expect(rgbValue).toContain('rgb(255, 107, 53)')
     expect(hslValue).toMatch(/hsl\(\d+, \d+%, \d+%\)/)
+  })
+
+  test('should clear error when selecting color from palette or picker', async ({
+    page,
+  }) => {
+    const hexInput = page.locator('input[placeholder="#000000"]')
+    const colorPicker = page.locator('input[type="color"]')
+    const errorMessage = page.locator('.error-message')
+
+    // First create an error
+    await hexInput.fill('invalid-color')
+    await hexInput.blur()
+    await expect(errorMessage).toBeVisible()
+
+    // Select color from palette - should clear error
+    const firstPaletteColor = page.locator('.palette-color').first()
+    await firstPaletteColor.click()
+
+    await expect(errorMessage).not.toBeVisible()
+    await expect(hexInput).not.toHaveClass(/error/)
+
+    // Create error again
+    await hexInput.fill('#INVALID')
+    await hexInput.blur()
+    await expect(errorMessage).toBeVisible()
+
+    // Use color picker - should clear error
+    await colorPicker.evaluate((el: HTMLInputElement) => {
+      el.value = '#00FF00'
+      el.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
+    await expect(errorMessage).not.toBeVisible()
+    await expect(hexInput).not.toHaveClass(/error/)
   })
 
   test('should handle rapid color changes', async ({ page }) => {

@@ -70,6 +70,7 @@
           v-model="hexInput"
           type="text"
           class="form-input"
+          :class="{ error: errorMessage }"
           placeholder="#000000"
           style="flex: 1"
           @input="updateFromHex"
@@ -80,6 +81,22 @@
         >
           コピー
         </button>
+      </div>
+      <!-- エラーメッセージ表示 -->
+      <div
+        v-if="errorMessage"
+        class="error-message"
+        style="
+          color: #ef4444;
+          font-size: 0.875rem;
+          margin-top: 0.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        "
+      >
+        <span style="color: #ef4444">⚠️</span>
+        {{ errorMessage }}
       </div>
     </div>
 
@@ -262,6 +279,7 @@ definePageMeta({
 const selectedColor = ref('#3b82f6')
 const hexInput = ref('#3b82f6')
 const copyMessage = ref('')
+const errorMessage = ref('')
 
 // よく使われる色のパレット
 const commonColors = [
@@ -299,53 +317,8 @@ const commonColors = [
   '#696969',
 ]
 
-// ユーティリティ関数
-const hexToRgb = hex => {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null
-}
-
-const rgbToHsl = (r, g, b) => {
-  r /= 255
-  g /= 255
-  b /= 255
-
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h, s
-  const l = (max + min) / 2
-
-  if (max === min) {
-    h = s = 0
-  } else {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0)
-        break
-      case g:
-        h = (b - r) / d + 2
-        break
-      case b:
-        h = (r - g) / d + 4
-        break
-    }
-    h /= 6
-  }
-
-  return {
-    h: Math.round(h * 360),
-    s: Math.round(s * 100),
-    l: Math.round(l * 100),
-  }
-}
+// ユーティリティ関数のインポート
+import { isValidHexColor, hexToRgb, rgbToHsl } from '~/utils/color'
 
 // 計算プロパティ
 const rgbValue = computed(() => {
@@ -367,20 +340,34 @@ const hslValue = computed(() => {
 
 // メソッド
 const updateFromHex = () => {
-  const hex = hexInput.value
-  if (/^#[0-9A-F]{6}$/i.test(hex)) {
-    selectedColor.value = hex
+  const hex = hexInput.value.trim()
+
+  // 空の場合はエラーをクリア
+  if (!hex) {
+    errorMessage.value = ''
+    return
+  }
+
+  // バリデーション
+  if (isValidHexColor(hex)) {
+    selectedColor.value = hex.toUpperCase()
+    errorMessage.value = '' // エラークリア
+  } else {
+    errorMessage.value =
+      '有効なHEXカラーコードを入力してください（例: #FF0000）'
   }
 }
 
 const selectColor = color => {
   selectedColor.value = color
   hexInput.value = color
+  errorMessage.value = '' // エラークリア
 }
 
 const onColorChange = event => {
   selectedColor.value = event.target.value
   hexInput.value = event.target.value
+  errorMessage.value = '' // エラークリア
 }
 
 const copyToClipboard = async text => {
@@ -398,6 +385,7 @@ const copyToClipboard = async text => {
 // ウォッチャー
 watch(selectedColor, newValue => {
   hexInput.value = newValue
+  errorMessage.value = '' // 正常な色が選択された場合はエラークリア
 })
 
 // SEO
@@ -420,6 +408,26 @@ useHead({
 <style scoped>
 .border-blue-500 {
   border-color: #3b82f6 !important;
+}
+
+.form-input.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+.error-message {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
 # test comment
