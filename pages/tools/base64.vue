@@ -119,7 +119,7 @@
           <div style="font-family: 'Courier New', monospace">
             文字数: {{ plainText.length }}
             <br />
-            バイト数: {{ new TextEncoder().encode(plainText).length }}
+            バイト数: {{ getTextByteLength(plainText) }}
           </div>
         </div>
         <div class="result-box">
@@ -203,6 +203,9 @@ definePageMeta({
   layout: 'tool',
 })
 
+// 必要なユーティリティ関数をインポート
+import { encodeBase64, decodeBase64, getTextByteLength } from '~/utils/text'
+
 // リアクティブデータ
 const activeTab = ref('encode')
 const plainText = ref('')
@@ -223,7 +226,7 @@ const sampleTexts = [
 const encodedText = computed(() => {
   if (!plainText.value) return ''
   try {
-    return btoa(unescape(encodeURIComponent(plainText.value)))
+    return encodeBase64(plainText.value)
   } catch {
     return 'エンコードエラー'
   }
@@ -236,24 +239,21 @@ const decodedText = computed(() => {
   }
 
   try {
-    // Base64の妥当性チェック
-    if (!/^[A-Za-z0-9+/]*={0,2}$/.test(base64Text.value)) {
-      decodeError.value = '無効なBase64形式です'
-      return ''
-    }
-
-    const decoded = decodeURIComponent(escape(atob(base64Text.value)))
+    const decoded = decodeBase64(base64Text.value)
     decodeError.value = ''
     return decoded
-  } catch {
-    decodeError.value = 'デコードエラー: 無効なBase64形式です'
+  } catch (error) {
+    decodeError.value =
+      error instanceof Error
+        ? error.message
+        : 'デコードエラー: 無効なBase64形式です'
     return ''
   }
 })
 
 const encodeIncreaseRate = computed(() => {
   if (!plainText.value || !encodedText.value) return 0
-  const originalLength = new TextEncoder().encode(plainText.value).length
+  const originalLength = getTextByteLength(plainText.value)
   const encodedLength = encodedText.value.length
   return Math.round(((encodedLength - originalLength) / originalLength) * 100)
 })
@@ -265,7 +265,7 @@ const setSampleText = text => {
   } else {
     // エンコードしてからセット
     try {
-      base64Text.value = btoa(unescape(encodeURIComponent(text)))
+      base64Text.value = encodeBase64(text)
     } catch {
       base64Text.value = 'エンコードエラー'
     }

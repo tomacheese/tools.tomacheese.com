@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import {
   analyzeText,
   encodeBase64,
@@ -13,6 +13,7 @@ import {
   encodeHtmlEntities,
   decodeHtmlEntities,
   calculateTextDiff,
+  getTextByteLength,
 } from '~/utils/text'
 
 describe('Text utilities', () => {
@@ -351,6 +352,90 @@ describe('Text utilities', () => {
       // Empty strings create mixed diff results
       expect(diff1.some(item => item.type === 'added')).toBe(true)
       expect(diff2.some(item => item.type === 'removed')).toBe(true)
+    })
+  })
+
+  describe('getTextByteLength', () => {
+    describe('with TextEncoder available', () => {
+      it('should calculate byte length for ASCII text', () => {
+        const text = 'Hello World'
+        const byteLength = getTextByteLength(text)
+        expect(byteLength).toBe(11)
+      })
+
+      it('should calculate byte length for UTF-8 text with special characters', () => {
+        const text = 'こんにちは' // Japanese characters
+        const byteLength = getTextByteLength(text)
+        // Japanese characters are 3 bytes each in UTF-8
+        expect(byteLength).toBe(15)
+      })
+
+      it('should handle empty string', () => {
+        const byteLength = getTextByteLength('')
+        expect(byteLength).toBe(0)
+      })
+
+      it('should handle mixed content with emoji', () => {
+        const text = 'Hello 🌍 世界'
+        const byteLength = getTextByteLength(text)
+        expect(byteLength).toBeGreaterThan(text.length) // Bytes > character count for UTF-8
+      })
+    })
+
+    describe('with TextEncoder unavailable (fallback)', () => {
+      // Save original TextEncoder to restore after tests
+      let originalTextEncoder: typeof TextEncoder
+
+      beforeAll(() => {
+        originalTextEncoder = globalThis.TextEncoder
+        // Mock TextEncoder as undefined to simulate SSR environment
+        // @ts-expect-error - Intentionally setting to undefined for testing
+        globalThis.TextEncoder = undefined
+      })
+
+      afterAll(() => {
+        // Restore original TextEncoder
+        globalThis.TextEncoder = originalTextEncoder
+      })
+
+      it('should calculate byte length for ASCII text using fallback', () => {
+        const text = 'Hello World'
+        const byteLength = getTextByteLength(text)
+        expect(byteLength).toBe(11)
+      })
+
+      it('should calculate byte length for UTF-8 text with special characters using fallback', () => {
+        const text = 'こんにちは' // Japanese characters
+        const byteLength = getTextByteLength(text)
+        // Japanese characters are 3 bytes each in UTF-8
+        expect(byteLength).toBe(15)
+      })
+
+      it('should handle empty string using fallback', () => {
+        const byteLength = getTextByteLength('')
+        expect(byteLength).toBe(0)
+      })
+
+      it('should handle mixed content with emoji using fallback', () => {
+        const text = 'Hello 🌍 世界'
+        const byteLength = getTextByteLength(text)
+        expect(byteLength).toBeGreaterThan(text.length) // Bytes > character count for UTF-8
+      })
+
+      it('should produce consistent results with both methods', () => {
+        // Temporarily restore TextEncoder to compare results
+        globalThis.TextEncoder = originalTextEncoder
+        const text = 'テスト Test 🚀'
+        const textEncoderResult = getTextByteLength(text)
+
+        // Remove TextEncoder again and test fallback
+        // @ts-expect-error - Intentionally setting to undefined for testing
+        globalThis.TextEncoder = undefined
+        const fallbackResult = getTextByteLength(text)
+
+        // Both methods should produce the same result
+        expect(fallbackResult).toBe(textEncoderResult)
+      })
     })
   })
 })

@@ -1,4 +1,17 @@
 /**
+ * テキストのバイト数を安全に計算する（SSR対応）
+ */
+export const getTextByteLength = (text: string): number => {
+  // サーバーサイドでTextEncoderが利用できない場合のフォールバック
+  if (typeof TextEncoder !== 'undefined') {
+    return new TextEncoder().encode(text).length
+  }
+
+  // フォールバック: UTF-8バイト数の近似計算
+  return new Blob([text]).size
+}
+
+/**
  * テキストの統計情報を取得する
  */
 export interface TextStats {
@@ -21,7 +34,7 @@ export const analyzeText = (text: string): TextStats => {
   const lines = text ? text.split('\n').length : 0
   const words = text.trim() ? text.trim().split(/\s+/).length : 0
   const paragraphs = text.trim() ? text.trim().split(/\n\s*\n/).length : 0
-  const bytes = new TextEncoder().encode(text).length
+  const bytes = getTextByteLength(text)
 
   // 文字種別統計
   const hiragana = (text.match(/[\u3040-\u309F]/g) ?? []).length
