@@ -262,6 +262,14 @@ export const useTools = () => {
       keywords: ['差分', 'diff', 'テキスト', '比較'],
     },
     {
+      id: 'json-diff',
+      name: 'JSON差分比較ツール',
+      description: '2つのJSONファイルの差分を視覚的に比較・表示します。追加・削除・変更されたプロパティをハイライト表示し、詳細な統計情報も確認できます。',
+      path: '/tools/json-diff',
+      category: 'データ変換',
+      keywords: ['json', '差分', 'diff', '比較', 'オブジェクト', '配列', 'データ'],
+    },
+    {
       id: 'text-case-converter',
       name: 'テキスト形式変換',
       description: 'テキストを大文字・小文字・キャメルケースなどに変換します。',
