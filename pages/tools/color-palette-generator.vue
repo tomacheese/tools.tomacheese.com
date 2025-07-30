@@ -373,7 +373,9 @@ watch(baseColor, newValue => {
 
 // 初期パレット生成
 onMounted(() => {
+  console.log('カラーパレット生成ツール: onMounted実行')
   generatePalette()
+  console.log('初期パレット生成完了:', generatedPalette.value)
 })
 
 // SEO
