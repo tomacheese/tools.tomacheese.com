@@ -137,7 +137,7 @@
           無効 ({{ result.statistics.invalid }})
         </button>
         <button
-          v-if="showDuplicates && result.duplicateEmails.length > 0"
+          v-if="shouldShowDuplicatesTab"
           :class="['tab', { active: activeTab === 'duplicates' }]"
           @click="activeTab = 'duplicates'"
         >
@@ -351,6 +351,14 @@ const validEmails = computed(() => {
 
 const invalidEmails = computed(() => {
   return result.value?.results.filter(r => !r.isValid) || []
+})
+
+const shouldShowDuplicatesTab = computed(() => {
+  return (
+    showDuplicates.value &&
+    result.value &&
+    result.value.duplicateEmails.length > 0
+  )
 })
 
 // ファイル入力トリガー

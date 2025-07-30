@@ -43,15 +43,43 @@ export interface BulkEmailValidationResult {
 /**
  * RFC 5322の基本的なメールアドレス形式を検証する正規表現
  * 完全なRFC準拠ではないが、実用的なレベルでの検証を行う
+ *
+ * ローカル部（@より前）：
+ * - 許可文字：英数字、ピリオド、感嘆符、ハッシュ、ドル記号、パーセント、アンパサンド、アポストロフィ、
+ *           アスタリスク、プラス、スラッシュ、等号、疑問符、ハット、アンダースコア、バッククォート、
+ *           波括弧、パイプ、チルダ、ハイフン
+ * - 1文字以上必須
+ *
+ * ドメイン部（@より後）：
+ * - 各ラベルは英数字で開始・終了（最大63文字）
+ * - 中間文字としてハイフンを許可
+ * - ドット区切りで複数ラベルを許可
+ * - 全体で最大253文字
  */
 const EMAIL_REGEX =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
 /**
  * ドメイン名の基本的な形式を検証する正規表現
+ *
+ * 仕様：
+ * - 各ラベルは英数字で開始する必要がある
+ * - 各ラベルは英数字で終了する必要がある
+ * - 中間文字としてハイフン（-）を許可
+ * - 各ラベルの最大長は63文字
+ * - ドット（.）区切りで複数ラベルを許可
+ * - 連続するドットは禁止
+ * - ラベルの開始・終了にハイフンは禁止
+ * - 全体で最大253文字まで許可
  */
 const DOMAIN_REGEX =
   /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+
+/**
+ * 非同期一括検証処理でのデフォルトチャンクサイズ
+ * 大容量データの処理でメモリ効率と応答性を両立するために1000件ずつ処理
+ */
+const DEFAULT_CHUNK_SIZE = 1000
 
 /**
  * 単一のメールアドレスを検証する
@@ -395,6 +423,19 @@ export function downloadCSVFile(csvText: string, filename: string): void {
 
 /**
  * 大容量のメール検証を非同期で処理
+ *
+ * 機能：
+ * - 10,000件以上の大量メールアドレスに対応
+ * - メモリ効率化のためチャンク単位での分割処理（デフォルト1000件ずつ）
+ * - UI応答性維持のための非同期処理
+ * - 進捗コールバック対応（0-100の進捗率）
+ * - 重複検出とカウント機能
+ * - 正規化オプション対応
+ *
+ * @param emails 検証対象メールアドレス配列
+ * @param options 検証オプション（正規化、大文字小文字、空白除去）
+ * @param onProgress 進捗通知コールバック（0-100の数値）
+ * @returns 検証結果、統計情報、重複リスト
  */
 export async function validateEmailsBulkAsync(
   emails: string[],
@@ -402,7 +443,7 @@ export async function validateEmailsBulkAsync(
   onProgress?: (progress: number) => void
 ): Promise<BulkEmailValidationResult> {
   return new Promise(resolve => {
-    const chunkSize = 1000 // 1000件ずつ処理
+    const chunkSize = DEFAULT_CHUNK_SIZE
     let currentIndex = 0
     const allResults: EmailValidationResult[] = []
     const normalizedSet = new Set<string>()
