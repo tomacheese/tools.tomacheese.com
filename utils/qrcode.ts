@@ -1,4 +1,4 @@
-import * as QRCodeLib from 'qrcode'
+import QRCodeLib from 'qrcode'
 import jsQR from 'jsqr'
 
 interface QRCodeOptions {
