@@ -470,6 +470,25 @@ export const useTools = () => {
       category: 'Web開発',
       keywords: ['cron', 'スケジュール', 'ジョブ', '設定'],
     },
+    {
+      id: 'email-validator',
+      name: 'メールアドレス検証',
+      description:
+        'メールアドレスの形式検証・正規化・ドメイン分析を行います。RFC 5322準拠の検証、使い捨てメール検出、一括処理に対応。',
+      path: '/tools/email-validator',
+      category: 'セキュリティ',
+      keywords: [
+        'メール検証',
+        'メールアドレス',
+        'バリデーション',
+        'RFC5322',
+        'ドメイン分析',
+        '正規化',
+        '使い捨てメール',
+        'CSV',
+        '一括処理',
+      ],
+    },
   ]
 
   const getAllTools = () => tools
