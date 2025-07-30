@@ -312,6 +312,14 @@ import {
   type JsonDiffOptions,
 } from '~/utils/json-diff'
 
+// 定数定義
+const MESSAGE_DISPLAY_DURATION = 3000
+
+// ユーティリティ関数
+const formatDateForFilename = (): string => {
+  return new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+}
+
 // レイアウト設定
 definePageMeta({
   layout: 'tool',
@@ -521,7 +529,7 @@ const exportDiff = () => {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = `json-diff-report-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.txt`
+  link.download = `json-diff-report-${formatDateForFilename()}.txt`
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
@@ -535,7 +543,7 @@ const showMessage = (text: string, type: 'success' | 'error') => {
   messageType.value = type
   setTimeout(() => {
     message.value = ''
-  }, 3000)
+  }, MESSAGE_DISPLAY_DURATION)
 }
 
 // サンプル読み込み

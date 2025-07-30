@@ -56,13 +56,17 @@ export function getValueType(value: unknown): string {
   return typeof value
 }
 
+// 定数定義
+const VALID_IDENTIFIER_PATTERN = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/
+const DEFAULT_MAX_DEPTH = 100
+
 /**
  * オブジェクトのパス文字列を生成
  */
 export function createPath(parentPath: string, key: string | number): string {
   if (!parentPath) return String(key)
   if (typeof key === 'number') return `${parentPath}[${key}]`
-  if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(String(key))) {
+  if (VALID_IDENTIFIER_PATTERN.test(String(key))) {
     return `${parentPath}.${key}`
   }
   return `${parentPath}["${key}"]`
@@ -78,7 +82,7 @@ export function compareObjects(
   path = '',
   depth = 0
 ): JsonDiffResult[] {
-  const { maxDepth = 100 } = options
+  const { maxDepth = DEFAULT_MAX_DEPTH } = options
 
   // 最大深度チェック
   if (depth > maxDepth) {
