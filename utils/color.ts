@@ -143,6 +143,7 @@ export function hslToHex(h: number, s: number, l: number): string {
 
 /**
  * 色相を正規化する（0-360の範囲に収める）
+ * @internal この関数は内部使用専用です
  * @param hue 色相
  * @returns 正規化された色相
  */

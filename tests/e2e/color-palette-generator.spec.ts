@@ -18,8 +18,10 @@ test.describe('カラーパレット生成ツール', () => {
     const paletteItems = page.locator('.palette-item')
     await expect(paletteItems).toHaveCount(2)
 
-    // ベース色が表示されることを確認
-    await expect(page.getByText('ベース')).toBeVisible()
+    // ベース色が表示されることを確認（パレット内の「ベース」ラベルを探す）
+    await expect(
+      page.locator('.palette-item .color-swatch').getByText('ベース')
+    ).toBeVisible()
   })
 
   test('配色スキーム変更機能', async ({ page }) => {

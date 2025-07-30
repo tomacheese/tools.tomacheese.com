@@ -7,27 +7,14 @@
       </p>
     </div>
 
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 2rem;
-        margin-bottom: 2rem;
-      "
-    >
+    <div class="two-column-grid">
       <!-- ベースカラー選択 -->
       <div>
         <label class="form-label">ベースカラー選択</label>
         <input
           v-model="baseColor"
           type="color"
-          style="
-            width: 100%;
-            height: 100px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-          "
+          class="color-picker"
           @input="onColorChange"
         />
       </div>
@@ -37,8 +24,7 @@
         <label class="form-label">配色スキーム</label>
         <select
           v-model="selectedScheme"
-          class="form-input"
-          style="height: 100px; font-size: 1.1rem"
+          class="form-input large-select"
           @change="generatePalette"
         >
           <option value="complementary">補色（Complementary）</option>
@@ -53,14 +39,13 @@
     <!-- HEXコード直接入力 -->
     <div class="form-group">
       <label class="form-label">HEXカラーコード入力</label>
-      <div style="display: flex; gap: 1rem; align-items: center">
+      <div class="input-group">
         <input
           v-model="hexInput"
           type="text"
           class="form-input"
           :class="{ error: errorMessage }"
           placeholder="#3B82F6"
-          style="flex: 1"
           @input="updateFromHex"
         />
         <button class="btn btn-primary" @click="generatePalette">
@@ -68,18 +53,7 @@
         </button>
       </div>
       <!-- エラーメッセージ表示 -->
-      <div
-        v-if="errorMessage"
-        class="error-message"
-        style="
-          color: #ef4444;
-          font-size: 0.875rem;
-          margin-top: 0.5rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        "
-      >
+      <div v-if="errorMessage" class="error-message">
         <span style="color: #ef4444">⚠️</span>
         {{ errorMessage }}
       </div>
@@ -87,36 +61,19 @@
 
     <!-- 生成されたパレット -->
     <div v-if="generatedPalette.length > 0" style="margin-top: 2rem">
-      <h3 style="margin-bottom: 1rem; color: #1e293b">
+      <h3 class="section-title">
         生成されたパレット（{{ schemeNames[selectedScheme] }}）
       </h3>
 
       <!-- パレット表示 -->
-      <div
-        style="
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-          margin-bottom: 2rem;
-        "
-      >
+      <div class="palette-grid">
         <div
           v-for="(color, index) in generatedPalette"
           :key="index"
           class="palette-item"
-          style="
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          "
         >
           <!-- カラープレビュー -->
-          <div
-            :style="{ backgroundColor: color }"
-            style="height: 80px; position: relative"
-          >
+          <div class="color-swatch" :style="{ backgroundColor: color }">
             <div
               style="
                 position: absolute;
@@ -134,48 +91,45 @@
           </div>
 
           <!-- カラー情報 -->
-          <div style="padding: 1rem">
-            <div style="margin-bottom: 0.5rem">
-              <strong style="font-size: 0.875rem">HEX</strong>
-              <div
-                style="
-                  font-family: 'Courier New', monospace;
-                  font-weight: bold;
-                  margin: 0.25rem 0;
-                "
+          <div class="color-info">
+            <div class="color-format">
+              <strong>HEX</strong>
+              <span>{{ color.toUpperCase() }}</span>
+              <button
+                class="copy-button"
+                @click="copyToClipboard(color.toUpperCase())"
+                title="HEXをコピー"
               >
-                {{ color.toUpperCase() }}
-              </div>
+                📋
+              </button>
             </div>
 
-            <div style="margin-bottom: 0.5rem">
-              <strong style="font-size: 0.875rem">RGB</strong>
-              <div
-                style="
-                  font-family: 'Courier New', monospace;
-                  font-size: 0.875rem;
-                  margin: 0.25rem 0;
-                "
+            <div class="color-format">
+              <strong>RGB</strong>
+              <span>{{ getRgbString(color) }}</span>
+              <button
+                class="copy-button"
+                @click="copyToClipboard(getRgbString(color))"
+                title="RGBをコピー"
               >
-                {{ getRgbString(color) }}
-              </div>
+                📋
+              </button>
             </div>
 
-            <div style="margin-bottom: 1rem">
-              <strong style="font-size: 0.875rem">HSL</strong>
-              <div
-                style="
-                  font-family: 'Courier New', monospace;
-                  font-size: 0.875rem;
-                  margin: 0.25rem 0;
-                "
+            <div class="color-format">
+              <strong>HSL</strong>
+              <span>{{ getHslString(color) }}</span>
+              <button
+                class="copy-button"
+                @click="copyToClipboard(getHslString(color))"
+                title="HSLをコピー"
               >
-                {{ getHslString(color) }}
-              </div>
+                📋
+              </button>
             </div>
 
             <!-- コントラスト情報 -->
-            <div style="margin-bottom: 1rem; font-size: 0.875rem">
+            <div style="margin-top: 1rem; font-size: 0.875rem">
               <div>
                 <strong>白背景:</strong>
                 <span
@@ -209,55 +163,22 @@
                 </span>
               </div>
             </div>
-
-            <button
-              class="btn btn-secondary"
-              style="width: 100%; font-size: 0.875rem"
-              @click="copyToClipboard(color.toUpperCase())"
-            >
-              HEXをコピー
-            </button>
           </div>
         </div>
       </div>
 
       <!-- エクスポート機能 -->
-      <div
-        style="
-          border: 1px solid #e2e8f0;
-          border-radius: 8px;
-          padding: 1.5rem;
-          background: #f8fafc;
-        "
-      >
-        <h4 style="margin-bottom: 1rem; color: #1e293b">エクスポート</h4>
+      <div class="export-section">
+        <h4 class="section-title">エクスポート</h4>
 
-        <div
-          style="
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-          "
-        >
-          <button
-            class="btn btn-primary"
-            @click="exportAsCSS"
-            style="padding: 0.75rem 1rem"
-          >
+        <div class="export-buttons">
+          <button class="btn btn-primary" @click="exportAsCSS">
             CSS変数として出力
           </button>
-          <button
-            class="btn btn-primary"
-            @click="exportAsJSON"
-            style="padding: 0.75rem 1rem"
-          >
+          <button class="btn btn-primary" @click="exportAsJSON">
             JSONとして出力
           </button>
-          <button
-            class="btn btn-primary"
-            @click="copyAllColors"
-            style="padding: 0.75rem 1rem"
-          >
+          <button class="btn btn-primary" @click="copyAllColors">
             全色をコピー
           </button>
         </div>
@@ -265,16 +186,9 @@
     </div>
 
     <!-- 使用方法 -->
-    <div
-      style="
-        margin-top: 2rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border-radius: 6px;
-      "
-    >
-      <h4 style="color: #1e293b; margin-bottom: 0.5rem">使用方法</h4>
-      <ul style="margin-left: 1.5rem; color: #64748b; line-height: 1.6">
+    <div class="info-section">
+      <h4 class="section-title">使用方法</h4>
+      <ul class="info-list">
         <li>カラーピッカーまたはHEX入力でベースカラーを選択</li>
         <li>配色スキームを選択して「パレット生成」をクリック</li>
         <li>生成されたパレットの各色をクリックしてコピー</li>
@@ -284,17 +198,9 @@
     </div>
 
     <!-- 配色理論の説明 -->
-    <div
-      style="
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #f0f9ff;
-        border-radius: 6px;
-        border-left: 4px solid #3b82f6;
-      "
-    >
-      <h4 style="color: #1e40af; margin-bottom: 0.5rem">配色理論について</h4>
-      <div style="color: #1e40af; font-size: 0.875rem; line-height: 1.6">
+    <div class="theory-section">
+      <h4 class="theory-title">配色理論について</h4>
+      <div class="theory-content">
         <p><strong>補色:</strong> 色相環で正反対に位置する色の組み合わせ</p>
         <p><strong>類似色:</strong> 色相環で隣接する色の組み合わせ</p>
         <p><strong>三色配色:</strong> 色相環を3等分した位置の色の組み合わせ</p>
@@ -304,19 +210,7 @@
     </div>
 
     <!-- メッセージ表示 -->
-    <div
-      v-if="copyMessage"
-      style="
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #10b981;
-        color: white;
-        padding: 1rem;
-        border-radius: 6px;
-        z-index: 1000;
-      "
-    >
+    <div v-if="copyMessage" class="copy-message">
       {{ copyMessage }}
     </div>
   </div>
@@ -419,7 +313,10 @@ const copyToClipboard = async (text: string) => {
       copyMessage.value = ''
     }, 2000)
   } catch {
-    // Copy failed silently
+    copyMessage.value = 'コピーに失敗しました。もう一度お試しください。'
+    setTimeout(() => {
+      copyMessage.value = ''
+    }, 2000)
   }
 }
 
@@ -497,6 +394,204 @@ useSeoMeta({
 
 .error-message {
   animation: fadeIn 0.3s ease-in;
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.color-picker {
+  width: 100%;
+  height: 100px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.large-select {
+  height: 100px;
+  font-size: 1.1rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input-group .form-input {
+  flex: 1;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.palette-item {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.palette-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.color-swatch {
+  width: 100%;
+  height: 80px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+  position: relative;
+}
+
+.color-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.color-format {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.color-format strong {
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.color-format span {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #1f2937;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.copy-button:hover {
+  color: #374151;
+  background: #f9fafb;
+}
+
+.export-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.accessibility-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.accessibility-section {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.accessibility-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.accessibility-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.accessibility-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.accessibility-details {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accessibility-details span {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+.wcag-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.wcag-aaa {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.wcag-aa {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.wcag-a {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  color: #1e293b;
 }
 
 @keyframes fadeIn {
@@ -510,14 +605,67 @@ useSeoMeta({
   }
 }
 
-.palette-item {
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.section-title {
+  margin-bottom: 1rem;
+  color: #1e293b;
 }
 
-.palette-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.info-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.info-list {
+  margin-left: 1.5rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.theory-section {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f0f9ff;
+  border-radius: 6px;
+  border-left: 4px solid #3b82f6;
+}
+
+.theory-title {
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.theory-content {
+  color: #1e40af;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.copy-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 1rem;
+  border-radius: 6px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .two-column-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .accessibility-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
 }
 </style>
