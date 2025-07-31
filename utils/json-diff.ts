@@ -180,7 +180,13 @@ export function compareObjects(
 
   // オブジェクトの比較
   if (oldType === 'object' && newType === 'object') {
-    return compareObjectProperties(oldObj, newObj, options, path, depth + 1)
+    return compareObjectProperties(
+      oldObj as Record<string, unknown>,
+      newObj as Record<string, unknown>,
+      options,
+      path,
+      depth + 1
+    )
   }
 
   return []
