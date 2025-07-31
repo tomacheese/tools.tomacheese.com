@@ -242,7 +242,7 @@ export function generateOmittedImage(
  */
 export function loadImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    if (!file.type.match(/^image\/(jpeg|jpg|png)$/)) {
+    if (!file.type.match(/^image\/(jpeg|png)$/)) {
       reject(
         new Error('Unsupported file type. Only JPEG and PNG are supported.')
       )

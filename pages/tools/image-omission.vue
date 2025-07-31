@@ -248,7 +248,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import {
   loadImageFromFile,
   isVerticalImage,
@@ -269,6 +269,9 @@ const imageDataUrl = ref<string>('')
 const omittedImageUrl = ref<string>('')
 const errorMessage = ref<string>('')
 const isGenerating = ref(false)
+
+// デバウンス用のタイマー
+let debounceTimer: number | null = null
 
 // 省略範囲の設定
 const omissionRange = ref<OmissionRange>({
@@ -333,6 +336,11 @@ const processFile = async (file: File) => {
 
     const image = await loadImageFromFile(file)
     originalImage.value = image
+
+    // 既存のオブジェクトURLがあれば解放
+    if (imageDataUrl.value) {
+      URL.revokeObjectURL(imageDataUrl.value)
+    }
     imageDataUrl.value = URL.createObjectURL(file)
 
     // 画像サイズに応じて初期の省略範囲を設定
@@ -379,18 +387,42 @@ const downloadResult = () => {
 }
 
 // 設定変更時の自動再生成
+const debouncedGenerateOmittedImage = () => {
+  // 既存のタイマーをキャンセル
+  if (debounceTimer !== null) {
+    clearTimeout(debounceTimer)
+  }
+
+  // 新しいタイマーを設定
+  debounceTimer = window.setTimeout(() => {
+    if (originalImage.value && isValidRange.value && !isGenerating.value) {
+      generateOmittedImage()
+    }
+    debounceTimer = null
+  }, 300)
+}
+
 watch(
   [omissionRange, waveOptions],
   () => {
-    if (originalImage.value && isValidRange.value && !isGenerating.value) {
-      // デバウンス処理
-      setTimeout(() => {
-        generateOmittedImage()
-      }, 300)
-    }
+    debouncedGenerateOmittedImage()
   },
   { deep: true }
 )
+
+// コンポーネントのクリーンアップ
+onUnmounted(() => {
+  // タイマーのクリーンアップ
+  if (debounceTimer !== null) {
+    clearTimeout(debounceTimer)
+    debounceTimer = null
+  }
+
+  // オブジェクトURLのクリーンアップ
+  if (imageDataUrl.value) {
+    URL.revokeObjectURL(imageDataUrl.value)
+  }
+})
 
 // ページタイトル設定
 useHead({
