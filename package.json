@@ -1,7 +1,7 @@
 {
   "name": "tools.tomacheese.com",
   "version": "1.0.0",
-  "description": "便利なWebツール集 - クライアントサイドで動作するプライバシー重視のツールサイト",
+  "description": "プライバシー重視のWebツールサイト - 65個のツールをクライアントサイドで提供",
   "author": "tomacheese",
   "license": "MIT",
   "repository": {
@@ -13,9 +13,12 @@
     "tools",
     "utilities",
     "web-tools",
-    "javascript",
+    "privacy",
+    "client-side",
     "nuxt",
-    "vue"
+    "vue",
+    "typescript",
+    "tailwind"
   ],
   "engines": {
     "node": "24.4.1",
