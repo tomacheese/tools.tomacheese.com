@@ -86,9 +86,16 @@ another-valid@test.org`
     await expect(page.locator('.email-item')).toHaveCount(3)
   })
 
-  test('should copy valid emails to clipboard', async ({ page }) => {
-    // Grant clipboard permissions
-    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+  test('should copy valid emails to clipboard', async ({
+    page,
+    browserName,
+  }) => {
+    // Grant clipboard permissions (skip clipboard-read for Firefox as it's not supported)
+    const permissions =
+      browserName === 'firefox'
+        ? ['clipboard-write']
+        : ['clipboard-read', 'clipboard-write']
+    await page.context().grantPermissions(permissions)
 
     const emails = `valid1@example.com
 invalid@
@@ -144,8 +151,9 @@ invalid@`
 
   test('should handle normalization options', async ({ page }) => {
     // 正規化オプションを変更
+    // より具体的なセレクタを使用
     await page.uncheck(
-      'input[type="checkbox"]:has-text("大文字小文字を区別しない")'
+      'label:has-text("大文字小文字を区別しない") input[type="checkbox"]'
     )
 
     const emails = `Test@Example.COM
@@ -175,8 +183,19 @@ test@example.com`
   })
 
   test('should handle empty input', async ({ page }) => {
-    // 空の状態で検証ボタンをクリック
-    await page.click('button:has-text("メールアドレス検証実行")')
+    // ボタンが無効化されているかを確認
+    await expect(
+      page.locator('button:has-text("メールアドレス検証実行")')
+    ).toBeDisabled()
+
+    // テキストを入力してボタンを有効化してからクリア
+    await page.fill('#input-text', 'test@example.com')
+    await page.fill('#input-text', '')
+
+    // 再度無効化されているかを確認
+    await expect(
+      page.locator('button:has-text("メールアドレス検証実行")')
+    ).toBeDisabled()
 
     // 結果が表示されないことを確認
     await expect(page.locator('.result-section')).not.toBeVisible()
