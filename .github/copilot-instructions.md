@@ -4,31 +4,31 @@
 
 ## プロジェクト概要
 
-tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
+tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。現在65個のツールを提供し、すべてクライアントサイドで動作します。
 
 ### 技術スタック
 
-- **フレームワーク**: Nuxt.js v3 (3.17.7)
-- **言語**: TypeScript
-- **パッケージマネージャー**: pnpm
-- **スタイリング**: Tailwind CSS + カスタム CSS
-- **テスト**: Vitest（単体テスト）+ Playwright（E2E テスト）
-- **Lint**: ESLint
-- **フォーマット**: Prettier
+- **フレームワーク**: Nuxt.js v3.17.7 (SSR無効)
+- **言語**: TypeScript（厳格な型チェック）
+- **パッケージマネージャー**: pnpm 10.13.1
+- **Node.js**: v24.4.1
+- **テスト**: Vitest（単体）+ Playwright（E2E）
+- **スタイリング**: Tailwind CSS + カスタムCSS
+- **Lint**: ESLint + Prettier
 
 ## 基本理念
 
 ### プライバシーファースト
 
-- **100% クライアントサイド**: すべてのツールは外部 API を使用せずブラウザ内で動作する必要があります
-- **データ送信禁止**: ユーザーのデータをサーバーに送信してはいけません
-- **ローカル処理**: すべての計算・変換・処理はブラウザ内で完結させてください
+- **100%クライアントサイド**: 外部API使用禁止、ブラウザ内完結処理
+- **データ送信禁止**: ユーザーデータのサーバー送信は一切禁止
+- **ローカル処理**: 計算・変換・暗号化すべてブラウザ内で実行
 
 ### セキュリティ要件
 
-- **外部通信禁止**: API コール、データ送信の禁止
+- **外部通信禁止**: APIコール、データ送信の禁止
 - **ローカルストレージ**: 必要最小限の使用
-- **XSS 対策**: ユーザー入力の適切なサニタイズ
+- **XSS対策**: ユーザー入力の適切なサニタイズ
 - **暗号化**: 必要に応じてクライアントサイド暗号化
 - **履歴削除**: ブラウザ履歴にセンシティブデータを残さない
 
@@ -54,21 +54,22 @@ tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 ## 開発ガイドライン
 
-### コードチェックの必須
+### コードチェック必須項目
 
-すべてのコードは以下のチェックをパスする必要があります。これらのチェックが失敗した場合、PR はマージできません。  
-これらのチェックをパスできないコードは、PR を作成する前に必ず修正してください。
+以下のチェックが全て成功する必要があります：
 
-- `pnpm lint`
-- `pnpm format:check`
-- `pnpm typecheck`
-- `pnpm depcheck`
-- `pnpm test`
-- `pnpm test:e2e`
+```bash
+pnpm lint           # ESLint チェック
+pnpm format:check   # Prettier フォーマットチェック
+pnpm typecheck      # TypeScript 型チェック
+pnpm depcheck       # 依存関係チェック
+pnpm test           # 単体テスト
+pnpm test:e2e       # E2E テスト
+```
 
 ### PR タイトル・コミット規約
 
-PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください。以下の形式でなければなりません。
+PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください。
 
 ```
 <type>[optional scope]: <description>
@@ -78,7 +79,7 @@ PR タイトルとコミットメッセージは Conventional Commits の仕様�
 [optional footer(s)]
 ```
 
-`<type>` は以下のいずれかを使用してください。
+`<type>` は以下のいずれかを使用：
 
 - `feat`: 新機能追加
 - `fix`: バグ修正
@@ -88,63 +89,58 @@ PR タイトルとコミットメッセージは Conventional Commits の仕様�
 - `test`: テスト追加・修正
 - `chore`: その他の変更
 
-`<description>` は日本語で簡潔に記述してください。  
-`[optional body]` は変更の詳細な説明を日本語で記述します。
-
 ### コーディング規約
 
 #### TypeScript
 
-- **型安全性**: `any` の使用は避け、適切な型定義を行ってください
-- **Null 安全性**: Non-null assertion（`!`）の使用は警告対象
-- **関数型**: 明示的な戻り値の型定義は不要（型推論を活用）
-- **Import**: ES6 モジュール形式を使用
+- **型安全性**: `any`使用禁止、適切な型定義必須
+- **Null安全性**: Non-null assertion（`!`）は警告対象
+- **関数型**: 戻り値の型定義不要（型推論活用）
+- **Import**: ES6モジュール形式を使用
 
 #### Vue.js
 
-- **Composition API**: `<script setup>` を使用
-- **リアクティブ**: `ref()`、`computed()`、`watch()` を適切に使用
-- **Props**: TypeScript インターフェースで型定義
-- **Events**: TypeScript で型安全なイベント定義
+- **Composition API**: `<script setup>`必須
+- **リアクティブ**: `ref()`、`computed()`、`watch()`適切に使用
+- **Props**: TypeScriptインターフェースで型定義
+- **Events**: TypeScriptで型安全なイベント定義
 
 #### CSS
 
 - **レスポンシブ**: モバイルファースト設計
 - **CSS Grid/Flexbox**: レイアウトに活用
-- **CSS 変数**: 色やサイズの統一に使用
-- **BEM 記法**: クラス名の命名規則として推奨
+- **CSS変数**: 色やサイズの統一
+- **BEM記法**: クラス名の命名規則推奨
 
 ## アーキテクチャとディレクトリ構造
 
 ### 基本構造
 
 ```
-/pages/tools/     # 各ツールのページ（Vue SFC）
-/composables/     # 共有 Vue コンポーザブル
-/utils/          # TypeScript ユーティリティ関数
+/pages/tools/     # ツールページ（現在65個）
+/utils/          # ユーティリティ関数
+/composables/    # Vue コンポーザブル
 /tests/          # テストファイル
-/assets/css/     # グローバルスタイル
 ```
 
 ### ツール実装パターン
 
-新しいツールを実装する場合の手順は以下の通りです。
-
-1. `/pages/tools/[tool-name].vue` にツールページを作成
-2. `composables/useTools.ts` にツールメタデータを追加
-3. 必要に応じて `/utils/` にユーティリティ関数を実装
-4. ユーティリティ関数の単体テスト（`*.test.ts`）を作成
-5. ユーザー操作の E2E テスト（`*.spec.ts`）を作成
+1. **ページ作成**: `/pages/tools/[tool-name].vue`
+2. **ユーティリティ**: `/utils/[tool-name].ts` (純粋関数)
+3. **ツール登録**: `composables/useTools.ts` にメタデータ追加
+4. **テスト作成**:
+   - `/tests/utils/[tool-name].test.ts` (単体テスト)
+   - `/tests/e2e/[tool-name].spec.ts` (E2Eテスト)
 
 ## 禁止事項
 
-以下のコードは生成しないでください。
+以下のコードは生成しないでください：
 
 - サーバーサイド処理の実装
-- 外部 API への直接通信（fetch、axios など）
+- 外部API通信（fetch、axiosなど）
 - ユーザーデータの外部送信
-- jQuery などの古いライブラリの使用
+- jQueryなど古いライブラリの使用
 - グローバル変数の使用
-- Options API の使用（Vue 3 Composition API を使用）
+- Options API の使用（Vue 3 Composition API必須）
 - 不要な依存関係の追加
 - 不要なコメントやデバッグコードの残存
