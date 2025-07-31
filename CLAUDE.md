@@ -4,7 +4,7 @@
 
 ## プロジェクト概要
 
-tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。現在65個のツールを提供し、すべてクライアントサイドで動作します。
+tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視の Web ツールサイトです。すべてのツールは完全にクライアントサイドで動作し、サーバー通信は一切行いません。
 
 ### 技術スタック
 
@@ -193,7 +193,7 @@ pnpm test:e2e       # E2E テスト
 ```bash
 # 開発開始
 pnpm install
-pnpm dev
+pnpm start
 
 # 品質チェック
 pnpm test && pnpm test:e2e
