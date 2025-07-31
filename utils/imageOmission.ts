@@ -32,7 +32,7 @@ export const DEFAULT_WAVE_OPTIONS: WaveLineOptions = {
   amplitude: 10,
   frequency: 0.02,
   margin: 0,
-  blurLevel: 5,
+  blurLevel: 10,
 }
 
 /**
@@ -152,37 +152,45 @@ export function generateOmittedImage(
         )
 
         // 省略部分にぼかした背景を描画
-        if (waveOptions.blurLevel > 0) {
-          // 上側の画像を描画（ぼかしありで自然な繋がり）
-          const topBlurHeight = Math.min(waveHeight / 2, 30)
-          ctx.filter = `blur(${waveOptions.blurLevel}px)`
+        const topHalfHeight = Math.floor(waveHeight / 2)
+        const bottomHalfHeight = waveHeight - topHalfHeight
+
+        // 上半分：省略範囲の開始位置より上の画像を使用
+        ctx.filter = `blur(${waveOptions.blurLevel}px)`
+        const topSourceHeight = Math.min(topHalfHeight, range.start)
+        if (topSourceHeight > 0) {
           ctx.drawImage(
             image,
             0,
-            Math.max(0, range.start - topBlurHeight),
+            range.start - topSourceHeight,
             image.width,
-            topBlurHeight,
+            topSourceHeight,
             0,
             range.start,
             image.width,
-            topBlurHeight
+            topHalfHeight
           )
+        }
 
-          // 下側の画像を描画（ぼかしありで自然な繋がり）
-          const bottomBlurHeight = waveHeight - topBlurHeight
+        // 下半分：省略範囲の終了位置より下の画像を使用
+        const bottomSourceHeight = Math.min(
+          bottomHalfHeight,
+          image.height - range.end
+        )
+        if (bottomSourceHeight > 0) {
           ctx.drawImage(
             image,
             0,
             range.end,
             image.width,
-            Math.min(bottomBlurHeight, image.height - range.end),
+            bottomSourceHeight,
             0,
-            range.start + topBlurHeight,
+            range.start + topHalfHeight,
             image.width,
-            bottomBlurHeight
+            bottomHalfHeight
           )
-          ctx.filter = 'none' // フィルターをリセット
         }
+        ctx.filter = 'none' // フィルターをリセット
 
         // 波線を描画
         drawWaveLine(
@@ -233,37 +241,45 @@ export function generateOmittedImage(
         )
 
         // 省略部分にぼかした背景を描画
-        if (waveOptions.blurLevel > 0) {
-          // 左側の画像を描画（ぼかしありで自然な繋がり）
-          const leftBlurWidth = Math.min(waveWidth / 2, 30)
-          ctx.filter = `blur(${waveOptions.blurLevel}px)`
+        const leftHalfWidth = Math.floor(waveWidth / 2)
+        const rightHalfWidth = waveWidth - leftHalfWidth
+
+        // 左半分：省略範囲の開始位置より左の画像を使用
+        ctx.filter = `blur(${waveOptions.blurLevel}px)`
+        const leftSourceWidth = Math.min(leftHalfWidth, range.start)
+        if (leftSourceWidth > 0) {
           ctx.drawImage(
             image,
-            Math.max(0, range.start - leftBlurWidth),
+            range.start - leftSourceWidth,
             0,
-            leftBlurWidth,
+            leftSourceWidth,
             image.height,
             range.start,
             0,
-            leftBlurWidth,
+            leftHalfWidth,
             image.height
           )
+        }
 
-          // 右側の画像を描画（ぼかしありで自然な繋がり）
-          const rightBlurWidth = waveWidth - leftBlurWidth
+        // 右半分：省略範囲の終了位置より右の画像を使用
+        const rightSourceWidth = Math.min(
+          rightHalfWidth,
+          image.width - range.end
+        )
+        if (rightSourceWidth > 0) {
           ctx.drawImage(
             image,
             range.end,
             0,
-            Math.min(rightBlurWidth, image.width - range.end),
+            rightSourceWidth,
             image.height,
-            range.start + leftBlurWidth,
+            range.start + leftHalfWidth,
             0,
-            rightBlurWidth,
+            rightHalfWidth,
             image.height
           )
-          ctx.filter = 'none' // フィルターをリセット
         }
+        ctx.filter = 'none' // フィルターをリセット
 
         // 波線を描画
         drawWaveLine(

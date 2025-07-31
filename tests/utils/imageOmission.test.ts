@@ -82,7 +82,7 @@ describe('imageOmission ユーティリティ', () => {
         amplitude: 10,
         frequency: 0.02,
         margin: 0,
-        blurLevel: 5,
+        blurLevel: 10,
       })
     })
   })

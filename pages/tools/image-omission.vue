@@ -78,7 +78,9 @@
                   }"
                   @mousedown="startDragging('start', $event)"
                   @touchstart="startDragging('start', $event)"
-                ></div>
+                >
+                  <div class="drag-handle"></div>
+                </div>
                 <div
                   v-if="omissionDirection === 'horizontal'"
                   class="range-bar range-bar-end"
@@ -89,7 +91,9 @@
                   }"
                   @mousedown="startDragging('end', $event)"
                   @touchstart="startDragging('end', $event)"
-                ></div>
+                >
+                  <div class="drag-handle"></div>
+                </div>
                 <div
                   v-if="omissionDirection === 'vertical'"
                   class="range-bar range-bar-start"
@@ -100,7 +104,9 @@
                   }"
                   @mousedown="startDragging('start', $event)"
                   @touchstart="startDragging('start', $event)"
-                ></div>
+                >
+                  <div class="drag-handle"></div>
+                </div>
                 <div
                   v-if="omissionDirection === 'vertical'"
                   class="range-bar range-bar-end"
@@ -111,7 +117,9 @@
                   }"
                   @mousedown="startDragging('end', $event)"
                   @touchstart="startDragging('end', $event)"
-                ></div>
+                >
+                  <div class="drag-handle"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -306,7 +314,7 @@
                   v-model.number="waveOptions.blurLevel"
                   type="range"
                   min="0"
-                  max="20"
+                  max="50"
                   step="1"
                   class="range-slider"
                 />
@@ -366,7 +374,7 @@ const omissionRange = ref<OmissionRange>({
 // 波線オプション（ぼかしオプション追加）
 const waveOptions = ref<WaveLineOptions>({
   ...DEFAULT_WAVE_OPTIONS,
-  blurLevel: 5,
+  blurLevel: 10,
 })
 
 // 計算プロパティ
@@ -793,6 +801,9 @@ useHead({
   z-index: 10;
   opacity: 0.8;
   transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .range-bar:hover {
@@ -811,15 +822,29 @@ useHead({
   background: #dc3545;
 }
 
+.drag-handle {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* 横方向のバー */
 .range-bar[style*='height: 100%'] {
-  width: 3px;
+  width: 6px;
   height: 100% !important;
 }
 
 /* 縦方向のバー */
 .range-bar[style*='width: 100%'] {
-  height: 3px;
+  height: 6px;
   width: 100% !important;
 }
 
@@ -1127,13 +1152,19 @@ useHead({
   }
 
   .range-bar[style*='height: 100%'] {
-    width: 8px !important;
+    width: 12px !important;
     min-width: 44px;
   }
 
   .range-bar[style*='width: 100%'] {
-    height: 8px !important;
+    height: 12px !important;
     min-height: 44px;
+  }
+
+  .drag-handle {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
   }
 }
 </style>
