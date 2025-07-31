@@ -155,42 +155,74 @@ export function generateOmittedImage(
         const topHalfHeight = Math.floor(waveHeight / 2)
         const bottomHalfHeight = waveHeight - topHalfHeight
 
-        // 上半分：省略範囲の開始位置より上の画像を使用
-        ctx.filter = `blur(${waveOptions.blurLevel}px)`
-        const topSourceHeight = Math.min(topHalfHeight, range.start)
-        if (topSourceHeight > 0) {
-          ctx.drawImage(
+        // ぼかし効果を作成するための一時キャンバス
+        const blurCanvas = document.createElement('canvas')
+        const blurCtx = blurCanvas.getContext('2d')
+        if (!blurCtx) throw new Error('Blur canvas context not available')
+
+        blurCanvas.width = image.width
+        blurCanvas.height = waveHeight
+
+        // 上半分：省略範囲の開始位置より十分上の画像を使用（重複回避）
+        const topSourceHeight = Math.min(
+          topHalfHeight,
+          Math.max(0, range.start - 20)
+        )
+        const topSourceStart = Math.max(0, range.start - topSourceHeight - 20)
+        if (topSourceHeight > 0 && topSourceStart >= 0) {
+          blurCtx.drawImage(
             image,
             0,
-            range.start - topSourceHeight,
+            topSourceStart,
             image.width,
             topSourceHeight,
             0,
-            range.start,
+            0,
             image.width,
             topHalfHeight
           )
         }
 
-        // 下半分：省略範囲の終了位置より下の画像を使用
+        // 下半分：省略範囲の終了位置より十分下の画像を使用（重複回避）
         const bottomSourceHeight = Math.min(
           bottomHalfHeight,
-          image.height - range.end
+          Math.max(0, image.height - range.end - 20)
         )
-        if (bottomSourceHeight > 0) {
-          ctx.drawImage(
+        const bottomSourceStart = Math.min(
+          image.height - bottomSourceHeight,
+          range.end + 20
+        )
+        if (bottomSourceHeight > 0 && bottomSourceStart < image.height) {
+          blurCtx.drawImage(
             image,
             0,
-            range.end,
+            bottomSourceStart,
             image.width,
             bottomSourceHeight,
             0,
-            range.start + topHalfHeight,
+            topHalfHeight,
             image.width,
             bottomHalfHeight
           )
         }
-        ctx.filter = 'none' // フィルターをリセット
+
+        // 手動ぼかし効果を適用
+        if (waveOptions.blurLevel > 0 && blurCtx.getImageData) {
+          const imageData = blurCtx.getImageData(
+            0,
+            0,
+            blurCanvas.width,
+            blurCanvas.height
+          )
+          const blurredData = applyGaussianBlur(
+            imageData,
+            waveOptions.blurLevel
+          )
+          blurCtx.putImageData(blurredData, 0, 0)
+        }
+
+        // ぼかした画像を描画
+        ctx.drawImage(blurCanvas, 0, range.start)
 
         // 波線を描画
         drawWaveLine(
@@ -244,42 +276,74 @@ export function generateOmittedImage(
         const leftHalfWidth = Math.floor(waveWidth / 2)
         const rightHalfWidth = waveWidth - leftHalfWidth
 
-        // 左半分：省略範囲の開始位置より左の画像を使用
-        ctx.filter = `blur(${waveOptions.blurLevel}px)`
-        const leftSourceWidth = Math.min(leftHalfWidth, range.start)
-        if (leftSourceWidth > 0) {
-          ctx.drawImage(
+        // ぼかし効果を作成するための一時キャンバス
+        const blurCanvas = document.createElement('canvas')
+        const blurCtx = blurCanvas.getContext('2d')
+        if (!blurCtx) throw new Error('Blur canvas context not available')
+
+        blurCanvas.width = waveWidth
+        blurCanvas.height = image.height
+
+        // 左半分：省略範囲の開始位置より十分左の画像を使用（重複回避）
+        const leftSourceWidth = Math.min(
+          leftHalfWidth,
+          Math.max(0, range.start - 20)
+        )
+        const leftSourceStart = Math.max(0, range.start - leftSourceWidth - 20)
+        if (leftSourceWidth > 0 && leftSourceStart >= 0) {
+          blurCtx.drawImage(
             image,
-            range.start - leftSourceWidth,
+            leftSourceStart,
             0,
             leftSourceWidth,
             image.height,
-            range.start,
+            0,
             0,
             leftHalfWidth,
             image.height
           )
         }
 
-        // 右半分：省略範囲の終了位置より右の画像を使用
+        // 右半分：省略範囲の終了位置より十分右の画像を使用（重複回避）
         const rightSourceWidth = Math.min(
           rightHalfWidth,
-          image.width - range.end
+          Math.max(0, image.width - range.end - 20)
         )
-        if (rightSourceWidth > 0) {
-          ctx.drawImage(
+        const rightSourceStart = Math.min(
+          image.width - rightSourceWidth,
+          range.end + 20
+        )
+        if (rightSourceWidth > 0 && rightSourceStart < image.width) {
+          blurCtx.drawImage(
             image,
-            range.end,
+            rightSourceStart,
             0,
             rightSourceWidth,
             image.height,
-            range.start + leftHalfWidth,
+            leftHalfWidth,
             0,
             rightHalfWidth,
             image.height
           )
         }
-        ctx.filter = 'none' // フィルターをリセット
+
+        // 手動ぼかし効果を適用
+        if (waveOptions.blurLevel > 0 && blurCtx.getImageData) {
+          const imageData = blurCtx.getImageData(
+            0,
+            0,
+            blurCanvas.width,
+            blurCanvas.height
+          )
+          const blurredData = applyGaussianBlur(
+            imageData,
+            waveOptions.blurLevel
+          )
+          blurCtx.putImageData(blurredData, 0, 0)
+        }
+
+        // ぼかした画像を描画
+        ctx.drawImage(blurCanvas, range.start, 0)
 
         // 波線を描画
         drawWaveLine(
@@ -368,4 +432,106 @@ export function calculateOmissionPercentage(
   if (totalSize === 0) return 0
   const omittedSize = range.end - range.start
   return Math.round((omittedSize / totalSize) * 100)
+}
+
+/**
+ * 手動ガウシアンぼかしを適用
+ */
+function applyGaussianBlur(imageData: ImageData, radius: number): ImageData {
+  if (radius === 0) return imageData
+
+  const data = new Uint8ClampedArray(imageData.data)
+  const width = imageData.width
+  const height = imageData.height
+
+  // ガウシアンカーネルの生成
+  const kernelSize = Math.ceil(radius * 3) * 2 + 1
+  const kernel = generateGaussianKernel(radius, kernelSize)
+  const half = Math.floor(kernelSize / 2)
+
+  // 水平方向のぼかし
+  const temp = new Uint8ClampedArray(data.length)
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      let r = 0,
+        g = 0,
+        b = 0,
+        a = 0
+      let weightSum = 0
+
+      for (let i = -half; i <= half; i++) {
+        const nx = Math.max(0, Math.min(width - 1, x + i))
+        const idx = (y * width + nx) * 4
+        const weight = kernel[i + half]
+
+        r += data[idx] * weight
+        g += data[idx + 1] * weight
+        b += data[idx + 2] * weight
+        a += data[idx + 3] * weight
+        weightSum += weight
+      }
+
+      const idx = (y * width + x) * 4
+      temp[idx] = r / weightSum
+      temp[idx + 1] = g / weightSum
+      temp[idx + 2] = b / weightSum
+      temp[idx + 3] = a / weightSum
+    }
+  }
+
+  // 垂直方向のぼかし
+  const result = new Uint8ClampedArray(data.length)
+  for (let x = 0; x < width; x++) {
+    for (let y = 0; y < height; y++) {
+      let r = 0,
+        g = 0,
+        b = 0,
+        a = 0
+      let weightSum = 0
+
+      for (let i = -half; i <= half; i++) {
+        const ny = Math.max(0, Math.min(height - 1, y + i))
+        const idx = (ny * width + x) * 4
+        const weight = kernel[i + half]
+
+        r += temp[idx] * weight
+        g += temp[idx + 1] * weight
+        b += temp[idx + 2] * weight
+        a += temp[idx + 3] * weight
+        weightSum += weight
+      }
+
+      const idx = (y * width + x) * 4
+      result[idx] = r / weightSum
+      result[idx + 1] = g / weightSum
+      result[idx + 2] = b / weightSum
+      result[idx + 3] = a / weightSum
+    }
+  }
+
+  return new ImageData(result, width, height)
+}
+
+/**
+ * ガウシアンカーネルを生成
+ */
+function generateGaussianKernel(radius: number, size: number): number[] {
+  const kernel = new Array(size)
+  const sigma = radius / 3
+  const twoSigmaSquare = 2 * sigma * sigma
+  const half = Math.floor(size / 2)
+
+  let sum = 0
+  for (let i = 0; i < size; i++) {
+    const x = i - half
+    kernel[i] = Math.exp(-(x * x) / twoSigmaSquare)
+    sum += kernel[i]
+  }
+
+  // 正規化
+  for (let i = 0; i < size; i++) {
+    kernel[i] /= sum
+  }
+
+  return kernel
 }
