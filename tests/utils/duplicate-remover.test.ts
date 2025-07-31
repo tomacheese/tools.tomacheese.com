@@ -2,8 +2,6 @@ import { describe, it, expect } from 'vitest'
 import {
   removeDuplicateLines,
   removeDuplicateLinesAsync,
-  readTextFile,
-  downloadTextFile,
 } from '~/utils/duplicate-remover'
 
 describe('removeDuplicateLines', () => {
@@ -222,22 +220,6 @@ describe('removeDuplicateLinesAsync', () => {
 
     expect(result.text).toBe('line1\nline2\nline3')
     expect(progressCalled).toBe(true)
-  })
-})
-
-describe('readTextFile', () => {
-  it('FileReaderのモック', () => {
-    // Note: 実際のブラウザ環境でのテストが必要
-    // ここではインターフェースの確認のみ
-    expect(typeof readTextFile).toBe('function')
-  })
-})
-
-describe('downloadTextFile', () => {
-  it('DOM操作のモック', () => {
-    // Note: 実際のブラウザ環境でのテストが必要
-    // ここではインターフェースの確認のみ
-    expect(typeof downloadTextFile).toBe('function')
   })
 })
 
