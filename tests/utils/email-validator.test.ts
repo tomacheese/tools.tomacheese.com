@@ -340,6 +340,21 @@ describe('email-validator', () => {
         '元のメールアドレス,正規化済み,有効性,理由,ローカル部,ドメイン部'
       )
     })
+
+    it('localPartやdomainがundefinedの場合を処理する', () => {
+      const invalidResult: EmailValidationResult = {
+        original: 'invalid-email',
+        normalized: 'invalid-email',
+        isValid: false,
+        reason: 'Invalid format',
+        localPart: undefined,
+        domain: undefined,
+      }
+      const csv = generateEmailValidationCSV([invalidResult])
+      const lines = csv.split('\n')
+      expect(lines[1]).toContain('""')
+      expect(lines[1]).toContain('無効')
+    })
   })
 
   describe('extractValidEmails', () => {
@@ -408,5 +423,29 @@ describe('email-validator', () => {
       expect(progressCalls[0]).toBeLessThan(100)
       expect(progressCalls[progressCalls.length - 1]).toBe(100)
     }, 10000)
+
+    it('重複メールアドレスを正しく検出する', async () => {
+      const emails = [
+        'test1@example.com',
+        'TEST1@EXAMPLE.COM', // 大文字小文字の違いで重複
+        'test2@example.com',
+        'test1@example.com', // 完全に同じで重複
+      ]
+
+      const result = await validateEmailsBulkAsync(emails, defaultOptions)
+
+      expect(result.statistics.total).toBe(4)
+      expect(result.statistics.valid).toBe(4)
+      expect(result.statistics.duplicates).toBe(2) // 2つの重複（最初の1つは重複としてカウントされない）
+      expect(result.duplicateEmails).toContain('test1@example.com')
+    })
+
+    it('進捗コールバックなしでも動作する', async () => {
+      const emails = ['test@example.com']
+      const result = await validateEmailsBulkAsync(emails, defaultOptions)
+
+      expect(result.statistics.total).toBe(1)
+      expect(result.statistics.valid).toBe(1)
+    })
   })
 })
