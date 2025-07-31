@@ -306,12 +306,11 @@ import {
   extractEmailsFromText,
   generateEmailValidationCSV,
   extractValidEmails,
-  readTextFile,
-  downloadTextFile,
   downloadCSVFile,
   type EmailValidationOptions,
   type BulkEmailValidationResult,
 } from '~/utils/email-validator'
+import { readTextFile, downloadTextFile } from '~/utils/file'
 
 // メタデータ設定
 definePageMeta({

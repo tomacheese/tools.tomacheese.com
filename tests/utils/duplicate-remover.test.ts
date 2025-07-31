@@ -2,9 +2,8 @@ import { describe, it, expect } from 'vitest'
 import {
   removeDuplicateLines,
   removeDuplicateLinesAsync,
-  readTextFile,
-  downloadTextFile,
 } from '~/utils/duplicate-remover'
+import { readTextFile, downloadTextFile } from '~/utils/file'
 
 describe('removeDuplicateLines', () => {
   describe('基本的な重複削除', () => {
