@@ -47,7 +47,7 @@ describe('file utilities', () => {
       const promise = readTextFile(mockFile)
 
       // onload イベントをシミュレート
-      mockFileReader.onload({
+      mockFileReader.onload?.call(mockFileReader, {
         target: { result: 'test content' },
       } as ProgressEvent<FileReader>)
 
@@ -74,7 +74,10 @@ describe('file utilities', () => {
       const promise = readTextFile(mockFile)
 
       // onerror イベントをシミュレート
-      mockFileReader.onerror()
+      mockFileReader.onerror?.call(
+        mockFileReader,
+        new ProgressEvent('error') as ProgressEvent<FileReader>
+      )
 
       await expect(promise).rejects.toThrow('ファイルの読み込みに失敗しました')
     })
@@ -95,7 +98,7 @@ describe('file utilities', () => {
       const promise = readTextFile(mockFile)
 
       // 空の結果でonloadイベントをシミュレート
-      mockFileReader.onload({
+      mockFileReader.onload?.call(mockFileReader, {
         target: { result: null },
       } as ProgressEvent<FileReader>)
 
@@ -113,7 +116,7 @@ describe('file utilities', () => {
       }
 
       vi.mocked(document.createElement).mockReturnValue(
-        mockLink as HTMLAnchorElement
+        mockLink as unknown as HTMLAnchorElement
       )
 
       downloadTextFile('test content', 'test.txt')
@@ -140,7 +143,7 @@ describe('file utilities', () => {
       }
 
       vi.mocked(document.createElement).mockReturnValue(
-        mockLink as HTMLAnchorElement
+        mockLink as unknown as HTMLAnchorElement
       )
 
       downloadTextFile('テストコンテンツ', 'テスト.txt')
@@ -156,7 +159,7 @@ describe('file utilities', () => {
       }
 
       vi.mocked(document.createElement).mockReturnValue(
-        mockLink as HTMLAnchorElement
+        mockLink as unknown as HTMLAnchorElement
       )
 
       downloadTextFile('', 'empty.txt')
