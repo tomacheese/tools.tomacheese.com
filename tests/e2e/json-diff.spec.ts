@@ -33,7 +33,7 @@ test.describe('JSON差分比較ツール', () => {
 
     // 差分詳細の確認
     await expect(page.locator('.diff-display')).toBeVisible()
-    await expect(page.locator('.diff-row')).toHaveCount.toBeGreaterThan(0)
+    await expect(page.locator('.diff-row')).toHaveCount(3)
   })
 
   test('無効なJSONでエラーメッセージが表示される', async ({ page }) => {
@@ -57,7 +57,7 @@ test.describe('JSON差分比較ツール', () => {
 
     // 結果が表示されることを確認
     await expect(page.locator('.diff-display')).toBeVisible()
-    await expect(page.locator('.diff-row')).toHaveCount.toBeGreaterThan(0)
+    await expect(page.locator('.diff-row')).toHaveCount(2)
 
     // フィルタが表示されることを確認
     await expect(page.locator('.filters')).toBeVisible()
