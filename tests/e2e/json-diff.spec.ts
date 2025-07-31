@@ -239,15 +239,24 @@ test.describe('JSON差分比較ツール', () => {
     await expect(page.locator('.stat-unchanged .stat-value')).toContainText('1') // keep
   })
 
-  test('同じJSONの場合に「差分なし」が表示される', async ({ page }) => {
+  test('同じJSONの場合に「フィルタ結果なし」が表示される', async ({ page }) => {
     const sameJson = '{"name": "John", "age": 30}'
 
     await page.locator('textarea').first().fill(sameJson)
     await page.locator('textarea').nth(1).fill(sameJson)
     await page.getByRole('button', { name: '差分比較' }).click()
 
-    await expect(page.locator('.no-diff')).toBeVisible()
-    await expect(page.locator('.no-diff')).toContainText('差分なし')
+    // 結果が表示されるまで待機
+    await expect(page.locator('.result')).toBeVisible()
+
+    // 統計情報でunchanged = 1が表示されることを確認
+    await expect(page.locator('.stat-unchanged .stat-value')).toContainText('1')
+
+    // フィルタ結果なしメッセージが表示されることを確認（デフォルトでunchangedは非表示）
+    await expect(page.locator('.no-filtered-results')).toBeVisible()
+    await expect(page.locator('.no-filtered-results')).toContainText(
+      'フィルタ結果なし'
+    )
   })
 
   test('エクスポート機能が動作する', async ({ page }) => {
