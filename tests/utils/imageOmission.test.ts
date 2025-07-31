@@ -81,7 +81,8 @@ describe('imageOmission ユーティリティ', () => {
         thickness: 2,
         amplitude: 10,
         frequency: 0.02,
-        margin: 20,
+        margin: 0,
+        blurLevel: 5,
       })
     })
   })
@@ -166,6 +167,7 @@ describe('imageOmission ユーティリティ', () => {
         amplitude: 15,
         frequency: 0.03,
         margin: 10,
+        blurLevel: 5,
       }
 
       drawWaveLine(ctx, 0, 100, 200, 50, options, true)
@@ -184,6 +186,7 @@ describe('imageOmission ユーティリティ', () => {
         amplitude: 12,
         frequency: 0.025,
         margin: 15,
+        blurLevel: 3,
       }
 
       drawWaveLine(ctx, 100, 0, 50, 200, options, false)
@@ -351,7 +354,7 @@ describe('imageOmission ユーティリティ', () => {
       expect(result).toBe('data:image/png;base64,test')
       expect(mockCanvas.width).toBe(200)
       expect(mockCanvas.height).toBe(300) // 300 - 100 + 100 = 300
-      expect(mockContext.drawImage).toHaveBeenCalledTimes(2)
+      expect(mockContext.drawImage).toHaveBeenCalledTimes(3) // 上部分 + ぼかし部分 + 下部分
     })
 
     it('横長画像の省略処理が正常に動作する', async () => {
@@ -372,7 +375,7 @@ describe('imageOmission ユーティリティ', () => {
       expect(result).toBe('data:image/png;base64,test')
       expect(mockCanvas.width).toBe(300) // 300 - 100 + 100 = 300
       expect(mockCanvas.height).toBe(200)
-      expect(mockContext.drawImage).toHaveBeenCalledTimes(2)
+      expect(mockContext.drawImage).toHaveBeenCalledTimes(3) // 左部分 + ぼかし部分 + 右部分
     })
   })
 })

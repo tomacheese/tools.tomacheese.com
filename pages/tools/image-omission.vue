@@ -8,7 +8,7 @@
     </div>
 
     <!-- 画像アップロードセクション -->
-    <div class="input-section">
+    <div v-if="!originalImage" class="input-section">
       <div
         class="upload-area"
         :class="{ 'upload-area-active': isDragging }"
@@ -46,195 +46,263 @@
       </div>
     </div>
 
-    <!-- 画像プレビューと設定 -->
-    <div v-if="originalImage" class="preview-section">
-      <div class="image-info">
-        <h3>元の画像情報</h3>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="info-label">サイズ:</span>
-            <span class="info-value"
-              >{{ originalImage.width }} × {{ originalImage.height }} px</span
-            >
+    <!-- プレビューセクション -->
+    <div v-if="originalImage" class="main-preview-section">
+      <!-- 大きなプレビュー表示 -->
+      <div class="large-preview">
+        <div class="preview-container">
+          <div class="interactive-preview">
+            <h3>編集プレビュー</h3>
+            <div class="image-container" ref="imageContainer">
+              <img
+                :src="imageDataUrl"
+                :alt="
+                  '元画像 (' +
+                  originalImage.width +
+                  'x' +
+                  originalImage.height +
+                  ')'
+                "
+                class="preview-image-large"
+                @load="onImageLoad"
+              />
+              <!-- インタラクティブな範囲選択バー -->
+              <div v-if="imageDisplaySize.width > 0" class="range-overlay">
+                <div
+                  v-if="omissionDirection === 'horizontal'"
+                  class="range-bar range-bar-start"
+                  :style="{
+                    left: startBarPosition + 'px',
+                    height: '100%',
+                    top: '0px',
+                  }"
+                  @mousedown="startDragging('start', $event)"
+                ></div>
+                <div
+                  v-if="omissionDirection === 'horizontal'"
+                  class="range-bar range-bar-end"
+                  :style="{
+                    left: endBarPosition + 'px',
+                    height: '100%',
+                    top: '0px',
+                  }"
+                  @mousedown="startDragging('end', $event)"
+                ></div>
+                <div
+                  v-if="omissionDirection === 'vertical'"
+                  class="range-bar range-bar-start"
+                  :style="{
+                    top: startBarPosition + 'px',
+                    width: '100%',
+                    left: '0px',
+                  }"
+                  @mousedown="startDragging('start', $event)"
+                ></div>
+                <div
+                  v-if="omissionDirection === 'vertical'"
+                  class="range-bar range-bar-end"
+                  :style="{
+                    top: endBarPosition + 'px',
+                    width: '100%',
+                    left: '0px',
+                  }"
+                  @mousedown="startDragging('end', $event)"
+                ></div>
+              </div>
+            </div>
           </div>
-          <div class="info-item">
-            <span class="info-label">種類:</span>
-            <span class="info-value">{{ isVertical ? '縦長' : '横長' }}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">省略範囲:</span>
-            <span class="info-value"
-              >{{ omissionRange.start }} - {{ omissionRange.end
-              }}{{ isVertical ? 'px (高さ)' : 'px (幅)' }}</span
-            >
+
+          <div v-if="omittedImageUrl" class="result-preview-large">
+            <h3>省略後の画像</h3>
+            <img
+              :src="omittedImageUrl"
+              alt="省略後の画像"
+              class="preview-image-large"
+            />
+            <div class="download-section">
+              <button class="download-button" @click="downloadResult">
+                画像をダウンロード
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="controls-section">
-        <div class="control-group">
-          <h3>省略範囲設定</h3>
-          <div class="range-controls">
-            <div class="range-input">
-              <label for="start-range">開始位置:</label>
-              <input
-                id="start-range"
-                v-model.number="omissionRange.start"
-                type="range"
-                :min="0"
-                :max="maxRangeValue - 10"
-                :step="1"
-                class="range-slider"
-              />
-              <input
-                v-model.number="omissionRange.start"
-                type="number"
-                :min="0"
-                :max="maxRangeValue - 10"
-                class="range-number"
-              />
+      <!-- 設定パネル -->
+      <div class="settings-panel">
+        <div class="image-info">
+          <h3>画像情報</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">サイズ:</span>
+              <span class="info-value"
+                >{{ originalImage.width }} × {{ originalImage.height }} px</span
+              >
             </div>
-            <div class="range-input">
-              <label for="end-range">終了位置:</label>
-              <input
-                id="end-range"
-                v-model.number="omissionRange.end"
-                type="range"
-                :min="omissionRange.start + 10"
-                :max="maxRangeValue"
-                :step="1"
-                class="range-slider"
-              />
-              <input
-                v-model.number="omissionRange.end"
-                type="number"
-                :min="omissionRange.start + 10"
-                :max="maxRangeValue"
-                class="range-number"
-              />
-            </div>
-            <div class="range-info">
-              省略部分: {{ omissionRange.end - omissionRange.start }}px ({{
-                omissionPercentage
-              }}%)
+            <div class="info-item">
+              <span class="info-label">省略範囲:</span>
+              <span class="info-value"
+                >{{ omissionRange.start }} - {{ omissionRange.end
+                }}{{
+                  omissionDirection === 'vertical' ? 'px (高さ)' : 'px (幅)'
+                }}</span
+              >
             </div>
           </div>
-        </div>
-
-        <div class="control-group">
-          <h3>波線デザイン設定</h3>
-          <div class="wave-controls">
-            <div class="wave-control">
-              <label for="wave-color">色:</label>
-              <input
-                id="wave-color"
-                v-model="waveOptions.color"
-                type="color"
-                class="color-input"
-              />
-              <input
-                v-model="waveOptions.color"
-                type="text"
-                class="color-text"
-                placeholder="#333333"
-              />
-            </div>
-            <div class="wave-control">
-              <label for="wave-thickness">太さ:</label>
-              <input
-                id="wave-thickness"
-                v-model.number="waveOptions.thickness"
-                type="range"
-                min="1"
-                max="10"
-                step="1"
-                class="range-slider"
-              />
-              <span class="value-display">{{ waveOptions.thickness }}px</span>
-            </div>
-            <div class="wave-control">
-              <label for="wave-amplitude">振幅:</label>
-              <input
-                id="wave-amplitude"
-                v-model.number="waveOptions.amplitude"
-                type="range"
-                min="5"
-                max="50"
-                step="1"
-                class="range-slider"
-              />
-              <span class="value-display">{{ waveOptions.amplitude }}px</span>
-            </div>
-            <div class="wave-control">
-              <label for="wave-frequency">周波数:</label>
-              <input
-                id="wave-frequency"
-                v-model.number="waveOptions.frequency"
-                type="range"
-                min="0.01"
-                max="0.1"
-                step="0.001"
-                class="range-slider"
-              />
-              <span class="value-display">{{
-                waveOptions.frequency.toFixed(3)
-              }}</span>
-            </div>
-            <div class="wave-control">
-              <label for="wave-margin">マージン:</label>
-              <input
-                id="wave-margin"
-                v-model.number="waveOptions.margin"
-                type="range"
-                min="0"
-                max="50"
-                step="1"
-                class="range-slider"
-              />
-              <span class="value-display">{{ waveOptions.margin }}px</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="action-group">
-          <button
-            class="generate-button"
-            :disabled="!isValidRange || isGenerating"
-            @click="generateOmittedImage"
-          >
-            {{ isGenerating ? '生成中...' : '省略画像を生成' }}
+          <button class="change-image-button" @click="resetTool">
+            別の画像を選択
           </button>
         </div>
-      </div>
 
-      <!-- プレビュー表示 -->
-      <div class="preview-display">
-        <div class="original-preview">
-          <h3>元画像</h3>
-          <img
-            :src="imageDataUrl"
-            :alt="
-              '元画像 (' +
-              originalImage.width +
-              'x' +
-              originalImage.height +
-              ')'
-            "
-            class="preview-image"
-          />
-        </div>
+        <div class="controls-section">
+          <div class="control-group">
+            <h3>省略方向設定</h3>
+            <div class="direction-controls">
+              <label class="direction-option">
+                <input
+                  v-model="omissionDirection"
+                  type="radio"
+                  value="horizontal"
+                  class="direction-radio"
+                />
+                <span class="direction-label">横方向に省略</span>
+                <span class="direction-hint">左右の部分を省略</span>
+              </label>
+              <label class="direction-option">
+                <input
+                  v-model="omissionDirection"
+                  type="radio"
+                  value="vertical"
+                  class="direction-radio"
+                />
+                <span class="direction-label">縦方向に省略</span>
+                <span class="direction-hint">上下の部分を省略</span>
+              </label>
+            </div>
+          </div>
 
-        <div v-if="omittedImageUrl" class="result-preview">
-          <h3>省略後の画像</h3>
-          <img
-            :src="omittedImageUrl"
-            alt="省略後の画像"
-            class="preview-image"
-          />
-          <div class="download-section">
-            <button class="download-button" @click="downloadResult">
-              画像をダウンロード
-            </button>
+          <div class="control-group">
+            <h3>省略範囲設定</h3>
+            <div class="range-controls">
+              <div class="range-input">
+                <label for="start-range">開始位置:</label>
+                <input
+                  id="start-range"
+                  v-model.number="omissionRange.start"
+                  type="range"
+                  :min="0"
+                  :max="maxRangeValue - 10"
+                  :step="1"
+                  class="range-slider"
+                />
+                <input
+                  v-model.number="omissionRange.start"
+                  type="number"
+                  :min="0"
+                  :max="maxRangeValue - 10"
+                  class="range-number"
+                />
+              </div>
+              <div class="range-input">
+                <label for="end-range">終了位置:</label>
+                <input
+                  id="end-range"
+                  v-model.number="omissionRange.end"
+                  type="range"
+                  :min="omissionRange.start + 10"
+                  :max="maxRangeValue"
+                  :step="1"
+                  class="range-slider"
+                />
+                <input
+                  v-model.number="omissionRange.end"
+                  type="number"
+                  :min="omissionRange.start + 10"
+                  :max="maxRangeValue"
+                  class="range-number"
+                />
+              </div>
+              <div class="range-info">
+                省略部分: {{ omissionRange.end - omissionRange.start }}px ({{
+                  omissionPercentage
+                }}%)
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h3>波線デザイン設定</h3>
+            <div class="wave-controls">
+              <div class="wave-control">
+                <label for="wave-color">色:</label>
+                <input
+                  id="wave-color"
+                  v-model="waveOptions.color"
+                  type="color"
+                  class="color-input"
+                />
+                <input
+                  v-model="waveOptions.color"
+                  type="text"
+                  class="color-text"
+                  placeholder="#333333"
+                />
+              </div>
+              <div class="wave-control">
+                <label for="wave-thickness">太さ:</label>
+                <input
+                  id="wave-thickness"
+                  v-model.number="waveOptions.thickness"
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  class="range-slider"
+                />
+                <span class="value-display">{{ waveOptions.thickness }}px</span>
+              </div>
+              <div class="wave-control">
+                <label for="wave-amplitude">振幅:</label>
+                <input
+                  id="wave-amplitude"
+                  v-model.number="waveOptions.amplitude"
+                  type="range"
+                  min="5"
+                  max="50"
+                  step="1"
+                  class="range-slider"
+                />
+                <span class="value-display">{{ waveOptions.amplitude }}px</span>
+              </div>
+              <div class="wave-control">
+                <label for="wave-frequency">周波数:</label>
+                <input
+                  id="wave-frequency"
+                  v-model.number="waveOptions.frequency"
+                  type="range"
+                  min="0.01"
+                  max="0.1"
+                  step="0.001"
+                  class="range-slider"
+                />
+                <span class="value-display">{{
+                  waveOptions.frequency.toFixed(3)
+                }}</span>
+              </div>
+              <div class="wave-control">
+                <label for="wave-blur">ぼかし強度:</label>
+                <input
+                  id="wave-blur"
+                  v-model.number="waveOptions.blurLevel"
+                  type="range"
+                  min="0"
+                  max="20"
+                  step="1"
+                  class="range-slider"
+                />
+                <span class="value-display">{{ waveOptions.blurLevel }}px</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -248,10 +316,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted, nextTick } from 'vue'
 import {
   loadImageFromFile,
-  isVerticalImage,
   validateOmissionRange,
   calculateOmissionPercentage,
   generateOmittedImage as generateOmittedImageUtil,
@@ -263,12 +330,19 @@ import {
 
 // リアクティブ変数
 const fileInput = ref<HTMLInputElement>()
+const imageContainer = ref<HTMLElement>()
 const isDragging = ref(false)
 const originalImage = ref<HTMLImageElement>()
 const imageDataUrl = ref<string>('')
 const omittedImageUrl = ref<string>('')
 const errorMessage = ref<string>('')
 const isGenerating = ref(false)
+
+// 新しい変数
+const omissionDirection = ref<'horizontal' | 'vertical'>('horizontal')
+const imageDisplaySize = ref({ width: 0, height: 0 })
+const isDraggingBar = ref(false)
+const dragTarget = ref<'start' | 'end' | null>(null)
 
 // デバウンス用のタイマー
 let debounceTimer: number | null = null
@@ -279,17 +353,16 @@ const omissionRange = ref<OmissionRange>({
   end: 150,
 })
 
-// 波線オプション
-const waveOptions = ref<WaveLineOptions>({ ...DEFAULT_WAVE_OPTIONS })
-
-// 計算プロパティ
-const isVertical = computed(() => {
-  return originalImage.value ? isVerticalImage(originalImage.value) : false
+// 波線オプション（ぼかしオプション追加）
+const waveOptions = ref<WaveLineOptions>({
+  ...DEFAULT_WAVE_OPTIONS,
+  blurLevel: 5,
 })
 
+// 計算プロパティ
 const maxRangeValue = computed(() => {
   if (!originalImage.value) return 100
-  return isVertical.value
+  return omissionDirection.value === 'vertical'
     ? originalImage.value.height
     : originalImage.value.width
 })
@@ -302,6 +375,118 @@ const isValidRange = computed(() => {
 const omissionPercentage = computed(() => {
   return calculateOmissionPercentage(omissionRange.value, maxRangeValue.value)
 })
+
+// インタラクティブバーの位置計算
+const startBarPosition = computed(() => {
+  if (!originalImage.value || imageDisplaySize.value.width === 0) return 0
+
+  const dimension =
+    omissionDirection.value === 'vertical'
+      ? imageDisplaySize.value.height
+      : imageDisplaySize.value.width
+  const maxValue =
+    omissionDirection.value === 'vertical'
+      ? originalImage.value.height
+      : originalImage.value.width
+
+  return (omissionRange.value.start / maxValue) * dimension
+})
+
+const endBarPosition = computed(() => {
+  if (!originalImage.value || imageDisplaySize.value.width === 0) return 0
+
+  const dimension =
+    omissionDirection.value === 'vertical'
+      ? imageDisplaySize.value.height
+      : imageDisplaySize.value.width
+  const maxValue =
+    omissionDirection.value === 'vertical'
+      ? originalImage.value.height
+      : originalImage.value.width
+
+  return (omissionRange.value.end / maxValue) * dimension
+})
+
+// 画像読み込み時のサイズ計算
+const onImageLoad = async () => {
+  await nextTick()
+  if (imageContainer.value) {
+    const img = imageContainer.value.querySelector('img')
+    if (img) {
+      imageDisplaySize.value = {
+        width: img.clientWidth,
+        height: img.clientHeight,
+      }
+    }
+  }
+}
+
+// ドラッグ処理
+const startDragging = (target: 'start' | 'end', event: MouseEvent) => {
+  event.preventDefault()
+  isDraggingBar.value = true
+  dragTarget.value = target
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDraggingBar.value || !imageContainer.value || !originalImage.value)
+      return
+
+    const img = imageContainer.value.querySelector('img')
+    if (!img) return
+
+    const imgRect = img.getBoundingClientRect()
+
+    let newValue: number
+
+    if (omissionDirection.value === 'vertical') {
+      const relativeY = e.clientY - imgRect.top
+      const maxValue = originalImage.value.height
+      newValue = Math.round((relativeY / img.clientHeight) * maxValue)
+    } else {
+      const relativeX = e.clientX - imgRect.left
+      const maxValue = originalImage.value.width
+      newValue = Math.round((relativeX / img.clientWidth) * maxValue)
+    }
+
+    newValue = Math.max(0, Math.min(maxRangeValue.value, newValue))
+
+    if (dragTarget.value === 'start') {
+      omissionRange.value.start = Math.min(
+        newValue,
+        omissionRange.value.end - 10
+      )
+    } else {
+      omissionRange.value.end = Math.max(
+        newValue,
+        omissionRange.value.start + 10
+      )
+    }
+  }
+
+  const handleMouseUp = () => {
+    isDraggingBar.value = false
+    dragTarget.value = null
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+  }
+
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
+
+// ツールリセット
+const resetTool = () => {
+  originalImage.value = undefined
+  imageDataUrl.value = ''
+  omittedImageUrl.value = ''
+  errorMessage.value = ''
+  imageDisplaySize.value = { width: 0, height: 0 }
+
+  // オブジェクトURLのクリーンアップ
+  if (imageDataUrl.value) {
+    URL.revokeObjectURL(imageDataUrl.value)
+  }
+}
 
 // ファイル選択のトリガー
 const triggerFileInput = () => {
@@ -343,8 +528,13 @@ const processFile = async (file: File) => {
     }
     imageDataUrl.value = URL.createObjectURL(file)
 
+    // 画像の長辺に基づいて初期方向を設定
+    omissionDirection.value =
+      image.height > image.width ? 'vertical' : 'horizontal'
+
     // 画像サイズに応じて初期の省略範囲を設定
-    const maxValue = isVertical.value ? image.height : image.width
+    const maxValue =
+      omissionDirection.value === 'vertical' ? image.height : image.width
     omissionRange.value = {
       start: Math.floor(maxValue * 0.3),
       end: Math.floor(maxValue * 0.7),
@@ -367,7 +557,7 @@ const generateOmittedImage = async () => {
       image: originalImage.value,
       range: omissionRange.value,
       waveOptions: waveOptions.value,
-      isVertical: isVertical.value,
+      isVertical: omissionDirection.value === 'vertical',
     })
 
     omittedImageUrl.value = result
@@ -403,9 +593,18 @@ const debouncedGenerateOmittedImage = () => {
 }
 
 watch(
-  [omissionRange, waveOptions],
+  [omissionRange, waveOptions, omissionDirection],
   () => {
     debouncedGenerateOmittedImage()
+  },
+  { deep: true }
+)
+
+// 画像サイズ変更の監視
+watch(
+  imageDisplaySize,
+  () => {
+    // 画像サイズが変更されたときにバー位置を再計算
   },
   { deep: true }
 )
@@ -439,7 +638,7 @@ useHead({
 
 <style scoped>
 .tool-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -499,17 +698,119 @@ useHead({
   color: #999;
 }
 
-.preview-section {
-  display: grid;
+/* 新しいメインプレビューセクション */
+.main-preview-section {
+  display: flex;
+  flex-direction: column;
   gap: 30px;
-  grid-template-columns: 1fr 1fr;
+}
+
+.large-preview {
+  width: 100%;
   margin-bottom: 30px;
+}
+
+.preview-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.interactive-preview {
+  text-align: center;
+}
+
+.interactive-preview h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+}
+
+.image-container {
+  position: relative;
+  display: inline-block;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-image-large {
+  max-width: 100%;
+  max-height: 600px;
+  display: block;
+  user-select: none;
+}
+
+.range-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.range-bar {
+  position: absolute;
+  background: #007bff;
+  cursor: grab;
+  pointer-events: all;
+  z-index: 10;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.range-bar:hover {
+  opacity: 1;
+}
+
+.range-bar:active {
+  cursor: grabbing;
+}
+
+.range-bar-start {
+  background: #28a745;
+}
+
+.range-bar-end {
+  background: #dc3545;
+}
+
+/* 横方向のバー */
+.range-bar[style*='height: 100%'] {
+  width: 3px;
+  height: 100% !important;
+}
+
+/* 縦方向のバー */
+.range-bar[style*='width: 100%'] {
+  height: 3px;
+  width: 100% !important;
+}
+
+.result-preview-large {
+  text-align: center;
+}
+
+.result-preview-large h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+}
+
+.settings-panel {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
 }
 
 .image-info {
   background: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
+  height: fit-content;
 }
 
 .image-info h3 {
@@ -521,6 +822,7 @@ useHead({
 .info-grid {
   display: grid;
   gap: 10px;
+  margin-bottom: 20px;
 }
 
 .info-item {
@@ -537,20 +839,82 @@ useHead({
   color: #333;
 }
 
+.change-image-button {
+  width: 100%;
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.change-image-button:hover {
+  background: #5a6268;
+}
+
 .controls-section {
   background: #f8f9fa;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
 }
 
 .control-group {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+}
+
+.control-group:last-child {
+  margin-bottom: 0;
 }
 
 .control-group h3 {
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   color: #333;
+  font-size: 16px;
+}
+
+.direction-controls {
+  display: grid;
+  gap: 15px;
+}
+
+.direction-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.direction-option:hover {
+  border-color: #007bff;
+  background: #f8f9fa;
+}
+
+.direction-option:has(.direction-radio:checked) {
+  border-color: #007bff;
+  background: #e7f3ff;
+}
+
+.direction-radio {
+  margin: 0;
+}
+
+.direction-label {
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+}
+
+.direction-hint {
+  font-size: 12px;
+  color: #666;
 }
 
 .range-controls {
@@ -583,11 +947,12 @@ useHead({
 
 .range-info {
   margin-top: 10px;
-  padding: 10px;
+  padding: 12px;
   background: #e9ecef;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
   color: #495057;
+  text-align: center;
 }
 
 .wave-controls {
@@ -629,66 +994,15 @@ useHead({
   text-align: center;
 }
 
-.action-group {
-  text-align: center;
-}
-
-.generate-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.generate-button:hover:not(:disabled) {
-  background: #0056b3;
-}
-
-.generate-button:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-}
-
-.preview-display {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.original-preview,
-.result-preview {
-  text-align: center;
-}
-
-.original-preview h3,
-.result-preview h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.preview-image {
-  max-width: 100%;
-  max-height: 400px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .download-section {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .download-button {
   background: #28a745;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
@@ -708,23 +1022,44 @@ useHead({
   margin-top: 15px;
 }
 
-@media (max-width: 768px) {
-  .preview-section {
+@media (max-width: 1024px) {
+  .preview-container {
     grid-template-columns: 1fr;
+    gap: 30px;
   }
 
-  .preview-display {
+  .settings-panel {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tool-content {
+    padding: 15px;
   }
 
   .range-input,
   .wave-control {
     grid-template-columns: 1fr;
-    gap: 5px;
+    gap: 8px;
   }
 
   .wave-control {
     grid-template-columns: 80px 1fr;
+  }
+
+  .direction-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .direction-label {
+    font-size: 14px;
+  }
+
+  .direction-hint {
+    font-size: 11px;
   }
 }
 </style>

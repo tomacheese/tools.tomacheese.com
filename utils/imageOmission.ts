@@ -8,6 +8,7 @@ export interface WaveLineOptions {
   amplitude: number
   frequency: number
   margin: number
+  blurLevel: number
 }
 
 export interface OmissionRange {
@@ -30,7 +31,8 @@ export const DEFAULT_WAVE_OPTIONS: WaveLineOptions = {
   thickness: 2,
   amplitude: 10,
   frequency: 0.02,
-  margin: 20,
+  margin: 0,
+  blurLevel: 5,
 }
 
 /**
@@ -59,29 +61,27 @@ export function drawWaveLine(
   ctx.beginPath()
 
   if (isVertical) {
-    // 縦長画像の場合、横方向に波線を描画
+    // 縦長画像の場合、横方向に波線を描画（端から端まで）
     const centerY = y + height / 2
-    const waveLength = width - options.margin * 2
-    const startX = x + options.margin
+    const waveLength = width
 
-    ctx.moveTo(startX, centerY)
+    ctx.moveTo(x, centerY)
 
     for (let i = 0; i <= waveLength; i++) {
-      const currentX = startX + i
+      const currentX = x + i
       const waveY =
         centerY + Math.sin(i * options.frequency) * options.amplitude
       ctx.lineTo(currentX, waveY)
     }
   } else {
-    // 横長画像の場合、縦方向に波線を描画
+    // 横長画像の場合、縦方向に波線を描画（端から端まで）
     const centerX = x + width / 2
-    const waveLength = height - options.margin * 2
-    const startY = y + options.margin
+    const waveLength = height
 
-    ctx.moveTo(centerX, startY)
+    ctx.moveTo(centerX, y)
 
     for (let i = 0; i <= waveLength; i++) {
-      const currentY = startY + i
+      const currentY = y + i
       const waveX =
         centerX + Math.sin(i * options.frequency) * options.amplitude
       ctx.lineTo(waveX, currentY)
@@ -133,7 +133,7 @@ export function generateOmittedImage(
       if (isVertical) {
         // 縦長画像の処理
         const omittedHeight = range.end - range.start
-        const waveHeight = Math.max(50, Math.min(omittedHeight, 100)) // 波線の高さを適切に設定
+        const waveHeight = Math.max(50, Math.min(omittedHeight, 100))
 
         canvas.width = image.width
         canvas.height = image.height - omittedHeight + waveHeight
@@ -150,6 +150,28 @@ export function generateOmittedImage(
           image.width,
           range.start
         )
+
+        // 省略部分にぼかした背景を描画
+        if (waveOptions.blurLevel > 0) {
+          // 省略範囲の中央部分を取得してぼかし
+          const blurSourceY =
+            range.start + (range.end - range.start) / 2 - waveHeight / 2
+
+          // 元画像の一部を描画してぼかし効果をシミュレート
+          ctx.globalAlpha = 0.7 // 透明度を下げて「ぼかし」効果をシミュレート
+          ctx.drawImage(
+            image,
+            0,
+            Math.max(0, blurSourceY),
+            image.width,
+            waveHeight,
+            0,
+            range.start,
+            image.width,
+            waveHeight
+          )
+          ctx.globalAlpha = 1.0 // 透明度を元に戻す
+        }
 
         // 波線を描画
         drawWaveLine(
@@ -181,7 +203,7 @@ export function generateOmittedImage(
       } else {
         // 横長画像の処理
         const omittedWidth = range.end - range.start
-        const waveWidth = Math.max(50, Math.min(omittedWidth, 100)) // 波線の幅を適切に設定
+        const waveWidth = Math.max(50, Math.min(omittedWidth, 100))
 
         canvas.width = image.width - omittedWidth + waveWidth
         canvas.height = image.height
@@ -198,6 +220,28 @@ export function generateOmittedImage(
           range.start,
           image.height
         )
+
+        // 省略部分にぼかした背景を描画
+        if (waveOptions.blurLevel > 0) {
+          // 省略範囲の中央部分を取得してぼかし
+          const blurSourceX =
+            range.start + (range.end - range.start) / 2 - waveWidth / 2
+
+          // 元画像の一部を描画してぼかし効果をシミュレート
+          ctx.globalAlpha = 0.7 // 透明度を下げて「ぼかし」効果をシミュレート
+          ctx.drawImage(
+            image,
+            Math.max(0, blurSourceX),
+            0,
+            waveWidth,
+            image.height,
+            range.start,
+            0,
+            waveWidth,
+            image.height
+          )
+          ctx.globalAlpha = 1.0 // 透明度を元に戻す
+        }
 
         // 波線を描画
         drawWaveLine(
