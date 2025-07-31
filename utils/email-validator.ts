@@ -125,7 +125,7 @@ export function validateEmail(
   }
 
   // @の存在チェック
-  const atCount = (normalized.match(/@/g) || []).length
+  const atCount = (normalized.match(/@/g) ?? []).length
   if (atCount === 0) {
     return {
       original,
@@ -348,8 +348,8 @@ export function generateEmailValidationCSV(
       `"${result.normalized}"`,
       result.isValid ? '有効' : '無効',
       `"${result.reason}"`,
-      `"${result.localPart || ''}"`,
-      `"${result.domain || ''}"`,
+      `"${result.localPart ?? ''}"`,
+      `"${result.domain ?? ''}"`,
     ]
     csvLines.push(row.join(','))
   }

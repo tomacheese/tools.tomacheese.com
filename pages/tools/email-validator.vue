@@ -345,11 +345,11 @@ const options = reactive<EmailValidationOptions>({
 
 // 計算済みプロパティ
 const validEmails = computed(() => {
-  return result.value?.results.filter(r => r.isValid) || []
+  return result.value?.results.filter(r => r.isValid) ?? []
 })
 
 const invalidEmails = computed(() => {
-  return result.value?.results.filter(r => !r.isValid) || []
+  return result.value?.results.filter(r => !r.isValid) ?? []
 })
 
 const shouldShowDuplicatesTab = computed(() => {

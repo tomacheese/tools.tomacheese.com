@@ -76,8 +76,11 @@ describe('email-validator', () => {
       })
 
       it('null または undefined', () => {
-        const result1 = validateEmail(null as any, defaultOptions)
-        const result2 = validateEmail(undefined as any, defaultOptions)
+        const result1 = validateEmail(null as unknown as string, defaultOptions)
+        const result2 = validateEmail(
+          undefined as unknown as string,
+          defaultOptions
+        )
         expect(result1.isValid).toBe(false)
         expect(result2.isValid).toBe(false)
       })
@@ -300,8 +303,8 @@ describe('email-validator', () => {
 
     it('空文字列やnullを処理する', () => {
       expect(extractEmailsFromText('')).toEqual([])
-      expect(extractEmailsFromText(null as any)).toEqual([])
-      expect(extractEmailsFromText(undefined as any)).toEqual([])
+      expect(extractEmailsFromText(null as unknown as string)).toEqual([])
+      expect(extractEmailsFromText(undefined as unknown as string)).toEqual([])
     })
 
     it('空行や空白のみの行を除去する', () => {
