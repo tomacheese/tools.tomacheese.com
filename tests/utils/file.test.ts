@@ -49,9 +49,15 @@ describe('file utils', () => {
       global.FileReader = vi.fn().mockImplementation(() => ({
         readAsText: vi.fn(function (this: FileReader) {
           // onerror を即座に呼び出す
-          setTimeout(() => this.onerror(), 0)
+          setTimeout(
+            () =>
+              this.onerror?.(
+                new ProgressEvent('error') as ProgressEvent<FileReader>
+              ),
+            0
+          )
         }),
-      })) as unknown as { new (): FileReader }
+      })) as unknown as typeof FileReader
 
       await expect(readTextFile(file)).rejects.toThrow(
         'ファイルの読み込みに失敗しました'
