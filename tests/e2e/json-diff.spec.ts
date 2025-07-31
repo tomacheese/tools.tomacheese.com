@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('JSON差分比較ツール', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/tools/json-diff')
+    // CSR完了まで待機
+    await page.waitForSelector('h1', { timeout: 15000 })
   })
 
   test('ページが正しく表示される', async ({ page }) => {
