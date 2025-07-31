@@ -354,7 +354,7 @@ describe('imageOmission ユーティリティ', () => {
       expect(result).toBe('data:image/png;base64,test')
       expect(mockCanvas.width).toBe(200)
       expect(mockCanvas.height).toBe(300) // 300 - 100 + 100 = 300
-      expect(mockContext.drawImage).toHaveBeenCalledTimes(3) // 上部分 + ぼかし部分 + 下部分
+      expect(mockContext.drawImage).toHaveBeenCalledTimes(4) // 上部分 + ぼかし上部分 + ぼかし下部分 + 下部分
     })
 
     it('横長画像の省略処理が正常に動作する', async () => {
@@ -375,7 +375,7 @@ describe('imageOmission ユーティリティ', () => {
       expect(result).toBe('data:image/png;base64,test')
       expect(mockCanvas.width).toBe(300) // 300 - 100 + 100 = 300
       expect(mockCanvas.height).toBe(200)
-      expect(mockContext.drawImage).toHaveBeenCalledTimes(3) // 左部分 + ぼかし部分 + 右部分
+      expect(mockContext.drawImage).toHaveBeenCalledTimes(4) // 左部分 + ぼかし左部分 + ぼかし右部分 + 右部分
     })
   })
 })

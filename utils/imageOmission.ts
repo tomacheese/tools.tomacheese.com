@@ -153,24 +153,35 @@ export function generateOmittedImage(
 
         // 省略部分にぼかした背景を描画
         if (waveOptions.blurLevel > 0) {
-          // 省略範囲の中央部分を取得してぼかし
-          const blurSourceY =
-            range.start + (range.end - range.start) / 2 - waveHeight / 2
-
-          // 元画像の一部を描画してぼかし効果をシミュレート
-          ctx.globalAlpha = 0.7 // 透明度を下げて「ぼかし」効果をシミュレート
+          // 上側の画像を描画（ぼかしありで自然な繋がり）
+          const topBlurHeight = Math.min(waveHeight / 2, 30)
+          ctx.filter = `blur(${waveOptions.blurLevel}px)`
           ctx.drawImage(
             image,
             0,
-            Math.max(0, blurSourceY),
+            Math.max(0, range.start - topBlurHeight),
             image.width,
-            waveHeight,
+            topBlurHeight,
             0,
             range.start,
             image.width,
-            waveHeight
+            topBlurHeight
           )
-          ctx.globalAlpha = 1.0 // 透明度を元に戻す
+
+          // 下側の画像を描画（ぼかしありで自然な繋がり）
+          const bottomBlurHeight = waveHeight - topBlurHeight
+          ctx.drawImage(
+            image,
+            0,
+            range.end,
+            image.width,
+            Math.min(bottomBlurHeight, image.height - range.end),
+            0,
+            range.start + topBlurHeight,
+            image.width,
+            bottomBlurHeight
+          )
+          ctx.filter = 'none' // フィルターをリセット
         }
 
         // 波線を描画
@@ -223,24 +234,35 @@ export function generateOmittedImage(
 
         // 省略部分にぼかした背景を描画
         if (waveOptions.blurLevel > 0) {
-          // 省略範囲の中央部分を取得してぼかし
-          const blurSourceX =
-            range.start + (range.end - range.start) / 2 - waveWidth / 2
-
-          // 元画像の一部を描画してぼかし効果をシミュレート
-          ctx.globalAlpha = 0.7 // 透明度を下げて「ぼかし」効果をシミュレート
+          // 左側の画像を描画（ぼかしありで自然な繋がり）
+          const leftBlurWidth = Math.min(waveWidth / 2, 30)
+          ctx.filter = `blur(${waveOptions.blurLevel}px)`
           ctx.drawImage(
             image,
-            Math.max(0, blurSourceX),
+            Math.max(0, range.start - leftBlurWidth),
             0,
-            waveWidth,
+            leftBlurWidth,
             image.height,
             range.start,
             0,
-            waveWidth,
+            leftBlurWidth,
             image.height
           )
-          ctx.globalAlpha = 1.0 // 透明度を元に戻す
+
+          // 右側の画像を描画（ぼかしありで自然な繋がり）
+          const rightBlurWidth = waveWidth - leftBlurWidth
+          ctx.drawImage(
+            image,
+            range.end,
+            0,
+            Math.min(rightBlurWidth, image.width - range.end),
+            image.height,
+            range.start + leftBlurWidth,
+            0,
+            rightBlurWidth,
+            image.height
+          )
+          ctx.filter = 'none' // フィルターをリセット
         }
 
         // 波線を描画

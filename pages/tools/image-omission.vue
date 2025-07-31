@@ -77,6 +77,7 @@
                     top: '0px',
                   }"
                   @mousedown="startDragging('start', $event)"
+                  @touchstart="startDragging('start', $event)"
                 ></div>
                 <div
                   v-if="omissionDirection === 'horizontal'"
@@ -87,6 +88,7 @@
                     top: '0px',
                   }"
                   @mousedown="startDragging('end', $event)"
+                  @touchstart="startDragging('end', $event)"
                 ></div>
                 <div
                   v-if="omissionDirection === 'vertical'"
@@ -97,6 +99,7 @@
                     left: '0px',
                   }"
                   @mousedown="startDragging('start', $event)"
+                  @touchstart="startDragging('start', $event)"
                 ></div>
                 <div
                   v-if="omissionDirection === 'vertical'"
@@ -107,6 +110,7 @@
                     left: '0px',
                   }"
                   @mousedown="startDragging('end', $event)"
+                  @touchstart="startDragging('end', $event)"
                 ></div>
               </div>
             </div>
@@ -184,6 +188,12 @@
           <div class="control-group">
             <h3>省略範囲設定</h3>
             <div class="range-controls">
+              <div class="mobile-friendly-message">
+                <p>
+                  📱
+                  タッチデバイスでは画像上のバーをドラッグするか、下記のスライダーで調整できます
+                </p>
+              </div>
               <div class="range-input">
                 <label for="start-range">開始位置:</label>
                 <input
@@ -421,13 +431,25 @@ const onImageLoad = async () => {
   }
 }
 
-// ドラッグ処理
-const startDragging = (target: 'start' | 'end', event: MouseEvent) => {
+// ドラッグ処理（マウス・タッチ対応）
+const startDragging = (
+  target: 'start' | 'end',
+  event: MouseEvent | TouchEvent
+) => {
   event.preventDefault()
   isDraggingBar.value = true
   dragTarget.value = target
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const getClientPosition = (e: MouseEvent | TouchEvent) => {
+    if (e instanceof MouseEvent) {
+      return { clientX: e.clientX, clientY: e.clientY }
+    } else {
+      const touch = e.touches[0] || e.changedTouches[0]
+      return { clientX: touch.clientX, clientY: touch.clientY }
+    }
+  }
+
+  const handleMove = (e: MouseEvent | TouchEvent) => {
     if (!isDraggingBar.value || !imageContainer.value || !originalImage.value)
       return
 
@@ -435,15 +457,16 @@ const startDragging = (target: 'start' | 'end', event: MouseEvent) => {
     if (!img) return
 
     const imgRect = img.getBoundingClientRect()
+    const { clientX, clientY } = getClientPosition(e)
 
     let newValue: number
 
     if (omissionDirection.value === 'vertical') {
-      const relativeY = e.clientY - imgRect.top
+      const relativeY = clientY - imgRect.top
       const maxValue = originalImage.value.height
       newValue = Math.round((relativeY / img.clientHeight) * maxValue)
     } else {
-      const relativeX = e.clientX - imgRect.left
+      const relativeX = clientX - imgRect.left
       const maxValue = originalImage.value.width
       newValue = Math.round((relativeX / img.clientWidth) * maxValue)
     }
@@ -463,15 +486,25 @@ const startDragging = (target: 'start' | 'end', event: MouseEvent) => {
     }
   }
 
-  const handleMouseUp = () => {
+  const handleEnd = () => {
     isDraggingBar.value = false
     dragTarget.value = null
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
+    // マウスイベントのクリーンアップ
+    document.removeEventListener('mousemove', handleMove as EventListener)
+    document.removeEventListener('mouseup', handleEnd)
+    // タッチイベントのクリーンアップ
+    document.removeEventListener('touchmove', handleMove as EventListener)
+    document.removeEventListener('touchend', handleEnd)
   }
 
-  document.addEventListener('mousemove', handleMouseMove)
-  document.addEventListener('mouseup', handleMouseUp)
+  // マウスイベント
+  document.addEventListener('mousemove', handleMove as EventListener)
+  document.addEventListener('mouseup', handleEnd)
+  // タッチイベント
+  document.addEventListener('touchmove', handleMove as EventListener, {
+    passive: false,
+  })
+  document.addEventListener('touchend', handleEnd)
 }
 
 // ツールリセット
@@ -922,6 +955,21 @@ useHead({
   gap: 15px;
 }
 
+.mobile-friendly-message {
+  background: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 20px;
+}
+
+.mobile-friendly-message p {
+  margin: 0;
+  font-size: 14px;
+  color: #1976d2;
+  line-height: 1.4;
+}
+
 .range-input {
   display: grid;
   grid-template-columns: 100px 1fr 80px;
@@ -1060,6 +1108,32 @@ useHead({
 
   .direction-hint {
     font-size: 11px;
+  }
+
+  .mobile-friendly-message {
+    background: #e8f5e8;
+    border-color: #c3e6c3;
+  }
+
+  .mobile-friendly-message p {
+    color: #2e7d32;
+    font-size: 13px;
+  }
+
+  /* タッチデバイスでのバーサイズ調整 */
+  .range-bar {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .range-bar[style*='height: 100%'] {
+    width: 8px !important;
+    min-width: 44px;
+  }
+
+  .range-bar[style*='width: 100%'] {
+    height: 8px !important;
+    min-height: 44px;
   }
 }
 </style>
