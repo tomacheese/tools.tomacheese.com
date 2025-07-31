@@ -90,12 +90,14 @@ another-valid@test.org`
     page,
     browserName,
   }) => {
-    // Grant clipboard permissions (skip clipboard-read for Firefox as it's not supported)
-    const permissions =
-      browserName === 'firefox'
-        ? ['clipboard-write']
-        : ['clipboard-read', 'clipboard-write']
-    await page.context().grantPermissions(permissions)
+    // Skip clipboard test for Firefox due to permission limitations
+    test.skip(
+      browserName === 'firefox',
+      'Clipboard API not fully supported in Firefox'
+    )
+
+    // Grant clipboard permissions for Chromium/WebKit
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
 
     const emails = `valid1@example.com
 invalid@
