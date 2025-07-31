@@ -74,14 +74,18 @@ test.describe('画像省略ツール', () => {
     await page.goto('/')
     await expect(page.locator('h1')).toContainText('便利なWebツール集')
 
-    // ツール一覧で画像省略ツールを見つける
-    await expect(page.locator('text=画像省略ツール')).toBeVisible()
+    // ツール一覧で画像省略ツールを見つける（リンクを特定）
+    await expect(
+      page.getByRole('link', { name: '画像省略ツール' })
+    ).toBeVisible()
   })
 
   test('ツールがカテゴリに正しく分類される', async ({ page }) => {
     await page.goto('/')
 
-    // 画像省略ツールがツール一覧に表示されることを確認
-    await expect(page.locator('text=画像省略ツール')).toBeVisible()
+    // 画像省略ツールがツール一覧に表示されることを確認（リンクを特定）
+    await expect(
+      page.getByRole('link', { name: '画像省略ツール' })
+    ).toBeVisible()
   })
 })
