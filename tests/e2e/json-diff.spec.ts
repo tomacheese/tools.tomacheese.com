@@ -247,7 +247,7 @@ test.describe('JSON差分比較ツール', () => {
     await page.getByRole('button', { name: '差分比較' }).click()
 
     // 結果が表示されるまで待機
-    await expect(page.locator('.result')).toBeVisible()
+    await expect(page.locator('.results')).toBeVisible()
 
     // 統計情報でunchanged = 1が表示されることを確認
     await expect(page.locator('.stat-unchanged .stat-value')).toContainText('1')
