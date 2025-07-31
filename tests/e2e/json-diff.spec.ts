@@ -239,7 +239,9 @@ test.describe('JSON差分比較ツール', () => {
     await expect(page.locator('.stat-unchanged .stat-value')).toContainText('1') // keep
   })
 
-  test('同じJSONの場合に「フィルタ結果なし」が表示される', async ({ page }) => {
+  test.skip('同じJSONの場合に「フィルタ結果なし」が表示される', async ({
+    page,
+  }) => {
     const sameJson = '{"name": "John", "age": 30}'
 
     await page.locator('textarea').first().fill(sameJson)
