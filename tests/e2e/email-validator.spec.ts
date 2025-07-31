@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('Email Validator', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/tools/email-validator')
+    // CSR完了まで待機
+    await page.waitForSelector('h1', { timeout: 15000 })
   })
 
   test('should display the email validator page', async ({ page }) => {

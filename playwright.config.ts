@@ -120,7 +120,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm dev',
+    command: 'pnpm generate && npx serve .output/public -l 3000 -s',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI, // ローカルでは既存サーバーを再利用、CIでは新しいサーバーを起動
     timeout: process.env.CI ? 600 * 1000 : 300 * 1000, // CI環境でのタイムアウトを10分に増加、ローカルは5分に
