@@ -235,15 +235,12 @@ export function generateOmittedImage(
         // 重複を避けるため、波線幅以上のマージンを確保
         const margin = Math.max(waveHeight, 20)
 
-        // 上半分：省略範囲より前の画像部分を使用（完全に外側から）
+        // 上半分：省略範囲終了直前の画像部分を使用
         const topSourceHeight = topHalfHeight
-        const topSourceStart = Math.max(
-          0,
-          range.start - margin - topSourceHeight
-        )
+        const topSourceStart = Math.max(0, range.end - margin - topSourceHeight)
         if (
           topSourceStart >= 0 &&
-          topSourceStart + topSourceHeight <= range.start - margin
+          topSourceStart + topSourceHeight <= range.end - margin
         ) {
           blurCtx.drawImage(
             image,
@@ -258,14 +255,14 @@ export function generateOmittedImage(
           )
         } else {
           // フォールバック：利用可能な上部画像を使用
-          const availableTop = Math.max(0, range.start - margin)
+          const availableTop = Math.max(0, range.end - margin)
           if (availableTop > 0) {
             blurCtx.drawImage(
               image,
               0,
-              0,
+              Math.max(0, availableTop - topSourceHeight),
               image.width,
-              availableTop,
+              Math.min(topSourceHeight, availableTop),
               0,
               0,
               image.width,
@@ -274,15 +271,12 @@ export function generateOmittedImage(
           }
         }
 
-        // 下半分：省略範囲より後の画像部分を使用（完全に外側から）
+        // 下半分：省略範囲開始直後の画像部分を使用
         const bottomSourceHeight = bottomHalfHeight
-        const bottomSourceStart = Math.min(
-          image.height - bottomSourceHeight,
-          range.end + margin
-        )
+        const bottomSourceStart = range.start + margin
         if (
-          bottomSourceStart >= range.end + margin &&
-          bottomSourceStart + bottomSourceHeight <= image.height
+          bottomSourceStart >= range.start + margin &&
+          bottomSourceStart + bottomSourceHeight <= range.end - margin
         ) {
           blurCtx.drawImage(
             image,
@@ -297,21 +291,22 @@ export function generateOmittedImage(
           )
         } else {
           // フォールバック：利用可能な下部画像を使用
-          const availableBottomStart = range.end + margin
+          const availableBottomStart = range.start + margin
+          const availableBottomEnd = range.end - margin
           const availableBottomHeight = Math.max(
             0,
-            image.height - availableBottomStart
+            availableBottomEnd - availableBottomStart
           )
           if (
             availableBottomHeight > 0 &&
-            availableBottomStart < image.height
+            availableBottomStart < availableBottomEnd
           ) {
             blurCtx.drawImage(
               image,
               0,
               availableBottomStart,
               image.width,
-              availableBottomHeight,
+              Math.min(bottomSourceHeight, availableBottomHeight),
               0,
               topHalfHeight,
               image.width,
@@ -401,15 +396,15 @@ export function generateOmittedImage(
         // 重複を避けるため、波線幅以上のマージンを確保
         const margin = Math.max(waveWidth, 20)
 
-        // 左半分：省略範囲より前の画像部分を使用（完全に外側から）
+        // 左半分：省略範囲終了直前の画像部分を使用
         const leftSourceWidth = leftHalfWidth
         const leftSourceStart = Math.max(
           0,
-          range.start - margin - leftSourceWidth
+          range.end - margin - leftSourceWidth
         )
         if (
           leftSourceStart >= 0 &&
-          leftSourceStart + leftSourceWidth <= range.start - margin
+          leftSourceStart + leftSourceWidth <= range.end - margin
         ) {
           blurCtx.drawImage(
             image,
@@ -424,13 +419,13 @@ export function generateOmittedImage(
           )
         } else {
           // フォールバック：利用可能な左部画像を使用
-          const availableLeft = Math.max(0, range.start - margin)
+          const availableLeft = Math.max(0, range.end - margin)
           if (availableLeft > 0) {
             blurCtx.drawImage(
               image,
+              Math.max(0, availableLeft - leftSourceWidth),
               0,
-              0,
-              availableLeft,
+              Math.min(leftSourceWidth, availableLeft),
               image.height,
               0,
               0,
@@ -440,15 +435,12 @@ export function generateOmittedImage(
           }
         }
 
-        // 右半分：省略範囲より後の画像部分を使用（完全に外側から）
+        // 右半分：省略範囲開始直後の画像部分を使用
         const rightSourceWidth = rightHalfWidth
-        const rightSourceStart = Math.min(
-          image.width - rightSourceWidth,
-          range.end + margin
-        )
+        const rightSourceStart = range.start + margin
         if (
-          rightSourceStart >= range.end + margin &&
-          rightSourceStart + rightSourceWidth <= image.width
+          rightSourceStart >= range.start + margin &&
+          rightSourceStart + rightSourceWidth <= range.end - margin
         ) {
           blurCtx.drawImage(
             image,
@@ -463,17 +455,21 @@ export function generateOmittedImage(
           )
         } else {
           // フォールバック：利用可能な右部画像を使用
-          const availableRightStart = range.end + margin
+          const availableRightStart = range.start + margin
+          const availableRightEnd = range.end - margin
           const availableRightWidth = Math.max(
             0,
-            image.width - availableRightStart
+            availableRightEnd - availableRightStart
           )
-          if (availableRightWidth > 0 && availableRightStart < image.width) {
+          if (
+            availableRightWidth > 0 &&
+            availableRightStart < availableRightEnd
+          ) {
             blurCtx.drawImage(
               image,
               availableRightStart,
               0,
-              availableRightWidth,
+              Math.min(rightSourceWidth, availableRightWidth),
               image.height,
               leftHalfWidth,
               0,
