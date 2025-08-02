@@ -8,6 +8,7 @@ import {
   downloadOmittedImage,
   drawWaveLine,
   generateOmittedImage,
+  extractDominantColor,
   type WaveLineOptions,
   type OmissionRange,
 } from '../../utils/imageOmission'
@@ -78,12 +79,25 @@ describe('imageOmission ユーティリティ', () => {
     it('デフォルト値が正しく設定されている', () => {
       expect(DEFAULT_WAVE_OPTIONS).toEqual({
         color: '#333333',
-        thickness: 2,
-        amplitude: 10,
+        thickness: 5,
+        amplitude: 15,
         frequency: 0.02,
         margin: 0,
         blurLevel: 10,
       })
+    })
+  })
+
+  describe('extractDominantColor', () => {
+    it('Canvas APIが利用できない環境ではデフォルト色を返す', () => {
+      const img = new Image()
+      img.width = 100
+      img.height = 100
+
+      const result = extractDominantColor(img)
+
+      // Canvas APIが限定的な環境では、デフォルト色が返される
+      expect(result).toBe('#333333')
     })
   })
 

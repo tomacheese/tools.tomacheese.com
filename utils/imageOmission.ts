@@ -28,11 +28,80 @@ export interface ImageOmissionOptions {
  */
 export const DEFAULT_WAVE_OPTIONS: WaveLineOptions = {
   color: '#333333',
-  thickness: 2,
-  amplitude: 10,
+  thickness: 5,
+  amplitude: 15,
   frequency: 0.02,
   margin: 0,
   blurLevel: 10,
+}
+
+/**
+ * 画像から主要色を抽出する関数
+ */
+export function extractDominantColor(image: HTMLImageElement): string {
+  try {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return '#333333'
+
+    // サンプリング用の小さなサイズに設定（パフォーマンス向上）
+    const sampleSize = 100
+    canvas.width = sampleSize
+    canvas.height = sampleSize
+
+    // 画像を描画
+    ctx.drawImage(image, 0, 0, sampleSize, sampleSize)
+
+    // 画像データを取得
+    const imageData = ctx.getImageData(0, 0, sampleSize, sampleSize)
+    const data = imageData.data
+
+    // 色の出現回数をカウント
+    const colorCounts: { [key: string]: number } = {}
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i]
+      const g = data[i + 1]
+      const b = data[i + 2]
+      const alpha = data[i + 3]
+
+      // 透明度が低い場合はスキップ
+      if (alpha < 128) continue
+
+      // 色を8段階に量子化して似た色をまとめる
+      const quantizedR = Math.floor(r / 32) * 32
+      const quantizedG = Math.floor(g / 32) * 32
+      const quantizedB = Math.floor(b / 32) * 32
+
+      const colorKey = `${quantizedR},${quantizedG},${quantizedB}`
+      colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1
+    }
+
+    // 最も出現回数の多い色を取得
+    let dominantColor = '96,96,96' // デフォルト色
+    let maxCount = 0
+
+    for (const [color, count] of Object.entries(colorCounts)) {
+      if (count > maxCount) {
+        maxCount = count
+        dominantColor = color
+      }
+    }
+
+    // RGB値を取得し、70%に調整（読みやすい暗色に変換）
+    const [r, g, b] = dominantColor.split(',').map(Number)
+    const darkenedR = Math.floor(r * 0.7)
+    const darkenedG = Math.floor(g * 0.7)
+    const darkenedB = Math.floor(b * 0.7)
+
+    // 16進数に変換
+    const toHex = (value: number) => value.toString(16).padStart(2, '0')
+    return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`
+  } catch (error: unknown) {
+    // Canvas APIが利用できない場合やエラーが発生した場合はデフォルト色を返す
+    console.warn('Failed to extract dominant color from image:', error)
+    return '#333333'
+  }
 }
 
 /**

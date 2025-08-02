@@ -341,6 +341,7 @@ import {
   calculateOmissionPercentage,
   generateOmittedImage as generateOmittedImageUtil,
   downloadOmittedImage,
+  extractDominantColor,
   DEFAULT_WAVE_OPTIONS,
   type WaveLineOptions,
   type OmissionRange,
@@ -580,6 +581,10 @@ const processFile = async (file: File) => {
       start: Math.floor(maxValue * 0.3),
       end: Math.floor(maxValue * 0.7),
     }
+
+    // 画像の主要色を自動判定して波線の色に設定
+    const dominantColor = extractDominantColor(image)
+    waveOptions.value.color = dominantColor
   } catch (error) {
     errorMessage.value =
       error instanceof Error ? error.message : '画像の読み込みに失敗しました'
