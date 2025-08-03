@@ -219,6 +219,15 @@ export const useTools = () => {
       keywords: ['html', 'エンティティ', 'エンコード', '特殊文字'],
     },
     {
+      id: 'image-omission',
+      name: '画像省略ツール',
+      description:
+        '縦長・横長画像の指定部分を省略し、波線で省略を表現した画像を生成します。',
+      path: '/tools/image-omission',
+      category: 'デザイン',
+      keywords: ['画像', '省略', '波線', '縦長', '横長', 'リサイズ', '編集'],
+    },
+    {
       id: 'image-resizer',
       name: '画像リサイズ',
       description: '画像のサイズを変更・リサイズします。',
