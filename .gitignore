@@ -50,3 +50,6 @@ Thumbs.db
 # Package manager lockfiles (keep pnpm-lock.yaml only)
 package-lock.json
 yarn.lock
+
+# Serena (MCP server) files
+.serena/
