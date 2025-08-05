@@ -99,6 +99,7 @@ export function extractDominantColor(image: HTMLImageElement): string {
     return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`
   } catch (error: unknown) {
     // Canvas APIが利用できない場合やエラーが発生した場合はデフォルト色を返す
+    // eslint-disable-next-line no-console
     console.warn('Failed to extract dominant color from image:', error)
     return '#333333'
   }

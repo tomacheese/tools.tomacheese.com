@@ -76,6 +76,7 @@ export default defineConfig({
             '**/image-to-base64.spec.ts',
             '**/js-minifier.spec.ts',
             '**/json-to-csv.spec.ts',
+            '**/json-diff.spec.ts',
             '**/qr-generator.spec.ts',
             '**/qr-reader.spec.ts',
             '**/timestamp-converter.spec.ts',

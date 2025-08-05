@@ -3,7 +3,6 @@ import {
   removeDuplicateLines,
   removeDuplicateLinesAsync,
 } from '~/utils/duplicate-remover'
-import { readTextFile, downloadTextFile } from '~/utils/file'
 
 describe('removeDuplicateLines', () => {
   describe('基本的な重複削除', () => {
@@ -221,22 +220,6 @@ describe('removeDuplicateLinesAsync', () => {
 
     expect(result.text).toBe('line1\nline2\nline3')
     expect(progressCalled).toBe(true)
-  })
-})
-
-describe('readTextFile', () => {
-  it('FileReaderのモック', () => {
-    // Note: 実際のブラウザ環境でのテストが必要
-    // ここではインターフェースの確認のみ
-    expect(typeof readTextFile).toBe('function')
-  })
-})
-
-describe('downloadTextFile', () => {
-  it('DOM操作のモック', () => {
-    // Note: 実際のブラウザ環境でのテストが必要
-    // ここではインターフェースの確認のみ
-    expect(typeof downloadTextFile).toBe('function')
   })
 })
 
