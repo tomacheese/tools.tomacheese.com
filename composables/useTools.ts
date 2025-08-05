@@ -500,6 +500,23 @@ export const useTools = () => {
       category: 'Web開発',
       keywords: ['cron', 'スケジュール', 'ジョブ', '設定'],
     },
+    {
+      id: 'email-validator',
+      name: 'メールアドレス検証・フォーマット',
+      description:
+        'メールアドレスの形式検証、正規化、一括処理を行います。重複検出やCSV出力にも対応。',
+      path: '/tools/email-validator',
+      category: 'セキュリティ',
+      keywords: [
+        'メール検証',
+        'メールアドレス',
+        'バリデーション',
+        '正規化',
+        '一括処理',
+        'CSV出力',
+        '重複検出',
+      ],
+    },
   ]
 
   const getAllTools = () => tools

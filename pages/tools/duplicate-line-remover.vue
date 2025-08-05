@@ -182,11 +182,10 @@ import { ref, reactive } from 'vue'
 import {
   removeDuplicateLines,
   removeDuplicateLinesAsync,
-  readTextFile,
-  downloadTextFile,
   type DuplicateRemovalOptions,
   type DuplicateRemovalResult,
 } from '~/utils/duplicate-remover'
+import { readTextFile, downloadTextFile } from '~/utils/file'
 
 // メタデータ設定
 definePageMeta({
