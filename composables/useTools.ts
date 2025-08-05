@@ -19,6 +19,27 @@ export const useTools = () => {
       keywords: ['カラー', '色', 'hex', 'rgb', 'hsl', 'デザイン'],
     },
     {
+      id: 'color-palette-generator',
+      name: 'カラーパレット生成',
+      description:
+        'テーマカラーから調和する色彩パレットを生成します。補色、類似色、三色配色など色彩理論に基づいた配色を自動生成できます。',
+      path: '/tools/color-palette-generator',
+      category: 'デザイン',
+      keywords: [
+        'カラーパレット',
+        '配色',
+        '色彩理論',
+        '補色',
+        '類似色',
+        '三色配色',
+        '四色配色',
+        '単色配色',
+        'デザイン',
+        'アクセシビリティ',
+        'WCAG',
+      ],
+    },
+    {
       id: 'character-counter',
       name: '文字数カウンター',
       description: 'テキストの文字数、行数、バイト数を瞬時にカウントします。',
@@ -196,6 +217,15 @@ export const useTools = () => {
       path: '/tools/html-encoder',
       category: 'Web開発',
       keywords: ['html', 'エンティティ', 'エンコード', '特殊文字'],
+    },
+    {
+      id: 'image-omission',
+      name: '画像省略ツール',
+      description:
+        '縦長・横長画像の指定部分を省略し、波線で省略を表現した画像を生成します。',
+      path: '/tools/image-omission',
+      category: 'デザイン',
+      keywords: ['画像', '省略', '波線', '縦長', '横長', 'リサイズ', '編集'],
     },
     {
       id: 'image-resizer',
