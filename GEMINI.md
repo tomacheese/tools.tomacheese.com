@@ -8,128 +8,86 @@ tools.tomacheese.com は、Nuxt.js v3 で構築されたプライバシー重視
 
 ### 技術スタック
 
-- **フレームワーク**: Nuxt.js v3 (3.17.7)
-- **言語**: TypeScript
+- **フレームワーク**: Nuxt.js v3.17.7 (SSR無効)
+- **言語**: TypeScript（厳格な型チェック）
 - **パッケージマネージャー**: pnpm 10.13.1
-- **Node.js**: v20.15.1 以上
-- **スタイリング**: カスタム CSS（レスポンシブ対応）
-- **テスト**: Vitest（単体テスト）+ Playwright（E2E テスト）
+- **Node.js**: v24.4.1
+- **テスト**: Vitest（単体）+ Playwright（E2E）
+- **スタイリング**: Tailwind CSS + カスタムCSS
+- **Lint**: ESLint + Prettier
 
 ## 基本理念
 
 ### プライバシーファースト
 
-- **100% クライアントサイド**: すべてのツールは外部 API を使用せずブラウザ内で動作する必要があります
-- **データ送信禁止**: ユーザーのデータをサーバーに送信してはいけません
-- **ローカル処理**: すべての計算・変換・処理はブラウザ内で完結させてください
+- **100%クライアントサイド**: 外部API使用禁止、ブラウザ内完結処理
+- **データ送信禁止**: ユーザーデータのサーバー送信は一切禁止
+- **ローカル処理**: 計算・変換・暗号化すべてブラウザ内で実行
 
-### セキュリティ要件
+### 品質・セキュリティ要件
 
-- **外部通信禁止**: API コール、データ送信の禁止
-- **ローカルストレージ**: 必要最小限の使用
-- **XSS 対策**: ユーザー入力の適切なサニタイズ
-- **暗号化**: 必要に応じてクライアントサイド暗号化
-- **履歴削除**: ブラウザ履歴にセンシティブデータを残さない
-
-### コミュニケーション要件
-
-- **Issue タイトル**: 日本語で記述
-- **Issue 本文**: 日本語で記述
-- **PR 本文**: 日本語で記述
-- **PR タイトル**: 日本語で記述（Conventional Commits の仕様に従う）
-- **コミットメッセージ**: 英語で記述
-- **レビューコメント**: 日本語で記述
-- **コード内コメント**: 日本語で記述
-- **ドキュメント**: 日本語で記述
-
-### 文書作成ルール
-
-- **見出しの間隔**: すべての見出し（`#`）とその本文の間には空白行を入れる
-- **英数字の間隔**: 英数字と日本語の間には半角スペースを入れる
-- **例**: `Nuxt.js v3 で構築された Web アプリケーション`
-
-## 開発ガイドライン
-
-### コミット規約
-
-PR タイトルとコミットメッセージは Conventional Commits の仕様に従ってください。
-
-```
-feat: 新機能追加
-fix: バグ修正
-docs: ドキュメント変更
-style: コードフォーマット変更
-refactor: リファクタリング
-test: テスト追加・修正
-chore: その他の変更
-```
-
-### PR 作成後の対応方法
-
-すべての CI が成功するまで監視・対応する。失敗した場合は修正を行い、コミット・プッシュし、再度監視を行う。
+- **包括的テスト**: 新機能は単体テスト+E2Eテスト必須
+- **型安全性**: TypeScript strict mode、`any`使用禁止
+- **エラーハンドリング**: 適切なバリデーションと日本語エラーメッセージ
+- **レスポンシブ対応**: モバイルファーストでアクセシビリティ重視
 
 ### コーディング規約
 
 #### TypeScript
 
-- **型安全性**: `any` の使用は避け、適切な型定義を行ってください
-- **Null 安全性**: Non-null assertion（`!`）の使用は警告対象
-- **関数型**: 明示的な戻り値の型定義は不要（型推論を活用）
-- **Import**: ES6 モジュール形式を使用
+- **型安全性**: `any`使用禁止、適切な型定義必須
+- **Null安全性**: Non-null assertion（`!`）は警告対象
+- **関数型**: 戻り値の型定義不要（型推論活用）
+- **Import**: ES6モジュール形式を使用
 
 #### Vue.js
 
-- **Composition API**: `<script setup>` を使用
-- **リアクティブ**: `ref()`、`computed()`、`watch()` を適切に使用
-- **Props**: TypeScript インターフェースで型定義
-- **Events**: TypeScript で型安全なイベント定義
+- **Composition API**: `<script setup>`必須
+- **リアクティブ**: `ref()`、`computed()`、`watch()`適切に使用
+- **Props**: TypeScriptインターフェースで型定義
+- **Events**: TypeScriptで型安全なイベント定義
 
 #### CSS
 
 - **レスポンシブ**: モバイルファースト設計
 - **CSS Grid/Flexbox**: レイアウトに活用
-- **CSS 変数**: 色やサイズの統一に使用
-- **BEM 記法**: クラス名の命名規則として推奨
+- **CSS変数**: 色やサイズの統一
+- **BEM記法**: クラス名の命名規則推奨
 
-## アーキテクチャとディレクトリ構造
+## 開発ガイドライン
 
-### 基本構造
+### コミット・PR規約
 
-```
-/pages/tools/     # 各ツールのページ（Vue SFC）
-/composables/     # 共有 Vue コンポーザブル
-/utils/          # TypeScript ユーティリティ関数
-/tests/          # テストファイル
-/assets/css/     # グローバルスタイル
+- **コミットメッセージ**: 英語、Conventional Commits準拠
+- **PR本文**: 日本語で詳細記述
+- **PR タイトル**: 日本語（Conventional Commits準拠）
+- **PR作成後**: 全CI成功まで監視・修正対応
+
+### コードチェック必須項目
+
+以下のチェックが全て成功する必要があります：
+
+```bash
+pnpm lint           # ESLint チェック
+pnpm format:check   # Prettier フォーマットチェック
+pnpm typecheck      # TypeScript 型チェック
+pnpm depcheck       # 依存関係チェック
+pnpm test           # 単体テスト
+pnpm test:e2e       # E2E テスト
 ```
 
 ### ツール実装パターン
 
-新しいツールを実装する場合の手順は以下の通りです。
+1. **ページ作成**: `/pages/tools/[tool-name].vue`
+2. **ユーティリティ**: `/utils/[tool-name].ts` (純粋関数)
+3. **ツール登録**: `composables/useTools.ts` にメタデータ追加
+4. **テスト作成**:
+   - `/tests/utils/[tool-name].test.ts` (単体テスト)
+   - `/tests/e2e/[tool-name].spec.ts` (E2Eテスト)
 
-1. `/pages/tools/[tool-name].vue` にツールページを作成
-2. `composables/useTools.ts` にツールメタデータを追加
-3. 必要に応じて `/utils/` にユーティリティ関数を実装
-4. ユーティリティ関数の単体テスト（`*.test.ts`）を作成
-5. ユーザー操作の E2E テスト（`*.spec.ts`）を作成
+## Gemini CLI 固有の実装指針
 
-### プロジェクト構造の詳細
-
-#### ディレクトリ構造
-
-```
-pages/tools/          # ツールページ
-├── [tool-name].vue   # 各ツールのページ
-utils/                # ユーティリティ関数
-├── [function].ts     # 純粋関数として実装
-components/           # 共通コンポーネント
-├── Tool*.vue         # ツール関連コンポーネント
-tests/                # テストファイル
-├── utils/            # ユーティリティのテスト
-├── e2e/              # E2E テスト
-```
-
-#### Vue コンポーネントの構造
+### Vue コンポーネント構造
 
 ```vue
 <template>
@@ -154,8 +112,6 @@ tests/                # テストファイル
 </template>
 
 <script setup lang="ts">
-import type { ToolMetadata } from '~/types/tool'
-
 // ページメタデータ
 const title = 'ツール名'
 const description = 'ツールの説明'
@@ -175,23 +131,7 @@ definePageMeta({
 </script>
 ```
 
-## Gemini CLI 固有の設定
-
-### 必須技術
-
-- **Nuxt.js v3**: フレームワークとして Nuxt.js v3 を使用
-- **Vue 3**: Composition API を使用してコンポーネントを作成
-- **TypeScript**: 型安全なコードを記述
-- **Tailwind CSS**: スタイリングは Tailwind CSS のみ使用
-
-### テストフレームワーク
-
-- **Vitest**: 単体テスト用
-- **Playwright**: E2E テスト用
-
-### コード生成の指針
-
-#### エラーハンドリング
+### エラーハンドリングパターン
 
 ```typescript
 try {
@@ -203,7 +143,7 @@ try {
 }
 ```
 
-#### 型定義
+### 型定義の例
 
 ```typescript
 // 明確な型定義を提供
@@ -226,38 +166,26 @@ export function processTool(input: ToolInput): ToolOutput {
 }
 ```
 
-#### レスポンシブデザイン
+## アーキテクチャ
 
-```vue
-<template>
-  <!-- モバイルファースト、レスポンシブ対応 -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <!-- ダークモード対応 -->
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-      <!-- コンテンツ -->
-    </div>
-  </div>
-</template>
+### ディレクトリ構造
+
+```
+/pages/tools/     # ツールページ（現在65個）
+/utils/          # ユーティリティ関数
+/composables/    # Vue コンポーザブル
+/tests/          # テストファイル
 ```
 
-## テスト戦略
+### 既存パターンの活用
+
+- **重複機能防止**: 既存ツールの機能確認必須
+- **コード再利用**: 既存ユーティリティ関数の活用
+- **一貫性**: 他ツールのUI/UXパターンに準拠
+
+## テスト要件
 
 ### 単体テスト（Vitest）
-
-#### 対象
-
-- `/utils/` 内のユーティリティ関数
-- 計算ロジック
-- データ変換処理
-- バリデーション機能
-
-#### ファイル命名規則
-
-- ファイル名: `*.test.ts`
-- 配置場所: `/tests/` ディレクトリ
-- 対応関係: `utils/math.ts` → `tests/utils/math.test.ts`
-
-#### テスト例
 
 ```typescript
 import { describe, it, expect } from 'vitest'
@@ -273,22 +201,10 @@ describe('toolFunction', () => {
   it('空の入力でエラーをスローする', () => {
     expect(() => toolFunction('')).toThrow('入力が空です')
   })
-
-  it('無効な入力でエラーをスローする', () => {
-    expect(() => toolFunction('invalid')).toThrow('無効な入力です')
-  })
 })
 ```
 
 ### E2E テスト（Playwright）
-
-#### 対象
-
-- ユーザーワークフローの検証
-- ブラウザ間の互換性確認
-- 実際の操作シナリオ
-
-#### E2E テスト例
 
 ```typescript
 import { test, expect } from '@playwright/test'
@@ -304,33 +220,17 @@ test('ツール名の基本機能', async ({ page }) => {
   await page.click('button[type="submit"]')
   await expect(page.locator('.result')).toHaveText('expected result')
 })
-
-test('エラーハンドリング', async ({ page }) => {
-  await page.goto('/tools/tool-name')
-
-  // 無効な入力でエラー表示
-  await page.fill('input[type="text"]', '')
-  await page.click('button[type="submit"]')
-  await expect(page.locator('.error')).toBeVisible()
-})
 ```
 
-#### 対象ブラウザ
+## パフォーマンス
 
-- **Chrome**: メインブラウザ
-- **Firefox**: 互換性確認
-- **Safari**: macOS での動作確認
+### 目標指標
 
-## パフォーマンス要件
+- **Lighthouse**: Performance 95+、その他100
+- **バンドルサイズ**: 500KB以下（現在936KB）
+- **Core Web Vitals**: 全項目グリーン
 
-### Lighthouse スコア目標
-
-- **Performance**: 90 以上
-- **Accessibility**: 100
-- **Best Practices**: 100
-- **SEO**: 100
-
-### バンドルサイズ最適化
+### 最適化手法
 
 ```typescript
 // 大きなライブラリは動的インポート
@@ -339,8 +239,6 @@ const processLargeData = async (data: string) => {
   return heavyFunction(data)
 }
 ```
-
-### Vue のパフォーマンス最適化
 
 ```vue
 <script setup lang="ts">
@@ -359,44 +257,51 @@ watchEffect(() => {
 </script>
 ```
 
-## 禁止事項
+## 現在の開発状況
 
-以下のコードは生成しないでください。
+### 最近の実装（2025年7月）
 
-- `fetch()` や `axios` による外部 API 通信
-- サーバーサイドレンダリングの実装
-- Node.js 固有の API の使用
+- QRコードバッチ生成ツール
+- JSON差分比較ツール
+- メールバリデーションツール
+- カラーパレット生成ツール
+- テキスト統計・分析ツール
+
+### 現在の課題
+
+- Base64エンコードのTextEncoderエラー（#157）
+- 未実装ツールのVue Router警告（#143）
+
+## 重要な制約
+
+### 禁止事項
+
+- サーバーサイド処理の実装
+- 外部API通信（fetch、axiosなど）
 - ユーザーデータの外部送信
-- jQuery などの古いライブラリの使用
-- グローバル変数やグローバル状態の使用
-- Vue 2 の Options API の使用
+- jQueryなど古いライブラリの使用
+- グローバル変数の使用
+- Options API の使用（Vue 3 Composition API必須）
+- 不要な依存関係の追加
+- 不要なコメントやデバッグコードの残存
+
+### 必須事項
+
+- クライアントサイド完結
+- 包括的テスト実装
+- TypeScript型安全性
+- レスポンシブ対応
 
 ## 品質チェックリスト
 
-コード生成時に以下を確認してください。
+コード生成時に以下を確認してください：
 
 - [ ] TypeScript の型チェックが通る
 - [ ] Vue 3 Composition API を使用している
 - [ ] Tailwind CSS でスタイリングしている
 - [ ] レスポンシブデザインに対応している
-- [ ] ダークモードに対応している
 - [ ] エラーハンドリングが適切に実装されている
 - [ ] アクセシビリティを考慮している
 - [ ] 単体テストが作成されている
 - [ ] E2E テストが作成されている
 - [ ] プライバシー要件を満たしている（外部通信なし）
-
-## 🚀 クイックスタート
-
-```bash
-# 依存関係のインストール
-pnpm install
-
-# テスト実行
-pnpm test           # 単体テスト
-pnpm test:coverage  # カバレッジレポート
-pnpm test:e2e       # E2E テスト
-
-# ビルド
-pnpm generate
-```
