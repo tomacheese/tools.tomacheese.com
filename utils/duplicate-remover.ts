@@ -202,5 +202,3 @@ export async function removeDuplicateLinesAsync(
     processChunk()
   })
 }
-
-// ファイル操作関数は utils/file.ts で定義
