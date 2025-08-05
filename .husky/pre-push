@@ -17,4 +17,18 @@ if ! pnpm run format:check; then
   exit 1
 fi
 
+# Run Nuxt.js type check
+if ! pnpm run typecheck; then
+  echo "❌ Type check failed. Push aborted."
+  echo "Please fix the type errors and try again."
+  exit 1
+fi
+
+# Run unit tests
+if ! pnpm run test; then
+  echo "❌ Unit tests failed. Push aborted."
+  echo "Please fix the failing tests and try again."
+  exit 1
+fi
+
 echo "✅ All lint checks passed. Proceeding with push..."
