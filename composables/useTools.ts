@@ -8,7 +8,9 @@ export interface Tool {
 }
 
 export const useTools = () => {
-  // 実装済みツールのリスト（pages/toolsディレクトリに存在するVueファイル）
+  // 実装済みツールのリスト（54個のツールが見つかりました）
+  // このリストはpages/toolsディレクトリ内のVueファイルから自動生成されます
+  // 更新する場合は: node scripts/generate-implemented-tools.cjs
   const implementedTools = new Set([
     'age-calculator',
     'base64',
