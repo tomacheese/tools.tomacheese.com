@@ -5,10 +5,13 @@
       <div class="container">
         <div class="header-content">
           <NuxtLink to="/" class="logo">tools.tomacheese.com</NuxtLink>
-          <nav class="nav">
-            <NuxtLink to="/">ホーム</NuxtLink>
-            <NuxtLink to="/about">サイトについて</NuxtLink>
-          </nav>
+          <div class="header-actions">
+            <nav class="nav">
+              <NuxtLink to="/">ホーム</NuxtLink>
+              <NuxtLink to="/about">サイトについて</NuxtLink>
+            </nav>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>
