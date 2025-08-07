@@ -8,65 +8,10 @@ export interface Tool {
 }
 
 export const useTools = () => {
-  // 実装済みツールのリスト（54個のツールが見つかりました）
-  // このリストはpages/toolsディレクトリ内のVueファイルから自動生成されます
-  // 更新する場合は: node scripts/generate-implemented-tools.cjs
-  const implementedTools = new Set([
-    'age-calculator',
-    'base64',
-    'binary-calculator',
-    'bmi-calculator',
-    'border-radius-generator',
-    'box-shadow-generator',
-    'calorie-calculator',
-    'character-counter',
-    'color-palette-generator',
-    'color-picker',
-    'compound-interest-calculator',
-    'credit-card-validator',
-    'css-minifier',
-    'csv-to-json',
-    'diff-checker',
-    'duplicate-line-remover',
-    'email-validator',
-    'expense-splitter',
-    'factorial-calculator',
-    'fibonacci-generator',
-    'gcd-lcm',
-    'gradient-generator',
-    'hash-generator',
-    'html-encoder',
-    'iban-validator',
-    'image-omission',
-    'image-resizer',
-    'image-to-base64',
-    'js-minifier',
-    'json-diff',
-    'json-formatter',
-    'json-to-csv',
-    'lorem-generator',
-    'markdown-preview',
-    'mortgage-calculator',
-    'password-generator',
-    'percentage-calculator',
-    'prime-checker',
-    'qr-batch-generator',
-    'qr-generator',
-    'qr-reader',
-    'random-number-generator',
-    'regex-tester',
-    'sql-formatter',
-    'stopwatch',
-    'text-case-converter',
-    'text-statistics',
-    'timestamp-converter',
-    'tip-calculator',
-    'unit-converter',
-    'url-encoder',
-    'uuid-generator',
-    'water-intake-calculator',
-    'world-clock',
-  ])
+  // プラグインから提供される実装済みツールリストを取得
+  // ビルド時に自動検出されるため手動更新不要
+  const { $implementedTools } = useNuxtApp()
+  const implementedTools = $implementedTools || new Set<string>()
 
   // すべてのツール定義（実装済み・未実装を含む）
   const allTools: Tool[] = [
