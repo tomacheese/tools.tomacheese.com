@@ -8,6 +8,7 @@
           <nav class="nav">
             <NuxtLink to="/">ホーム</NuxtLink>
             <NuxtLink to="/about">サイトについて</NuxtLink>
+            <ThemeToggle />
           </nav>
         </div>
       </div>
