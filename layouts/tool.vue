@@ -8,6 +8,14 @@
           <nav class="nav">
             <NuxtLink to="/">ホーム</NuxtLink>
             <NuxtLink to="/about">サイトについて</NuxtLink>
+            <button
+              class="theme-toggle"
+              @click="toggleTheme"
+              :title="`${getThemeName()} → 切り替え`"
+            >
+              <span>{{ getThemeIcon() }}</span>
+              <span class="theme-name">{{ getThemeName() }}</span>
+            </button>
           </nav>
         </div>
       </div>
@@ -17,7 +25,7 @@
     <div class="main-layout">
       <!-- Sidebar Navigation -->
       <aside class="sidebar">
-        <h3 style="margin-bottom: 1rem; color: #1e293b; font-weight: 600">
+        <h3 style="margin-bottom: 1rem; color: var(--color-text-primary); font-weight: 600">
           ツール一覧
         </h3>
         <nav>
@@ -42,6 +50,32 @@
 const { getAllTools } = useTools()
 const tools = getAllTools()
 
+// ダークモード管理
+const {
+  toggleThemeMode,
+  getThemeName,
+  getThemeIcon,
+  initialize: initializeDarkMode,
+} = useDarkMode()
+
+// ダークモード初期化
+let cleanupDarkMode = null
+
+onMounted(() => {
+  cleanupDarkMode = initializeDarkMode()
+})
+
+onBeforeUnmount(() => {
+  if (cleanupDarkMode) {
+    cleanupDarkMode()
+  }
+})
+
+// テーマ切り替えハンドラ
+const toggleTheme = () => {
+  toggleThemeMode()
+}
+
 // SEO and Meta
 useHead({
   htmlAttrs: {
@@ -49,3 +83,15 @@ useHead({
   },
 })
 </script>
+
+<style scoped>
+.theme-name {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .theme-name {
+    display: inline;
+  }
+}
+</style>
