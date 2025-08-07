@@ -63,8 +63,14 @@
 const { getAllTools } = useTools()
 const tools = getAllTools()
 
-// サイドバーの開閉状態管理
-const isSidebarOpen = ref(true)
+// サイドバーの開閉状態管理（ユーザー設定を永続化）
+const isSidebarOpen = useState('sidebar-open', () => true)
+
+// 初期状態をブラウザサイズで決定
+onMounted(() => {
+  // 1024px以上ならデスクトップとみなしてサイドバーを開く
+  isSidebarOpen.value = window.innerWidth >= 1024
+})
 
 // サイドバー開閉のトグル関数
 const toggleSidebar = () => {
