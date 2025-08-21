@@ -72,7 +72,8 @@ export default defineNuxtConfig({
         console.info('✓ 実装済みツールプラグインを更新しました')
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('❌ ツール検出エラー:', error)
+        console.error('❌ 実装済みツールの検出中にエラーが発生しました:', error)
+        process.exit(1)
       }
     },
   },
@@ -88,7 +89,7 @@ function generatePluginContent(toolIds: string[]): string {
  * 実装済みツールの動的検出プラグイン
  * ビルド時にpages/toolsディレクトリをスキャンして実装済みツールを自動検出
  * 
- * 🤖 このファイルはビルド時に自動生成されます。手動編集しないでください。
+ * 🤖 このファイルはビルドフック（build:before）で自動生成されます。手動編集しないでください。
  */
 
 // ビルド時に検出された実装済みツールリスト（${toolIds.length}個のツール）

@@ -1,8 +1,8 @@
 /**
  * 実装済みツールの動的検出プラグイン
  * ビルド時にpages/toolsディレクトリをスキャンして実装済みツールを自動検出
- * 
- * 🤖 このファイルはビルド時に自動生成されます。手動編集しないでください。
+ *
+ * 🤖 このファイルはビルドフック（build:before）で自動生成されます。手動編集しないでください。
  */
 
 // ビルド時に検出された実装済みツールリスト（54個のツール）
@@ -67,8 +67,8 @@ const implementedToolsFromBuild = new Set<string>([
 export default defineNuxtPlugin(() => {
   return {
     provide: {
-      implementedTools: implementedToolsFromBuild
-    }
+      implementedTools: implementedToolsFromBuild,
+    },
   }
 })
 

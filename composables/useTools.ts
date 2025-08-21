@@ -11,6 +11,12 @@ export const useTools = () => {
   // プラグインから提供される実装済みツールリストを取得
   // ビルド時に自動検出されるため手動更新不要
   const { $implementedTools } = useNuxtApp()
+  if (typeof $implementedTools === 'undefined') {
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[useTools] $implementedTools is undefined. Plugins may not be loaded correctly.'
+    )
+  }
   const implementedTools = $implementedTools || new Set<string>()
 
   // すべてのツール定義（実装済み・未実装を含む）
