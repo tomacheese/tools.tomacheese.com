@@ -268,6 +268,24 @@ export const useTools = () => {
       keywords: ['border-radius', '角丸', 'css', 'デザイン'],
     },
     {
+      id: 'csv-analysis',
+      name: 'CSV分析ツール',
+      description:
+        'CSVファイルの基本統計情報を分析・表示します。データ型の自動検出、統計計算、欠損値の検出機能を提供。',
+      path: '/tools/csv-analysis',
+      category: 'データ分析',
+      keywords: [
+        'csv',
+        '分析',
+        '統計',
+        'データ型',
+        '欠損値',
+        '平均',
+        '中央値',
+        '標準偏差',
+      ],
+    },
+    {
       id: 'csv-to-json',
       name: 'CSV to JSON変換',
       description: 'CSVデータをJSON形式に変換します。',
