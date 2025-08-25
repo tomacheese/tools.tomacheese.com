@@ -376,10 +376,10 @@ import { parseCSV, detectDelimiter } from '~/utils/csv-json'
 import {
   analyzeCSVData,
   validateFileSize,
-  formatFileSize as formatCSVFileSize,
   type CSVAnalysisResult,
   type CSVColumn,
 } from '~/utils/csv-analysis'
+import { formatFileSize as formatCSVFileSize } from '~/utils/imageResizer'
 
 // レイアウト設定
 definePageMeta({
@@ -468,8 +468,10 @@ const processFile = async (file: File) => {
 
     // データ分析
     analysisResult.value = analyzeCSVData(csvData, file.name, file.size)
-  } catch {
+  } catch (err) {
     // CSV分析中にエラーが発生しました
+    // eslint-disable-next-line no-console
+    console.error('CSV analysis error:', err)
     error.value =
       'ファイルの分析中にエラーが発生しました。ファイル形式を確認してください。'
   } finally {

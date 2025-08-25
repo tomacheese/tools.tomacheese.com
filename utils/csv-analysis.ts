@@ -49,24 +49,15 @@ export interface CSVAnalysisResult {
 // ファイルサイズの上限（50MB）
 const MAX_FILE_SIZE = 50 * 1024 * 1024
 
+// 四分位数計算の定数
+const Q1_PERCENTILE = 0.25
+const Q3_PERCENTILE = 0.75
+
 /**
  * ファイルサイズをチェックする
  */
 export function validateFileSize(file: File): boolean {
   return file.size <= MAX_FILE_SIZE
-}
-
-/**
- * ファイルサイズを読みやすい形式に変換する
- */
-export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes'
-
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(1024))
-  const size = bytes / Math.pow(1024, i)
-
-  return `${size.toFixed(i === 0 ? 0 : 1)} ${sizes[i]}`
 }
 
 /**
@@ -148,8 +139,8 @@ export function calculateNumericStatistics(
   const standardDeviation = Math.sqrt(variance)
 
   // 四分位数
-  const q1Index = Math.floor(count * 0.25)
-  const q3Index = Math.floor(count * 0.75)
+  const q1Index = Math.floor(count * Q1_PERCENTILE)
+  const q3Index = Math.floor(count * Q3_PERCENTILE)
   const q1 = numbers[q1Index]
   const q3 = numbers[q3Index]
 

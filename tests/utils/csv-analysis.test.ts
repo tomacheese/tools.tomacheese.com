@@ -7,9 +7,9 @@ import {
   calculateColumnStatistics,
   analyzeCSVData,
   validateFileSize,
-  formatFileSize,
   type CSVColumn,
 } from '~/utils/csv-analysis'
+import { formatFileSize } from '~/utils/imageResizer'
 
 describe('CSV Analysis Utils', () => {
   describe('validateFileSize', () => {
@@ -30,9 +30,9 @@ describe('CSV Analysis Utils', () => {
     it('バイト数を正しくフォーマット', () => {
       expect(formatFileSize(0)).toBe('0 Bytes')
       expect(formatFileSize(1023)).toBe('1023 Bytes')
-      expect(formatFileSize(1024)).toBe('1.0 KB')
-      expect(formatFileSize(1024 * 1024)).toBe('1.0 MB')
-      expect(formatFileSize(1024 * 1024 * 1024)).toBe('1.0 GB')
+      expect(formatFileSize(1024)).toBe('1 KB')
+      expect(formatFileSize(1024 * 1024)).toBe('1 MB')
+      expect(formatFileSize(1024 * 1024 * 1024)).toBe('1 GB')
     })
   })
 
