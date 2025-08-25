@@ -70,13 +70,13 @@
     "marked": "16.2.0",
     "nuxt": "3.18.1",
     "qrcode": "1.5.4",
-    "vue": "3.5.18",
+    "vue": "3.5.19",
     "vue-router": "4.5.1"
   },
   "devDependencies": {
     "@eslint/js": "9.33.0",
     "@nuxt/test-utils": "3.19.2",
-    "@playwright/test": "1.54.2",
+    "@playwright/test": "1.55.0",
     "@types/node": "22.17.2",
     "@types/qrcode": "1.5.5",
     "@typescript-eslint/eslint-plugin": "8.40.0",
@@ -91,13 +91,13 @@
     "happy-dom": "18.0.1",
     "husky": "9.1.7",
     "lint-staged": "16.1.5",
-    "playwright": "1.54.2",
+    "playwright": "1.55.0",
     "prettier": "3.6.2",
     "serve": "14.2.4",
     "tsx": "4.20.4",
     "vitest": "3.2.4",
     "vue-eslint-parser": "10.2.0",
-    "vue-tsc": "3.0.5"
+    "vue-tsc": "3.0.6"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,vue}": [
