@@ -94,7 +94,7 @@
     "playwright": "1.55.0",
     "prettier": "3.6.2",
     "serve": "14.2.4",
-    "tsx": "4.20.4",
+    "tsx": "4.20.5",
     "vitest": "3.2.4",
     "vue-eslint-parser": "10.2.0",
     "vue-tsc": "3.0.6"
