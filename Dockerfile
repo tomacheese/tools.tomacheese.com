@@ -1,5 +1,5 @@
 # Multi-stage build for optimized production image
-FROM node:22.18.0-alpine AS base
+FROM node:22.19.0-alpine AS base
 
 # Set pnpm version
 ENV PNPM_VERSION=10.13.1
