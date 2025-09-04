@@ -90,7 +90,7 @@
     "eslint-plugin-vue": "10.4.0",
     "happy-dom": "18.0.1",
     "husky": "9.1.7",
-    "lint-staged": "16.1.5",
+    "lint-staged": "16.1.6",
     "playwright": "1.55.0",
     "prettier": "3.6.2",
     "serve": "14.2.4",
