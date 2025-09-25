@@ -97,7 +97,7 @@
     "tsx": "4.20.5",
     "vitest": "3.2.4",
     "vue-eslint-parser": "10.2.0",
-    "vue-tsc": "3.0.7"
+    "vue-tsc": "3.0.8"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,vue}": [
