@@ -76,7 +76,7 @@
   "devDependencies": {
     "@eslint/js": "9.37.0",
     "@nuxt/test-utils": "3.19.2",
-    "@playwright/test": "1.56.0",
+    "@playwright/test": "1.56.1",
     "@types/node": "22.18.10",
     "@types/qrcode": "1.5.5",
     "@typescript-eslint/eslint-plugin": "8.46.1",
@@ -91,7 +91,7 @@
     "happy-dom": "20.0.3",
     "husky": "9.1.7",
     "lint-staged": "16.2.4",
-    "playwright": "1.56.0",
+    "playwright": "1.56.1",
     "prettier": "3.6.2",
     "serve": "14.2.5",
     "tsx": "4.20.6",
